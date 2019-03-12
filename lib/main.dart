@@ -1,64 +1,62 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+void main() {
+  runApp(MaterialApp(title: "Plante", home: Home()));
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class Home extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomeState extends State<Home> {
+  int _plantas = 0;
+  String _tipoPlanta = "Cacto";
 
-  void _incrementCounter() {
+  void _changePlantas(int a) {
     setState(() {
-      _counter++;
+      _plantas += a;
+      if(_plantas < 0) _tipoPlanta = "Carnívoras";
+      else _tipoPlanta = "Cacto";
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
+    return Stack(
+      children: <Widget>[
+        Image.asset( "images/cactos.jpg", fit: BoxFit.fitHeight, height: 800),
+
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            Text( "Plantas: $_plantas", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlatButton(
+                    child: Text( "+", style: TextStyle(fontSize: 40, color: Colors.white),),
+                    onPressed: () => _changePlantas(1)
+                  ),
+                ),
+
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlatButton(
+                    child: Text( "-", style: TextStyle(fontSize: 40, color: Colors.white),),
+                    onPressed: () =>_changePlantas(-1)
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            
+            Text( "$_tipoPlanta", style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic),),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.local_florist),
-        // child: Icon(Icons.spa),
-      ),
+        )
+      ],
     );
   }
 }
