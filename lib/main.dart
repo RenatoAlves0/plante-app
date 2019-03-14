@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
-void main() {
+const request = "https://localhost:5001/api/planta";
+
+void main() async {
   runApp(MaterialApp(home: Home()));
+  print(getData());
+}
+
+Future<Map> getData() async {
+  http.Response response = await http.get(request);
+  return json.decode(response.body);
 }
 
 class Home extends StatefulWidget {
@@ -14,7 +25,7 @@ class _HomeState extends State<Home> {
     Colors.green,
     Color.fromARGB(255, 25, 112, 182),
     Colors.brown,
-    Colors.orange
+    Colors.amber
   ];
   List<String> _titulos = ["Planta", "Clima", "Solo", "Luz"];
   int _itemSelected = 0;
@@ -73,6 +84,11 @@ class _PlantasState extends State<Plantas> {
 
   void _resetFields() {
     especie.text = genero.text = familia.text = "";
+  }
+
+  void _requestHTTP() async {
+    http.Response response = await http.get(request);
+    print(response.body);
   }
 
   @override
@@ -134,6 +150,7 @@ class _PlantasState extends State<Plantas> {
                         if (_formKey.currentState.validate()) {
                           //salvar();
                           _resetFields();
+                          _requestHTTP();
                         }
                       },
                       color: _color,
