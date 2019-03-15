@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-
-const request = "https://localhost:5001/api/planta";
+import 'planta/list.dart';
 
 void main() async {
   runApp(MaterialApp(home: Home()));
-  print(getData());
-}
-
-Future<Map> getData() async {
-  http.Response response = await http.get(request);
-  return json.decode(response.body);
 }
 
 class Home extends StatefulWidget {
@@ -43,7 +33,7 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: _cores[_itemSelected],
       ),
-      body: _itemSelected == 0 ? Plantas() : null,
+      body: _itemSelected == 0 ? Planta() : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => _cahngeItemSelected(index),
         currentIndex: _itemSelected,
@@ -84,11 +74,6 @@ class _PlantasState extends State<Plantas> {
 
   void _resetFields() {
     especie.text = genero.text = familia.text = "";
-  }
-
-  void _requestHTTP() async {
-    http.Response response = await http.get(request);
-    print(response.body);
   }
 
   @override
@@ -150,7 +135,6 @@ class _PlantasState extends State<Plantas> {
                         if (_formKey.currentState.validate()) {
                           //salvar();
                           _resetFields();
-                          _requestHTTP();
                         }
                       },
                       color: _color,
@@ -165,14 +149,6 @@ class _PlantasState extends State<Plantas> {
               ],
             ),
           )),
-
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.blue,
-      //   tooltip: 'Adicionar planta',
-      //   child: Center(
-      //     child: Icon(Icons.add),
-      //   ),
-      // ),
     );
   }
 }
