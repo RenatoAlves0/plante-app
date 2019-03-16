@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'planta/list.dart';
+import 'planta/form.dart';
 
 void main() async {
   runApp(MaterialApp(home: Home()));
@@ -33,7 +34,8 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: _cores[_itemSelected],
       ),
-      body: _itemSelected == 0 ? Planta() : null,
+      body: _itemSelected == 0 ? ListPlanta() : null,
+      // body: _itemSelected == 0 ? FormPlanta() : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => _cahngeItemSelected(index),
         currentIndex: _itemSelected,

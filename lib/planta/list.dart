@@ -3,112 +3,44 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'form.dart';
 
-class Planta extends StatefulWidget {
+class ListPlanta extends StatefulWidget {
   @override
-  _PlantaState createState() => _PlantaState();
+  _ListPlantaState createState() => _ListPlantaState();
 }
 
-class _PlantaState extends State<Planta> {
-  final _color = Colors.green;
-
-  final _especieController = TextEditingController();
-  final _generoController = TextEditingController();
-  final _familiaController = TextEditingController();
-  final _apelidoController = TextEditingController();
-
+class _ListPlantaState extends State<ListPlanta> {
   List plantaList = [];
-
-  Map<String, dynamic> _lastRemoved;
-  int _lastRemovedPos;
+  Map<String, dynamic> ultimoDeletado;
+  int indexUltimoDeletado;
 
   @override
   void initState() {
     super.initState();
-    readPlanta().then((data) {
+    getPlanta().then((data) {
       setState(() {
         plantaList = json.decode(data);
       });
     });
   }
 
-  void addPlanta() {
-    setState(() {
-      Map<String, dynamic> newPlanta = Map();
-      newPlanta["especie"] = _especieController.text;
-      newPlanta["genero"] = _generoController.text;
-      newPlanta["familia"] = _familiaController.text;
-      newPlanta["nomePopular"] = _apelidoController.text;
-      _especieController.text = "";
-      _generoController.text = "";
-      _familiaController.text = "";
-      _apelidoController.text = "";
-      plantaList.add(newPlanta);
-      savePlanta();
-    });
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Divider(
-            color: Colors.transparent,
-          ),
-          buildTextField("Família", _familiaController),
-          Divider(
-            color: Colors.transparent,
-          ),
-          buildTextField("Gênero", _generoController),
-          Divider(
-            color: Colors.transparent,
-          ),
-          buildTextField("Espécie", _especieController),
-          Divider(
-            color: Colors.transparent,
-          ),
-          buildTextField("Apelido", _apelidoController),
-          ButtonBar(
-            children: <Widget>[
-              RaisedButton(
-                color: _color,
-                child: Text("Salvar", style: TextStyle(fontSize: 17)),
-                textColor: Colors.white,
-                onPressed: addPlanta,
-              )
-            ],
-          ),
           Expanded(
             child: ListView.builder(
-                padding: EdgeInsets.only(top: 10.0),
-                itemCount: plantaList.length,
-                itemBuilder: buildItem),
-          )
+                itemCount: plantaList.length, itemBuilder: buildItem),
+          ),
+          buildButton(),
         ],
       ),
     );
   }
 
-  Widget buildTextField(String label, TextEditingController c) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17),
-      child: TextField(
-        controller: c,
-        decoration: InputDecoration(
-            labelText: label,
-            focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: _color)),
-            enabledBorder: const OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.transparent),
-            ),
-            border: const OutlineInputBorder(),
-            labelStyle: TextStyle(color: _color, fontSize: 20)),
-      ),
-    );
-  }
-
-  Widget buildItem(BuildContext context, int index) {
+  Widget buildItem(context, index) {
     return Dismissible(
       key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
       background: Container(
@@ -122,66 +54,87 @@ class _PlantaState extends State<Planta> {
         ),
       ),
       direction: DismissDirection.startToEnd,
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 30),
-        title: Text(
-          plantaList[index]["nomePopular"],
-          style: TextStyle(fontSize: 20),
-        ),
-        subtitle: Text(
-          plantaList[index]["familia"] +
-              " " +
-              plantaList[index]["genero"] +
-              " " +
-              plantaList[index]["especie"],
-          style: TextStyle(fontSize: 15),
-        ),
-      ),
+      child: buildList(context, index),
       onDismissed: (direction) {
         setState(() {
-          _lastRemoved = Map.from(plantaList[index]);
-          _lastRemovedPos = index;
+          ultimoDeletado = Map.from(plantaList[index]);
+          indexUltimoDeletado = index;
           plantaList.removeAt(index);
           savePlanta();
-
-          final snack = SnackBar(
-            content: Text("Palnta \"${_lastRemoved["apelido"]}\" removida!"),
-            action: SnackBarAction(
-                label: "Desfazer",
-                onPressed: () {
-                  setState(() {
-                    plantaList.insert(_lastRemovedPos, _lastRemoved);
-                    savePlanta();
-                  });
-                }),
-            duration: Duration(seconds: 2),
-          );
-
-          Scaffold.of(context).showSnackBar(snack);
+          Scaffold.of(context).showSnackBar(buildSnack());
         });
       },
     );
   }
 
-  Future<File> _getFile() async {
+  Widget buildList(context, index) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 30),
+      title: Text(
+        plantaList[index]["nomePopular"],
+        style: TextStyle(fontSize: 20),
+      ),
+      subtitle: Text(
+        plantaList[index]["familia"] +
+            " " +
+            plantaList[index]["genero"] +
+            " " +
+            plantaList[index]["especie"],
+        style: TextStyle(fontSize: 15),
+      ),
+      onTap: goToForm,
+    );
+  }
+
+  Widget buildSnack() {
+    return SnackBar(
+      content: Text("Palnta ${ultimoDeletado["nomePopular"]} removida!"),
+      action: SnackBarAction(
+          label: "Desfazer",
+          onPressed: () {
+            setState(() {
+              plantaList.insert(indexUltimoDeletado, ultimoDeletado);
+              savePlanta();
+            });
+          }),
+      duration: Duration(seconds: 4),
+    );
+  }
+
+  Widget buildButton() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 15),
+      alignment: Alignment(0.9, 0),
+      child: FloatingActionButton(
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add),
+        onPressed: goToForm,
+      ),
+    );
+  }
+
+  Future<File> getFile() async {
     final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/data.json");
+    return File("${directory.path}/planta.json");
   }
 
   Future<File> savePlanta() async {
     String data = json.encode(plantaList);
-
-    final file = await _getFile();
+    final file = await getFile();
     return file.writeAsString(data);
   }
 
-  Future<String> readPlanta() async {
+  Future<String> getPlanta() async {
     try {
-      final file = await _getFile();
-
+      final file = await getFile();
       return file.readAsString();
     } catch (e) {
       return null;
     }
+  }
+
+  void goToForm() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FormPlanta()));
   }
 }
