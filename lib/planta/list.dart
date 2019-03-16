@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'form.dart';
+import '../components/bottomBar.dart';
 
 class ListPlanta extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class ListPlanta extends StatefulWidget {
 }
 
 class _ListPlantaState extends State<ListPlanta> {
+  //Variáveis
+
   List plantaList = [];
   Map<String, dynamic> ultimoDeletado;
   int indexUltimoDeletado;
@@ -25,49 +28,52 @@ class _ListPlantaState extends State<ListPlanta> {
     });
   }
 
+  //Widgets
+
   @override
   Widget build(context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-                itemCount: plantaList.length, itemBuilder: buildItem),
-          ),
-          buildButton(),
-        ],
-      ),
+      appBar: buildAppBar(),
+      body: builList(),
+      floatingActionButton: buildButton(),
+      bottomNavigationBar: BottomBar(propsItemSelected: 0),
     );
   }
 
-  Widget buildItem(context, index) {
+  Widget buildAppBar() {
+    return AppBar(
+      title: Text("Planta"),
+      backgroundColor: Colors.green,
+      centerTitle: true,
+    );
+  }
+
+  Widget builList() {
+    return ListView.builder(
+        itemCount: plantaList.length, itemBuilder: builDismissible);
+  }
+
+  Widget builDismissible(context, index) {
     return Dismissible(
-      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
-      background: Container(
+        key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+        background: backgroudDismissible(),
+        direction: DismissDirection.startToEnd,
+        child: buildListItem(context, index),
+        onDismissed: (direction) => onDismissed(context, index));
+  }
+
+  Widget backgroudDismissible() {
+    return Container(
         color: Colors.red,
         child: Align(
-          alignment: Alignment(-0.9, 0.0),
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      direction: DismissDirection.startToEnd,
-      child: buildList(context, index),
-      onDismissed: (direction) {
-        setState(() {
-          ultimoDeletado = Map.from(plantaList[index]);
-          indexUltimoDeletado = index;
-          plantaList.removeAt(index);
-          savePlanta();
-          Scaffold.of(context).showSnackBar(buildSnack());
-        });
-      },
-    );
+            alignment: Alignment(-0.9, 0.0),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            )));
   }
 
-  Widget buildList(context, index) {
+  Widget buildListItem(context, index) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 30),
       title: Text(
@@ -86,6 +92,14 @@ class _ListPlantaState extends State<ListPlanta> {
     );
   }
 
+  Widget buildButton() {
+    return FloatingActionButton(
+      backgroundColor: Colors.green,
+      child: Icon(Icons.add),
+      onPressed: goToForm,
+    );
+  }
+
   Widget buildSnack() {
     return SnackBar(
       content: Text("Palnta ${ultimoDeletado["nomePopular"]} removida!"),
@@ -101,17 +115,7 @@ class _ListPlantaState extends State<ListPlanta> {
     );
   }
 
-  Widget buildButton() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 15),
-      alignment: Alignment(0.9, 0),
-      child: FloatingActionButton(
-        backgroundColor: Colors.green,
-        child: Icon(Icons.add),
-        onPressed: goToForm,
-      ),
-    );
-  }
+  //Métodos
 
   Future<File> getFile() async {
     final directory = await getApplicationDocumentsDirectory();
@@ -131,6 +135,16 @@ class _ListPlantaState extends State<ListPlanta> {
     } catch (e) {
       return null;
     }
+  }
+
+  void onDismissed(context, index) {
+    setState(() {
+      ultimoDeletado = Map.from(plantaList[index]);
+      indexUltimoDeletado = index;
+      plantaList.removeAt(index);
+      savePlanta();
+      Scaffold.of(context).showSnackBar(buildSnack());
+    });
   }
 
   void goToForm() {

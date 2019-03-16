@@ -11,12 +11,12 @@ class FormPlanta extends StatefulWidget {
 }
 
 class _FormPlantaState extends State<FormPlanta> {
-  final _color = Colors.green;
+  final color = Colors.green;
 
-  final _especieController = TextEditingController();
-  final _generoController = TextEditingController();
-  final _familiaController = TextEditingController();
-  final _apelidoController = TextEditingController();
+  final especieController = TextEditingController();
+  final generoController = TextEditingController();
+  final familiaController = TextEditingController();
+  final apelidoController = TextEditingController();
 
   List plantaList = [];
 
@@ -30,88 +30,75 @@ class _FormPlantaState extends State<FormPlanta> {
     });
   }
 
-  void addPlanta() {
-    setState(() {
-      Map<String, dynamic> newPlanta = Map();
-      newPlanta["especie"] = _especieController.text;
-      newPlanta["genero"] = _generoController.text;
-      newPlanta["familia"] = _familiaController.text;
-      newPlanta["nomePopular"] = _apelidoController.text;
-      _especieController.text = "";
-      _generoController.text = "";
-      _familiaController.text = "";
-      _apelidoController.text = "";
-      plantaList.add(newPlanta);
-      savePlanta();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Divider(
-                    color: Colors.transparent,
-                  ),
-                  buildTextField("Família", _familiaController),
-                  Divider(
-                    color: Colors.transparent,
-                  ),
-                  buildTextField("Gênero", _generoController),
-                  Divider(
-                    color: Colors.transparent,
-                  ),
-                  buildTextField("Espécie", _especieController),
-                  Divider(
-                    color: Colors.transparent,
-                  ),
-                  buildTextField("Apelido", _apelidoController),
-                ],
-              ),
-            ),
-          ),
-          buildButton(),
-        ],
-      ),
+      appBar: buildAppBar(),
+      body: buildBodyBox(),
     );
   }
 
-  Widget buildTextField(String label, TextEditingController c) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17),
-      child: TextField(
-        controller: c,
-        decoration: InputDecoration(
-            labelText: label,
-            focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: _color)),
-            enabledBorder: const OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.transparent),
-            ),
-            border: const OutlineInputBorder(),
-            labelStyle: TextStyle(color: _color, fontSize: 20)),
-      ),
+  Widget buildAppBar() {
+    return AppBar(
+      title: Text("Planta"),
+      backgroundColor: Colors.green,
+      centerTitle: true,
     );
+  }
+
+  Widget buildBodyBox() {
+    return Column(children: <Widget>[
+      Expanded(
+          child: SingleChildScrollView(
+              child: Column(children: <Widget>[
+        Divider(
+          color: Colors.transparent,
+        ),
+        buildTextField("Família", familiaController),
+        Divider(
+          color: Colors.transparent,
+        ),
+        buildTextField("Gênero", generoController),
+        Divider(
+          color: Colors.transparent,
+        ),
+        buildTextField("Espécie", especieController),
+        Divider(
+          color: Colors.transparent,
+        ),
+        buildTextField("Apelido", apelidoController),
+      ])))
+    ]);
+  }
+
+  Widget buildTextField(String label, TextEditingController controller) {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 17),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+              labelText: label,
+              focusedBorder:
+                  OutlineInputBorder(borderSide: BorderSide(color: color)),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.transparent),
+              ),
+              border: const OutlineInputBorder(),
+              labelStyle: TextStyle(color: color, fontSize: 20)),
+        ));
   }
 
   Widget buildButton() {
     return Container(
-      padding: EdgeInsets.only(bottom: 15),
-      alignment: Alignment(0.9, 0),
-      child: FloatingActionButton(
-        backgroundColor: Colors.green,
-        child: Icon(Icons.save),
-        onPressed: () {
-          addPlanta();
-          goToList();
-        },
-      ),
-    );
+        padding: EdgeInsets.only(bottom: 15),
+        alignment: Alignment(0.9, 0),
+        child: FloatingActionButton(
+            backgroundColor: Colors.green,
+            child: Icon(Icons.save),
+            onPressed: () {
+              addPlanta();
+              goToList();
+            }));
   }
 
   Future<File> getFile() async {
@@ -137,5 +124,21 @@ class _FormPlantaState extends State<FormPlanta> {
   void goToList() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ListPlanta()));
+  }
+
+  void addPlanta() {
+    setState(() {
+      Map<String, dynamic> newPlanta = Map();
+      newPlanta["especie"] = especieController.text;
+      newPlanta["genero"] = generoController.text;
+      newPlanta["familia"] = familiaController.text;
+      newPlanta["nomePopular"] = apelidoController.text;
+      especieController.text = "";
+      generoController.text = "";
+      familiaController.text = "";
+      apelidoController.text = "";
+      plantaList.add(newPlanta);
+      savePlanta();
+    });
   }
 }
