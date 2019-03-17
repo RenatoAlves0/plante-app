@@ -38,19 +38,29 @@ class _FormPlantaState extends State<FormPlanta> {
     );
   }
 
+  Widget buildButton() {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: RaisedButton(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Text("Salvar", style: TextStyle(color: Colors.green)),
+            color: Colors.white,
+            onPressed: addPlanta));
+  }
+
   Widget buildAppBar() {
     return AppBar(
       title: Text("Planta"),
       backgroundColor: Colors.green,
       centerTitle: true,
+      actions: <Widget>[buildButton()],
     );
   }
 
   Widget buildBodyBox() {
     return Column(children: <Widget>[
-      Expanded(
-          child: SingleChildScrollView(
-              child: Column(children: <Widget>[
+      SingleChildScrollView(
+          child: Column(children: <Widget>[
         Divider(
           color: Colors.transparent,
         ),
@@ -67,7 +77,7 @@ class _FormPlantaState extends State<FormPlanta> {
           color: Colors.transparent,
         ),
         buildTextField("Apelido", apelidoController),
-      ])))
+      ]))
     ]);
   }
 
@@ -86,19 +96,6 @@ class _FormPlantaState extends State<FormPlanta> {
               border: const OutlineInputBorder(),
               labelStyle: TextStyle(color: color, fontSize: 20)),
         ));
-  }
-
-  Widget buildButton() {
-    return Container(
-        padding: EdgeInsets.only(bottom: 15),
-        alignment: Alignment(0.9, 0),
-        child: FloatingActionButton(
-            backgroundColor: Colors.green,
-            child: Icon(Icons.save),
-            onPressed: () {
-              addPlanta();
-              goToList();
-            }));
   }
 
   Future<File> getFile() async {
@@ -140,5 +137,6 @@ class _FormPlantaState extends State<FormPlanta> {
       plantaList.add(newPlanta);
       savePlanta();
     });
+    goToList();
   }
 }

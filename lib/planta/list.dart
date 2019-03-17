@@ -42,7 +42,7 @@ class _ListPlantaState extends State<ListPlanta> {
 
   Widget buildAppBar() {
     return AppBar(
-      title: Text("Planta"),
+      title: Text("Plantas"),
       backgroundColor: Colors.green,
       centerTitle: true,
     );
@@ -102,9 +102,11 @@ class _ListPlantaState extends State<ListPlanta> {
 
   Widget buildSnack() {
     return SnackBar(
-      content: Text("Palnta ${ultimoDeletado["nomePopular"]} removida!"),
+      content: Text("Restaurar ${ultimoDeletado["nomePopular"]}?"),
+      backgroundColor: Colors.red,
       action: SnackBarAction(
-          label: "Desfazer",
+          label: "Sim",
+          textColor: Colors.white,
           onPressed: () {
             setState(() {
               plantaList.insert(indexUltimoDeletado, ultimoDeletado);
