@@ -43,7 +43,7 @@ class _ListPlantaState extends State<ListPlanta> {
   Widget buildAppBar() {
     return AppBar(
       title: Text("Plantas"),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.green[700],
       centerTitle: true,
     );
   }
@@ -94,7 +94,7 @@ class _ListPlantaState extends State<ListPlanta> {
 
   Widget buildButton() {
     return FloatingActionButton(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.green[700],
       child: Icon(Icons.add),
       onPressed: goToForm,
     );
@@ -151,6 +151,8 @@ class _ListPlantaState extends State<ListPlanta> {
 
   void goToForm() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => FormPlanta()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => FormPlanta(), fullscreenDialog: true));
   }
 }

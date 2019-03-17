@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'planta/list.dart';
 
 void main() async {
-  runApp(MaterialApp(home: Home()));
+  runApp(MaterialApp(
+    home: Home(),
+    title: 'Plante',
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
 class Home extends StatefulWidget {

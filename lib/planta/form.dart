@@ -11,7 +11,7 @@ class FormPlanta extends StatefulWidget {
 }
 
 class _FormPlantaState extends State<FormPlanta> {
-  final color = Colors.green;
+  final color = Colors.green[700];
 
   final especieController = TextEditingController();
   final generoController = TextEditingController();
@@ -43,7 +43,7 @@ class _FormPlantaState extends State<FormPlanta> {
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: RaisedButton(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Text("Salvar", style: TextStyle(color: Colors.green)),
+            child: Text("Salvar", style: TextStyle(color: Colors.green[700])),
             color: Colors.white,
             onPressed: addPlanta));
   }
@@ -51,7 +51,7 @@ class _FormPlantaState extends State<FormPlanta> {
   Widget buildAppBar() {
     return AppBar(
       title: Text("Planta"),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.green[700],
       centerTitle: true,
       actions: <Widget>[buildButton()],
     );
