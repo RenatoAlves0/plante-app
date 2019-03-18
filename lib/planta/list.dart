@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'form.dart';
 import '../components/bottomBar.dart';
+import '../http_provider.dart';
 
 class ListPlanta extends StatefulWidget {
   @override
@@ -40,10 +41,22 @@ class _ListPlantaState extends State<ListPlanta> {
     );
   }
 
+  Widget builBackGround() {
+    return Container(
+        child: builList(),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.green[700], Colors.green, Colors.white],
+                begin: FractionalOffset(0.5, 0),
+                end: FractionalOffset(0.5, 0.6),
+                tileMode: TileMode.clamp)));
+  }
+
   Widget buildAppBar() {
     return AppBar(
       title: Text("Plantas"),
       backgroundColor: Colors.green[700],
+      elevation: 0,
       centerTitle: true,
     );
   }
@@ -150,6 +163,7 @@ class _ListPlantaState extends State<ListPlanta> {
   }
 
   void goToForm() {
+    // WebClient().get("https://10.0.2.2:5001/api/planta");
     Navigator.push(
         context,
         MaterialPageRoute(

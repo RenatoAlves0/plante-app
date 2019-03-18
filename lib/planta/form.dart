@@ -89,12 +89,12 @@ class _FormPlantaState extends State<FormPlanta> {
           decoration: InputDecoration(
               labelText: label,
               focusedBorder:
-                  OutlineInputBorder(borderSide: BorderSide(color: color)),
+                  OutlineInputBorder(borderSide: BorderSide(color: Colors.grey[800])),
               enabledBorder: const OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.transparent),
               ),
               border: const OutlineInputBorder(),
-              labelStyle: TextStyle(color: color, fontSize: 20)),
+              labelStyle: TextStyle(color: Colors.grey[800], fontSize: 20)),
         ));
   }
 

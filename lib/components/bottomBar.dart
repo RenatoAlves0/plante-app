@@ -46,22 +46,25 @@ class _BottomBarState extends State<BottomBar> {
       currentIndex: itemSelected,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.spa),
-          title: Text(_titulos[0]),
-          backgroundColor: cores[0],
+          icon: Icon(Icons.spa, color: cores[0]),
+          title: Text(_titulos[0],
+              style: TextStyle(color: cores[0], fontWeight: FontWeight.bold)),
         ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_queue),
-            title: Text(_titulos[1]),
-            backgroundColor: cores[1]),
+          icon: Icon(Icons.cloud, color: cores[1]),
+          title: Text(_titulos[1],
+              style: TextStyle(color: cores[1], fontWeight: FontWeight.bold)),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.grain),
-            title: Text(_titulos[2]),
-            backgroundColor: cores[2]),
+          icon: Icon(Icons.grain, color: cores[2]),
+          title: Text(_titulos[2],
+              style: TextStyle(color: cores[2], fontWeight: FontWeight.bold)),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.wb_sunny),
-            title: Text(_titulos[3]),
-            backgroundColor: cores[3]),
+          icon: Icon(Icons.wb_sunny, color: cores[3]),
+          title: Text(_titulos[3],
+              style: TextStyle(color: cores[3], fontWeight: FontWeight.bold)),
+        ),
       ],
     );
   }
