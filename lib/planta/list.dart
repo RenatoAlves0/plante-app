@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'form.dart';
 import '../components/bottomBar.dart';
-import '../http_provider.dart';
 
 class ListPlanta extends StatefulWidget {
   @override
@@ -15,16 +14,16 @@ class ListPlanta extends StatefulWidget {
 class _ListPlantaState extends State<ListPlanta> {
   //Variáveis
 
-  List plantaList = [];
+  List plantas = [];
   Map<String, dynamic> ultimoDeletado;
   int indexUltimoDeletado;
 
   @override
   void initState() {
     super.initState();
-    getPlanta().then((data) {
+    getPlantas().then((data) {
       setState(() {
-        plantaList = json.decode(data);
+        plantas = json.decode(data);
       });
     });
   }
@@ -37,7 +36,7 @@ class _ListPlantaState extends State<ListPlanta> {
       appBar: buildAppBar(),
       body: builList(),
       floatingActionButton: buildButton(),
-      bottomNavigationBar: BottomBar(propsItemSelected: 0),
+      bottomNavigationBar: BottomBar(itemSelected: 0),
     );
   }
 
@@ -52,7 +51,7 @@ class _ListPlantaState extends State<ListPlanta> {
 
   Widget builList() {
     return ListView.builder(
-        itemCount: plantaList.length, itemBuilder: builDismissible);
+        itemCount: plantas.length, itemBuilder: builDismissible);
   }
 
   Widget builDismissible(context, index) {
@@ -77,21 +76,22 @@ class _ListPlantaState extends State<ListPlanta> {
 
   Widget buildListItem(context, index) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 30),
-      title: Text(
-        plantaList[index]["nomePopular"],
-        style: TextStyle(fontSize: 20),
-      ),
-      subtitle: Text(
-        plantaList[index]["familia"] +
-            " " +
-            plantaList[index]["genero"] +
-            " " +
-            plantaList[index]["especie"],
-        style: TextStyle(fontSize: 15),
-      ),
-      onTap: goToForm,
-    );
+        contentPadding: EdgeInsets.symmetric(horizontal: 30),
+        title: Text(
+          plantas[index]["nomePopular"],
+          style: TextStyle(fontSize: 20),
+        ),
+        subtitle: Text(
+          plantas[index]["familia"] +
+              " " +
+              plantas[index]["genero"] +
+              " " +
+              plantas[index]["especie"],
+          style: TextStyle(fontSize: 15),
+        ),
+        onTap: () {
+          editPlanta(index);
+        });
   }
 
   Widget buildButton() {
@@ -111,7 +111,7 @@ class _ListPlantaState extends State<ListPlanta> {
           textColor: Colors.white,
           onPressed: () {
             setState(() {
-              plantaList.insert(indexUltimoDeletado, ultimoDeletado);
+              plantas.insert(indexUltimoDeletado, ultimoDeletado);
               savePlanta();
             });
           }),
@@ -127,12 +127,12 @@ class _ListPlantaState extends State<ListPlanta> {
   }
 
   Future<File> savePlanta() async {
-    String data = json.encode(plantaList);
+    String data = json.encode(plantas);
     final file = await getFile();
     return file.writeAsString(data);
   }
 
-  Future<String> getPlanta() async {
+  Future<String> getPlantas() async {
     try {
       final file = await getFile();
       return file.readAsString();
@@ -143,12 +143,19 @@ class _ListPlantaState extends State<ListPlanta> {
 
   void onDismissed(context, index) {
     setState(() {
-      ultimoDeletado = Map.from(plantaList[index]);
+      ultimoDeletado = Map.from(plantas[index]);
       indexUltimoDeletado = index;
-      plantaList.removeAt(index);
+      plantas.removeAt(index);
       savePlanta();
       Scaffold.of(context).showSnackBar(buildSnack());
     });
+  }
+
+  void editPlanta(index) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FormPlanta(planta: plantas[index]), fullscreenDialog: true));
   }
 
   void goToForm() {

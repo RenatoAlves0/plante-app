@@ -6,28 +6,31 @@ import 'package:path_provider/path_provider.dart';
 import 'list.dart';
 
 class FormPlanta extends StatefulWidget {
+  final Map<String, dynamic> planta;
+  const FormPlanta({Key key, this.planta}) : super(key: key);
   @override
   _FormPlantaState createState() => _FormPlantaState();
 }
 
 class _FormPlantaState extends State<FormPlanta> {
   final color = Colors.green[700];
+  final especie = TextEditingController();
+  final genero = TextEditingController();
+  final familia = TextEditingController();
+  final apelido = TextEditingController();
+  List plantas = [];
 
-  final especieController = TextEditingController();
-  final generoController = TextEditingController();
-  final familiaController = TextEditingController();
-  final apelidoController = TextEditingController();
-
-  List plantaList = [];
+  Map<String, dynamic> planta = {};
 
   @override
   void initState() {
     super.initState();
-    getPlanta().then((data) {
+    getPlantas().then((data) {
       setState(() {
-        plantaList = json.decode(data);
+        plantas = json.decode(data);
       });
     });
+    getPlanta();
   }
 
   @override
@@ -64,19 +67,19 @@ class _FormPlantaState extends State<FormPlanta> {
       Divider(
         color: Colors.transparent,
       ),
-      buildTextField("Família", familiaController),
+      buildTextField("Família", familia),
       Divider(
         color: Colors.transparent,
       ),
-      buildTextField("Gênero", generoController),
+      buildTextField("Gênero", genero),
       Divider(
         color: Colors.transparent,
       ),
-      buildTextField("Espécie", especieController),
+      buildTextField("Espécie", especie),
       Divider(
         color: Colors.transparent,
       ),
-      buildTextField("Apelido", apelidoController),
+      buildTextField("Apelido", apelido),
       Divider(
         color: Colors.transparent,
       ),
@@ -106,12 +109,23 @@ class _FormPlantaState extends State<FormPlanta> {
   }
 
   Future<File> savePlanta() async {
-    String data = json.encode(plantaList);
+    String data = json.encode(plantas);
     final file = await getFile();
     return file.writeAsString(data);
   }
 
-  Future<String> getPlanta() async {
+  void getPlanta() {
+    if (widget.planta != null) {
+      setState(() {
+        familia.text = widget.planta["familia"];
+        genero.text = widget.planta["genero"];
+        especie.text = widget.planta["especie"];
+        apelido.text = widget.planta["nomePopular"];
+      });
+    }
+  }
+
+  Future<String> getPlantas() async {
     try {
       final file = await getFile();
       return file.readAsString();
@@ -127,16 +141,15 @@ class _FormPlantaState extends State<FormPlanta> {
 
   void addPlanta() {
     setState(() {
-      Map<String, dynamic> newPlanta = Map();
-      newPlanta["especie"] = especieController.text;
-      newPlanta["genero"] = generoController.text;
-      newPlanta["familia"] = familiaController.text;
-      newPlanta["nomePopular"] = apelidoController.text;
-      especieController.text = "";
-      generoController.text = "";
-      familiaController.text = "";
-      apelidoController.text = "";
-      plantaList.add(newPlanta);
+      planta["especie"] = especie.text;
+      planta["genero"] = genero.text;
+      planta["familia"] = familia.text;
+      planta["nomePopular"] = apelido.text;
+      especie.text = "";
+      genero.text = "";
+      familia.text = "";
+      apelido.text = "";
+      plantas.add(planta);
       savePlanta();
     });
     goToList();

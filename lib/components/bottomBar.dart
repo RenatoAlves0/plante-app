@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatefulWidget {
-  final int propsItemSelected;
-  const BottomBar({Key key, this.propsItemSelected}) : super(key: key);
+  final int itemSelected;
+  const BottomBar({Key key, this.itemSelected}) : super(key: key);
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -23,9 +23,6 @@ class _BottomBarState extends State<BottomBar> {
     Icons.wb_sunny,
     Icons.colorize,
   ];
-  //offline_bolt
-  //opacity
-  //favorite
   List<String> _titulos = ['Planta', 'Clima', 'Solo', 'Luz', 'Nutriente'];
   int itemSelected;
   bool receivedProps = true;
@@ -36,10 +33,12 @@ class _BottomBarState extends State<BottomBar> {
     });
   }
 
-  void init(int propsItemSelected) {
+  @override
+  void initState() {
+    super.initState();
     if (receivedProps) {
       setState(() {
-        changeItemSelected(propsItemSelected);
+        changeItemSelected(widget.itemSelected);
         receivedProps = false;
       });
     }
@@ -47,7 +46,6 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    init(widget.propsItemSelected);
     return builBottomBar();
   }
 
