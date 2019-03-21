@@ -38,16 +38,6 @@ class _FormPlantaState extends State<FormPlanta> {
     );
   }
 
-  Widget buildButton() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Text("Salvar", style: TextStyle(color: Colors.green[700])),
-            color: Colors.white,
-            onPressed: addPlanta));
-  }
-
   Widget buildAppBar() {
     return AppBar(
       title: Text("Planta"),
@@ -57,28 +47,40 @@ class _FormPlantaState extends State<FormPlanta> {
     );
   }
 
+  Widget buildButton() {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: RaisedButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Text("Salvar", style: TextStyle(color: Colors.green[700])),
+            color: Colors.white,
+            onPressed: addPlanta));
+  }
+
   Widget buildBodyBox() {
-    return Column(children: <Widget>[
-      SingleChildScrollView(
-          child: Column(children: <Widget>[
-        Divider(
-          color: Colors.transparent,
-        ),
-        buildTextField("Família", familiaController),
-        Divider(
-          color: Colors.transparent,
-        ),
-        buildTextField("Gênero", generoController),
-        Divider(
-          color: Colors.transparent,
-        ),
-        buildTextField("Espécie", especieController),
-        Divider(
-          color: Colors.transparent,
-        ),
-        buildTextField("Apelido", apelidoController),
-      ]))
-    ]);
+    return SingleChildScrollView(
+        child: Column(children: <Widget>[
+      Divider(
+        color: Colors.transparent,
+      ),
+      buildTextField("Família", familiaController),
+      Divider(
+        color: Colors.transparent,
+      ),
+      buildTextField("Gênero", generoController),
+      Divider(
+        color: Colors.transparent,
+      ),
+      buildTextField("Espécie", especieController),
+      Divider(
+        color: Colors.transparent,
+      ),
+      buildTextField("Apelido", apelidoController),
+      Divider(
+        color: Colors.transparent,
+      ),
+    ]));
   }
 
   Widget buildTextField(String label, TextEditingController controller) {
@@ -88,8 +90,8 @@ class _FormPlantaState extends State<FormPlanta> {
           controller: controller,
           decoration: InputDecoration(
               labelText: label,
-              focusedBorder:
-                  OutlineInputBorder(borderSide: BorderSide(color: Colors.grey[800])),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[800])),
               enabledBorder: const OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.transparent),
               ),

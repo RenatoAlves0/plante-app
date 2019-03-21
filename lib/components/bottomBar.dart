@@ -13,9 +13,20 @@ class _BottomBarState extends State<BottomBar> {
     Colors.green[700],
     Colors.blue[700],
     Colors.brown[700],
-    Colors.amber[700]
+    Colors.amber[700],
+    Colors.purple[700],
   ];
-  List<String> _titulos = ["Planta", "Clima", "Solo", "Luz"];
+  List<IconData> icones = [
+    Icons.spa,
+    Icons.cloud,
+    Icons.grain,
+    Icons.wb_sunny,
+    Icons.colorize,
+  ];
+  //offline_bolt
+  //opacity
+  //favorite
+  List<String> _titulos = ['Planta', 'Clima', 'Solo', 'Luz', 'Nutriente'];
   int itemSelected;
   bool receivedProps = true;
 
@@ -46,24 +57,29 @@ class _BottomBarState extends State<BottomBar> {
       currentIndex: itemSelected,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.spa, color: cores[0]),
+          icon: Icon(icones[0], color: cores[0]),
           title: Text(_titulos[0],
               style: TextStyle(color: cores[0], fontWeight: FontWeight.bold)),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.cloud, color: cores[1]),
+          icon: Icon(icones[1], color: cores[1]),
           title: Text(_titulos[1],
               style: TextStyle(color: cores[1], fontWeight: FontWeight.bold)),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.grain, color: cores[2]),
+          icon: Icon(icones[2], color: cores[2]),
           title: Text(_titulos[2],
               style: TextStyle(color: cores[2], fontWeight: FontWeight.bold)),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.wb_sunny, color: cores[3]),
+          icon: Icon(icones[3], color: cores[3]),
           title: Text(_titulos[3],
               style: TextStyle(color: cores[3], fontWeight: FontWeight.bold)),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(icones[4], color: cores[4]),
+          title: Text(_titulos[4],
+              style: TextStyle(color: cores[4], fontWeight: FontWeight.bold)),
         ),
       ],
     );
