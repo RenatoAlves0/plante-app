@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'list.dart';
 
 class FormPlanta extends StatefulWidget {
-  final Map<String, dynamic> planta;
-  const FormPlanta({Key key, this.planta}) : super(key: key);
+  Map<dynamic, dynamic> planta = {};
+  FormPlanta({Key key, this.planta}) : super(key: key);
   @override
   _FormPlantaState createState() => _FormPlantaState();
 }

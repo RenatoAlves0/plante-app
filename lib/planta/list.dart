@@ -1,8 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'form.dart';
 import '../components/bottomBar.dart';
 import '../http_provider.dart';
@@ -159,6 +155,7 @@ class _ListPlantaState extends State<ListPlanta> {
   }
 
   void editPlanta(index) {
+    print(plantas[index]);
     Navigator.push(
         context,
         MaterialPageRoute(
