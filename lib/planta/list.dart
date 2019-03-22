@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'form.dart';
 import '../components/bottomBar.dart';
+import '../http_provider.dart';
 
 class ListPlanta extends StatefulWidget {
   @override
@@ -21,11 +22,7 @@ class _ListPlantaState extends State<ListPlanta> {
   @override
   void initState() {
     super.initState();
-    getPlantas().then((data) {
-      setState(() {
-        plantas = json.decode(data);
-      });
-    });
+    getPlantas();
   }
 
   //Widgets
@@ -78,7 +75,7 @@ class _ListPlantaState extends State<ListPlanta> {
     return ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 30),
         title: Text(
-          plantas[index]["nomePopular"],
+          plantas[index]["planta"],
           style: TextStyle(fontSize: 20),
         ),
         subtitle: Text(
@@ -112,7 +109,7 @@ class _ListPlantaState extends State<ListPlanta> {
           onPressed: () {
             setState(() {
               plantas.insert(indexUltimoDeletado, ultimoDeletado);
-              savePlanta();
+              // savePlanta();
             });
           }),
       duration: Duration(seconds: 4),
@@ -121,24 +118,34 @@ class _ListPlantaState extends State<ListPlanta> {
 
   //Métodos
 
-  Future<File> getFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/planta.json");
-  }
+  // Future<File> savePlanta() async {
+  //   String data = json.encode(plantas);
+  //   final file = await getFile();
+  //   return file.writeAsString(data);
+  // }
 
-  Future<File> savePlanta() async {
-    String data = json.encode(plantas);
-    final file = await getFile();
-    return file.writeAsString(data);
-  }
-
-  Future<String> getPlantas() async {
-    try {
-      final file = await getFile();
-      return file.readAsString();
-    } catch (e) {
-      return null;
-    }
+  void getPlantas() {
+    WebClient().get('planta').then((list) {
+      var aux = {};
+      for (var item in list) {
+        aux["id"] = item["idPlanta"];
+        aux["planta"] = item["nome"];
+        WebClient().get('familia/${item['idFamilia']}').then((familia) {
+          aux["familia"] = familia["nome"];
+          WebClient().get('genero/${item['idGenero']}').then((genero) {
+            aux["genero"] = genero["nome"];
+            WebClient().get('especie/${item['idEspecie']}').then((especie) {
+              aux["especie"] = especie["nomeEspecie"];
+              setState(() {
+                plantas.add(aux);
+              });
+              print(plantas);
+              aux = null;
+            });
+          });
+        });
+      }
+    });
   }
 
   void onDismissed(context, index) {
@@ -146,7 +153,7 @@ class _ListPlantaState extends State<ListPlanta> {
       ultimoDeletado = Map.from(plantas[index]);
       indexUltimoDeletado = index;
       plantas.removeAt(index);
-      savePlanta();
+      // savePlanta();
       Scaffold.of(context).showSnackBar(buildSnack());
     });
   }
@@ -155,11 +162,11 @@ class _ListPlantaState extends State<ListPlanta> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => FormPlanta(planta: plantas[index]), fullscreenDialog: true));
+            builder: (context) => FormPlanta(planta: plantas[index]),
+            fullscreenDialog: true));
   }
 
   void goToForm() {
-    // WebClient().get("https://10.0.2.2:5001/api/planta");
     Navigator.push(
         context,
         MaterialPageRoute(

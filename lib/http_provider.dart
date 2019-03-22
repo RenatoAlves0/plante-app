@@ -3,24 +3,23 @@ import 'dart:core';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+String prefixUrl = "http://10.0.2.2:5000/api/";
+
 class WebClient {
   const WebClient();
 
   Future<dynamic> get(String url) async {
-    final http.Response response = await http.Client().get(
-      url,
-    );
+    final http.Response response = await http.Client().get(prefixUrl + url);
 
     if (response.statusCode >= 400) {
       throw ('An error occurred: ' + response.body);
     }
-
     return json.decode(response.body);
   }
 
   Future<dynamic> post(String url, dynamic data) async {
     final http.Response response = await http.Client().post(
-      url,
+      prefixUrl + url,
       body: data,
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +41,7 @@ class WebClient {
 
   Future<dynamic> put(String url, dynamic data) async {
     final http.Response response = await http.Client().put(
-      url,
+      prefixUrl + url,
       body: data,
       headers: {
         'Content-Type': 'application/json',
