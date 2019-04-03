@@ -1,17 +1,6 @@
 import React from 'react'
 import { Header, Item, Container, Form, Content, Input, Label, Picker, Icon, Text } from 'native-base'
 
-styles = {
-    botao: {
-        backgroundColor: 'transparent',
-        flexDirection: 'column',
-        elevation: 0,
-        width: '25%',
-        alignContent: 'center',
-        alignItems: 'center'
-    }
-}
-
 export default class InputText extends React.Component {
     constructor() {
         super()

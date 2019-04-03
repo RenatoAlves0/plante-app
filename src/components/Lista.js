@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Row } from 'native-base'
-import { FlatList, Dimensions } from 'react-native'
+import { Dimensions } from 'react-native'
 import Loader from './Loader'
 import axios from 'axios'
 // import Http from '../services/Http'
@@ -10,6 +10,7 @@ styles = {
         red: '#d32f2f',
         purple: '#7b1fa2',
         blue: '#1976d2',
+        blue_solid: '#1f65ff',
         greenish: '#00bfa5',
         green: '#4cda64',
         green_solid: '#388e3c',
@@ -18,7 +19,7 @@ styles = {
         brown: '#5d4037',
         gray_white: '#cecece',
         gray: '#999'
-      }
+    }
 }
 
 export default class Lista extends Component {
@@ -40,15 +41,17 @@ export default class Lista extends Component {
     }
 
     async load() {
+        console.log(this.props.entidade)
         await axios.get(this.state.prefix + this.props.entidade)
             .then((data) => {
                 this.setState({
                     lista: data.data,
                     loaded: true
                 })
+                console.log(data)
             })
             .catch((erro) => {
-                console.error(erro);
+                console.error(erro)
             })
         // console.log(await Http.get('planta'))
     }
