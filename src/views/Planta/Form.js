@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Modal } from 'react-native'
-import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, View, Fab, Content, Textarea } from 'native-base'
+import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker } from 'native-base'
 import { Appbar } from 'react-native-paper'
 import { Actions } from 'react-native-router-flux'
-import axios from 'axios'
+import http from '../../services/Http'
 
 styles = {
     colors: {
@@ -29,24 +28,15 @@ styles = {
 export default class FormPlanta extends Component {
     constructor(props) {
         super(props)
+        this.service = { http: new http() }
         this.state = {
             item: {},
             familia: {},
-            novaFamilia: {
-                visible: false,
-            },
             familias: [],
             genero: {},
-            novoGenero: {
-                visible: false,
-            },
             generos: [],
             especie: {},
-            novaEspecie: {
-                visible: false,
-            },
             especies: [],
-            prefix: 'http://10.0.3.2:5000/api/'
         }
     }
 
@@ -67,23 +57,23 @@ export default class FormPlanta extends Component {
 
     async familia() {
         if (this.props.item) this.setState({ familia: this.props.item.familia })
-        await axios.get(this.state.prefix + 'familia')
-            .then((data) => { this.setState({ familias: data.data }) })
-            .catch((erro) => { console.error(erro) })
+        this.service.http.get('familia').then((data) => {
+            this.setState({ familias: data })
+        })
     }
 
     async genero() {
         if (this.props.item) this.setState({ genero: this.props.item.genero })
-        await axios.get(this.state.prefix + 'genero')
-            .then((data) => { this.setState({ generos: data.data }) })
-            .catch((erro) => { console.error(erro) })
+        this.service.http.get('genero').then((data) => {
+            this.setState({ generos: data })
+        })
     }
 
     async especie() {
         if (this.props.item) this.setState({ especie: this.props.item.especie })
-        await axios.get(this.state.prefix + 'especie')
-            .then((data) => { this.setState({ especies: data.data }) })
-            .catch((erro) => { console.error(erro) })
+        this.service.http.get('especie').then((data) => {
+            this.setState({ especies: data })
+        })
     }
 
     render() {
@@ -96,7 +86,8 @@ export default class FormPlanta extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={styles.title}>{this.props.title}</Text>
+                        {/* <Text style={styles.title}>{this.props.title}</Text> */}
+                        <Text style={styles.title}>Planta</Text>
                     </Body>
                     <Right>
                         <Button rounded transparent onPress={() => alert('Salvar')}>
@@ -118,7 +109,7 @@ export default class FormPlanta extends Component {
                             {this.state.familias.map((item) => { return <Picker.Item key={item.id} label={item.nome} value={item.id} /> })}
                         </Picker>
                         <Button small icon style={{ backgroundColor: styles.colors.green_solid, alignSelf: 'center', margin: 5, borderRadius: 7 }}
-                            onPress={() => { this.setState({ novaFamilia: { visible: !this.state.novaFamilia.visible } }) }}>
+                            onPress={() => { Actions.familiaForm({ title: 'Nova Família' }) }}>
                             <Icon name='plus' type='Feather' style={{ fontSize: 20, marginHorizontal: 0 }} />
                         </Button>
                     </Item>
@@ -147,39 +138,6 @@ export default class FormPlanta extends Component {
                         </Button>
                     </Item>
                 </Form>
-
-                <Modal //Comentário
-                    transparent
-                    animationType='fade'
-                    visible={this.state.novaFamilia.visible}
-                    onRequestClose={() => this.setState({ novaFamilia: { visible: !this.state.novaFamilia.visible } })}>
-
-                    <Container style={{ backgroundColor: '#00000099' }}>
-
-                        <Content style={{ backgroundColor: 'white', borderRadius: 10, marginHorizontal: 10, marginTop: 10 }} >
-                            <Form style={{ paddingVertical: 20 }}>
-                                <Textarea style={{ backgroundColor: styles.colors.gray + '44', borderRadius: 7, marginHorizontal: 10 }} rowSpan={10}
-                                    onChangeText={descricao => { return this.setState({ novaFamilia: { nome: descricao } }) }}
-                                    value={this.state.novaFamilia.nome}
-                                />
-                            </Form>
-                        </Content>
-
-
-                        <Form style={{ flexDirection: 'row', alignSelf: 'flex-end' }} >
-                            <Fab containerStyle={{ position: 'relative' }}
-                                style={{ backgroundColor: styles.colors.red }}
-                                onPress={() => { this.setState({ novaFamilia: { visible: !this.state.novaFamilia.visible } }) }}>
-                                <Icon name='x' type='Feather' />
-                            </Fab>
-                            <Fab containerStyle={{ position: 'relative' }}
-                                style={{ backgroundColor: styles.colors.greenish }}
-                                onPress={() => { }}>
-                                <Icon name='check' type='Feather' />
-                            </Fab>
-                        </Form>
-                    </Container>
-                </Modal>
             </Container>
         )
     }

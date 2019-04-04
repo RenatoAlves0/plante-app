@@ -4,7 +4,7 @@ import { Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
-import axios from 'axios'
+import http from '../../services/Http'
 
 styles = {
   colors: {
@@ -26,6 +26,7 @@ styles = {
 export default class ListPlanta extends Component {
   constructor(props) {
     super(props)
+    this.service = { http: new http() }
     this.state = {
       loaded: false,
       lista: [],
@@ -42,16 +43,9 @@ export default class ListPlanta extends Component {
   }
 
   async load() {
-    await axios.get(this.state.prefix + 'planta')
-      .then((data) => {
-        this.setState({
-          lista: data.data,
-          loaded: true
-        })
-      })
-      .catch((erro) => {
-        console.error(erro)
-      })
+    this.service.http.get('planta').then((data) => {
+      this.setState({ lista: data, loaded: true })
+    })
   }
 
   render() {

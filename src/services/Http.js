@@ -1,23 +1,20 @@
-import { Component } from 'react'
 import axios from 'axios'
 
-export default class Http extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            prefix: 'http://10.0.2.2:5000/api/'
-        }
+const baseUrl = 'http://10.0.3.2:5000/api/'
+
+export default class Http {
+    async get(entidade) {
+        return await axios
+            .get(baseUrl + entidade)
+            .then((data) => { return data.data })
+            .catch((erro) => { console.error(erro) })
     }
 
-    async get(entidade) {
-        await axios.get(this.state.prefix + entidade)
-            .then((data) => {
-                return data.data;
-            })
-            .catch((erro) => {
-                console.error(erro);
-                return undefined;
-            })
+    async post(entidade, dados) {
+        return await axios
+            .post(baseUrl + entidade, dados)
+            .then(() => { 'Salvo com sucesso' })
+            .catch((erro) => { console.error(erro) })
     }
 }
 
