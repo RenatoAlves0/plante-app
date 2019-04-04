@@ -19,7 +19,7 @@ styles = {
     orange: '#ffa000',
     brown: '#5d4037',
     gray_white: '#cecece',
-    gray: '#999'
+    gray: '#999999'
   }
 }
 
@@ -43,7 +43,7 @@ export default class ListPlanta extends Component {
   }
 
   async load() {
-    this.service.http.get('planta').then((data) => {
+    await this.service.http.get('planta').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
@@ -83,9 +83,7 @@ export default class ListPlanta extends Component {
           onPress={() => Actions.plantaForm({ title: 'Nova Planta' })}>
           <Icon name="add" />
         </Fab>
-        <Row style={{ height: 54 }}>
-          <BottomMenu />
-        </Row>
+        <BottomMenu />
       </Container>
     )
   }
