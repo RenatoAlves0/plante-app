@@ -13,8 +13,16 @@ export default class Http {
     async post(entidade, dados) {
         return await axios
             .post(baseUrl + entidade, dados)
-            .then(() => { 'Salvo com sucesso' })
+            .then((data) => { return data.data })
             .catch((erro) => { console.error(erro) })
+    }
+
+    async getLast(entidade) {
+        return await this.get(entidade)
+            .then((data) => {
+                return data[data.length - 1]
+            })
+
     }
 }
 
