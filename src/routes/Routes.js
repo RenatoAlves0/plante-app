@@ -8,6 +8,8 @@ import generoForm from '../views/Genero/Form'
 import especieForm from '../views/Especie/Form'
 import climaList from '../views/Clima/List'
 import climaForm from '../views/Clima/Form'
+import soloList from '../views/Solo/List'
+import soloForm from '../views/Solo/Form'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -28,6 +30,8 @@ export default class Routes extends Component {
                             <Scene key='especieForm' component={especieForm} hideNavBar />
                             <Scene key='climaList' component={climaList} hideNavBar />
                             <Scene key='climaForm' component={climaForm} hideNavBar />
+                            <Scene key='soloList' component={soloList} hideNavBar />
+                            <Scene key='soloForm' component={soloForm} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>
