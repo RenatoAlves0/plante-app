@@ -6,6 +6,8 @@ import plantaForm from '../views/Planta/Form'
 import familiaForm from '../views/Familia/Form'
 import generoForm from '../views/Genero/Form'
 import especieForm from '../views/Especie/Form'
+import climaList from '../views/Clima/List'
+import climaForm from '../views/Clima/Form'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -24,6 +26,8 @@ export default class Routes extends Component {
                             <Scene key='familiaForm' component={familiaForm} hideNavBar />
                             <Scene key='generoForm' component={generoForm} hideNavBar />
                             <Scene key='especieForm' component={especieForm} hideNavBar />
+                            <Scene key='climaList' component={climaList} hideNavBar />
+                            <Scene key='climaForm' component={climaForm} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>

@@ -61,6 +61,10 @@ export default class Estilos {
             marginBottom: 10, marginTop: 20, alignSelf: 'center',
             fontSize: 20, fontWeight: 'bold', color: this.cor.green_solid
         }
+
+        this.listitemview = {
+            justifyContent: 'center', alignItems: 'center', flexDirection: 'row'
+        }
     }
 }
 

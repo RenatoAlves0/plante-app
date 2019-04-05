@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col } from 'native-base'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Row, View } from 'native-base'
 import { Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
@@ -7,7 +7,7 @@ import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 
-export default class ListPlanta extends Component {
+export default class ListClima extends Component {
   constructor(props) {
     super(props)
     this.estilo = new estilo()
@@ -27,7 +27,7 @@ export default class ListPlanta extends Component {
   }
 
   async load() {
-    await this.http.get('planta').then((data) => {
+    await this.http.get('clima').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
@@ -47,15 +47,23 @@ export default class ListPlanta extends Component {
                 </Button>
               }
               body={
-                <ListItem onPress={() => Actions.plantaForm({ item: item, title: item.nome })}
+                <ListItem onPress={() => Actions.climaForm({ item: item, title: item.nome })}
                   style={{
                     paddingRight: 0, width: Dimensions.get('window').width, borderBottomWidth: 0, marginLeft: 0,
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
                   <Col>
-                    <Text>{item.nome}</Text>
-                    <Text style={{ color: this.estilo.cor.gray }}>
-                      {item.familia.nome + '  ' + item.genero.nome + '  ' + item.especie.nome}</Text>
+                    <Text>{'Clima ' + item.tipo}</Text>
+                    <Row style={{ justifyContent: 'center', marginTop: 10 }} >
+                      <View style={this.estilo.listitemview}>
+                        <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} > {' min. ' + item.temperaturaMinima + ' ºC       \n  max. ' + item.temperaturaMaxima + ' ºC'}</Text>
+                      </View>
+                      <View style={this.estilo.listitemview}>
+                        <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.blue + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} > {' min. ' + item.umidadeMinima + ' %       \n  max. ' + item.umidadeMaxima + ' %'}</Text>
+                      </View>
+                    </Row>
                   </Col>
                 </ListItem>
               }
@@ -65,12 +73,12 @@ export default class ListPlanta extends Component {
         <Fab
           active={false}
           containerStyle={{ marginBottom: 54 }}
-          style={{ backgroundColor: this.estilo.cor.green_solid }}
-          position="bottomRight"
-          onPress={() => Actions.plantaForm({ title: 'Nova Planta' })}>
-          <Icon name="add" />
+          style={{ backgroundColor: this.estilo.cor.blue_solid }}
+          position='bottomRight'
+          onPress={() => Actions.climaForm({ title: 'Novo Clima' })}>
+          <Icon name='add' />
         </Fab>
-        <BottomMenu ativa='planta' />
+        <BottomMenu ativa='clima' />
       </Container>
     )
   }
