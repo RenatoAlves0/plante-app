@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Item, Label, Input, Content, Textarea } from 'native-base'
+import { Form, Label, Input, Content, Col, Text } from 'native-base'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 
@@ -36,8 +36,12 @@ export default class FormFamilia extends Component {
 
     render() {
         return (
-            <Content style={{ backgroundColor: 'white', borderRadius: 10, marginHorizontal: 10, marginTop: 10 }} >
-                <Form style={this.estilo.form_cadastroFamilia}>
+            <Content style={this.estilo.contentmodal} >
+                <Col>
+                    <Text style={this.estilo.head_contentmodal}>
+                        Família</Text>
+                </Col>
+                <Form style={this.estilo.form}>
                     <Label>Nome</Label>
                     <Input autoFocus={true} value={this.state.item.nome} onChangeText={(value) => { this.setState({ item: { ...this.state.item, nome: value } }) }} />
                 </Form>

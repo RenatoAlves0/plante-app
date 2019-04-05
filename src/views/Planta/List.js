@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Row, Fab } from 'native-base'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col } from 'native-base'
 import { Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
@@ -40,21 +40,24 @@ export default class ListPlanta extends Component {
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
             <SwipeRow key={item.id} leftOpenValue={80} disableLeftSwipe={true}
-              style={{ paddingTop: 0, paddingBottom: 0, paddingRight: 0, backgroundColor: this.estilo.cor.red }}
+              style={this.estilo.swiperow}
               onRowOpen={() => alert('Excluir')}
               left={
-                <Button block full style={{ backgroundColor: this.estilo.cor.red, paddingBottom: 6, elevation: 0 }}>
+                <Button full style={this.estilo.swiperow_deletbuttom}>
                   <Icon active name='trash' type='Feather' />
                 </Button>
               }
               body={
                 <ListItem onPress={() => Actions.plantaForm({ item: item, title: item.nome })}
-                  style={{ width: Dimensions.get('window').width, borderBottomWidth: 0, marginLeft: 0, backgroundColor: 'white' }}>
-                  <Row style={{ justifyContent: 'center', flexDirection: 'column' }}>
-                    <Text style={{ display: 'flex' }} >{item.nome}</Text>
+                  style={{
+                    paddingRight: 0, width: Dimensions.get('window').width, borderBottomWidth: 0, marginLeft: 0,
+                    backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
+                  }}>
+                  <Col>
+                    <Text>{item.nome}</Text>
                     <Text style={{ color: this.estilo.cor.gray }}>
                       {item.familia.nome + '  ' + item.genero.nome + '  ' + item.especie.nome}</Text>
-                  </Row>
+                  </Col>
                 </ListItem>
               }
             />))}

@@ -4,6 +4,8 @@ import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, In
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
 import FormFamilia from '../Familia/Form'
+import FormGenero from '../Genero/Form'
+import FormEspecie from '../Especie/Form'
 import estilo from '../../assets/Estilo'
 
 export default class FormPlanta extends Component {
@@ -14,8 +16,15 @@ export default class FormPlanta extends Component {
         this.state = {
             modal: false,
             addFamilia: false,
+            addGenero: false,
+            addEspecie: false,
 
-            item: {},
+            item: {
+                familiaId: undefined,
+                generoId: undefined,
+                especieId: undefined,
+                clienteId: 1
+            },
 
             familia: {},
             genero: {},
@@ -63,13 +72,29 @@ export default class FormPlanta extends Component {
         })
     }
 
+    async save() {
+        await this.http.post('planta', this.state.item)
+            .then((data) => { return data })
+        Actions.plantaList()
+    }
+
     async saveSubentidade() {
         if (this.state.addFamilia) {
             await this.refs.formFamilia.save()
+            this.setState({ modal: false, addFamilia: false })
             await this.familia()
-            // await http.getLast('familia')
-            //     .then((data) => { this.setState({ familia: data.id }) })
-            this.setState({ modal: false })
+            // await this.http.getLast('familia')
+            // .then((data) => { this.setState({ familia: data.id }) })
+        }
+        else if (this.state.addGenero) {
+            await this.refs.formGenero.save()
+            this.setState({ modal: false, addGenero: false })
+            await this.genero()
+        }
+        else if (this.state.addEspecie) {
+            await this.refs.formEspecie.save()
+            this.setState({ modal: false, addEspecie: false })
+            await this.especie()
         }
     }
 
@@ -86,7 +111,7 @@ export default class FormPlanta extends Component {
                         <Text style={this.estilo.title}>Planta</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => alert('Salvar')}>
+                        <Button rounded transparent onPress={() => this.save()}>
                             <Icon style={{ color: 'white' }} name='check' type='Feather' />
                         </Button>
                     </Right>
@@ -103,12 +128,12 @@ export default class FormPlanta extends Component {
                                 <Picker
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.familia}
-                                    onValueChange={(value) => { this.setState({ familia: value }) }}>
+                                    selectedValue={this.state.item.familiaId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, familiaId: value } }) }}>
                                     {this.state.familias.map((item) => { return <Item key={item.id} label={item.nome} value={item.id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addFamilia: true }) }} style={this.estilo.buttomadd} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addFamilia: true }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -118,12 +143,12 @@ export default class FormPlanta extends Component {
                                 <Picker
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.genero}
-                                    onValueChange={(value) => { this.setState({ genero: value }) }}>
+                                    selectedValue={this.state.item.generoId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, generoId: value } }) }}>
                                     {this.state.generos.map((item) => { return <Item key={item.id} label={item.nome} value={item.id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon name='plus' type='Feather' onPress={() => { }} style={this.estilo.buttomadd} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addGenero: true }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -133,12 +158,12 @@ export default class FormPlanta extends Component {
                                 <Picker
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.especie}
-                                    onValueChange={(value) => { this.setState({ especie: value }) }}>
+                                    selectedValue={this.state.item.especieId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, especieId: value } }) }}>
                                     {this.state.especies.map((item) => { return <Item key={item.id} label={item.nome} value={item.id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon name='plus' type='Feather' onPress={() => { }} style={this.estilo.buttomadd} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addEspecie: true }) }} />
                         </Row>
                     </Form>
                 </Content>
@@ -150,11 +175,13 @@ export default class FormPlanta extends Component {
                     <Container style={{ backgroundColor: '#00000099' }}>
 
                         {this.state.addFamilia ? <FormFamilia ref='formFamilia' /> : null}
+                        {this.state.addGenero ? <FormGenero ref='formGenero' /> : null}
+                        {this.state.addEspecie ? <FormEspecie ref='formEspecie' /> : null}
 
                         <Form style={{ flexDirection: 'row', alignSelf: 'flex-end' }} >
                             <Fab containerStyle={{ position: 'relative' }}
                                 style={{ backgroundColor: this.estilo.cor.red }}
-                                onPress={() => { this.setState({ modal: false }) }}>
+                                onPress={() => { this.setState({ modal: false, addFamilia: false, addGenero: false, addEspecie: false }) }}>
                                 <Icon name='x' type='Feather' />
                             </Fab>
                             <Fab containerStyle={{ position: 'relative' }}
