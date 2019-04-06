@@ -32,14 +32,24 @@ export default class ListSolo extends Component {
     })
   }
 
-  calc_percentual(value) {
-    let total = parseFloat(this.state.item.quantidadeAreia) +
-      parseFloat(this.state.item.quantidadeArgila) +
-      parseFloat(this.state.item.quantidadeHumus) +
-      parseFloat(this.state.item.quantidadeMusgoSphagnum) +
-      parseFloat(this.state.item.quantidadeTerraVegetal) +
-      parseFloat(this.state.item.quantidadeTurfa)
-    return ((value * 100) / total).toPrecision(4)
+  calc_tipo_ph(value) {
+    if (value == undefined || value == null) return ''
+    if (value >= 7 && value <= 14) return 'Base'
+    if (value >= 5 && value < 7) return 'Pouco Ácido'
+    if (value >= 3 && value < 5) return 'Ácido'
+    if (value >= 1.5 && value < 3) return 'Muito Ácido'
+    if (value >= 0 && value < 1.5) return 'Extremamente Ácido'
+    else return 'Ph deve estar entre 0 e 7'
+  }
+
+  calc_tipo_umidade(value) {
+    if (value == undefined || value == null) return ''
+    if (value >= 80 && value <= 100) return 'Alagado'
+    if (value >= 60 && value < 80) return 'Muito Ùmido'
+    if (value >= 40 && value < 60) return 'Ùmido'
+    if (value >= 20 && value < 40) return 'Pouco Úmido'
+    if (value >= 0 && value < 20) return 'Seco'
+    else return 'Umidade deve estar entre 0 e 100'
   }
 
   render() {
@@ -77,11 +87,23 @@ export default class ListSolo extends Component {
                     <Row style={{ justifyContent: 'center', marginTop: 10 }} >
                       <View style={this.estilo.listitemview}>
                         <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} > {' min. ' + item.phMinimo + ' Ph       \n  max. ' + item.phMaximo + ' Ph'}</Text>
+                        <Text style={{ color: this.estilo.cor.gray }} >
+                          {
+                            ' min: ' + item.phMinimo + ' Ph\n'
+                            + ' max: ' + item.phMaximo + ' Ph\n '
+                            + 'ideal: ' + this.calc_tipo_ph((item.phMinimo + item.phMaximo) / 2)
+                          }
+                        </Text>
                       </View>
                       <View style={this.estilo.listitemview}>
-                        <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.blue + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} > {' min. ' + item.umidadeMinima + ' %       \n  max. ' + item.umidadeMaxima + ' %'}</Text>
+                        <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} >
+                          {
+                            ' min: ' + item.umidadeMinima + ' %\n'
+                            + ' max: ' + item.umidadeMaxima + ' %\n '
+                            + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
+                          }
+                        </Text>
                       </View>
                     </Row>
                   </Col>

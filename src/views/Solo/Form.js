@@ -31,22 +31,6 @@ export default class FormSolo extends Component {
                 terra_vegetal: 'Mistura de solo \'in natura\' com restos de vegetação decomposta',
                 turfa: 'Matéria orgânica depositada em várzeas de rios',
             },
-
-            tipo_ph: {
-                base: 'Base', //PH entre 7 e 14
-                pouco_acido: 'Pouco Ácido', //PH entre 5 e 6.99
-                acido: 'Ácido', //PH entre 3 e 4.99
-                muito_acido: 'Muito Ácido', //PH entre 1.5 e 2.99
-                extremamente_acido: 'Extremamente Ácido', //PH entre 0 e 1.49
-            },
-
-            tipo_umidade: {
-                alagado: 'Alagado', //entre 80 e 100% de água
-                muito_umido: 'Muito Ùmido', //entre 60 e 79% de água
-                umido: 'Úmido', //entre 40 e 59% de água
-                pouco_umido: 'Pouco Úmido', //entre 20 e 39% de água
-                seco: 'Seco', //entre 0 e 19% de água
-            }
         }
     }
 
@@ -86,24 +70,24 @@ export default class FormSolo extends Component {
 
     calc_tipo_ph(value) {
         if (value == undefined || value == null) return ''
-        if (value >= 7 && value <= 14) return this.state.tipo_ph.base
-        if (value >= 5 && value < 7) return this.state.tipo_ph.pouco_acido
-        if (value >= 3 && value < 5) return this.state.tipo_ph.acido
-        if (value >= 1.5 && value < 3) return this.state.tipo_ph.muito_acido
-        if (value >= 0 && value < 1.5) return this.state.tipo_ph.extremamente_acido
+        if (value >= 7 && value <= 14) return 'Base'
+        if (value >= 5 && value < 7) return 'Pouco Ácido'
+        if (value >= 3 && value < 5) return 'Ácido'
+        if (value >= 1.5 && value < 3) return 'Muito Ácido'
+        if (value >= 0 && value < 1.5) return 'Extremamente Ácido'
         else return 'Ph deve estar entre 0 e 7'
     }
 
     calc_tipo_umidade(value) {
         if (value == undefined || value == null) return ''
-        if (value >= 80 && value <= 100) return this.state.tipo_umidade.alagado
-        if (value >= 60 && value < 80) return this.state.tipo_umidade.muito_umido
-        if (value >= 40 && value < 60) return this.state.tipo_umidade.umido
-        if (value >= 20 && value < 40) return this.state.tipo_umidade.pouco_umido
-        if (value >= 0 && value < 20) return this.state.tipo_umidade.seco
+        if (value >= 80 && value <= 100) return 'Alagado'
+        if (value >= 60 && value < 80) return 'Muito Ùmido'
+        if (value >= 40 && value < 60) return 'Ùmido'
+        if (value >= 20 && value < 40) return 'Pouco Úmido'
+        if (value >= 0 && value < 20) return 'Seco'
         else return 'Umidade deve estar entre 0 e 100'
     }
-    
+
     render() {
         return (
             <Container>
