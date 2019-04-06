@@ -10,6 +10,8 @@ import climaList from '../views/Clima/List'
 import climaForm from '../views/Clima/Form'
 import soloList from '../views/Solo/List'
 import soloForm from '../views/Solo/Form'
+import luzList from '../views/Luz/List'
+import luzForm from '../views/Luz/Form'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -32,6 +34,8 @@ export default class Routes extends Component {
                             <Scene key='climaForm' component={climaForm} hideNavBar />
                             <Scene key='soloList' component={soloList} hideNavBar />
                             <Scene key='soloForm' component={soloForm} hideNavBar />
+                            <Scene key='luzList' component={luzList} hideNavBar />
+                            <Scene key='luzForm' component={luzForm} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>
