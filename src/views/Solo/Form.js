@@ -81,8 +81,8 @@ export default class FormSolo extends Component {
     calc_tipo_umidade(value) {
         if (value == undefined || value == null) return ''
         if (value >= 80 && value <= 100) return 'Alagado'
-        if (value >= 60 && value < 80) return 'Muito Ùmido'
-        if (value >= 40 && value < 60) return 'Ùmido'
+        if (value >= 60 && value < 80) return 'Muito Úmido'
+        if (value >= 40 && value < 60) return 'Úmido'
         if (value >= 20 && value < 40) return 'Pouco Úmido'
         if (value >= 0 && value < 20) return 'Seco'
         else return 'Umidade deve estar entre 0 e 100'
