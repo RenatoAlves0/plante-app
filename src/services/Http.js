@@ -24,5 +24,15 @@ export default class Http {
             })
 
     }
+
+    async delete(entidade, id) {
+        try {
+            return await axios
+                .delete(baseUrl + entidade + '/' + id)
+                .then((data) => { return 'Ok' })
+        } catch (error) {
+            return 'Não foi possível excluir'
+        }
+    }
 }
 

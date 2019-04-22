@@ -91,62 +91,62 @@ export default class FormNutriente extends Component {
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Potássio</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.potassio}
+                        <Input keyboardType='numeric' value={this.state.item.potassio}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, potassio: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Fósforo</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.fosforo}
+                        <Input keyboardType='numeric' value={this.state.item.fosforo}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, fosforo: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Magnésio</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.magnesio}
+                        <Input keyboardType='numeric' value={this.state.item.magnesio}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, magnesio: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cálcio</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.calcio}
+                        <Input keyboardType='numeric' value={this.state.item.calcio}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, calcio: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Enxôfre</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.enxofre}
+                        <Input keyboardType='numeric' value={this.state.item.enxofre}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, enxofre: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Ferro</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.ferro}
+                        <Input keyboardType='numeric' value={this.state.item.ferro}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, ferro: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Manganês</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.manganes}
+                        <Input keyboardType='numeric' value={this.state.item.manganes}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, manganes: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Boro</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.boro}
+                        <Input keyboardType='numeric' value={this.state.item.boro}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, boro: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cobre</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.cobre}
+                        <Input keyboardType='numeric' value={this.state.item.cobre}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, cobre: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Zinco</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.zinco}
+                        <Input keyboardType='numeric' value={this.state.item.zinco}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, zinco: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cloro</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.cloro}
+                        <Input keyboardType='numeric' value={this.state.item.cloro}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, cloro: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Molibdenio</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.molibdenio}
+                        <Input keyboardType='numeric' value={this.state.item.molibdenio}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, molibdenio: value } }) }} />
                     </Form>
                 </Content>

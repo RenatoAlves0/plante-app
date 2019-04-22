@@ -23,16 +23,19 @@ export default class FormPlanta extends Component {
                 familiaId: undefined,
                 generoId: undefined,
                 especieId: undefined,
+                climaId: undefined,
                 clienteId: 1
             },
 
             familia: {},
             genero: {},
             especie: {},
+            clima: {},
 
             familias: [],
             generos: [],
             especies: [],
+            climas: [],
         }
     }
 
@@ -49,6 +52,7 @@ export default class FormPlanta extends Component {
         await this.familia()
         await this.genero()
         await this.especie()
+        await this.climas()
     }
 
     async familia() {
@@ -72,9 +76,22 @@ export default class FormPlanta extends Component {
         })
     }
 
+    async climas() {
+        this.http.get('clima').then((data) => {
+            this.setState({ climas: data })
+        })
+    }
+
     async save() {
         await this.http.post('planta', this.state.item)
             .then((data) => { return data })
+        let climaAG = {
+            climaId: this.state.item.climaId || null, familiaId: this.state.item.familiaId || null,
+            generoId: this.state.item.generoId || null, especieId: this.state.item.especieId || null
+        }
+        console.log(climaAG)
+        await this.http.post('climaAssociacaoGenerica', climaAG)
+            .then((data) => { console.log(data) })
         Actions.plantaList()
     }
 
@@ -164,6 +181,25 @@ export default class FormPlanta extends Component {
                                 </Picker>
                             </Row>
                             <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addEspecie: true }) }} />
+                        </Row>
+                    </Form>
+                    <Form style={this.estilo.form}>
+                        <Label>Clima</Label>
+                        <Row>
+                            <Row style={this.estilo.subrow}>
+                                <Picker
+                                    mode='dialog'
+                                    iosIcon={<Icon name='arrow-down' />}
+                                    selectedValue={this.state.item.climaId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, climaId: value } }) }}>
+                                    {this.state.climas.map((item) => {
+                                        return <Item key={item.id} label={item.tipo
+                                            + '    ' + (item.temperaturaMaxima + item.temperaturaMinima) / 2 + ' Cº'
+                                            + '    ' + (item.umidadeMaxima + item.umidadeMinima) / 2 + ' %'} value={item.id} />
+                                    })}
+                                </Picker>
+                            </Row>
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.climaForm() }} />
                         </Row>
                     </Form>
                 </Content>
