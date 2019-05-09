@@ -12,8 +12,8 @@ export default class FormNutriente extends Component {
         this.state = {
             item: {
                 nitrogenio: undefined,
-                potassio: undefined,
                 fosforo: undefined,
+                potassio: undefined,
                 magnesio: undefined,
                 calcio: undefined,
                 enxofre: undefined,
@@ -42,8 +42,8 @@ export default class FormNutriente extends Component {
                 item: {
                     ...this.props.item,
                     nitrogenio: this.props.item.nitrogenio + '',
-                    potassio: this.props.item.potassio + '',
                     fosforo: this.props.item.fosforo + '',
+                    potassio: this.props.item.potassio + '',
                     magnesio: this.props.item.magnesio + '',
                     calcio: this.props.item.calcio + '',
                     enxofre: this.props.item.enxofre + '',
@@ -90,14 +90,14 @@ export default class FormNutriente extends Component {
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, nitrogenio: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
-                        <Label>Porção de Potássio</Label>
-                        <Input keyboardType='numeric' value={this.state.item.potassio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, potassio: value } }) }} />
-                    </Form>
-                    <Form style={this.estilo.form}>
                         <Label>Porção de Fósforo</Label>
                         <Input keyboardType='numeric' value={this.state.item.fosforo}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, fosforo: value } }) }} />
+                    </Form>
+                    <Form style={this.estilo.form}>
+                        <Label>Porção de Potássio</Label>
+                        <Input keyboardType='numeric' value={this.state.item.potassio}
+                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, potassio: value } }) }} />
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Magnésio</Label>

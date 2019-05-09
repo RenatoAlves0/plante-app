@@ -26,6 +26,7 @@ export default class FormPlanta extends Component {
                 climaId: undefined,
                 soloId: undefined,
                 luzId: undefined,
+                nutrienteId: undefined,
                 clienteId: 1
             },
 
@@ -35,6 +36,7 @@ export default class FormPlanta extends Component {
             clima: {},
             solo: {},
             luz: {},
+            nutriente: {},
 
             familias: [],
             generos: [],
@@ -42,6 +44,7 @@ export default class FormPlanta extends Component {
             climas: [],
             solos: [],
             luzes: [],
+            nutrientes: [],
         }
     }
 
@@ -61,6 +64,7 @@ export default class FormPlanta extends Component {
         await this.climas()
         await this.solos()
         await this.luzes()
+        await this.nutrientes()
     }
 
     async familia() {
@@ -102,6 +106,13 @@ export default class FormPlanta extends Component {
         if (this.props.item) this.setState({ luz: this.props.item.luz })
         this.http.get('luz').then((data) => {
             this.setState({ luzes: data })
+        })
+    }
+
+    async nutrientes() {
+        if (this.props.item) this.setState({ nutriente: this.props.item.nutriente })
+        this.http.get('nutriente').then((data) => {
+            this.setState({ nutrientes: data })
         })
     }
 
@@ -268,6 +279,37 @@ export default class FormPlanta extends Component {
                                 </Picker>
                             </Row>
                             <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.luzForm() }} />
+                        </Row>
+                    </Form>
+                    <Form style={this.estilo.form}>
+                        <Label>Nutriente</Label>
+                        <Row>
+                            <Row style={this.estilo.subrow}>
+                                <Picker
+                                    mode='dialog'
+                                    iosIcon={<Icon name='arrow-down' />}
+                                    selectedValue={this.state.item.nutrienteId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, nutrienteId: value } }) }}>
+                                    {this.state.nutrientes.map((item) => {
+                                        return <Item key={item.id} label={
+                                            (item.nitrogenio > 0 ? 'N (' + item.nitrogenio + ') ' : '')
+                                            + (item.fosforo > 0 ? 'P (' + item.fosforo + ') ' : '')
+                                            + (item.potassio > 0 ? 'K (' + item.potassio + ') ' : '')
+                                            + (item.magnesio > 0 ? 'Mg (' + item.magnesio + ') ' : '')
+                                            + (item.calcio > 0 ? 'Ca (' + item.calcio + ') ' : '')
+                                            + (item.enxofre > 0 ? 'S (' + item.enxofre + ') ' : '')
+                                            + (item.ferro > 0 ? 'Fe (' + item.ferro + ') ' : '')
+                                            + (item.manganes > 0 ? 'Mn (' + item.manganes + ') ' : '')
+                                            + (item.boro > 0 ? 'B (' + item.boro + ') ' : '')
+                                            + (item.cobre > 0 ? 'Cu (' + item.cobre + ') ' : '')
+                                            + (item.zinco > 0 ? 'Zn (' + item.zinco + ') ' : '')
+                                            + (item.cloro > 0 ? 'Cl (' + item.cloro + ') ' : '')
+                                            + (item.molibdenio > 0 ? 'Mo (' + item.molibdenio + ') ' : '')
+                                        } value={item.id} />
+                                    })}
+                                </Picker>
+                            </Row>
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.nutrienteForm() }} />
                         </Row>
                     </Form>
                 </Content>

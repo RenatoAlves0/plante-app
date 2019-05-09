@@ -57,8 +57,8 @@ export default class ListNutriente extends Component {
                       <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
                         {'Macronutrientes: '}
                         {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
-                        {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
                         {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
+                        {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
                       </Text>
                     </Row>
                     <Row>
