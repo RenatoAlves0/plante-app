@@ -24,6 +24,8 @@ export default class FormPlanta extends Component {
                 generoId: undefined,
                 especieId: undefined,
                 climaId: undefined,
+                soloId: undefined,
+                luzId: undefined,
                 clienteId: 1
             },
 
@@ -31,11 +33,15 @@ export default class FormPlanta extends Component {
             genero: {},
             especie: {},
             clima: {},
+            solo: {},
+            luz: {},
 
             familias: [],
             generos: [],
             especies: [],
             climas: [],
+            solos: [],
+            luzes: [],
         }
     }
 
@@ -53,6 +59,8 @@ export default class FormPlanta extends Component {
         await this.genero()
         await this.especie()
         await this.climas()
+        await this.solos()
+        await this.luzes()
     }
 
     async familia() {
@@ -77,21 +85,36 @@ export default class FormPlanta extends Component {
     }
 
     async climas() {
+        if (this.props.item) this.setState({ clima: this.props.item.clima })
         this.http.get('clima').then((data) => {
             this.setState({ climas: data })
+        })
+    }
+
+    async solos() {
+        if (this.props.item) this.setState({ solo: this.props.item.solo })
+        this.http.get('solo').then((data) => {
+            this.setState({ solos: data })
+        })
+    }
+
+    async luzes() {
+        if (this.props.item) this.setState({ luz: this.props.item.luz })
+        this.http.get('luz').then((data) => {
+            this.setState({ luzes: data })
         })
     }
 
     async save() {
         await this.http.post('planta', this.state.item)
             .then((data) => { return data })
-        let climaAG = {
-            climaId: this.state.item.climaId || null, familiaId: this.state.item.familiaId || null,
-            generoId: this.state.item.generoId || null, especieId: this.state.item.especieId || null
-        }
-        console.log(climaAG)
-        await this.http.post('climaAssociacaoGenerica', climaAG)
-            .then((data) => { console.log(data) })
+        // let climaAG = {
+        //     climaId: this.state.item.climaId || null, familiaId: this.state.item.familiaId || null,
+        //     generoId: this.state.item.generoId || null, especieId: this.state.item.especieId || null
+        // }
+        // console.log(climaAG)
+        // await this.http.post('climaAssociacaoGenerica', climaAG)
+        //     .then((data) => { console.log(data) })
         Actions.plantaList()
     }
 
@@ -200,6 +223,51 @@ export default class FormPlanta extends Component {
                                 </Picker>
                             </Row>
                             <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.climaForm() }} />
+                        </Row>
+                    </Form>
+                    <Form style={this.estilo.form}>
+                        <Label>Solo</Label>
+                        <Row>
+                            <Row style={this.estilo.subrow}>
+                                <Picker
+                                    mode='dialog'
+                                    iosIcon={<Icon name='arrow-down' />}
+                                    selectedValue={this.state.item.soloId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, soloId: value } }) }}>
+                                    {this.state.solos.map((item) => {
+                                        return <Item key={item.id} label={
+                                            (item.phMaximo + item.phMinimo) / 2 + ' Ph'
+                                            + '    ' + (item.umidadeMaxima + item.umidadeMinima) / 2 + ' %    '
+                                            + (item.quantidadeAreia > 0 ? 'Are (' + item.quantidadeAreia + ') ' : '')
+                                            + (item.quantidadeArgila > 0 ? 'Arg (' + item.quantidadeArgila + ') ' : '')
+                                            + (item.quantidadeHumus > 0 ? 'Húm (' + item.quantidadeHumus + ') ' : '')
+                                            + (item.quantidadeMusgoSphagnum > 0 ? 'Sph (' + item.quantidadeMusgoSphagnum + ') ' : '')
+                                            + (item.quantidadeTerraVegetal > 0 ? 'Ter (' + item.quantidadeTerraVegetal + ') ' : '')
+                                            + (item.quantidadeTurfa > 0 ? 'Tur (' + item.quantidadeTurfa + ') ' : '')
+                                        } value={item.id} />
+                                    })}
+                                </Picker>
+                            </Row>
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.soloForm() }} />
+                        </Row>
+                    </Form>
+                    <Form style={this.estilo.form}>
+                        <Label>Luz</Label>
+                        <Row>
+                            <Row style={this.estilo.subrow}>
+                                <Picker
+                                    mode='dialog'
+                                    iosIcon={<Icon name='arrow-down' />}
+                                    selectedValue={this.state.item.luzId}
+                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, luzId: value } }) }}>
+                                    {this.state.luzes.map((item) => {
+                                        return <Item key={item.id} label={
+                                            item.intensidade + '   ' + (item.horasPorDia > 0 ? item.horasPorDia : '') + (item.horasPorDia > 1 ? ' horas diárias' : '') + (item.horasPorDia == 1 ? ' hora diária' : '')
+                                        } value={item.id} />
+                                    })}
+                                </Picker>
+                            </Row>
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.luzForm() }} />
                         </Row>
                     </Form>
                 </Content>
