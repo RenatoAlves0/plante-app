@@ -116,9 +116,28 @@ export default class FormPlanta extends Component {
         })
     }
 
+    corrigir_json(objeto) {
+        let aux = {
+            id: objeto.id,
+            familiaId: objeto.familiaId,
+            generoId: objeto.generoId,
+            especieId: objeto.especieId,
+            clienteId: objeto.clienteId,
+            climaId: objeto.climaId,
+            soloId: objeto.soloId,
+            luzId: objeto.luzId,
+            nutrienteId: objeto.nutrienteId,
+            nome: objeto.nome
+        }
+        return aux
+    }
+
     async save() {
-        await this.http.post('planta', this.state.item)
-            .then((data) => { return data })
+        this.state.item.id ?
+            await this.http.put('planta', this.state.item.id, this.corrigir_json(this.state.item))
+                .then((data) => { return data }) :
+            await this.http.post('planta', this.state.item)
+                .then((data) => { return data })
         // let climaAG = {
         //     climaId: this.state.item.climaId || null, familiaId: this.state.item.familiaId || null,
         //     generoId: this.state.item.generoId || null, especieId: this.state.item.especieId || null
@@ -312,6 +331,7 @@ export default class FormPlanta extends Component {
                             <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.nutrienteForm() }} />
                         </Row>
                     </Form>
+                    <Form style={this.estilo.form_vazio} />
                 </Content>
                 <Modal
                     transparent

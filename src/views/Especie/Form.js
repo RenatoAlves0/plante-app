@@ -67,6 +67,7 @@ export default class FormEspecie extends Component {
                         </Row>
                     </Row>
                 </Form>
+                <Form style={this.estilo.form_vazio} />
             </Content>
         )
     }

@@ -115,6 +115,7 @@ export default class FormClima extends Component {
                         <Input keyboardType='numeric' value={this.state.item.umidadeMaxima}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, umidadeMaxima: value } }) }} />
                     </Form>
+                    <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
         )

@@ -149,6 +149,7 @@ export default class FormNutriente extends Component {
                         <Input keyboardType='numeric' value={this.state.item.molibdenio}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, molibdenio: value } }) }} />
                     </Form>
+                    <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
         )

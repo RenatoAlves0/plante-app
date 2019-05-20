@@ -201,6 +201,7 @@ export default class FormSolo extends Component {
                                 <Text style={{ margin: 7 }} >{!this.state.item.quantidadeMusgoSphagnum ? this.state.descricoes.musgo_sphagnum : null}</Text>
                             </Row> : null}
                     </Form>
+                    <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
         )

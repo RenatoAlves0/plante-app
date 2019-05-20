@@ -86,6 +86,7 @@ export default class FormLuz extends Component {
                         <Input keyboardType='numeric' autoFocus={true} value={this.state.item.horasPorDia}
                             onChangeText={(value) => { this.setState({ item: { ...this.state.item, horasPorDia: value + '' } }) }} />
                     </Form>}
+                    <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
         )

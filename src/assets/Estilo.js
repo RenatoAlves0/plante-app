@@ -32,6 +32,10 @@ export default class Estilos {
             flexDirection: 'column'
         }
 
+        this.form_vazio = {
+            marginBottom: 10
+        }
+
         this.subrow = {
             backgroundColor: this.cor.gray_white + '99',
             borderRadius: 10,

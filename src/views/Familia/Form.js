@@ -45,6 +45,7 @@ export default class FormFamilia extends Component {
                     <Label>Nome</Label>
                     <Input autoFocus={true} value={this.state.item.nome} onChangeText={(value) => { this.setState({ item: { ...this.state.item, nome: value } }) }} />
                 </Form>
+                <Form style={this.estilo.form_vazio} />
             </Content>
         )
     }
