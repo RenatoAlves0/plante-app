@@ -65,7 +65,7 @@ export default class ListNutriente extends Component {
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
                   <Col>
-                    <Row style={{ justifyContent: 'center' }} >
+                    <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
                       <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
                         {'Macronutrientes: '}
                         {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}

@@ -135,7 +135,7 @@ export default class ViewPlanta extends Component {
 
                     {/* Nutrientes */}
                     <Col style={{ alignItems: 'center', marginVertical: 20 }}>
-                        <Row style={{ justifyContent: 'center' }} >
+                        <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
                             <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
                                 {'Macronutrientes: '}
                                 {this.props.item.nutriente.nitrogenio > 0 ? 'Nitrogênio (' + this.props.item.nutriente.nitrogenio + ') ' : null}
