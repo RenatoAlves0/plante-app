@@ -72,7 +72,8 @@ export default class ListLuz extends Component {
                       {item.intensidade == 'Sombra' ? <Icon style={{ fontSize: 22, color: this.estilo.cor.gray_white }} name='cloud' type='MaterialIcons' /> : null}
                       <Text>{'  ' + item.intensidade}</Text>
                     </Row>
-                    {item.intensidade == 'Sombra' ? null : <Text style={{ color: this.estilo.cor.gray }}>  {item.horasPorDia} {item.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'} </Text>}
+                    {item.intensidade == 'Sombra' || !item.horasPorDia ? null :
+                      <Text style={{ color: this.estilo.cor.gray }}>  {item.horasPorDia} {item.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'} </Text>}
                   </Col>
                 </ListItem>
               }

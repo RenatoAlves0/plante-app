@@ -65,29 +65,33 @@ export default class ListNutriente extends Component {
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
                   <Col>
-                    <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
-                      <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
-                        {'Macronutrientes: '}
-                        {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
-                        {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
-                        {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
-                      </Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'center' }}>
-                      <Text style={{ textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10 }}>
-                        {'Micronutrientes: '}
-                        {item.magnesio > 0 ? 'Magnésio (' + item.magnesio + ') ' : null}
-                        {item.calcio > 0 ? 'Cálcio (' + item.calcio + ') ' : null}
-                        {item.enxofre > 0 ? 'Enxôfre (' + item.enxofre + ') ' : null}
-                        {item.ferro > 0 ? 'Ferro (' + item.ferro + ') ' : null}
-                        {item.manganes > 0 ? 'Manganês (' + item.manganes + ') ' : null}
-                        {item.boro > 0 ? 'Boro (' + item.boro + ') ' : null}
-                        {item.cobre > 0 ? 'Cobre (' + item.cobre + ') ' : null}
-                        {item.zinco > 0 ? 'Zinco (' + item.zinco + ') ' : null}
-                        {item.cloro > 0 ? 'Cloro (' + item.cloro + ') ' : null}
-                        {item.molibdenio > 0 ? 'Molibdenio (' + item.molibdenio + ') ' : null}
-                      </Text>
-                    </Row>
+                    {item.nitrogenio || item.fosforo || item.potassio ?
+                      <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
+                        <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
+                          {'Macronutrientes: '}
+                          {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
+                          {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
+                          {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
+                        </Text>
+                      </Row> : null}
+
+                    {item.magnesio || item.calcio || item.enxofre || item.ferro || item.manganes
+                      || item.boro || item.cobre || item.zinco || item.cloro || item.molibdenio ?
+                      < Row style={{ justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10 }}>
+                          {'Micronutrientes: '}
+                          {item.magnesio > 0 ? 'Magnésio (' + item.magnesio + ') ' : null}
+                          {item.calcio > 0 ? 'Cálcio (' + item.calcio + ') ' : null}
+                          {item.enxofre > 0 ? 'Enxôfre (' + item.enxofre + ') ' : null}
+                          {item.ferro > 0 ? 'Ferro (' + item.ferro + ') ' : null}
+                          {item.manganes > 0 ? 'Manganês (' + item.manganes + ') ' : null}
+                          {item.boro > 0 ? 'Boro (' + item.boro + ') ' : null}
+                          {item.cobre > 0 ? 'Cobre (' + item.cobre + ') ' : null}
+                          {item.zinco > 0 ? 'Zinco (' + item.zinco + ') ' : null}
+                          {item.cloro > 0 ? 'Cloro (' + item.cloro + ') ' : null}
+                          {item.molibdenio > 0 ? 'Molibdenio (' + item.molibdenio + ') ' : null}
+                        </Text>
+                      </Row> : null}
                   </Col>
                 </ListItem>
               }

@@ -44,7 +44,7 @@ export default class FormSolo extends Component {
     }
 
     async load() {
-        if (this.props.item) {
+        if (this.props.item && !this.props.pop) {
             this.setState({
                 item: {
                     ...this.props.item,
@@ -64,9 +64,13 @@ export default class FormSolo extends Component {
     }
 
     async save() {
-        await this.http.post('solo', this.state.item)
-            .then((data) => { return data })
-        Actions.soloList()
+        if (this.state.item.id)
+            await this.http.put('solo', this.state.item.id, this.state.item)
+                .then((data) => { return data })
+        else
+            await this.http.post('solo', this.state.item)
+                .then((data) => { return data })
+        this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.soloList()
     }
 
     calc_tipo_ph(value) {
@@ -102,9 +106,14 @@ export default class FormSolo extends Component {
                         <Text style={this.estilo.title}>Solo</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => this.save()}>
-                            <Icon style={{ color: 'white' }} name='check' type='Feather' />
-                        </Button>
+                        {this.state.item.phMinimo || this.state.item.phMaximo
+                            || this.state.item.umidadeMinima || this.state.item.umidadeMaxima
+                            || this.state.item.quantidadeAreia || this.state.item.quantidadeArgila
+                            || this.state.item.quantidadeHumus || this.state.item.quantidadeMusgoSphagnum
+                            || this.state.item.quantidadeTerraVegetal || this.state.item.quantidadeTurfa ?
+                            <Button rounded transparent onPress={() => this.save()}>
+                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                            </Button> : null}
                     </Right>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.brown} barStyle="light-content" />

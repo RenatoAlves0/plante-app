@@ -76,28 +76,32 @@ export default class ListClima extends Component {
                   }}>
                   <Col>
                     <Text>{'Clima ' + item.tipo}</Text>
-                    <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                      <View style={this.estilo.listitemview}>
-                        <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} >
-                          {
-                            ' min: ' + item.temperaturaMinima + ' ºC\n'
-                            + ' max: ' + item.temperaturaMaxima + ' ºC\n'
-                            + ' ideal: ' + (item.temperaturaMinima + item.temperaturaMaxima) / 2 + ' ºC'
-                          }
-                        </Text>
-                      </View>
-                      <View style={this.estilo.listitemview}>
-                        <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} >
-                          {
-                            ' min: ' + item.umidadeMinima + ' %\n'
-                            + ' max: ' + item.umidadeMaxima + ' %\n '
-                            + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
-                          }
-                        </Text>
-                      </View>
-                    </Row>
+                    {item.temperaturaMinima || item.temperaturaMaxima || item.umidadeMinima || item.umidadeMaxima ?
+                      <Row style={{ justifyContent: 'center', marginTop: 10 }} >
+                        {item.temperaturaMinima || item.temperaturaMaxima ?
+                          <View style={this.estilo.listitemview}>
+                            <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                            <Text style={{ color: this.estilo.cor.gray }} >
+                              {
+                                ' min: ' + item.temperaturaMinima + ' ºC\n'
+                                + ' max: ' + item.temperaturaMaxima + ' ºC\n'
+                                + ' ideal: ' + (item.temperaturaMinima + item.temperaturaMaxima) / 2 + ' ºC'
+                              }
+                            </Text>
+                          </View> : null}
+
+                        {item.umidadeMinima || item.umidadeMaxima ?
+                          <View style={this.estilo.listitemview}>
+                            <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
+                            <Text style={{ color: this.estilo.cor.gray }} >
+                              {
+                                ' min: ' + item.umidadeMinima + ' %\n'
+                                + ' max: ' + item.umidadeMaxima + ' %\n '
+                                + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
+                              }
+                            </Text>
+                          </View> : null}
+                      </Row> : null}
                   </Col>
                 </ListItem>
               }

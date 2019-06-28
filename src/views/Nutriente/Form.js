@@ -38,7 +38,7 @@ export default class FormNutriente extends Component {
     }
 
     async load() {
-        if (this.props.item) {
+        if (this.props.item && !this.props.pop) {
             this.setState({
                 item: {
                     ...this.props.item,
@@ -61,9 +61,13 @@ export default class FormNutriente extends Component {
     }
 
     async save() {
-        await this.http.post('nutriente', this.state.item)
-            .then((data) => { return data })
-        Actions.nutrienteList()
+        if (this.state.item.id)
+            await this.http.put('nutriente', this.state.item.id, this.state.item)
+                .then((data) => { return data })
+        else
+            await this.http.post('nutriente', this.state.item)
+                .then((data) => { return data })
+        this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.nutrienteList()
     }
 
     render() {
@@ -79,9 +83,13 @@ export default class FormNutriente extends Component {
                         <Text style={this.estilo.title}>Nutriente</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => this.save()}>
-                            <Icon style={{ color: 'white' }} name='check' type='Feather' />
-                        </Button>
+                        {this.state.item.nitrogenio || this.state.item.fosforo || this.state.item.potassio || this.state.item.magnesio
+                            || this.state.item.calcio || this.state.item.enxofre || this.state.item.ferro || this.state.item.manganes
+                            || this.state.item.boro || this.state.item.cobre || this.state.item.zinco || this.state.item.cloro
+                            || this.state.item.molibdenio ?
+                            <Button rounded transparent onPress={() => this.save()}>
+                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                            </Button> : null}
                     </Right>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.purple} barStyle="light-content" />

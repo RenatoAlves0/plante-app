@@ -19,7 +19,7 @@ export default class Http {
 
     async put(entidade, id, dados) {
         return await axios
-            .put(baseUrl + entidade, id, dados)
+            .put(baseUrl + entidade + '/' + id, dados)
             .then((data) => { return data.data })
             .catch((erro) => { console.error(erro) })
     }

@@ -85,39 +85,45 @@ export default class ListSolo extends Component {
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
                   <Col>
-                    <Row style={{ justifyContent: 'center' }} >
-                      <Text style={{ textAlign: 'center' }}>
-                        {'Porções: '}
-                        {item.quantidadeAreia > 0 ? 'Areia (' + item.quantidadeAreia + ') ' : null}
-                        {item.quantidadeArgila > 0 ? 'Argila (' + item.quantidadeArgila + ') ' : null}
-                        {item.quantidadeHumus > 0 ? 'Húmus (' + item.quantidadeHumus + ') ' : null}
-                        {item.quantidadeMusgoSphagnum > 0 ? 'Sphagnum (' + item.quantidadeMusgoSphagnum + ') ' : null}
-                        {item.quantidadeTerraVegetal > 0 ? 'Terra (' + item.quantidadeTerraVegetal + ') ' : null}
-                        {item.quantidadeTurfa > 0 ? 'Turfa (' + item.quantidadeTurfa + ') ' : null}
-                      </Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                      <View style={this.estilo.listitemview}>
-                        <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} >
-                          {
-                            ' min: ' + item.phMinimo + ' Ph\n'
-                            + ' max: ' + item.phMaximo + ' Ph\n '
-                            + 'ideal: ' + this.calc_tipo_ph((item.phMinimo + item.phMaximo) / 2)
-                          }
+                    {item.quantidadeAreia || item.quantidadeArgila || item.quantidadeHumus
+                      || item.quantidadeMusgoSphagnum || item.quantidadeTerraVegetal || item.quantidadeTurfa ?
+                      <Row style={{ justifyContent: 'center' }} >
+                        <Text style={{ textAlign: 'center' }}>
+                          {'Porções: '}
+                          {item.quantidadeAreia > 0 ? 'Areia (' + item.quantidadeAreia + ') ' : null}
+                          {item.quantidadeArgila > 0 ? 'Argila (' + item.quantidadeArgila + ') ' : null}
+                          {item.quantidadeHumus > 0 ? 'Húmus (' + item.quantidadeHumus + ') ' : null}
+                          {item.quantidadeMusgoSphagnum > 0 ? 'Sphagnum (' + item.quantidadeMusgoSphagnum + ') ' : null}
+                          {item.quantidadeTerraVegetal > 0 ? 'Terra (' + item.quantidadeTerraVegetal + ') ' : null}
+                          {item.quantidadeTurfa > 0 ? 'Turfa (' + item.quantidadeTurfa + ') ' : null}
                         </Text>
-                      </View>
-                      <View style={this.estilo.listitemview}>
-                        <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
-                        <Text style={{ color: this.estilo.cor.gray }} >
-                          {
-                            ' min: ' + item.umidadeMinima + ' %\n'
-                            + ' max: ' + item.umidadeMaxima + ' %\n '
-                            + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
-                          }
-                        </Text>
-                      </View>
-                    </Row>
+                      </Row> : null}
+                    {item.phMinimo || item.phMaximo || item.umidadeMinima || item.umidadeMaxima ?
+                      <Row style={{ justifyContent: 'center', marginTop: 10 }} >
+                        {item.phMinimo || item.phMaximo ?
+                          <View style={this.estilo.listitemview}>
+                            <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                            <Text style={{ color: this.estilo.cor.gray }} >
+                              {
+                                ' min: ' + item.phMinimo + ' Ph\n'
+                                + ' max: ' + item.phMaximo + ' Ph\n '
+                                + 'ideal: ' + this.calc_tipo_ph((item.phMinimo + item.phMaximo) / 2)
+                              }
+                            </Text>
+                          </View> : null}
+
+                        {item.umidadeMinima || item.umidadeMaxima ?
+                          <View style={this.estilo.listitemview}>
+                            <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
+                            <Text style={{ color: this.estilo.cor.gray }} >
+                              {
+                                ' min: ' + item.umidadeMinima + ' %\n'
+                                + ' max: ' + item.umidadeMaxima + ' %\n '
+                                + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
+                              }
+                            </Text>
+                          </View> : null}
+                      </Row> : null}
                   </Col>
                 </ListItem>
               }

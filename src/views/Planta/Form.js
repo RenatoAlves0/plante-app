@@ -27,7 +27,8 @@ export default class FormPlanta extends Component {
                 soloId: undefined,
                 luzId: undefined,
                 nutrienteId: undefined,
-                clienteId: 1
+                clienteId: 1,
+                nome: undefined
             },
 
             familia: {},
@@ -117,7 +118,7 @@ export default class FormPlanta extends Component {
     }
 
     corrigir_json(objeto) {
-        let aux = {
+        return {
             id: objeto.id,
             familiaId: objeto.familiaId,
             generoId: objeto.generoId,
@@ -129,7 +130,6 @@ export default class FormPlanta extends Component {
             nutrienteId: objeto.nutrienteId,
             nome: objeto.nome
         }
-        return aux
     }
 
     async save() {
@@ -181,9 +181,10 @@ export default class FormPlanta extends Component {
                         <Text style={this.estilo.title}>Planta</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => this.save()}>
-                            <Icon style={{ color: 'white' }} name='check' type='Feather' />
-                        </Button>
+                        {this.state.item.nome ?
+                            <Button rounded transparent onPress={() => this.save()}>
+                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                            </Button> : null}
                     </Right>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.green_solid} barStyle="light-content" />
@@ -279,7 +280,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.soloForm() }} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.soloForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -298,7 +299,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.luzForm() }} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.luzForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -329,7 +330,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.nutrienteForm() }} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.nutrienteForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form_vazio} />

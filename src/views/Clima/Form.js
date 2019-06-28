@@ -58,8 +58,12 @@ export default class FormClima extends Component {
     }
 
     async save() {
-        await this.http.post('clima', this.state.item)
-            .then((data) => { return data })
+        if (this.state.item.id)
+            await this.http.put('clima', this.state.item.id, this.state.item)
+                .then((data) => { return data })
+        else
+            await this.http.post('clima', this.state.item)
+                .then((data) => { return data })
         this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.climaList()
     }
 
@@ -76,9 +80,11 @@ export default class FormClima extends Component {
                         <Text style={this.estilo.title}>Clima</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => this.save()}>
-                            <Icon style={{ color: 'white' }} name='check' type='Feather' />
-                        </Button>
+                        {this.state.item.temperaturaMaxima || this.state.item.temperaturaMinima
+                            || this.state.item.umidadeMaxima || this.state.item.umidadeMinima ?
+                            <Button rounded transparent onPress={() => this.save()}>
+                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                            </Button> : null}
                     </Right>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.blue_solid} barStyle="light-content" />

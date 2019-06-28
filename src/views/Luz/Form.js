@@ -33,7 +33,7 @@ export default class FormLuz extends Component {
     }
 
     async load() {
-        if (this.props.item) {
+        if (this.props.item && !this.props.pop) {
             this.setState({
                 item: {
                     ...this.props.item,
@@ -44,9 +44,13 @@ export default class FormLuz extends Component {
     }
 
     async save() {
-        await this.http.post('luz', this.state.item)
-            .then((data) => { return data })
-        Actions.luzList()
+        if (this.state.item.id)
+            await this.http.put('luz', this.state.item.id, this.state.item)
+                .then((data) => { return data })
+        else
+            await this.http.post('luz', this.state.item)
+                .then((data) => { return data })
+        this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.luzList()
     }
 
     render() {
