@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, Header, Content, Row, Col, View } from 'native-base'
+import { Container, Text, Button, Label, View } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 

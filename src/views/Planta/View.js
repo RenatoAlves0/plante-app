@@ -1,28 +1,13 @@
 import React, { Component } from 'react'
 import { StatusBar } from 'react-native'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form, View, Row } from 'native-base'
-import Loader from '../../components/Loader'
+import { Content, Text, Icon, Col, Form, View, Row } from 'native-base'
 import estilo from '../../assets/Estilo'
 
 export default class ViewPlanta extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
-        this.state = {
-            loaded: false
-        }
-    }
-
-    componentWillMount() {
-        this.load()
-    }
-
-    componentWillReceiveProps() {
-        this.load()
-    }
-
-    async load() {
-        console.log(this.props.item)
+        this.state = {}
     }
 
     calc_tipo_umidade(value) {
