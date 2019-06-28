@@ -35,13 +35,13 @@ export default class Init extends Component {
                     <Label style={this.state.label}>
                         Login</Label>
                     <Button full rounded style={{
-                        height: 100, margin: 20, elevation: 10, borderRadius: 25,
+                        height: 100, margin: 20, elevation: 10,
                         backgroundColor: this.estilo.cor.blue_solid
                     }} onPress={() => Actions.push('plantaList')} >
                         <Text uppercase={false} style={{ fontSize: 25 }}>Administrador</Text>
                     </Button>
-                    <Button full style={{
-                        height: 100, margin: 20, elevation: 10, borderRadius: 25,
+                    <Button full rounded style={{
+                        height: 100, margin: 20, elevation: 10,
                         backgroundColor: this.estilo.cor.greenish_solid
                     }}>
                         <Text uppercase={false} style={{ fontSize: 25 }}>Usuário</Text>

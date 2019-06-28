@@ -56,7 +56,7 @@ export default class ListClima extends Component {
   render() {
     return (
       <Container>
-        <StatusBar backgroundColor={this.estilo.cor.blue_solid} barStyle="light-content" />
+        <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

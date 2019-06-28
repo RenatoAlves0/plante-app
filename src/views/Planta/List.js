@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { StatusBar } from 'react-native'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col } from 'native-base'
-import { Dimensions } from 'react-native'
+import { Dimensions, StatusBar, Modal } from 'react-native'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form } from 'native-base'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
+import ViewInfos from './View'
 
 export default class ListPlanta extends Component {
   constructor(props) {
@@ -16,6 +16,8 @@ export default class ListPlanta extends Component {
     this.state = {
       loaded: false,
       lista: [],
+      modal: false,
+      itemModal: {}
     }
   }
 
@@ -47,7 +49,7 @@ export default class ListPlanta extends Component {
   render() {
     return (
       <Container>
-        <StatusBar backgroundColor={this.estilo.cor.green_solid} barStyle="light-content" />
+        <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
@@ -65,14 +67,39 @@ export default class ListPlanta extends Component {
                     paddingRight: 0, width: Dimensions.get('window').width, borderBottomWidth: 0, marginLeft: 0,
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
-                  <Col>
+                  <Col style={{ marginLeft: 80 }}>
                     <Text>{item.nome}</Text>
                     <Text style={{ color: this.estilo.cor.gray }}>
-                      {item.familia.nome + '  ' + item.genero.nome + '  ' + item.especie.nome}</Text>
+                      {item.familia.nome + ' . ' + item.genero.nome + ' . ' + item.especie.nome}</Text>
                   </Col>
+                  <Button transparent style={{ marginHorizontal: 10 }}
+                    onPress={() => this.setState({ modal: true, itemModal: item })} >
+                    <Icon name='eye' type='Feather' style={{ color: this.estilo.cor.gray, fontSize: 22 }} />
+                  </Button>
                 </ListItem>
               }
             />))}
+          {this.state.modal ?
+            <Modal
+              transparent
+              animationType='fade'
+              visible={this.state.modal}
+              onRequestClose={() => this.setState({ modal: false })}>
+
+              <Container style={{ backgroundColor: this.estilo.cor.gray_translucid }}>
+
+                <ViewInfos item={this.state.itemModal} />
+
+                <Form style={{ flexDirection: 'row', alignSelf: 'flex-end' }} >
+                  <Fab containerStyle={{ position: 'relative' }}
+                    style={{ backgroundColor: this.estilo.cor.red }}
+                    onPress={() => { this.setState({ modal: false }) }}>
+                    <Icon name='x' type='Feather' />
+                  </Fab>
+                </Form>
+
+              </Container>
+            </Modal> : null}
 
         </Content>
         <Fab

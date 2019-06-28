@@ -66,7 +66,7 @@ export default class ListSolo extends Component {
   render() {
     return (
       <Container>
-        <StatusBar backgroundColor={this.estilo.cor.brown} barStyle="light-content" />
+        <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

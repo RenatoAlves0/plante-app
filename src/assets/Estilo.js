@@ -1,5 +1,3 @@
-import { thisExpression } from "@babel/types";
-
 export default class Estilos {
     constructor() {
         this.cor = {
@@ -14,9 +12,10 @@ export default class Estilos {
             lemon: '#c2da4c',
             orange: '#ffa000',
             brown: '#5d4037',
-            gray: '#999999',
+            gray: '#888888',
             gray_white: '#cecece',
             gray_white_light: '#fbfbfb',
+            gray_translucid: '#33333399',
             white: '#ffffff',
             black: '#000000'
         }

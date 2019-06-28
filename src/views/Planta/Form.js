@@ -339,7 +339,7 @@ export default class FormPlanta extends Component {
                     animationType='fade'
                     visible={this.state.modal}
                     onRequestClose={() => this.setState({ modal: false })}>
-                    <Container style={{ backgroundColor: '#00000099' }}>
+                    <Container style={{ backgroundColor: this.estilo.cor.gray_translucid }}>
 
                         {this.state.addFamilia ? <FormFamilia ref='formFamilia' /> : null}
                         {this.state.addGenero ? <FormGenero ref='formGenero' /> : null}
