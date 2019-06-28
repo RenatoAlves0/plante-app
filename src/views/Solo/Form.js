@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { StatusBar } from 'react-native'
 import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, Header, Content, Row } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
@@ -106,6 +107,7 @@ export default class FormSolo extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <StatusBar backgroundColor={this.estilo.cor.brown} barStyle="light-content" />
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Ph Mínimo</Label>

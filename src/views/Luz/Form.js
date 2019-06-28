@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, Header, Content, Row } from 'native-base'
+import { StatusBar } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
@@ -66,6 +67,7 @@ export default class FormLuz extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <StatusBar backgroundColor={this.estilo.cor.orange} barStyle="light-content" />
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Intensidade</Label>

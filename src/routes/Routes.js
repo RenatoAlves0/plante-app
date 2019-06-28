@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { StatusBar } from 'react-native'
 import { Router, Scene, Stack } from 'react-native-router-flux'
 import { Container, Root } from 'native-base'
+import estilo from '../assets/Estilo'
+import init from '../components/Init'
 import plantaList from '../views/Planta/List'
 import plantaForm from '../views/Planta/Form'
 import familiaForm from '../views/Familia/Form'
@@ -18,16 +21,19 @@ import nutrienteForm from '../views/Nutriente/Form'
 export default class Routes extends Component {
     constructor(props) {
         super(props)
+        this.estilo = new estilo()
         this.state = {}
     }
 
     render() {
         return (
             <Container>
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <Root>
                     <Router>
                         <Stack key='root'>
-                            <Scene key='plantaList' component={plantaList} initial hideNavBar />
+                            <Scene key='init' component={init} initial hideNavBar />
+                            <Scene key='plantaList' component={plantaList} hideNavBar />
                             <Scene key='plantaForm' component={plantaForm} hideNavBar />
                             <Scene key='familiaForm' component={familiaForm} hideNavBar />
                             <Scene key='generoForm' component={generoForm} hideNavBar />

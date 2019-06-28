@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { StatusBar } from 'react-native'
 import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, Header, Content, Row } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
@@ -43,7 +44,7 @@ export default class FormClima extends Component {
     }
 
     async load() {
-        if (this.props.item) {
+        if (this.props.item && !this.props.pop) {
             this.setState({
                 item: {
                     ...this.props.item,
@@ -59,7 +60,7 @@ export default class FormClima extends Component {
     async save() {
         await this.http.post('clima', this.state.item)
             .then((data) => { return data })
-        Actions.climaList()
+        this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.climaList()
     }
 
     render() {
@@ -80,6 +81,7 @@ export default class FormClima extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <StatusBar backgroundColor={this.estilo.cor.blue_solid} barStyle="light-content" />
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Tipo</Label>

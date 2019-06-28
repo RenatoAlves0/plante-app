@@ -16,7 +16,9 @@ export default class Estilos {
             brown: '#5d4037',
             gray: '#999999',
             gray_white: '#cecece',
-            gray_white_light: '#fbfbfb'
+            gray_white_light: '#fbfbfb',
+            white: '#ffffff',
+            black: '#000000'
         }
 
         this.title = {

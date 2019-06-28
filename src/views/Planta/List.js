@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { StatusBar } from 'react-native'
 import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col } from 'native-base'
 import { Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
@@ -46,6 +47,7 @@ export default class ListPlanta extends Component {
   render() {
     return (
       <Container>
+        <StatusBar backgroundColor={this.estilo.cor.green_solid} barStyle="light-content" />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

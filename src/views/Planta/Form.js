@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal } from 'react-native'
+import { Modal, StatusBar } from 'react-native'
 import { Container, Text, Right, Icon, Left, Button, Body, Form, Item, Label, Input, Picker, Fab, Header, Content, View, Row } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
@@ -173,7 +173,7 @@ export default class FormPlanta extends Component {
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.green_solid }}>
                     <Left>
-                        <Button rounded transparent onPress={() => Actions.pop()}>
+                        <Button rounded transparent onPress={() => Actions.plantaList()}>
                             <Icon style={{ color: 'white' }} name='x' type='Feather' />
                         </Button>
                     </Left>
@@ -186,6 +186,7 @@ export default class FormPlanta extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <StatusBar backgroundColor={this.estilo.cor.green_solid} barStyle="light-content" />
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Nome</Label>
@@ -252,7 +253,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.climaForm() }} />
+                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.climaForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>

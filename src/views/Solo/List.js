@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Row, View } from 'native-base'
-import { Dimensions } from 'react-native'
+import { Dimensions, StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
@@ -32,6 +32,17 @@ export default class ListSolo extends Component {
     })
   }
 
+  async delete(item) {
+    await this.http.delete('solo', item.id)
+      .then(async (data) => {
+        if (data == 'Ok') {
+          await this.state.lista.splice(this.state.lista.indexOf(item), 1)
+          this.setState({ lista: this.state.lista })
+        }
+        else { alert(data) }
+      })
+  }
+
   calc_tipo_ph(value) {
     if (value == undefined || value == null) return ''
     if (value >= 7 && value <= 14) return 'Base'
@@ -55,12 +66,13 @@ export default class ListSolo extends Component {
   render() {
     return (
       <Container>
+        <StatusBar backgroundColor={this.estilo.cor.brown} barStyle="light-content" />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
             <SwipeRow key={item.id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
-              onRowOpen={() => alert('Excluir')}
+              onRowOpen={() => this.delete(item)}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
                   <Icon active name='trash' type='Feather' />
