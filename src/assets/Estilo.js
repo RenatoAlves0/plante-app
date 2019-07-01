@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native'
 export default class Estilos {
     constructor() {
         this.cor = {
@@ -14,7 +15,7 @@ export default class Estilos {
             brown: '#5d4037',
             gray: '#888888',
             gray_white: '#cecece',
-            gray_white_light: '#fbfbfb',
+            gray_white_light: '#f5f5f5',
             gray_translucid: '#33333399',
             white: '#ffffff',
             black: '#000000'
@@ -29,7 +30,7 @@ export default class Estilos {
             padding: 10,
             backgroundColor: this.cor.gray_white + '99',
             margin: 10, marginBottom: 0,
-            borderRadius: 10,
+            borderRadius: 7,
             flexDirection: 'column'
         }
 
@@ -39,7 +40,7 @@ export default class Estilos {
 
         this.subrow = {
             backgroundColor: this.cor.gray_white + '99',
-            borderRadius: 10,
+            borderRadius: 7,
             marginTop: 5
         }
 
@@ -50,16 +51,18 @@ export default class Estilos {
         }
 
         this.swiperow = {
-            paddingTop: 0, paddingBottom: 0, paddingRight: 0,
-            backgroundColor: this.cor.red, borderBottomWidth: 0
+            paddingTop: 0, paddingBottom: 0, paddingRight: 0, paddingLeft: 0,
+            borderBottomWidth: 0, alignItems: 'center', width: Dimensions.get('window').width,
+            alignContent: 'center', alignSelf: 'center', backgroundColor: this.cor.red
         }
 
         this.swiperow_deletbuttom = {
-            backgroundColor: 'transparent', paddingBottom: 6, elevation: 0
+            backgroundColor: this.cor.red, paddingBottom: 6,
+            elevation: 0, margin: 10, borderRadius: 7
         }
 
         this.contentmodal = {
-            backgroundColor: 'white', borderRadius: 10, marginHorizontal: 10, marginTop: 10
+            backgroundColor: 'white', borderRadius: 7, marginHorizontal: 10, marginTop: 10
         }
 
         this.head_contentmodal = {
@@ -69,6 +72,11 @@ export default class Estilos {
 
         this.listitemview = {
             justifyContent: 'center', alignItems: 'center', flexDirection: 'row'
+        }
+
+        this.item_dash = {
+            backgroundColor: this.cor.white, borderRadius: 7, margin: 15,
+            width: 0.4 * Dimensions.get('window').width, height: 0.4 * Dimensions.get('window').width
         }
     }
 }

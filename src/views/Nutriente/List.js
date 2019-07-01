@@ -66,8 +66,8 @@ export default class ListNutriente extends Component {
                   }}>
                   <Col>
                     {item.nitrogenio || item.fosforo || item.potassio ?
-                      <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
-                        <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
+                      <Row style={{ justifyContent: 'center' }} >
+                        <Text style={{ textAlign: 'center' }}>
                           {'Macronutrientes: '}
                           {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
                           {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
@@ -77,8 +77,11 @@ export default class ListNutriente extends Component {
 
                     {item.magnesio || item.calcio || item.enxofre || item.ferro || item.manganes
                       || item.boro || item.cobre || item.zinco || item.cloro || item.molibdenio ?
-                      < Row style={{ justifyContent: 'center' }}>
-                        <Text style={{ textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10 }}>
+                      <Row style={{ justifyContent: 'center' }}>
+                        <Text style={{
+                          textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10,
+                          marginTop: item.nitrogenio || item.fosforo || item.potassio ? 10 : 0
+                        }}>
                           {'Micronutrientes: '}
                           {item.magnesio > 0 ? 'Magnésio (' + item.magnesio + ') ' : null}
                           {item.calcio > 0 ? 'Cálcio (' + item.calcio + ') ' : null}

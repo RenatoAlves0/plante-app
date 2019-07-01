@@ -120,7 +120,7 @@ export default class ViewPlanta extends Component {
 
                     {/* Nutrientes */}
                     <Col style={{ alignItems: 'center', marginVertical: 20 }}>
-                        <Row style={{ justifyContent: 'center', marginBottom: 10 }} >
+                        <Row style={{ justifyContent: 'center' }} >
                             <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
                                 {'Macronutrientes: '}
                                 {this.props.item.nutriente.nitrogenio > 0 ? 'Nitrogênio (' + this.props.item.nutriente.nitrogenio + ') ' : null}
@@ -129,7 +129,10 @@ export default class ViewPlanta extends Component {
                             </Text>
                         </Row>
                         <Row style={{ justifyContent: 'center' }}>
-                            <Text style={{ textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10 }}>
+                            <Text style={{
+                                textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10,
+                                marginTop: this.props.item.nutriente.nitrogenio || this.props.item.nutriente.fosforo || this.props.item.nutriente.potassio ? 10 : 0
+                            }}>
                                 {'Micronutrientes: '}
                                 {this.props.item.nutriente.magnesio > 0 ? 'Magnésio (' + this.props.item.nutriente.magnesio + ') ' : null}
                                 {this.props.item.nutriente.calcio > 0 ? 'Cálcio (' + this.props.item.nutriente.calcio + ') ' : null}

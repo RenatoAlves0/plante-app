@@ -37,13 +37,13 @@ export default class Init extends Component {
                     <Button full rounded style={{
                         height: 100, margin: 20, elevation: 10,
                         backgroundColor: this.estilo.cor.blue_solid
-                    }} onPress={() => Actions.push('plantaList')} >
+                    }} onPress={() => Actions.plantaList()} >
                         <Text uppercase={false} style={{ fontSize: 25 }}>Administrador</Text>
                     </Button>
                     <Button full rounded style={{
                         height: 100, margin: 20, elevation: 10,
                         backgroundColor: this.estilo.cor.greenish_solid
-                    }}>
+                    }} onPress={() => Actions.dash()} >
                         <Text uppercase={false} style={{ fontSize: 25 }}>Usuário</Text>
 
                     </Button>
