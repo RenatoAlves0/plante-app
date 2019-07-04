@@ -51,9 +51,9 @@ export default class ListPlanta extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+        {this.state.loaded ? null : <Loader />}
         {!this.state.lista[0] && this.state.loaded ? <ListEmpty _id={'planta'} /> : null}
         <Content>
-          {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
             <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
