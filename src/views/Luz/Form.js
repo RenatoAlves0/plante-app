@@ -11,6 +11,7 @@ export default class FormLuz extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
+            validHorasPorDia: true,
             item: {
                 intensidade: 'Forte',
                 horasPorDia: '0'
@@ -66,9 +67,10 @@ export default class FormLuz extends Component {
                         <Text style={this.estilo.title}>Luz</Text>
                     </Body>
                     <Right>
-                        <Button rounded transparent onPress={() => this.save()}>
-                            <Icon style={{ color: 'white' }} name='check' type='Feather' />
-                        </Button>
+                        {this.state.validHorasPorDia ?
+                            <Button rounded transparent onPress={() => this.save()}>
+                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                            </Button> : null}
                     </Right>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.orange} barStyle="light-content" />
@@ -89,8 +91,17 @@ export default class FormLuz extends Component {
                     </Form>
                     {this.state.item.intensidade == 'Sombra' ? null : <Form style={this.estilo.form}>
                         <Label>Horas por dia</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.horasPorDia}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, horasPorDia: value + '' } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' autoFocus={true} value={this.state.item.horasPorDia}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, horasPorDia: value + '' } }),
+                                        value > 12 || value < 0 ? this.setState({ validHorasPorDia: false }) :
+                                            this.setState({ validHorasPorDia: true })
+                                }} />
+                            {this.state.item.horasPorDia < 0 || this.state.item.horasPorDia > 12 ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Horas por dia deve estar entre 0 e 12'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>}
                     <Form style={this.estilo.form_vazio} />
                 </Content>
