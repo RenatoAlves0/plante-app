@@ -172,7 +172,10 @@ export default class FormPlanta extends Component {
                         <Text style={this.estilo.title}>Planta</Text>
                     </Body>
                     <Right>
-                        {this.state.item.nome ?
+                        {this.state.item.nome && this.state.item.familia._id
+                            && this.state.item.genero._id && this.state.item.especie._id
+                            && this.state.item.clima._id && this.state.item.solo._id
+                            && this.state.item.luz._id && this.state.item.nutriente._id ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}
