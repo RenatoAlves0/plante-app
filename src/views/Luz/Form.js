@@ -98,7 +98,7 @@ export default class FormLuz extends Component {
                                         value > 12 || value < 0 ? this.setState({ validHorasPorDia: false }) :
                                             this.setState({ validHorasPorDia: true })
                                 }} />
-                            {this.state.item.horasPorDia < 0 || this.state.item.horasPorDia > 12 ? <Row style={this.estilo.subrow}>
+                            {!this.state.validHorasPorDia ? <Row style={this.estilo.subrow}>
                                 <Text style={{ margin: 7 }} >{'Horas por dia deve estar entre 0 e 12'}</Text>
                             </Row> : null}
                         </Row>

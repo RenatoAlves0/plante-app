@@ -11,6 +11,10 @@ export default class FormClima extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
+            validTemperaturaMinima: true,
+            validTemperaturaMaxima: true,
+            validUmidadeMinima: true,
+            validUmidadeMaxima: true,
             item: {
                 tipo: 'Altitude / Frio de Montanha',
                 temperaturaMinima: undefined,
@@ -58,7 +62,6 @@ export default class FormClima extends Component {
     }
 
     async save() {
-        console.log(this.state.item)
         if (this.state.item._id)
             await this.http.put('climas', this.state.item._id, this.state.item)
                 .then((data) => { return data })
@@ -81,8 +84,10 @@ export default class FormClima extends Component {
                         <Text style={this.estilo.title}>Clima</Text>
                     </Body>
                     <Right>
-                        {this.state.item.temperaturaMaxima && this.state.item.temperaturaMinima
-                            && this.state.item.umidadeMaxima && this.state.item.umidadeMinima ?
+                        {this.state.item.temperaturaMinima && this.state.item.temperaturaMaxima
+                            && this.state.item.umidadeMinima && this.state.item.umidadeMaxima
+                            && this.state.validTemperaturaMinima && this.state.validTemperaturaMaxima
+                            && this.state.validUmidadeMinima && this.state.validUmidadeMaxima ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}
@@ -106,23 +111,59 @@ export default class FormClima extends Component {
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Temperatura Mínima ºC</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.temperaturaMinima}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, temperaturaMinima: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' autoFocus={true} value={this.state.item.temperaturaMinima}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, temperaturaMinima: value } }),
+                                        value < -50 || value > 50 ? this.setState({ validTemperaturaMinima: false }) :
+                                            this.setState({ validTemperaturaMinima: true })
+                                }} />
+                            {!this.state.validTemperaturaMinima ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Temperatura deve estar entre -50 e 50'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Temperatura Máxima ºC</Label>
-                        <Input keyboardType='numeric' value={this.state.item.temperaturaMaxima}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, temperaturaMaxima: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.temperaturaMaxima}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, temperaturaMaxima: value } }),
+                                        value < -50 || value > 50 ? this.setState({ validTemperaturaMaxima: false }) :
+                                            this.setState({ validTemperaturaMaxima: true })
+                                }} />
+                            {!this.state.validTemperaturaMaxima ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Temperatura deve estar entre -50 e 50'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Umidade Mínima %</Label>
-                        <Input keyboardType='numeric' value={this.state.item.umidadeMinima}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, umidadeMinima: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.umidadeMinima}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, umidadeMinima: value } }),
+                                        value < 0 || value > 100 ? this.setState({ validUmidadeMinima: false }) :
+                                            this.setState({ validUmidadeMinima: true })
+                                }} />
+                            {!this.state.validUmidadeMinima ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Umidade deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Umidade Máxima %</Label>
-                        <Input keyboardType='numeric' value={this.state.item.umidadeMaxima}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, umidadeMaxima: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.umidadeMaxima}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, umidadeMaxima: value } }),
+                                        value < 0 || value > 100 ? this.setState({ validUmidadeMaxima: false }) :
+                                            this.setState({ validUmidadeMaxima: true })
+                                }} />
+                            {!this.state.validUmidadeMaxima ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Umidade deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form_vazio} />
                 </Content>
