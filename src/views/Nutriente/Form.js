@@ -11,6 +11,19 @@ export default class FormNutriente extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
+            validNitrogenio: true,
+            validFosforo: true,
+            validPotassio: true,
+            validMagnesio: true,
+            validCalcio: true,
+            validEnxofre: true,
+            validFerro: true,
+            validManganes: true,
+            validBoro: true,
+            validCobre: true,
+            validZinco: true,
+            validCloro: true,
+            validMolibdenio: true,
             item: {
                 nitrogenio: undefined,
                 fosforo: undefined,
@@ -83,7 +96,12 @@ export default class FormNutriente extends Component {
                         <Text style={this.estilo.title}>Nutriente</Text>
                     </Body>
                     <Right>
-                        {this.state.item.nitrogenio && this.state.item.fosforo && this.state.item.potassio ?
+                        {this.state.item.nitrogenio && this.state.item.fosforo && this.state.item.potassio
+                            && this.state.validNitrogenio && this.state.validFosforo && this.state.validPotassio
+                            && this.state.validMagnesio && this.state.validCalcio && this.state.validEnxofre
+                            && this.state.validFerro && this.state.validManganes && this.state.validBoro
+                            && this.state.validCobre && this.state.validZinco && this.state.validCloro
+                            && this.state.validMolibdenio ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}
@@ -93,68 +111,185 @@ export default class FormNutriente extends Component {
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Nitrogênio</Label>
-                        <Input keyboardType='numeric' autoFocus={true} value={this.state.item.nitrogenio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, nitrogenio: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' autoFocus={true} value={this.state.item.nitrogenio}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, nitrogenio: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validNitrogenio: false }) :
+                                            this.setState({ validNitrogenio: true })
+                                }} />
+                            {!this.state.validNitrogenio ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Nitrogênio deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Fósforo</Label>
-                        <Input keyboardType='numeric' value={this.state.item.fosforo}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, fosforo: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.fosforo}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, fosforo: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validFosforo: false }) :
+                                            this.setState({ validFosforo: true })
+                                }} />
+                            {!this.state.validFosforo ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Fósforo deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Potássio</Label>
-                        <Input keyboardType='numeric' value={this.state.item.potassio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, potassio: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.potassio}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, potassio: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validPotassio: false }) :
+                                            this.setState({ validPotassio: true })
+                                }} />
+                            {!this.state.validPotassio ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Potássio deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Magnésio</Label>
-                        <Input keyboardType='numeric' value={this.state.item.magnesio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, magnesio: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.magnesio}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, magnesio: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validMagnesio: false }) :
+                                            this.setState({ validMagnesio: true })
+                                }} />
+                            {!this.state.validMagnesio ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Magnésio deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cálcio</Label>
-                        <Input keyboardType='numeric' value={this.state.item.calcio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, calcio: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.calcio}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, calcio: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validCalcio: false }) :
+                                            this.setState({ validCalcio: true })
+                                }} />
+                            {!this.state.validCalcio ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Cálcio deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Enxôfre</Label>
-                        <Input keyboardType='numeric' value={this.state.item.enxofre}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, enxofre: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.enxofre}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, enxofre: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validEnxofre: false }) :
+                                            this.setState({ validEnxofre: true })
+                                }} />
+                            {!this.state.validEnxofre ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Enxôfre deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Ferro</Label>
-                        <Input keyboardType='numeric' value={this.state.item.ferro}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, ferro: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.ferro}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, ferro: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validFerro: false }) :
+                                            this.setState({ validFerro: true })
+                                }} />
+                            {!this.state.validFerro ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Ferro deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Manganês</Label>
-                        <Input keyboardType='numeric' value={this.state.item.manganes}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, manganes: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.manganes}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, manganes: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validManganes: false }) :
+                                            this.setState({ validManganes: true })
+                                }} />
+                            {!this.state.validManganes ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Manganês deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Boro</Label>
-                        <Input keyboardType='numeric' value={this.state.item.boro}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, boro: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.boro}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, boro: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validBoro: false }) :
+                                            this.setState({ validBoro: true })
+                                }} />
+                            {!this.state.validBoro ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Boro deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cobre</Label>
-                        <Input keyboardType='numeric' value={this.state.item.cobre}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, cobre: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.cobre}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, cobre: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validCobre: false }) :
+                                            this.setState({ validCobre: true })
+                                }} />
+                            {!this.state.validCobre ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Cobre deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Zinco</Label>
-                        <Input keyboardType='numeric' value={this.state.item.zinco}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, zinco: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.zinco}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, zinco: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validZinco: false }) :
+                                            this.setState({ validZinco: true })
+                                }} />
+                            {!this.state.validZinco ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Zinco deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Cloro</Label>
-                        <Input keyboardType='numeric' value={this.state.item.cloro}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, cloro: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.cloro}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, cloro: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validCloro: false }) :
+                                            this.setState({ validCloro: true })
+                                }} />
+                            {!this.state.validCloro ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Cloro deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form}>
                         <Label>Porção de Molibdenio</Label>
-                        <Input keyboardType='numeric' value={this.state.item.molibdenio}
-                            onChangeText={(value) => { this.setState({ item: { ...this.state.item, molibdenio: value } }) }} />
+                        <Row>
+                            <Input keyboardType='numeric' value={this.state.item.molibdenio}
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, molibdenio: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validMolibdenio: false }) :
+                                            this.setState({ validMolibdenio: true })
+                                }} />
+                            {!this.state.validMolibdenio ? <Row style={this.estilo.subrow}>
+                                <Text style={{ margin: 7 }} >{'Molibdenio deve estar entre 0 e 100'}</Text>
+                            </Row> : null}
+                        </Row>
                     </Form>
                     <Form style={this.estilo.form_vazio} />
                 </Content>
@@ -162,4 +297,3 @@ export default class FormNutriente extends Component {
         )
     }
 }
-
