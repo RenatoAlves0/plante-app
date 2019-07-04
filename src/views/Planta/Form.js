@@ -44,7 +44,7 @@ export default class FormPlanta extends Component {
             especies: [],
             climas: [],
             solos: [],
-            luzes: [],
+            luzs: [],
             nutrientes: [],
         }
     }
@@ -64,7 +64,7 @@ export default class FormPlanta extends Component {
         await this.especie()
         await this.climas()
         await this.solos()
-        await this.luzes()
+        await this.luzs()
         await this.nutrientes()
     }
 
@@ -103,10 +103,10 @@ export default class FormPlanta extends Component {
         })
     }
 
-    async luzes() {
+    async luzs() {
         if (this.props.item) this.setState({ luz: this.props.item.luz })
-        this.http.get('luzes').then((data) => {
-            this.setState({ luzes: data })
+        this.http.get('luzs').then((data) => {
+            this.setState({ luzs: data })
         })
     }
 
@@ -283,7 +283,7 @@ export default class FormPlanta extends Component {
                                     iosIcon={<Icon name='arrow-down' />}
                                     selectedValue={this.state.item.luz._id}
                                     onValueChange={(value) => { this.setState({ item: { ...this.state.item, luz: { ...this.state.item.luz, _id: value } } }) }}>
-                                    {this.state.luzes.map((item) => {
+                                    {this.state.luzs.map((item) => {
                                         return <Item key={item._id} label={
                                             item.intensidade + '   ' + (item.horasPorDia > 0 ? item.horasPorDia : '') + (item.horasPorDia > 1 ? ' horas diárias' : '') + (item.horasPorDia == 1 ? ' hora diária' : '')
                                         } value={item._id} />

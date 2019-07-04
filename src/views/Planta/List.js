@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Dimensions, StatusBar, Modal } from 'react-native'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form } from 'native-base'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form, View } from 'native-base'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 import ViewInfos from './View'
+import ListEmpty from '../../components/ListEmpty'
 
 export default class ListPlanta extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ export default class ListPlanta extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+        <ListEmpty index={0} />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

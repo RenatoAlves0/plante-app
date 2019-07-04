@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
+import ListEmpty from '../../components/ListEmpty'
 
 export default class ListLuz extends Component {
   constructor(props) {
@@ -27,13 +28,13 @@ export default class ListLuz extends Component {
   }
 
   async load() {
-    await this.http.get('luzes').then((data) => {
+    await this.http.get('luzs').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   async delete(item) {
-    await this.http.delete('luzes', item._id)
+    await this.http.delete('luzs', item._id)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(item), 1)
@@ -47,6 +48,7 @@ export default class ListLuz extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+        <ListEmpty index={3} />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

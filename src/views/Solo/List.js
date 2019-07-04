@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
+import ListEmpty from '../../components/ListEmpty'
 
 export default class ListSolo extends Component {
   constructor(props) {
@@ -67,6 +68,7 @@ export default class ListSolo extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+        <ListEmpty index={2} />
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

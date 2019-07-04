@@ -14,6 +14,7 @@ export default class Estilos {
             orange: '#ffa000',
             brown: '#5d4037',
             gray: '#888888',
+            gray_medium: '#acacac',
             gray_white: '#cecece',
             gray_white_light: '#f5f5f5',
             gray_translucid: '#33333399',
