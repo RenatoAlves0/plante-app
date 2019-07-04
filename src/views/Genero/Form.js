@@ -10,7 +10,8 @@ export default class FormGenero extends Component {
         this.estilo = new estilo()
         this.state = {
             item: {
-                familiaId: undefined
+                familiaId: undefined,
+                nome: undefined
             },
             familias: [],
             familia: {}

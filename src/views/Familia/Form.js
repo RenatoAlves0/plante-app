@@ -10,9 +10,10 @@ export default class FormFamilia extends Component {
         this.estilo = new estilo()
         this.state = {
             item: {
-                filo: 'Magnoliophyta',
-                classe: "Magnoliopsida",
-                ordem: "Caryophyllales",
+                filo: 'Generico',
+                classe: 'Generico',
+                ordem: 'Generico',
+                nome: undefined
             }
         }
     }

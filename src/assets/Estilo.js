@@ -76,7 +76,7 @@ export default class Estilos {
 
         this.item_dash = {
             backgroundColor: this.cor.white, borderRadius: 7, margin: 15,
-            width: 0.4 * Dimensions.get('window').width, height: 0.4 * Dimensions.get('window').width
+            width: 0.4 * Dimensions.get('window').width, height: 0.6 * Dimensions.get('window').width
         }
     }
 }

@@ -10,7 +10,8 @@ export default class FormEspecie extends Component {
         this.estilo = new estilo()
         this.state = {
             item: {
-                generoId: undefined
+                generoId: undefined,
+                nome: undefined
             },
             generos: [],
             genero: {}
