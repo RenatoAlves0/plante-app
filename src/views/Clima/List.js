@@ -27,13 +27,13 @@ export default class ListClima extends Component {
   }
 
   async load() {
-    await this.http.get('clima').then((data) => {
+    await this.http.get('climas').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   async delete(item) {
-    await this.http.delete('clima', item.id)
+    await this.http.delete('climas', item._id)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(item), 1)
@@ -60,7 +60,7 @@ export default class ListClima extends Component {
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
-            <SwipeRow key={item.id} leftOpenValue={80} disableLeftSwipe={true}
+            <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
               onRowOpen={() => this.delete(item)}
               left={
@@ -76,32 +76,29 @@ export default class ListClima extends Component {
                   }}>
                   <Col>
                     <Text>{'Clima ' + item.tipo}</Text>
-                    {item.temperaturaMinima || item.temperaturaMaxima || item.umidadeMinima || item.umidadeMaxima ?
-                      <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                        {item.temperaturaMinima || item.temperaturaMaxima ?
-                          <View style={this.estilo.listitemview}>
-                            <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                            <Text style={{ color: this.estilo.cor.gray }} >
-                              {
-                                ' min: ' + item.temperaturaMinima + ' ºC\n'
-                                + ' max: ' + item.temperaturaMaxima + ' ºC\n'
-                                + ' ideal: ' + (item.temperaturaMinima + item.temperaturaMaxima) / 2 + ' ºC'
-                              }
-                            </Text>
-                          </View> : null}
+                    <Row style={{ justifyContent: 'center', marginTop: 10 }} >
+                      <View style={this.estilo.listitemview}>
+                        <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} >
+                          {
+                            ' min: ' + item.temperaturaMinima + ' ºC\n'
+                            + ' max: ' + item.temperaturaMaxima + ' ºC\n'
+                            + ' ideal: ' + (item.temperaturaMinima + item.temperaturaMaxima) / 2 + ' ºC'
+                          }
+                        </Text>
+                      </View>
 
-                        {item.umidadeMinima || item.umidadeMaxima ?
-                          <View style={this.estilo.listitemview}>
-                            <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
-                            <Text style={{ color: this.estilo.cor.gray }} >
-                              {
-                                ' min: ' + item.umidadeMinima + ' %\n'
-                                + ' max: ' + item.umidadeMaxima + ' %\n '
-                                + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
-                              }
-                            </Text>
-                          </View> : null}
-                      </Row> : null}
+                      <View style={this.estilo.listitemview}>
+                        <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} >
+                          {
+                            ' min: ' + item.umidadeMinima + ' %\n'
+                            + ' max: ' + item.umidadeMaxima + ' %\n '
+                            + 'ideal: ' + this.calc_tipo_umidade((item.umidadeMinima + item.umidadeMaxima) / 2)
+                          }
+                        </Text>
+                      </View>
+                    </Row>
                   </Col>
                 </ListItem>
               }

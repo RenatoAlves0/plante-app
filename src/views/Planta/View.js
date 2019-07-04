@@ -71,28 +71,35 @@ export default class ViewPlanta extends Component {
 
                     {/* Solo */}
                     <Col style={{ alignItems: 'center', marginVertical: 20 }}>
-                        <Row style={{ justifyContent: 'center' }} >
-                            <Text style={{ textAlign: 'center' }}>
-                                {'Porções: '}
-                                {this.props.item.solo.quantidadeAreia > 0 ? 'Areia (' + this.props.item.solo.quantidadeAreia + ') ' : null}
-                                {this.props.item.solo.quantidadeArgila > 0 ? 'Argila (' + this.props.item.solo.quantidadeArgila + ') ' : null}
-                                {this.props.item.solo.quantidadeHumus > 0 ? 'Húmus (' + this.props.item.solo.quantidadeHumus + ') ' : null}
-                                {this.props.item.solo.quantidadeMusgoSphagnum > 0 ? 'Sphagnum (' + this.props.item.solo.quantidadeMusgoSphagnum + ') ' : null}
-                                {this.props.item.solo.quantidadeTerraVegetal > 0 ? 'Terra (' + this.props.item.solo.quantidadeTerraVegetal + ') ' : null}
-                                {this.props.item.solo.quantidadeTurfa > 0 ? 'Turfa (' + this.props.item.solo.quantidadeTurfa + ') ' : null}
-                            </Text>
-                        </Row>
-                        <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                            <View style={this.estilo.listitemview}>
-                                <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                                <Text style={{ color: this.estilo.cor.gray }} >
-                                    {
-                                        ' min: ' + this.props.item.solo.phMinimo + ' Ph\n'
-                                        + ' max: ' + this.props.item.solo.phMaximo + ' Ph\n '
-                                        + 'ideal: ' + this.calc_tipo_ph((this.props.item.solo.phMinimo + this.props.item.solo.phMaximo) / 2)
-                                    }
+                        {this.props.item.solo.quantidadeAreia
+                            || this.props.item.solo.quantidadeArgila
+                            || this.props.item.solo.quantidadeHumus
+                            || this.props.item.solo.quantidadeMusgoSphagnum
+                            || this.props.item.solo.quantidadeTerraVegetal
+                            || this.props.item.solo.quantidadeTurfa ?
+                            <Row style={{ justifyContent: 'center' }} >
+                                <Text style={{ textAlign: 'center' }}>
+                                    {'Porções: '}
+                                    {this.props.item.solo.quantidadeAreia > 0 ? 'Areia (' + this.props.item.solo.quantidadeAreia + ') ' : null}
+                                    {this.props.item.solo.quantidadeArgila > 0 ? 'Argila (' + this.props.item.solo.quantidadeArgila + ') ' : null}
+                                    {this.props.item.solo.quantidadeHumus > 0 ? 'Húmus (' + this.props.item.solo.quantidadeHumus + ') ' : null}
+                                    {this.props.item.solo.quantidadeMusgoSphagnum > 0 ? 'Sphagnum (' + this.props.item.solo.quantidadeMusgoSphagnum + ') ' : null}
+                                    {this.props.item.solo.quantidadeTerraVegetal > 0 ? 'Terra (' + this.props.item.solo.quantidadeTerraVegetal + ') ' : null}
+                                    {this.props.item.solo.quantidadeTurfa > 0 ? 'Turfa (' + this.props.item.solo.quantidadeTurfa + ') ' : null}
                                 </Text>
-                            </View>
+                            </Row> : null}
+                        <Row style={{ justifyContent: 'center', marginTop: 10 }} >
+                            {this.props.item.solo.phMinimo || this.props.item.solo.phMaximo ?
+                                <View style={this.estilo.listitemview}>
+                                    <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                                    <Text style={{ color: this.estilo.cor.gray }} >
+                                        {
+                                            ' min: ' + this.props.item.solo.phMinimo + ' Ph\n'
+                                            + ' max: ' + this.props.item.solo.phMaximo + ' Ph\n '
+                                            + 'ideal: ' + this.calc_tipo_ph((this.props.item.solo.phMinimo + this.props.item.solo.phMaximo) / 2)
+                                        }
+                                    </Text>
+                                </View> : null}
                             <View style={this.estilo.listitemview}>
                                 <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
                                 <Text style={{ color: this.estilo.cor.gray }} >
@@ -115,11 +122,12 @@ export default class ViewPlanta extends Component {
                             {this.props.item.luz.intensidade == 'Sombra' ? <Icon style={{ fontSize: 22, color: this.estilo.cor.gray_white }} name='cloud' type='MaterialIcons' /> : null}
                             <Text>{'  ' + this.props.item.luz.intensidade}</Text>
                         </Row>
-                        {this.props.item.luz.intensidade == 'Sombra' ? null : <Text style={{ color: this.estilo.cor.gray }}>  {this.props.item.luz.horasPorDia} {this.props.item.luz.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'} </Text>}
+                        {this.props.item.luz.intensidade == 'Sombra' || !this.props.item.luz.horasPorDia ? null :
+                            <Text style={{ color: this.estilo.cor.gray }}>  {this.props.item.luz.horasPorDia} {this.props.item.luz.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'} </Text>}
                     </Col>
 
                     {/* Nutrientes */}
-                    <Col style={{ alignItems: 'center', marginVertical: 20 }}>
+                    <Col style={{ paddingHorizontal: 10, alignItems: 'center', marginVertical: 20 }}>
                         <Row style={{ justifyContent: 'center' }} >
                             <Text style={{ textAlign: 'center', marginHorizontal: 10 }}>
                                 {'Macronutrientes: '}
@@ -128,29 +136,35 @@ export default class ViewPlanta extends Component {
                                 {this.props.item.nutriente.potassio > 0 ? 'Potássio (' + this.props.item.nutriente.potassio + ') ' : null}
                             </Text>
                         </Row>
-                        <Row style={{ justifyContent: 'center' }}>
-                            <Text style={{
-                                textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10,
-                                marginTop: this.props.item.nutriente.nitrogenio || this.props.item.nutriente.fosforo || this.props.item.nutriente.potassio ? 10 : 0
-                            }}>
-                                {'Micronutrientes: '}
-                                {this.props.item.nutriente.magnesio > 0 ? 'Magnésio (' + this.props.item.nutriente.magnesio + ') ' : null}
-                                {this.props.item.nutriente.calcio > 0 ? 'Cálcio (' + this.props.item.nutriente.calcio + ') ' : null}
-                                {this.props.item.nutriente.enxofre > 0 ? 'Enxôfre (' + this.props.item.nutriente.enxofre + ') ' : null}
-                                {this.props.item.nutriente.ferro > 0 ? 'Ferro (' + this.props.item.nutriente.ferro + ') ' : null}
-                                {this.props.item.nutriente.manganes > 0 ? 'Manganês (' + this.props.item.nutriente.manganes + ') ' : null}
-                                {this.props.item.nutriente.boro > 0 ? 'Boro (' + this.props.item.nutriente.boro + ') ' : null}
-                                {this.props.item.nutriente.cobre > 0 ? 'Cobre (' + this.props.item.nutriente.cobre + ') ' : null}
-                                {this.props.item.nutriente.zinco > 0 ? 'Zinco (' + this.props.item.nutriente.zinco + ') ' : null}
-                                {this.props.item.nutriente.cloro > 0 ? 'Cloro (' + this.props.item.nutriente.cloro + ') ' : null}
-                                {this.props.item.nutriente.molibdenio > 0 ? 'Molibdenio (' + this.props.item.nutriente.molibdenio + ') ' : null}
-                            </Text>
-                        </Row>
+
+                        {this.props.item.nutriente.magnesio || this.props.item.nutriente.calcio
+                            || this.props.item.nutriente.enxofre || this.props.item.nutriente.ferro
+                            || this.props.item.nutriente.manganes || this.props.item.nutriente.boro
+                            || this.props.item.nutriente.cobre || this.props.item.nutriente.zinco
+                            || this.props.item.nutriente.cloro || this.props.item.nutriente.molibdenio ?
+                            <Row style={{ justifyContent: 'center' }}>
+                                <Text style={{
+                                    textAlign: 'center', color: this.estilo.cor.gray, marginHorizontal: 10,
+                                    marginTop: this.props.item.nutriente.nitrogenio || this.props.item.nutriente.fosforo || this.props.item.nutriente.potassio ? 10 : 0
+                                }}>
+                                    {'Micronutrientes: '}
+                                    {this.props.item.nutriente.magnesio > 0 ? 'Magnésio (' + this.props.item.nutriente.magnesio + ') ' : null}
+                                    {this.props.item.nutriente.calcio > 0 ? 'Cálcio (' + this.props.item.nutriente.calcio + ') ' : null}
+                                    {this.props.item.nutriente.enxofre > 0 ? 'Enxôfre (' + this.props.item.nutriente.enxofre + ') ' : null}
+                                    {this.props.item.nutriente.ferro > 0 ? 'Ferro (' + this.props.item.nutriente.ferro + ') ' : null}
+                                    {this.props.item.nutriente.manganes > 0 ? 'Manganês (' + this.props.item.nutriente.manganes + ') ' : null}
+                                    {this.props.item.nutriente.boro > 0 ? 'Boro (' + this.props.item.nutriente.boro + ') ' : null}
+                                    {this.props.item.nutriente.cobre > 0 ? 'Cobre (' + this.props.item.nutriente.cobre + ') ' : null}
+                                    {this.props.item.nutriente.zinco > 0 ? 'Zinco (' + this.props.item.nutriente.zinco + ') ' : null}
+                                    {this.props.item.nutriente.cloro > 0 ? 'Cloro (' + this.props.item.nutriente.cloro + ') ' : null}
+                                    {this.props.item.nutriente.molibdenio > 0 ? 'Molibdenio (' + this.props.item.nutriente.molibdenio + ') ' : null}
+                                </Text>
+                            </Row> : null}
                     </Col>
-                </Col>
+                </Col >
 
                 <Form style={this.estilo.form_vazio} />
-            </Content>
+            </Content >
         )
     }
 }

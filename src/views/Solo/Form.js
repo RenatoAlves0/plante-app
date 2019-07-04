@@ -64,11 +64,11 @@ export default class FormSolo extends Component {
     }
 
     async save() {
-        if (this.state.item.id)
-            await this.http.put('solo', this.state.item.id, this.state.item)
+        if (this.state.item._id)
+            await this.http.put('solos', this.state.item._id, this.state.item)
                 .then((data) => { return data })
         else
-            await this.http.post('solo', this.state.item)
+            await this.http.post('solos', this.state.item)
                 .then((data) => { return data })
         this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.soloList()
     }
@@ -106,11 +106,7 @@ export default class FormSolo extends Component {
                         <Text style={this.estilo.title}>Solo</Text>
                     </Body>
                     <Right>
-                        {this.state.item.phMinimo || this.state.item.phMaximo
-                            || this.state.item.umidadeMinima || this.state.item.umidadeMaxima
-                            || this.state.item.quantidadeAreia || this.state.item.quantidadeArgila
-                            || this.state.item.quantidadeHumus || this.state.item.quantidadeMusgoSphagnum
-                            || this.state.item.quantidadeTerraVegetal || this.state.item.quantidadeTurfa ?
+                        {this.state.item.umidadeMinima && this.state.item.umidadeMaxima ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}

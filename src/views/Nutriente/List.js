@@ -27,13 +27,13 @@ export default class ListNutriente extends Component {
   }
 
   async load() {
-    await this.http.get('nutriente').then((data) => {
+    await this.http.get('nutrientes').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   async delete(item) {
-    await this.http.delete('nutriente', item.id)
+    await this.http.delete('nutrientes', item._id)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(item), 1)
@@ -50,7 +50,7 @@ export default class ListNutriente extends Component {
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
-            <SwipeRow key={item.id} leftOpenValue={80} disableLeftSwipe={true}
+            <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
               onRowOpen={() => this.delete(item)}
               left={
@@ -64,16 +64,15 @@ export default class ListNutriente extends Component {
                     paddingRight: 0, width: Dimensions.get('window').width, borderBottomWidth: 0, marginLeft: 0,
                     backgroundColor: this.state.lista.indexOf(item) % 2 == 0 ? 'white' : this.estilo.cor.gray_white_light
                   }}>
-                  <Col>
-                    {item.nitrogenio || item.fosforo || item.potassio ?
-                      <Row style={{ justifyContent: 'center' }} >
-                        <Text style={{ textAlign: 'center' }}>
-                          {'Macronutrientes: '}
-                          {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
-                          {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
-                          {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
-                        </Text>
-                      </Row> : null}
+                  <Col style={{ paddingHorizontal: 10 }}>
+                    <Row style={{ justifyContent: 'center' }} >
+                      <Text style={{ textAlign: 'center' }}>
+                        {'Macronutrientes: '}
+                        {item.nitrogenio > 0 ? 'Nitrogênio (' + item.nitrogenio + ') ' : null}
+                        {item.fosforo > 0 ? 'Fósforo (' + item.fosforo + ') ' : null}
+                        {item.potassio > 0 ? 'Potássio (' + item.potassio + ') ' : null}
+                      </Text>
+                    </Row>
 
                     {item.magnesio || item.calcio || item.enxofre || item.ferro || item.manganes
                       || item.boro || item.cobre || item.zinco || item.cloro || item.molibdenio ?

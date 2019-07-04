@@ -61,11 +61,11 @@ export default class FormNutriente extends Component {
     }
 
     async save() {
-        if (this.state.item.id)
-            await this.http.put('nutriente', this.state.item.id, this.state.item)
+        if (this.state.item._id)
+            await this.http.put('nutrientes', this.state.item._id, this.state.item)
                 .then((data) => { return data })
         else
-            await this.http.post('nutriente', this.state.item)
+            await this.http.post('nutrientes', this.state.item)
                 .then((data) => { return data })
         this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.nutrienteList()
     }
@@ -83,10 +83,7 @@ export default class FormNutriente extends Component {
                         <Text style={this.estilo.title}>Nutriente</Text>
                     </Body>
                     <Right>
-                        {this.state.item.nitrogenio || this.state.item.fosforo || this.state.item.potassio || this.state.item.magnesio
-                            || this.state.item.calcio || this.state.item.enxofre || this.state.item.ferro || this.state.item.manganes
-                            || this.state.item.boro || this.state.item.cobre || this.state.item.zinco || this.state.item.cloro
-                            || this.state.item.molibdenio ?
+                        {this.state.item.nitrogenio && this.state.item.fosforo && this.state.item.potassio ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}

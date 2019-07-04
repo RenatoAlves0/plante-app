@@ -30,13 +30,13 @@ export default class ListPlanta extends Component {
   }
 
   async load() {
-    await this.http.get('planta').then((data) => {
+    await this.http.get('plantas').then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   async delete(item) {
-    await this.http.delete('planta', item.id)
+    await this.http.delete('plantas', item._id)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(item), 1)
@@ -53,7 +53,7 @@ export default class ListPlanta extends Component {
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
-            <SwipeRow key={item.id} leftOpenValue={80} disableLeftSwipe={true}
+            <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
               onRowOpen={() => this.delete(item)}
               left={

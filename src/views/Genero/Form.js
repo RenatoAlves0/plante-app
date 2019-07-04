@@ -10,7 +10,7 @@ export default class FormGenero extends Component {
         this.estilo = new estilo()
         this.state = {
             item: {
-                familiaId: undefined,
+                _id: undefined,
                 nome: undefined
             },
             familias: [],
@@ -33,13 +33,13 @@ export default class FormGenero extends Component {
 
     async familia() {
         if (this.props.item) this.setState({ familia: this.props.item.familia })
-        this.http.get('familia').then((data) => {
+        this.http.get('familias').then((data) => {
             this.setState({ familias: data })
         })
     }
 
     async save() {
-        await this.http.post('genero', this.state.item)
+        await this.http.post('generos', this.state.item)
             .then((data) => { return data })
     }
 
@@ -62,8 +62,8 @@ export default class FormGenero extends Component {
                                 mode='dialog'
                                 iosIcon={<Icon name='arrow-down' />}
                                 selectedValue={this.state.familia}
-                                onValueChange={(value) => { this.setState({ familia: value, item: { ...this.state.item, familiaId: value } }) }}>
-                                {this.state.familias.map((item) => { return <Item key={item.id} label={item.nome} value={item.id} /> })}
+                                onValueChange={(value) => { this.setState({ familia: value, item: { ...this.state.item, _id: value } }) }}>
+                                {this.state.familias.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                             </Picker>
                         </Row>
                     </Row>

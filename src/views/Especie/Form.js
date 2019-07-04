@@ -10,7 +10,7 @@ export default class FormEspecie extends Component {
         this.estilo = new estilo()
         this.state = {
             item: {
-                generoId: undefined,
+                _id: undefined,
                 nome: undefined
             },
             generos: [],
@@ -33,13 +33,13 @@ export default class FormEspecie extends Component {
 
     async genero() {
         if (this.props.item) this.setState({ genero: this.props.item.genero })
-        this.http.get('genero').then((data) => {
+        this.http.get('generos').then((data) => {
             this.setState({ generos: data })
         })
     }
 
     async save() {
-        await this.http.post('especie', this.state.item)
+        await this.http.post('especies', this.state.item)
             .then((data) => { return data })
     }
 
@@ -62,8 +62,8 @@ export default class FormEspecie extends Component {
                                 mode='dialog'
                                 iosIcon={<Icon name='arrow-down' />}
                                 selectedValue={this.state.genero}
-                                onValueChange={(value) => { this.setState({ genero: value, item: { ...this.state.item, generoId: value } }) }}>
-                                {this.state.generos.map((item) => { return <Item key={item.id} label={item.nome} value={item.id} /> })}
+                                onValueChange={(value) => { this.setState({ genero: value, item: { ...this.state.item, _id: value } }) }}>
+                                {this.state.generos.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                             </Picker>
                         </Row>
                     </Row>

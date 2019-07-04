@@ -31,7 +31,7 @@ export default class FormFamilia extends Component {
     }
 
     async save() {
-        await this.http.post('familia', this.state.item)
+        await this.http.post('familias', this.state.item)
             .then((data) => { return data })
     }
 
