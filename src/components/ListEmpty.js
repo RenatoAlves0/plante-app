@@ -10,11 +10,11 @@ export default class ListEmpty extends Component {
             index: undefined
         }
         this.icons = [
-            { name: 'flower', type: 'Entypo' },
-            { name: 'cloud', type: 'Entypo' },
-            { name: 'grain', type: 'MaterialIcons' },
-            { name: 'wb-sunny', type: 'MaterialIcons' },
-            { name: 'lab-flask', type: 'Entypo' }
+            { _id: 'planta', name: 'flower', type: 'Entypo' },
+            { _id: 'clima', name: 'cloud', type: 'Entypo' },
+            { _id: 'solo', name: 'grain', type: 'MaterialIcons' },
+            { _id: 'luz', name: 'wb-sunny', type: 'MaterialIcons' },
+            { _id: 'nutriente', name: 'lab-flask', type: 'Entypo' }
         ]
     }
 
@@ -27,7 +27,7 @@ export default class ListEmpty extends Component {
     }
 
     async load() {
-        this.setState({ index: this.props.index })
+        this.setState({ index: this.icons.findIndex(obj => obj._id == this.props._id) })
     }
 
     render() {

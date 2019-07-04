@@ -51,7 +51,7 @@ export default class ListPlanta extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
-        <ListEmpty index={0} />
+        {!this.state.lista[0] && this.state.loaded ? <ListEmpty _id={'planta'} /> : null}
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (

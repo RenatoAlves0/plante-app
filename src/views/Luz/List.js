@@ -48,7 +48,7 @@ export default class ListLuz extends Component {
     return (
       <Container>
         <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
-        <ListEmpty index={3} />
+        {!this.state.lista[0] && this.state.loaded ? <ListEmpty _id={'luz'} /> : null}
         <Content>
           {this.state.loaded ? null : <Loader />}
           {this.state.lista.map((item) => (
