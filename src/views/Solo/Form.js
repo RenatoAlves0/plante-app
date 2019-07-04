@@ -11,6 +11,10 @@ export default class FormSolo extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
+            validPhMinimo: true,
+            validPhMaximo: true,
+            validUmidadeMinima: true,
+            validUmidadeMaxima: true,
             item: {
                 phMinimo: undefined,
                 phMaximo: undefined,
@@ -106,7 +110,10 @@ export default class FormSolo extends Component {
                         <Text style={this.estilo.title}>Solo</Text>
                     </Body>
                     <Right>
-                        {this.state.item.umidadeMinima && this.state.item.umidadeMaxima ?
+                        {this.state.item.umidadeMinima && this.state.item.umidadeMaxima
+                            && this.state.item.phMinimo && this.state.item.phMaximo
+                            && this.state.validPhMinimo && this.state.validPhMaximo
+                            && this.state.validUmidadeMinima && this.state.validUmidadeMaxima ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}
@@ -118,7 +125,11 @@ export default class FormSolo extends Component {
                         <Label>Ph Mínimo</Label>
                         <Row>
                             <Input keyboardType='numeric' autoFocus={true} value={this.state.item.phMinimo}
-                                onChangeText={(value) => { this.setState({ item: { ...this.state.item, phMinimo: value } }) }} />
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, phMinimo: value } }),
+                                        value > 14 || value < 0 ? this.setState({ validPhMinimo: false }) :
+                                            this.setState({ validPhMinimo: true })
+                                }} />
                             <Row style={this.estilo.subrow}>
                                 <Text style={{ margin: 7 }} >{this.calc_tipo_ph(this.state.item.phMinimo)}</Text>
                             </Row>
@@ -128,7 +139,11 @@ export default class FormSolo extends Component {
                         <Label>Ph Máximo</Label>
                         <Row>
                             <Input keyboardType='numeric' value={this.state.item.phMaximo}
-                                onChangeText={(value) => { this.setState({ item: { ...this.state.item, phMaximo: value } }) }} />
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, phMaximo: value } }),
+                                        value > 14 || value < 0 ? this.setState({ validPhMaximo: false }) :
+                                            this.setState({ validPhMaximo: true })
+                                }} />
                             <Row style={this.estilo.subrow}>
                                 <Text style={{ margin: 7 }}> {this.calc_tipo_ph(this.state.item.phMaximo)} </Text>
                             </Row>
@@ -138,7 +153,11 @@ export default class FormSolo extends Component {
                         <Label>Umidade Mínima %</Label>
                         <Row>
                             <Input keyboardType='numeric' value={this.state.item.umidadeMinima}
-                                onChangeText={(value) => { this.setState({ item: { ...this.state.item, umidadeMinima: value } }) }} />
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, umidadeMinima: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validUmidadeMinima: false }) :
+                                            this.setState({ validUmidadeMinima: true })
+                                }} />
                             <Row style={this.estilo.subrow}>
                                 <Text style={{ margin: 7 }} >{this.calc_tipo_umidade(this.state.item.umidadeMinima)}</Text>
                             </Row>
@@ -148,7 +167,11 @@ export default class FormSolo extends Component {
                         <Label>Umidade Máxima %</Label>
                         <Row>
                             <Input keyboardType='numeric' value={this.state.item.umidadeMaxima}
-                                onChangeText={(value) => { this.setState({ item: { ...this.state.item, umidadeMaxima: value } }) }} />
+                                onChangeText={(value) => {
+                                    this.setState({ item: { ...this.state.item, umidadeMaxima: value } }),
+                                        value > 100 || value < 0 ? this.setState({ validUmidadeMaxima: false }) :
+                                            this.setState({ validUmidadeMaxima: true })
+                                }} />
                             <Row style={this.estilo.subrow}>
                                 <Text style={{ margin: 7 }} >{this.calc_tipo_umidade(this.state.item.umidadeMaxima)}</Text>
                             </Row>

@@ -101,17 +101,16 @@ export default class ListSolo extends Component {
                         </Text>
                       </Row> : null}
                     <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                      {item.phMinimo || item.phMaximo ?
-                        <View style={this.estilo.listitemview}>
-                          <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                          <Text style={{ color: this.estilo.cor.gray }} >
-                            {
-                              ' min: ' + item.phMinimo + ' Ph\n'
-                              + ' max: ' + item.phMaximo + ' Ph\n '
-                              + 'ideal: ' + this.calc_tipo_ph((item.phMinimo + item.phMaximo) / 2)
-                            }
-                          </Text>
-                        </View> : null}
+                      <View style={this.estilo.listitemview}>
+                        <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                        <Text style={{ color: this.estilo.cor.gray }} >
+                          {
+                            ' min: ' + item.phMinimo + ' Ph\n'
+                            + ' max: ' + item.phMaximo + ' Ph\n '
+                            + 'ideal: ' + this.calc_tipo_ph((item.phMinimo + item.phMaximo) / 2)
+                          }
+                        </Text>
+                      </View>
 
                       <View style={this.estilo.listitemview}>
                         <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />

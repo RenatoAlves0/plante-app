@@ -89,17 +89,16 @@ export default class ViewPlanta extends Component {
                                 </Text>
                             </Row> : null}
                         <Row style={{ justifyContent: 'center', marginTop: 10 }} >
-                            {this.props.item.solo.phMinimo || this.props.item.solo.phMaximo ?
-                                <View style={this.estilo.listitemview}>
-                                    <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
-                                    <Text style={{ color: this.estilo.cor.gray }} >
-                                        {
-                                            ' min: ' + this.props.item.solo.phMinimo + ' Ph\n'
-                                            + ' max: ' + this.props.item.solo.phMaximo + ' Ph\n '
-                                            + 'ideal: ' + this.calc_tipo_ph((this.props.item.solo.phMinimo + this.props.item.solo.phMaximo) / 2)
-                                        }
-                                    </Text>
-                                </View> : null}
+                            <View style={this.estilo.listitemview}>
+                                <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.orange + 'aa' }} />
+                                <Text style={{ color: this.estilo.cor.gray }} >
+                                    {
+                                        ' min: ' + this.props.item.solo.phMinimo + ' Ph\n'
+                                        + ' max: ' + this.props.item.solo.phMaximo + ' Ph\n '
+                                        + 'ideal: ' + this.calc_tipo_ph((this.props.item.solo.phMinimo + this.props.item.solo.phMaximo) / 2)
+                                    }
+                                </Text>
+                            </View>
                             <View style={this.estilo.listitemview}>
                                 <Icon name='water' type='MaterialCommunityIcons' style={{ marginLeft: 10, color: this.estilo.cor.blue + 'aa' }} />
                                 <Text style={{ color: this.estilo.cor.gray }} >
