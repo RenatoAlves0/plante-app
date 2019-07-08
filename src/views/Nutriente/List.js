@@ -18,7 +18,7 @@ export default class ListNutriente extends Component {
       modal: false,
       loaded: false,
       item_delete: undefined,
-      lista: [],
+      lista: []
     }
   }
 
@@ -58,7 +58,7 @@ export default class ListNutriente extends Component {
           {this.state.lista.map((item) => (
             <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
-              onRowOpen={() => { this.setState({ modal: true, item_delete: item }) }}
+              onRowOpen={() => this.setState({ modal: true, item_delete: item })}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
                   <Icon active name='trash' type='Feather' />

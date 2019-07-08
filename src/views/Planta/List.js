@@ -8,6 +8,7 @@ import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 import ViewInfos from './View'
 import ListEmpty from '../../components/ListEmpty'
+import Delete from '../../components/Delete'
 
 export default class ListPlanta extends Component {
   constructor(props) {
@@ -15,10 +16,12 @@ export default class ListPlanta extends Component {
     this.estilo = new estilo()
     this.http = new http()
     this.state = {
-      loaded: false,
-      lista: [],
       modal: false,
-      itemModal: {}
+      loaded: false,
+      item_delete: undefined,
+      lista: [],
+      modal_view: false,
+      item_modal_view: {}
     }
   }
 
@@ -36,15 +39,16 @@ export default class ListPlanta extends Component {
     })
   }
 
-  async delete(item) {
-    await this.http.delete('plantas', item._id)
+  delete = async (confirm) => {
+    await this.setState({ modal: false })
+    confirm ? await this.http.delete('plantas', this.state.item_delete._id)
       .then(async (data) => {
         if (data == 'Ok') {
-          await this.state.lista.splice(this.state.lista.indexOf(item), 1)
+          await this.state.lista.splice(this.state.lista.indexOf(this.state.item_delete), 1)
           this.setState({ lista: this.state.lista })
         }
         else { alert(data) }
-      })
+      }) : null
   }
 
   render() {
@@ -57,7 +61,7 @@ export default class ListPlanta extends Component {
           {this.state.lista.map((item) => (
             <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
-              onRowOpen={() => this.delete(item)}
+              onRowOpen={() => this.setState({ modal: true, item_delete: item })}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
                   <Icon active name='trash' type='Feather' />
@@ -75,33 +79,41 @@ export default class ListPlanta extends Component {
                       {item.familia.nome + ' . ' + item.genero.nome + ' . ' + item.especie.nome}</Text>
                   </Col>
                   <Button transparent style={{ marginHorizontal: 10 }}
-                    onPress={() => this.setState({ modal: true, itemModal: item })} >
+                    onPress={() => this.setState({ modal_view: true, item_modal_view: item })} >
                     <Icon name='eye' type='Feather' style={{ color: this.estilo.cor.gray, fontSize: 22 }} />
                   </Button>
                 </ListItem>
               }
             />))}
-          {this.state.modal ?
-            <Modal
-              transparent
-              animationType='fade'
-              visible={this.state.modal}
-              onRequestClose={() => this.setState({ modal: false })}>
 
-              <Container style={{ backgroundColor: this.estilo.cor.gray_translucid }}>
+          <Modal
+            transparent
+            animationType='fade'
+            visible={this.state.modal}
+            onRequestClose={() => this.setState({ modal: false })}>
+            <Delete delete={this.delete} />
+          </Modal>
 
-                <ViewInfos item={this.state.itemModal} />
+          <Modal
+            transparent
+            animationType='fade'
+            visible={this.state.modal_view}
+            onRequestClose={() => this.setState({ modal_view: false })}>
 
-                <Form style={{ flexDirection: 'row', alignSelf: 'flex-end' }} >
-                  <Fab containerStyle={{ position: 'relative' }}
-                    style={{ backgroundColor: this.estilo.cor.red }}
-                    onPress={() => { this.setState({ modal: false }) }}>
-                    <Icon name='x' type='Feather' />
-                  </Fab>
-                </Form>
+            <Container style={{ backgroundColor: this.estilo.cor.gray_translucid }}>
 
-              </Container>
-            </Modal> : null}
+              <ViewInfos item={this.state.item_modal_view} />
+
+              <Form style={{ flexDirection: 'row', alignSelf: 'flex-end' }} >
+                <Fab containerStyle={{ position: 'relative' }}
+                  style={{ backgroundColor: this.estilo.cor.red }}
+                  onPress={() => { this.setState({ modal_view: false }) }}>
+                  <Icon name='x' type='Feather' />
+                </Fab>
+              </Form>
+
+            </Container>
+          </Modal>
 
         </Content>
         <Fab

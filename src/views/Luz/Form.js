@@ -14,7 +14,7 @@ export default class FormLuz extends Component {
             validHorasPorDia: true,
             item: {
                 intensidade: 'Forte',
-                horasPorDia: '0'
+                horasPorDia: undefined
             },
             intensidades: [
                 { nome: 'Forte' },
@@ -67,7 +67,8 @@ export default class FormLuz extends Component {
                         <Text style={this.estilo.title}>Luz</Text>
                     </Body>
                     <Right>
-                        {this.state.validHorasPorDia ?
+                        {(this.state.item.horasPorDia || this.state.item.intensidade == 'Sombra')
+                            && this.state.validHorasPorDia ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <Icon style={{ color: 'white' }} name='check' type='Feather' />
                             </Button> : null}
@@ -83,7 +84,10 @@ export default class FormLuz extends Component {
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
                                     selectedValue={this.state.item.intensidade}
-                                    onValueChange={(value) => { this.setState({ item: { ...this.state.item, intensidade: value } }) }}>
+                                    onValueChange={(value) => {
+                                        this.setState({ item: { ...this.state.item, intensidade: value } }),
+                                            value == 'Sombra' ? this.setState({ validHorasPorDia: true }) : null
+                                    }}>
                                     {this.state.intensidades.map((item) => { return <Item key={item.nome} label={item.nome} value={item.nome} /> })}
                                 </Picker>
                             </Row>
@@ -95,11 +99,11 @@ export default class FormLuz extends Component {
                             <Input keyboardType='numeric' autoFocus={true} value={this.state.item.horasPorDia}
                                 onChangeText={(value) => {
                                     this.setState({ item: { ...this.state.item, horasPorDia: value + '' } }),
-                                        value > 12 || value < 0 ? this.setState({ validHorasPorDia: false }) :
+                                        value > 12 || value < 1 ? this.setState({ validHorasPorDia: false }) :
                                             this.setState({ validHorasPorDia: true })
                                 }} />
                             {!this.state.validHorasPorDia ? <Row style={this.estilo.subrow}>
-                                <Text style={{ margin: 7 }} >{'Horas por dia deve estar entre 0 e 12'}</Text>
+                                <Text style={{ margin: 7 }} >{'Horas por dia deve estar entre 1 e 12'}</Text>
                             </Row> : null}
                         </Row>
                     </Form>}
