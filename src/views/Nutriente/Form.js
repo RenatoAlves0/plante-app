@@ -24,6 +24,7 @@ export default class FormNutriente extends Component {
             validZinco: true,
             validCloro: true,
             validMolibdenio: true,
+            
             item: {
                 nitrogenio: undefined,
                 fosforo: undefined,

@@ -17,7 +17,7 @@ export default class Estilos {
             gray_medium: '#acacac',
             gray_white: '#cecece',
             gray_white_light: '#f5f5f5',
-            gray_translucid: '#33333399',
+            gray_translucid: '#00000055',
             white: '#ffffff',
             black: '#000000'
         }
@@ -31,7 +31,7 @@ export default class Estilos {
             padding: 10,
             backgroundColor: this.cor.gray_white + '99',
             margin: 10, marginBottom: 0,
-            borderRadius: 7,
+            borderRadius: 10,
             flexDirection: 'column'
         }
 
@@ -41,7 +41,7 @@ export default class Estilos {
 
         this.subrow = {
             backgroundColor: this.cor.gray_white + '99',
-            borderRadius: 7,
+            borderRadius: 10,
             marginTop: 5
         }
 
@@ -59,11 +59,11 @@ export default class Estilos {
 
         this.swiperow_deletbuttom = {
             backgroundColor: this.cor.red, paddingBottom: 6,
-            elevation: 0, margin: 10, borderRadius: 7
+            elevation: 0, margin: 10, borderRadius: 10
         }
 
         this.contentmodal = {
-            backgroundColor: 'white', borderRadius: 7, marginHorizontal: 10, marginTop: 10
+            backgroundColor: 'white', borderRadius: 10, marginHorizontal: 10, marginTop: 10
         }
 
         this.head_contentmodal = {
@@ -76,7 +76,7 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            backgroundColor: this.cor.white, borderRadius: 7, margin: 15,
+            backgroundColor: this.cor.white, borderRadius: 10, margin: 15,
             width: 0.4 * Dimensions.get('window').width, height: 0.6 * Dimensions.get('window').width
         }
     }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Row, View } from 'native-base'
-import { Dimensions, StatusBar } from 'react-native'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Row, Form, View } from 'native-base'
+import { Dimensions, StatusBar, Modal } from 'react-native'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 import ListEmpty from '../../components/ListEmpty'
+import Delete from '../../components/Delete'
 
 export default class ListNutriente extends Component {
   constructor(props) {
@@ -14,7 +15,9 @@ export default class ListNutriente extends Component {
     this.estilo = new estilo()
     this.http = new http()
     this.state = {
+      modal: false,
       loaded: false,
+      item_delete: undefined,
       lista: [],
     }
   }
@@ -33,15 +36,16 @@ export default class ListNutriente extends Component {
     })
   }
 
-  async delete(item) {
-    await this.http.delete('nutrientes', item._id)
+  delete = async (confirm) => {
+    await this.setState({ modal: false })
+    confirm ? await this.http.delete('nutrientes', this.state.item_delete._id)
       .then(async (data) => {
         if (data == 'Ok') {
-          await this.state.lista.splice(this.state.lista.indexOf(item), 1)
+          await this.state.lista.splice(this.state.lista.indexOf(this.state.item_delete), 1)
           this.setState({ lista: this.state.lista })
         }
         else { alert(data) }
-      })
+      }) : null
   }
 
   render() {
@@ -54,7 +58,7 @@ export default class ListNutriente extends Component {
           {this.state.lista.map((item) => (
             <SwipeRow key={item._id} leftOpenValue={80} disableLeftSwipe={true}
               style={this.estilo.swiperow}
-              onRowOpen={() => this.delete(item)}
+              onRowOpen={() => { this.setState({ modal: true, item_delete: item }) }}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
                   <Icon active name='trash' type='Feather' />
@@ -100,6 +104,14 @@ export default class ListNutriente extends Component {
                 </ListItem>
               }
             />))}
+
+          <Modal
+            transparent
+            animationType='fade'
+            visible={this.state.modal}
+            onRequestClose={() => this.setState({ modal: false })}>
+            <Delete delete={this.delete} />
+          </Modal>
 
         </Content>
         <Fab
