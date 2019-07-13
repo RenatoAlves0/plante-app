@@ -1,32 +1,41 @@
 import React, { Component } from 'react'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Row, View, Form, Body } from 'native-base'
-import { Dimensions, StatusBar, TouchableHighlight } from 'react-native'
+import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body } from 'native-base'
+import { StatusBar, TouchableHighlight, Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
 import BottomMenu from '../../components/BottomMenu'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
+import LinearGradient from 'react-native-linear-gradient'
 
-export default class ListLuz extends Component {
+export default class Dash extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
         this.state = {
+            sensores: {
+                t: undefined,
+                u: undefined,
+                uS: undefined,
+                l: undefined,
+                c: undefined
+            },
             loaded: false,
         }
         this.topico_sensores = 'plante_iot_sensores(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_iot_regador(renalves.oli@gmail.com)'
+        this.uri = 'ws://iot.eclipse.org:80/ws'
+        this.client_id = 'plante_app_id(renalves.oli@gmail.com)'
         this.myStorage = {
             setItem: (key, item) => {
-                myStorage[key] = item;
+                myStorage[key] = item
             },
             getItem: (key) => myStorage[key],
             removeItem: (key) => {
-                delete myStorage[key];
+                delete myStorage[key]
             },
         }
         this.client = new Client({
-            uri: 'ws://iot.eclipse.org:80/ws', clientId: 'plante_app_id(renalves.oli@gmail.com)',
-            storage: this.myStorage
+            uri: this.uri, clientId: this.client_id, storage: this.myStorage
         })
     }
 
@@ -42,78 +51,100 @@ export default class ListLuz extends Component {
     async load() {
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) {
-                console.log(responseObject.errorMessage);
+                console.log(responseObject.errorMessage)
             }
         })
 
         this.client.on('messageReceived', (message) => {
-            console.log(message.payloadString);
+            this.setState({ sensores: JSON.parse(message.payloadString) })
+            console.log(this.state.sensores)
         })
 
         this.client.connect()
             .then(() => {
-                console.log('Conexão estabelecida!');
-                return this.client.subscribe(this.topico_sensores);
-            })
-            .then(() => {
-                let message = new Message('ture');
-                message.destinationName = this.topico_regador;
-                this.client.send(message);
+                console.log('Conexão estabelecida!')
+                return this.client.subscribe(this.topico_sensores)
             })
             .catch((responseObject) => {
                 if (responseObject.errorCode !== 0) {
-                    console.log('Conexão perdida!:' + responseObject.errorMessage);
+                    console.log('Conexão perdida!:' + responseObject.errorMessage)
                 }
             })
 
         this.setState({ loaded: true })
     }
 
-    teste() {
-        let message = new Message('false')
-        message.destinationName = this.topico_regador
-        this.client.send(message)
+    async teste() {
+        if (!this.client.isConnected()) {
+            this.client.connect()
+                .then(() => {
+                    let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":4095.00, \"l\":312.14, \"c\":4095.00}')
+                    message.destinationName = this.topico_sensores
+                    this.client.send(message)
+                })
+        }
+        else {
+            let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":4095.00, \"l\":312.14, \"c\":4095.00}')
+            message.destinationName = this.topico_sensores
+            this.client.send(message)
+        }
     }
 
     render() {
         return (
-            <Container style={{ backgroundColor: this.estilo.cor.greenish_solid }}>
-                <StatusBar backgroundColor={this.estilo.cor.greenish_solid} barStyle="light-content" />
+            <Container>
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <Content>
                     {this.state.loaded ? null : <Loader />}
-                    <Row style={{ justifyContent: 'center' }} >
-                        <TouchableHighlight style={this.estilo.item_dash} onPress={() => this.teste()}>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
-                                <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.blue + 'aa', fontSize: 50 }} />
-                                <Text style={{ fontSize: 20 }} >50 %</Text>
-                            </View>
-                        </TouchableHighlight>
+                    <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
+                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                            <LinearGradient colors={['#ff104f', '#c100b7']} useAngle={true}
+                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                <Text style={{ fontSize: 20, color: 'white' }} >{this.state.sensores.t} ºC</Text>
+                            </LinearGradient>
+                        </Button>
 
-                        <TouchableHighlight style={this.estilo.item_dash}>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
-                                <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.blue + 'aa', fontSize: 50 }} />
-                                <Text style={{ fontSize: 20 }} >50 %</Text>
-                            </View>
-                        </TouchableHighlight>
+                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                            <LinearGradient colors={['#3376ff', '#07f1f4']} useAngle={true}
+                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                <Text style={{ fontSize: 20, color: 'white' }} >{this.state.sensores.u} %</Text>
+                            </LinearGradient>
+                        </Button>
                     </Row>
 
                     <Row style={{ justifyContent: 'center' }} >
-                        <TouchableHighlight style={this.estilo.item_dash}>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
+                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                            <LinearGradient colors={['#ff8d33', '#f1f407']} useAngle={true}
+                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
+                                <Text style={{ fontSize: 20, color: 'white' }} >{this.state.sensores.l} %</Text>
+                            </LinearGradient>
+                        </Button>
 
-                            </View>
-                        </TouchableHighlight>
+                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                            <LinearGradient colors={['#00e770', '#03c8e2']} useAngle={true}
+                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                <Icon name='grain' type='MaterialIcons' style={this.estilo.icon_item_dash} />
+                                <Text style={{ fontSize: 20, color: 'white' }} >{this.state.sensores.uS} %</Text>
+                            </LinearGradient>
+                        </Button>
+                    </Row>
 
-                        <TouchableHighlight style={this.estilo.item_dash}>
-                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
-
-                            </View>
-                        </TouchableHighlight>
+                    <Row style={{ justifyContent: 'center' }} >
+                        <Button style={this.estilo.buttom_item_dash}>
+                            <LinearGradient colors={['#03c8e2', '#ffffff']} useAngle={true}
+                                angle={0} angleCenter={{ x: 0, y: 1 }} style={this.estilo.item_dash}>
+                                <Icon name='weather-pouring' type='MaterialCommunityIcons'
+                                    style={{ color: this.estilo.cor.blue_solid, fontSize: 70 }} />
+                            </LinearGradient>
+                        </Button>
                     </Row>
 
                 </Content>
                 <BottomMenu ativa='planta' />
-            </Container>
+            </Container >
         )
     }
 }

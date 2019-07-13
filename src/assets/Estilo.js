@@ -76,8 +76,17 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            backgroundColor: this.cor.white, borderRadius: 10, margin: 15,
-            width: 0.4 * Dimensions.get('window').width, height: 0.6 * Dimensions.get('window').width
+            borderRadius: 10, alignItems: 'center', justifyContent: 'center',
+            height: '100%', width: '100%'
+        }
+
+        this.buttom_item_dash = {
+            width: 160, height: 200, margin: 15, paddingTop: 0,
+            paddingBottom: 0, borderRadius: 10, elevation: 10, backgroundColor: 'transparent'
+        }
+
+        this.icon_item_dash = {
+            fontSize: 50, marginBottom: 20
         }
     }
 }
