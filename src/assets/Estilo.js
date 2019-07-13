@@ -76,13 +76,14 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            borderRadius: 10, alignItems: 'center', justifyContent: 'center',
-            height: '100%', width: '100%'
+            width: 160, height: 200, margin: 15, paddingTop: 0,
+            paddingBottom: 0, borderRadius: 10, elevation: 10
         }
 
         this.buttom_item_dash = {
-            width: 160, height: 200, margin: 15, paddingTop: 0,
-            paddingBottom: 0, borderRadius: 10, elevation: 10, backgroundColor: 'transparent'
+            borderRadius: 10, alignItems: 'center', justifyContent: 'center',
+            height: '100%', width: '100%', backgroundColor: 'transparent',
+            flexDirection: 'column', elevation: 0
         }
 
         this.icon_item_dash = {

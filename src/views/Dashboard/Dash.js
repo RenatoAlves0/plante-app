@@ -97,54 +97,54 @@ export default class Dash extends Component {
                 <Content>
                     {this.state.loaded ? null : <Loader />}
                     <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
-                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                            <LinearGradient colors={['#ff104f', '#c100b7']} useAngle={true}
-                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                        <LinearGradient colors={['#ff104f', '#c100b7']} useAngle={true}
+                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                 <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                 <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
-                                <Text style={{ color: 'white' }} >temperatura</Text>
-                            </LinearGradient>
-                        </Button>
+                                <Text uppercase={false} style={{ color: 'white' }} >temperatura</Text>
+                            </Button>
+                        </LinearGradient>
 
-                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                            <LinearGradient colors={['#3376ff', '#07f1f4']} useAngle={true}
-                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                        <LinearGradient colors={['#3376ff', '#07f1f4']} useAngle={true}
+                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                 <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                 <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
-                                <Text style={{ color: 'white' }} >umidade do ar</Text>
-                            </LinearGradient>
-                        </Button>
+                                <Text uppercase={false} style={{ color: 'white' }} >umidade do ar</Text>
+                            </Button>
+                        </LinearGradient>
                     </Row>
 
                     <Row style={{ justifyContent: 'center' }} >
-                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                            <LinearGradient colors={['#ff8d33', '#f1f407']} useAngle={true}
-                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                        <LinearGradient colors={['#ff8d33', '#f1f407']} useAngle={true}
+                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                 <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
                                 <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
-                                <Text style={{ color: 'white' }} >luminosidade</Text>
-                            </LinearGradient>
-                        </Button>
+                                <Text uppercase={false} style={{ color: 'white' }} >luminosidade</Text>
+                            </Button>
+                        </LinearGradient>
 
-                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                            <LinearGradient colors={['#00e770', '#03c8e2']} useAngle={true}
-                                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                        <LinearGradient colors={['#00e770', '#03c8e2']} useAngle={true}
+                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                 <Icon name='grain' type='MaterialIcons' style={this.estilo.icon_item_dash} />
                                 <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
-                                <Text style={{ color: 'white' }} >umidade do solo</Text>
-                            </LinearGradient>
-                        </Button>
+                                <Text uppercase={false} style={{ color: 'white' }} >umidade do solo</Text>
+                            </Button>
+                        </LinearGradient>
                     </Row>
 
                     <Row style={{ justifyContent: 'center' }} >
-                        <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                            <LinearGradient colors={['#07f1f4', '#3376ff']} useAngle={true}
-                                angle={0} angleCenter={{ x: 0, y: 1 }} style={this.estilo.item_dash}>
+                        <LinearGradient colors={['#07f1f4', '#3376ff']} useAngle={true}
+                            angle={0} angleCenter={{ x: 0, y: 1 }} style={this.estilo.item_dash}>
+                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                 <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                 <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
-                                <Text style={{ color: 'white' }} >chuva</Text>
-                            </LinearGradient>
-                        </Button>
+                                <Text uppercase={false} style={{ color: 'white' }} >chuva</Text>
+                            </Button>
+                        </LinearGradient>
                     </Row>
 
                 </Content>
