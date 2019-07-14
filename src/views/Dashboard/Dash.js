@@ -12,7 +12,8 @@ export default class Dash extends Component {
         super(props)
         this.estilo = new estilo()
         this.state = {
-            currentTab: 0,
+            regar: false,
+            tabAtual: 0,
             sensores: {
                 t: undefined,
                 u: undefined,
@@ -77,7 +78,6 @@ export default class Dash extends Component {
 
     async teste() {
         if (!this.client.isConnected()) {
-            alert('Off')
             this.client.connect()
                 .then(() => {
                     let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
@@ -100,14 +100,14 @@ export default class Dash extends Component {
                 <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
                     tabBarUnderlineStyle={{ height: 0 }}
                     initialPage={this.state.currentPage}
-                    onChangeTab={({ i }) => this.setState({ currentTab: i })}>
+                    onChangeTab={({ i }) => this.setState({ tabAtual: i })}>
                     <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.currentTab == 0 ?
+                        this.state.tabAtual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Sensores</Text>
                         <Icon style={[{ fontSize: 25 },
-                        this.state.currentTab == 0 ?
+                        this.state.tabAtual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
                             name='gauge' type='MaterialCommunityIcons' />
@@ -168,22 +168,24 @@ export default class Dash extends Component {
                     </Tab>
                     <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.currentTab == 1 ?
+                        this.state.tabAtual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Atuadores</Text>
                         <Icon style={[{ fontSize: 22 },
-                        this.state.currentTab == 1 ?
+                        this.state.tabAtual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
                             name='robot-industrial' type='MaterialCommunityIcons' />
                     </TabHeading>}>
                         <Content>
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
-                                <LinearGradient colors={[this.estilo.cor.gray_white, this.estilo.cor.gray_white_light]} useAngle={true}
+                                <LinearGradient colors={this.state.regar ? [this.estilo.cor.blue, this.estilo.cor.greenish_light] :
+                                    [this.estilo.cor.gray, this.estilo.cor.gray_white]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.blue_light }]} />
-                                        <Text style={{ color: this.estilo.cor.blue_light, fontWeight: 'bold', fontSize: 20 }} >Ligar</Text>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ regar: !this.state.regar })}>
+                                        <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.white }]} />
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontWeight: 'bold', fontSize: 23 }} >{this.state.regar ? 'Desligar' : 'Ligar'}</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, textAlign: 'center' }} >umidade {this.state.sensores.u} %</Text>
                                     </Button>
                                 </LinearGradient>
                             </Row>
