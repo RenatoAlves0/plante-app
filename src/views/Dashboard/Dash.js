@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body } from 'native-base'
+import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header } from 'native-base'
 import { StatusBar, TouchableHighlight, Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
 import BottomMenu from '../../components/BottomMenu'
@@ -12,6 +12,7 @@ export default class Dash extends Component {
         super(props)
         this.estilo = new estilo()
         this.state = {
+            currentTab: 0,
             sensores: {
                 t: undefined,
                 u: undefined,
@@ -76,15 +77,16 @@ export default class Dash extends Component {
 
     async teste() {
         if (!this.client.isConnected()) {
+            alert('Off')
             this.client.connect()
                 .then(() => {
-                    let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":4095.00, \"l\":312.14, \"c\":4095.00}')
+                    let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
                     message.destinationName = this.topico_sensores
                     this.client.send(message)
                 })
         }
         else {
-            let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":4095.00, \"l\":312.14, \"c\":4095.00}')
+            let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
             message.destinationName = this.topico_sensores
             this.client.send(message)
         }
@@ -93,63 +95,103 @@ export default class Dash extends Component {
     render() {
         return (
             <Container>
-                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
-                <Content>
-                    {this.state.loaded ? null : <Loader />}
-                    <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
-                        <LinearGradient colors={['#ff104f', '#c100b7']} useAngle={true}
-                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
-                                <Text uppercase={false} style={{ color: 'white' }} >temperatura</Text>
-                            </Button>
-                        </LinearGradient>
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
+                {this.state.loaded ? null : <Loader />}
+                <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
+                    tabBarUnderlineStyle={{ height: 0 }}
+                    initialPage={this.state.currentPage}
+                    onChangeTab={({ i }) => this.setState({ currentTab: i })}>
+                    <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
+                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
+                        this.state.currentTab == 0 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]} >Sensores</Text>
+                        <Icon style={[{ fontSize: 25 },
+                        this.state.currentTab == 0 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]}
+                            name='gauge' type='MaterialCommunityIcons' />
+                    </TabHeading>}>
+                        <Content>
+                            <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
+                                <LinearGradient colors={[this.estilo.cor.red_vivid, this.estilo.cor.purple_vivid]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
+                                        <Text uppercase={false} style={{ color: 'white' }} >temperatura</Text>
+                                    </Button>
+                                </LinearGradient>
 
-                        <LinearGradient colors={['#3376ff', '#07f1f4']} useAngle={true}
-                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
-                                <Text uppercase={false} style={{ color: 'white' }} >umidade do ar</Text>
-                            </Button>
-                        </LinearGradient>
-                    </Row>
+                                <LinearGradient colors={[this.estilo.cor.brown_vivid, this.estilo.cor.brwon_light]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
+                                        <Text uppercase={false} style={{ color: 'white' }} >umidade do solo</Text>
+                                    </Button>
+                                </LinearGradient>
+                            </Row>
 
-                    <Row style={{ justifyContent: 'center' }} >
-                        <LinearGradient colors={['#ff8d33', '#f1f407']} useAngle={true}
-                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
-                                <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
-                                <Text uppercase={false} style={{ color: 'white' }} >luminosidade</Text>
-                            </Button>
-                        </LinearGradient>
+                            <Row style={{ justifyContent: 'center' }} >
+                                <LinearGradient colors={[this.estilo.cor.orange_light, this.estilo.cor.yellow]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
+                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
+                                        <Text uppercase={false} style={{ color: 'white' }} >luminosidade</Text>
+                                    </Button>
+                                </LinearGradient>
 
-                        <LinearGradient colors={['#00e770', '#03c8e2']} useAngle={true}
-                            angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                <Icon name='grain' type='MaterialIcons' style={this.estilo.icon_item_dash} />
-                                <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
-                                <Text uppercase={false} style={{ color: 'white' }} >umidade do solo</Text>
-                            </Button>
-                        </LinearGradient>
-                    </Row>
+                                <LinearGradient colors={[this.estilo.cor.green_ligth, this.estilo.cor.blue_light]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
+                                        <Text uppercase={false} style={{ color: 'white' }} >umidade do ar</Text>
+                                    </Button>
+                                </LinearGradient>
+                            </Row>
 
-                    <Row style={{ justifyContent: 'center' }} >
-                        <LinearGradient colors={['#07f1f4', '#3376ff']} useAngle={true}
-                            angle={0} angleCenter={{ x: 0, y: 1 }} style={this.estilo.item_dash}>
-                            <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
-                                <Text uppercase={false} style={{ color: 'white' }} >chuva</Text>
-                            </Button>
-                        </LinearGradient>
-                    </Row>
-
-                </Content>
-                <BottomMenu ativa='planta' />
-            </Container >
+                            <Row style={{ justifyContent: 'center' }} >
+                                <LinearGradient colors={[this.estilo.cor.blue, this.estilo.cor.greenish_light]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
+                                        <Text uppercase={false} style={{ color: 'white' }} >chuva</Text>
+                                    </Button>
+                                </LinearGradient>
+                            </Row>
+                            <Form style={this.estilo.form_vazio}></Form>
+                        </Content>
+                    </Tab>
+                    <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
+                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
+                        this.state.currentTab == 1 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]} >Atuadores</Text>
+                        <Icon style={[{ fontSize: 22 },
+                        this.state.currentTab == 1 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]}
+                            name='robot-industrial' type='MaterialCommunityIcons' />
+                    </TabHeading>}>
+                        <Content>
+                            <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
+                                <LinearGradient colors={[this.estilo.cor.gray_white, this.estilo.cor.gray_white_light]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
+                                        <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.blue_light }]} />
+                                        <Text style={{ color: this.estilo.cor.blue_light, fontWeight: 'bold', fontSize: 20 }} >Ligar</Text>
+                                    </Button>
+                                </LinearGradient>
+                            </Row>
+                            <Form style={this.estilo.form_vazio}></Form>
+                        </Content>
+                    </Tab>
+                </Tabs>
+            </Container>
         )
     }
 }
