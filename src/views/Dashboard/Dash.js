@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header, Toast } from 'native-base'
-import { StatusBar, TouchableHighlight, Dimensions } from 'react-native'
+import { StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class Dash extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
         this.state = {
+            plantacaoOk: true,
             regar: false,
             conectado: true,
             tabAtual: 0,
@@ -128,15 +130,7 @@ export default class Dash extends Component {
                                 </Button>
                             </LinearGradient>}
 
-                            <Row style={{ justifyContent: 'center' }} >
-                                <Text style={{
-                                    fontSize: 17, color: this.estilo.cor.white, width: 350, textAlign: 'center',
-                                    backgroundColor: this.estilo.cor.gray_white, paddingHorizontal: 20,
-                                    paddingVertical: 7, marginTop: 20, borderRadius: 10, elevation: 3
-                                }} >Dados da plantação</Text>
-                            </Row>
-
-                            <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
+                            <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
                                 <LinearGradient colors={[this.estilo.cor.red_vivid, this.estilo.cor.purple_vivid]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
@@ -154,9 +148,7 @@ export default class Dash extends Component {
                                         <Text uppercase={false} style={{ color: 'white' }} >umidade do solo</Text>
                                     </Button>
                                 </LinearGradient>
-                            </Row>
 
-                            <Row style={{ justifyContent: 'center' }} >
                                 <LinearGradient colors={[this.estilo.cor.orange_light, this.estilo.cor.yellow]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
@@ -174,9 +166,7 @@ export default class Dash extends Component {
                                         <Text uppercase={false} style={{ color: 'white' }} >umidade do ar</Text>
                                     </Button>
                                 </LinearGradient>
-                            </Row>
 
-                            <Row style={{ justifyContent: 'center' }} >
                                 <LinearGradient colors={[this.estilo.cor.blue, this.estilo.cor.greenish_light]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
@@ -185,17 +175,16 @@ export default class Dash extends Component {
                                         <Text uppercase={false} style={{ color: 'white' }} >chuva</Text>
                                     </Button>
                                 </LinearGradient>
+
+                                <LinearGradient colors={this.state.plantacaoOk ? [this.estilo.cor.green_solid, this.estilo.cor.green] :
+                                    [this.estilo.cor.red_solid, this.estilo.cor.red]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ plantacaoOk: !this.state.plantacaoOk })}>
+                                        <Icon name={this.state.plantacaoOk ? 'check-circle' : 'alert-circle'} type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.state.plantacaoOk ? 'Tudo certo' : 'Algo errado'}</Text>
+                                    </Button>
+                                </LinearGradient>
                             </Row>
-
-                            <Row style={{ justifyContent: 'center' }} >
-                                <Text style={{
-                                    fontSize: 17, color: this.estilo.cor.white, width: 350, textAlign: 'center',
-                                    backgroundColor: this.estilo.cor.gray_medium, paddingHorizontal: 20,
-                                    paddingVertical: 7, marginTop: 20, borderRadius: 10, elevation: 3
-                                }} >Previsão do tempo</Text>
-                            </Row>
-
-
                             <Form style={this.estilo.form_vazio}></Form>
                         </Content>
                     </Tab>

@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native'
 export default class Estilos {
     constructor() {
         this.cor = {
+            red_solid: '#962020',
             red: '#d32f2f',
             red_vivid: '#ff1036',
             purple: '#7b1fa2',
@@ -96,7 +97,7 @@ export default class Estilos {
         }
 
         this.icon_item_dash = {
-            fontSize: 50, marginBottom: 20
+            fontSize: 50, marginBottom: 20, color: this.cor.white
         }
     }
 }
