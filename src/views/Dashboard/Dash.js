@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header } from 'native-base'
+import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header, Toast } from 'native-base'
 import { StatusBar, TouchableHighlight, Dimensions } from 'react-native'
 import Loader from '../../components/Loader'
-import BottomMenu from '../../components/BottomMenu'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
@@ -13,6 +12,7 @@ export default class Dash extends Component {
         this.estilo = new estilo()
         this.state = {
             regar: false,
+            conectado: true,
             tabAtual: 0,
             sensores: {
                 t: undefined,
@@ -52,44 +52,46 @@ export default class Dash extends Component {
 
     async load() {
         this.client.on('connectionLost', (responseObject) => {
-            if (responseObject.errorCode !== 0) {
-                console.log(responseObject.errorMessage)
-            }
+            if (responseObject.errorCode !== 0) this.setState({ conectado: false })
         })
-
         this.client.on('messageReceived', (message) => {
             this.setState({ sensores: JSON.parse(message.payloadString) })
-            console.log(this.state.sensores)
         })
-
-        this.client.connect()
-            .then(() => {
-                console.log('Conexão estabelecida!')
-                return this.client.subscribe(this.topico_sensores)
-            })
-            .catch((responseObject) => {
-                if (responseObject.errorCode !== 0) {
-                    console.log('Conexão perdida!:' + responseObject.errorMessage)
-                }
-            })
-
+        this.conectar()
         this.setState({ loaded: true })
     }
 
     async teste() {
-        if (!this.client.isConnected()) {
-            this.client.connect()
-                .then(() => {
-                    let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
-                    message.destinationName = this.topico_sensores
-                    this.client.send(message)
-                })
-        }
-        else {
+        if (this.state.conectado) {
             let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
             message.destinationName = this.topico_sensores
             this.client.send(message)
         }
+    }
+
+    async conectar() {
+        this.client.connect()
+            .then(() => {
+                this.setState({ conectado: true })
+                Toast.show({
+                    text: 'Conectado com sucesso!',
+                    type: 'success',
+                    duration: 3000,
+                    textStyle: { textAlign: 'center' }
+                })
+                return this.client.subscribe(this.topico_sensores)
+            })
+            .catch((responseObject) => {
+                if (responseObject.errorCode !== 0) {
+                    this.setState({ conectado: false })
+                    Toast.show({
+                        text: 'Não foi possível se conectar!',
+                        type: 'danger',
+                        duration: 3000,
+                        textStyle: { textAlign: 'center' }
+                    })
+                }
+            })
     }
 
     render() {
@@ -113,6 +115,27 @@ export default class Dash extends Component {
                             name='gauge' type='MaterialCommunityIcons' />
                     </TabHeading>}>
                         <Content>
+
+                            {this.state.conectado ? null : <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
+                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                                style={{ width: 350, borderRadius: 50, marginTop: 25, alignSelf: 'center' }}>
+                                <Button onPress={() => this.conectar()}
+                                    style={{
+                                        borderRadius: 10, backgroundColor: 'transparent',
+                                        width: 350, elevation: 0, justifyContent: 'center'
+                                    }}>
+                                    <Text uppercase={false} style={{ color: 'white', fontSize: 17 }} >Conectar ao Plante IoT</Text>
+                                </Button>
+                            </LinearGradient>}
+
+                            <Row style={{ justifyContent: 'center' }} >
+                                <Text style={{
+                                    fontSize: 17, color: this.estilo.cor.white, width: 350, textAlign: 'center',
+                                    backgroundColor: this.estilo.cor.gray_white, paddingHorizontal: 20,
+                                    paddingVertical: 7, marginTop: 20, borderRadius: 10, elevation: 3
+                                }} >Dados da plantação</Text>
+                            </Row>
+
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
                                 <LinearGradient colors={[this.estilo.cor.red_vivid, this.estilo.cor.purple_vivid]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
@@ -163,6 +186,16 @@ export default class Dash extends Component {
                                     </Button>
                                 </LinearGradient>
                             </Row>
+
+                            <Row style={{ justifyContent: 'center' }} >
+                                <Text style={{
+                                    fontSize: 17, color: this.estilo.cor.white, width: 350, textAlign: 'center',
+                                    backgroundColor: this.estilo.cor.gray_medium, paddingHorizontal: 20,
+                                    paddingVertical: 7, marginTop: 20, borderRadius: 10, elevation: 3
+                                }} >Previsão do tempo</Text>
+                            </Row>
+
+
                             <Form style={this.estilo.form_vazio}></Form>
                         </Content>
                     </Tab>
@@ -193,7 +226,7 @@ export default class Dash extends Component {
                         </Content>
                     </Tab>
                 </Tabs>
-            </Container>
+            </Container >
         )
     }
 }
