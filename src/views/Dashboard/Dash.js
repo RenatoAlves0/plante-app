@@ -175,7 +175,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >temperatura</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >temperatura</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -184,7 +184,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade do solo</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade do solo</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -193,7 +193,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >luminosidade</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >luminosidade</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -202,7 +202,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade do ar</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade do ar</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -211,7 +211,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >chuva</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >chuva</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -229,7 +229,7 @@ export default class Dash extends Component {
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={[this.estilo.item_dash,
                                     { width: 350, height: 'auto', paddingBottom: 10 }]}>
                                     <View onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
-                                        <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '99' }}>Previsão</Text>
+                                        <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
                                         <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
                                             {this.state.icon_tab_weather.map((item) => (
                                                 <Button key={item.icon} rounded style={this.estilo.button_item_weather}
@@ -245,11 +245,11 @@ export default class Dash extends Component {
                                                 <Row>
                                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
                                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.dia} </Text>
-                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '99' }}> {item.data} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.data} </Text>
                                                     </Form>
                                                     <Form style={{ flexDirection: 'column', width: '50%', alignItems: 'flex-end' }}>
                                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.temperatura} ºC </Text>
-                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '99' }}> {item.tipo_temperatura} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.tipo_temperatura} </Text>
                                                     </Form>
                                                 </Row>
                                             </ListItem>
@@ -279,7 +279,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ regar: !this.state.regar })}>
                                         <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.white }]} />
                                         <Text uppercase={false} style={{ color: this.estilo.cor.white, fontWeight: 'bold', fontSize: 23 }} >{this.state.regar ? 'Desligar' : 'Ligar'}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade {this.state.sensores.u} %</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade {this.state.sensores.u} %</Text>
                                     </Button>
                                 </LinearGradient>
                             </Row>
