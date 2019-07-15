@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header, Toast } from 'native-base'
+import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header, Toast, Item, Left, Right, ListItem } from 'native-base'
 import { StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
@@ -12,10 +12,13 @@ export default class Dash extends Component {
         super(props)
         this.estilo = new estilo()
         this.state = {
-            plantacaoOk: true,
-            regar: false,
             conectado: true,
-            tabAtual: 0,
+            plantacao_status: true,
+            regar: false,
+            tab_atual: 0,
+            tab_weather_atual: 0,
+            lista_weather: [],
+            icon_tab_weather: ['thermometer', 'sun', 'droplet', 'wind'],
             sensores: {
                 t: undefined,
                 u: undefined,
@@ -53,6 +56,37 @@ export default class Dash extends Component {
     }
 
     async load() {
+        let aux = [{
+            dia: 'Segunda',
+            data: '15 de jul',
+            temperatura: 32,
+            tipo_temperatura: 'quente'
+        },
+        {
+            dia: 'Terça',
+            data: '16 de jul',
+            temperatura: 30,
+            tipo_temperatura: 'quente'
+        },
+        {
+            dia: 'Quarta',
+            data: '17 de jul',
+            temperatura: 28,
+            tipo_temperatura: 'média'
+        },
+        {
+            dia: 'Quinta',
+            data: '18 de jul',
+            temperatura: 25,
+            tipo_temperatura: 'média'
+        },
+        {
+            dia: 'Sexta',
+            data: '19 de jul',
+            temperatura: 30,
+            tipo_temperatura: 'quente'
+        }]
+        await this.setState({ lista_weather: aux })
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) this.setState({ conectado: false })
         })
@@ -100,18 +134,18 @@ export default class Dash extends Component {
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                {this.state.loaded ? null : <Loader />}
                 <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
                     tabBarUnderlineStyle={{ height: 0 }}
                     initialPage={this.state.currentPage}
-                    onChangeTab={({ i }) => this.setState({ tabAtual: i })}>
-                    <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
+                    onChangeTab={({ i }) => this.setState({ tab_atual: i })}>
+                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
+                        {this.state.loaded ? null : <Loader />}
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.tabAtual == 0 ?
+                        this.state.tab_atual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Sensores</Text>
                         <Icon style={[{ fontSize: 25 },
-                        this.state.tabAtual == 0 ?
+                        this.state.tab_atual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
                             name='gauge' type='MaterialCommunityIcons' />
@@ -121,9 +155,9 @@ export default class Dash extends Component {
                             {this.state.conectado ? null : <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
                                 useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                 style={{ width: 350, borderRadius: 50, marginTop: 25, alignSelf: 'center' }}>
-                                <Button onPress={() => this.conectar()}
+                                <Button rounded onPress={() => this.conectar()}
                                     style={{
-                                        borderRadius: 10, backgroundColor: 'transparent',
+                                        backgroundColor: '',
                                         width: 350, elevation: 0, justifyContent: 'center'
                                     }}>
                                     <Text uppercase={false} style={{ color: 'white', fontSize: 17 }} >Conectar ao Plante IoT</Text>
@@ -176,25 +210,56 @@ export default class Dash extends Component {
                                     </Button>
                                 </LinearGradient>
 
-                                <LinearGradient colors={this.state.plantacaoOk ? [this.estilo.cor.green_solid, this.estilo.cor.green] :
-                                    [this.estilo.cor.red_solid, this.estilo.cor.red]} useAngle={true}
+                                <LinearGradient colors={this.state.plantacao_status ? [this.estilo.cor.green_solid, this.estilo.cor.green] :
+                                    [this.estilo.cor.red_solid, this.estilo.cor.red_vivid]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ plantacaoOk: !this.state.plantacaoOk })}>
-                                        <Icon name={this.state.plantacaoOk ? 'check-circle' : 'alert-circle'} type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.state.plantacaoOk ? 'Tudo certo' : 'Algo errado'}</Text>
+                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
+                                        <Icon name={this.state.plantacao_status ? 'check-circle' : 'alert-circle'} type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
+                                        <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.state.plantacao_status ? 'Tudo certo' : 'Algo errado'}</Text>
                                     </Button>
+                                </LinearGradient>
+
+                                <LinearGradient colors={[this.estilo.cor.gray_white, this.estilo.cor.white]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.2, y: 0.7 }} style={[this.estilo.item_dash,
+                                    { width: 350, height: 'auto', paddingBottom: 10 }]}>
+                                    <View onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
+                                        <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                                            {this.state.icon_tab_weather.map((icon) => (
+                                                <Button key={icon} rounded style={this.estilo.button_item_weather}
+                                                    onPress={() => this.setState({ tab_weather_atual: this.state.icon_tab_weather.indexOf(icon) })}>
+                                                    <FeatherIcon name={icon} style={[this.estilo.icon_item_weather,
+                                                    this.state.tab_weather_atual == this.state.icon_tab_weather.indexOf(icon) ?
+                                                        { color: this.estilo.cor.black } : null]} />
+                                                </Button>
+                                            ))}
+                                        </Form>
+                                        {this.state.lista_weather.map((item) => (
+                                            <ListItem key={item.dia} style={{ marginTop: -15, paddingRight: 0, marginLeft: 30, marginRight: 30, borderBottomWidth: 0 }}>
+                                                <Row>
+                                                    <Form style={{ flexDirection: 'column', width: '50%' }}>
+                                                        <Text style={{ fontSize: 18 }}> {item.dia} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.gray_medium }}> {item.data} </Text>
+                                                    </Form>
+                                                    <Form style={{ flexDirection: 'column', width: '50%', alignItems: 'flex-end' }}>
+                                                        <Text style={{ fontSize: 18 }}> {item.temperatura} ºC </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.gray_medium }}> {item.tipo_temperatura} </Text>
+                                                    </Form>
+                                                </Row>
+                                            </ListItem>
+                                        ))}
+                                    </View>
                                 </LinearGradient>
                             </Row>
                             <Form style={this.estilo.form_vazio}></Form>
                         </Content>
                     </Tab>
-                    <Tab heading={<TabHeading style={{ backgroundColor: 'transparent' }}>
+                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.tabAtual == 1 ?
+                        this.state.tab_atual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Atuadores</Text>
                         <Icon style={[{ fontSize: 22 },
-                        this.state.tabAtual == 1 ?
+                        this.state.tab_atual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
                             name='robot-industrial' type='MaterialCommunityIcons' />

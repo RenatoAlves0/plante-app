@@ -92,12 +92,20 @@ export default class Estilos {
 
         this.buttom_item_dash = {
             borderRadius: 10, alignItems: 'center', justifyContent: 'center',
-            height: '100%', width: '100%', backgroundColor: 'transparent',
+            height: '100%', width: '100%', backgroundColor: '',
             flexDirection: 'column', elevation: 0
         }
 
         this.icon_item_dash = {
             fontSize: 50, marginBottom: 20, color: this.cor.white
+        }
+
+        this.button_item_weather = {
+            marginVertical: 20, paddingHorizontal: 20, backgroundColor: '', elevation: 0, marginHorizontal: 5
+        }
+
+        this.icon_item_weather = {
+            fontSize: 30, color: this.cor.gray_medium
         }
     }
 }
