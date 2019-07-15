@@ -18,7 +18,12 @@ export default class Dash extends Component {
             tab_atual: 0,
             tab_weather_atual: 0,
             lista_weather: [],
-            icon_tab_weather: ['thermometer', 'sun', 'droplet', 'wind'],
+            icon_tab_weather: [
+                { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
+                { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_light },
+                { icon: 'droplet', cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.greenish },
+                { icon: 'wind', cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.greenish }
+            ],
             sensores: {
                 t: undefined,
                 u: undefined,
@@ -160,7 +165,7 @@ export default class Dash extends Component {
                                         backgroundColor: '',
                                         width: 350, elevation: 0, justifyContent: 'center'
                                     }}>
-                                    <Text uppercase={false} style={{ color: 'white', fontSize: 17 }} >Conectar ao Plante IoT</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 17 }} >Conectar ao Plante IoT</Text>
                                 </Button>
                             </LinearGradient>}
 
@@ -170,7 +175,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
-                                        <Text uppercase={false} style={{ color: 'white' }} >temperatura</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >temperatura</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -179,7 +184,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
-                                        <Text uppercase={false} style={{ color: 'white' }} >umidade do solo</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade do solo</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -188,16 +193,16 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
-                                        <Text uppercase={false} style={{ color: 'white' }} >luminosidade</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >luminosidade</Text>
                                     </Button>
                                 </LinearGradient>
 
-                                <LinearGradient colors={[this.estilo.cor.green_ligth, this.estilo.cor.blue_light]} useAngle={true}
+                                <LinearGradient colors={[this.estilo.cor.green, this.estilo.cor.blue_light]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
-                                        <Text uppercase={false} style={{ color: 'white' }} >umidade do ar</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade do ar</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -206,7 +211,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
                                         <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
                                         <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
-                                        <Text uppercase={false} style={{ color: 'white' }} >chuva</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >chuva</Text>
                                     </Button>
                                 </LinearGradient>
 
@@ -219,17 +224,19 @@ export default class Dash extends Component {
                                     </Button>
                                 </LinearGradient>
 
-                                <LinearGradient colors={[this.estilo.cor.gray_white, this.estilo.cor.white]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.2, y: 0.7 }} style={[this.estilo.item_dash,
+                                <LinearGradient colors={[this.state.icon_tab_weather[this.state.tab_weather_atual].cor1,
+                                this.state.icon_tab_weather[this.state.tab_weather_atual].cor2]} useAngle={true}
+                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={[this.estilo.item_dash,
                                     { width: 350, height: 'auto', paddingBottom: 10 }]}>
                                     <View onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
+                                        <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '99' }}>Previsão</Text>
                                         <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                            {this.state.icon_tab_weather.map((icon) => (
-                                                <Button key={icon} rounded style={this.estilo.button_item_weather}
-                                                    onPress={() => this.setState({ tab_weather_atual: this.state.icon_tab_weather.indexOf(icon) })}>
-                                                    <FeatherIcon name={icon} style={[this.estilo.icon_item_weather,
-                                                    this.state.tab_weather_atual == this.state.icon_tab_weather.indexOf(icon) ?
-                                                        { color: this.estilo.cor.black } : null]} />
+                                            {this.state.icon_tab_weather.map((item) => (
+                                                <Button key={item.icon} rounded style={this.estilo.button_item_weather}
+                                                    onPress={() => this.setState({ tab_weather_atual: this.state.icon_tab_weather.indexOf(item) })}>
+                                                    <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
+                                                    this.state.tab_weather_atual == this.state.icon_tab_weather.indexOf(item) ?
+                                                        { color: this.estilo.cor.white } : null]} />
                                                 </Button>
                                             ))}
                                         </Form>
@@ -237,12 +244,12 @@ export default class Dash extends Component {
                                             <ListItem key={item.dia} style={{ marginTop: -15, paddingRight: 0, marginLeft: 30, marginRight: 30, borderBottomWidth: 0 }}>
                                                 <Row>
                                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                                        <Text style={{ fontSize: 18 }}> {item.dia} </Text>
-                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.gray_medium }}> {item.data} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.dia} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '99' }}> {item.data} </Text>
                                                     </Form>
                                                     <Form style={{ flexDirection: 'column', width: '50%', alignItems: 'flex-end' }}>
-                                                        <Text style={{ fontSize: 18 }}> {item.temperatura} ºC </Text>
-                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.gray_medium }}> {item.tipo_temperatura} </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.temperatura} ºC </Text>
+                                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '99' }}> {item.tipo_temperatura} </Text>
                                                     </Form>
                                                 </Row>
                                             </ListItem>
@@ -272,7 +279,7 @@ export default class Dash extends Component {
                                     <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ regar: !this.state.regar })}>
                                         <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.white }]} />
                                         <Text uppercase={false} style={{ color: this.estilo.cor.white, fontWeight: 'bold', fontSize: 23 }} >{this.state.regar ? 'Desligar' : 'Ligar'}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, textAlign: 'center' }} >umidade {this.state.sensores.u} %</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15 }} >umidade {this.state.sensores.u} %</Text>
                                     </Button>
                                 </LinearGradient>
                             </Row>
