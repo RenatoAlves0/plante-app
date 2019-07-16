@@ -6,6 +6,7 @@ import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import Card from '../../components/Card'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -119,6 +120,14 @@ export default class Dash extends Component {
         }
     }
 
+    plantacao_status_change = () => {
+        this.setState({ plantacao_status: !this.state.plantacao_status })
+    }
+
+    regar_change = () => {
+        this.setState({ regar: !this.state.regar })
+    }
+
     async conectar() {
         this.client.connect()
             .then(() => {
@@ -146,11 +155,11 @@ export default class Dash extends Component {
 
     render() {
         const cards = [
-            { cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', value_type: 'temperatura' },
-            { cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', value_type: 'umidade do solo' },
-            { cor1: this.estilo.cor.orange_light, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', value_type: 'luminosidade' },
-            { cor1: this.estilo.cor.green, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', value_type: 'umidade do ar' },
-            { cor1: this.estilo.cor.blue, cor2: this.estilo.cor.green_ligth, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', value_type: 'chuva' },
+            { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
+            { id: 1, cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
+            { id: 2, cor1: this.estilo.cor.orange_light, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
+            { id: 3, cor1: this.estilo.cor.green, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
+            { id: 4, cor1: this.estilo.cor.blue, cor2: this.estilo.cor.green_ligth, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
         return (
             <Container>
@@ -185,25 +194,11 @@ export default class Dash extends Component {
                             </LinearGradient>}
 
                             <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
-                                {cards.map((item) => (
-                                    <LinearGradient key={item.value_type} colors={[item.cor1, item.cor2]} useAngle={true}
-                                        angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                        <Button style={this.estilo.buttom_item_dash} onPress={() => item.method()}>
-                                            {item.icon_name && item.icon_type ? <Icon name={item.icon_name} type={item.icon_type} style={this.estilo.icon_item_dash} /> : null}
-                                            {item.value ? <Text style={{ fontSize: 23, color: 'white' }} >{item.value}{item.value_sufix}</Text> : null}
-                                            {item.value_type ? <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{item.value_type}</Text> : null}
-                                        </Button>
-                                    </LinearGradient>
-                                ))}
+                                {cards.map((item) => (<Card key={item.id} item={item} />))}
 
-                                <LinearGradient colors={this.state.plantacao_status ? [this.estilo.cor.green_solid, this.estilo.cor.green] :
-                                    [this.estilo.cor.red_solid, this.estilo.cor.red_vivid]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
-                                        <Icon name={this.state.plantacao_status ? 'check-circle' : 'alert-circle'} type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.state.plantacao_status ? 'Tudo certo' : 'Algo errado'}</Text>
-                                    </Button>
-                                </LinearGradient>
+                                <Card item={this.state.plantacao_status ?
+                                    { cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.green, method: this.plantacao_status_change, icon_name: 'check-circle', icon_type: 'MaterialCommunityIcons', value: 'Tudo certo' }
+                                    : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
 
                                 <LinearGradient colors={[this.card_weather[this.state.card_weather_atual].cor1,
                                 this.card_weather[this.state.card_weather_atual].cor2]} useAngle={true}
@@ -254,15 +249,17 @@ export default class Dash extends Component {
                     </TabHeading>}>
                         <Content>
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
-                                <LinearGradient colors={this.state.regar ? [this.estilo.cor.blue, this.estilo.cor.greenish_light] :
-                                    [this.estilo.cor.gray, this.estilo.cor.gray_white]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.setState({ regar: !this.state.regar })}>
-                                        <Icon name='water-pump' type='MaterialCommunityIcons' style={[this.estilo.icon_item_dash, { color: this.estilo.cor.white }]} />
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontWeight: 'bold', fontSize: 23 }} >{this.state.regar ? 'Desligar' : 'Ligar'}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade {this.state.sensores.u} %</Text>
-                                    </Button>
-                                </LinearGradient>
+                                <Card item={this.state.regar ?
+                                    {
+                                        cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
+                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
+                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    }
+                                    : {
+                                        cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
+                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    }} />
                             </Row>
                             <Form style={this.estilo.form_vazio}></Form>
                         </Content>
