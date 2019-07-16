@@ -16,14 +16,8 @@ export default class Dash extends Component {
             plantacao_status: true,
             regar: false,
             tab_atual: 0,
-            tab_weather_atual: 0,
+            card_weather_atual: 0,
             lista_weather: [],
-            icon_tab_weather: [
-                { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
-                { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_light },
-                { icon: 'droplet', cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.greenish },
-                { icon: 'wind', cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.greenish }
-            ],
             sensores: {
                 t: undefined,
                 u: undefined,
@@ -33,6 +27,13 @@ export default class Dash extends Component {
             },
             loaded: false,
         }
+        this.card_weather = [
+            { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
+            { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_light },
+            { icon: 'droplet', cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.greenish },
+            { icon: 'wind', cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.greenish }
+        ]
+
         this.topico_sensores = 'plante_iot_sensores(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_iot_regador(renalves.oli@gmail.com)'
         this.uri = 'ws://iot.eclipse.org:80/ws'
@@ -93,7 +94,15 @@ export default class Dash extends Component {
         }]
         await this.setState({ lista_weather: aux })
         this.client.on('connectionLost', (responseObject) => {
-            if (responseObject.errorCode !== 0) this.setState({ conectado: false })
+            if (responseObject.errorCode !== 0) {
+                this.setState({ conectado: false })
+                Toast.show({
+                    text: 'Conecxão perdida!',
+                    type: 'danger',
+                    duration: 3000,
+                    textStyle: { textAlign: 'center' }
+                })
+            }
         })
         this.client.on('messageReceived', (message) => {
             this.setState({ sensores: JSON.parse(message.payloadString) })
@@ -102,7 +111,7 @@ export default class Dash extends Component {
         this.setState({ loaded: true })
     }
 
-    async teste() {
+    teste = async () => {
         if (this.state.conectado) {
             let message = new Message('{\"t\":25.36, \"u\":87.56, \"uS\":70.00, \"l\":68.14, \"c\":43.00}')
             message.destinationName = this.topico_sensores
@@ -126,7 +135,7 @@ export default class Dash extends Component {
                 if (responseObject.errorCode !== 0) {
                     this.setState({ conectado: false })
                     Toast.show({
-                        text: 'Não foi possível se conectar!',
+                        text: 'Não foi possível conectar!',
                         type: 'danger',
                         duration: 3000,
                         textStyle: { textAlign: 'center' }
@@ -136,12 +145,18 @@ export default class Dash extends Component {
     }
 
     render() {
+        const cards = [
+            { cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: 'ºC', value_type: 'temperatura' },
+            { cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: '%', value_type: 'umidade do solo' },
+            { cor1: this.estilo.cor.orange_light, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: '%', value_type: 'luminosidade' },
+            { cor1: this.estilo.cor.green, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: '%', value_type: 'umidade do ar' },
+            { cor1: this.estilo.cor.blue, cor2: this.estilo.cor.green_ligth, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: '%', value_type: 'chuva' },
+        ]
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
                     tabBarUnderlineStyle={{ height: 0 }}
-                    initialPage={this.state.currentPage}
                     onChangeTab={({ i }) => this.setState({ tab_atual: i })}>
                     <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
                         {this.state.loaded ? null : <Loader />}
@@ -170,50 +185,16 @@ export default class Dash extends Component {
                             </LinearGradient>}
 
                             <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
-                                <LinearGradient colors={[this.estilo.cor.red_vivid, this.estilo.cor.purple_vivid]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='thermometer' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.t} ºC</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >temperatura</Text>
-                                    </Button>
-                                </LinearGradient>
-
-                                <LinearGradient colors={[this.estilo.cor.brown_vivid, this.estilo.cor.brwon_light]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.uS} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade do solo</Text>
-                                    </Button>
-                                </LinearGradient>
-
-                                <LinearGradient colors={[this.estilo.cor.orange_light, this.estilo.cor.yellow]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='wb-sunny' type='MaterialIcons' style={this.estilo.icon_item_dash} />
-                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.l} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >luminosidade</Text>
-                                    </Button>
-                                </LinearGradient>
-
-                                <LinearGradient colors={[this.estilo.cor.green, this.estilo.cor.blue_light]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='water' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.u} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >umidade do ar</Text>
-                                    </Button>
-                                </LinearGradient>
-
-                                <LinearGradient colors={[this.estilo.cor.blue, this.estilo.cor.greenish_light]} useAngle={true}
-                                    angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
-                                    <Button style={this.estilo.buttom_item_dash} onPress={() => this.teste()}>
-                                        <Icon name='weather-pouring' type='MaterialCommunityIcons' style={this.estilo.icon_item_dash} />
-                                        <Text style={{ fontSize: 23, color: 'white' }} >{this.state.sensores.c} %</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >chuva</Text>
-                                    </Button>
-                                </LinearGradient>
+                                {cards.map((item) => (
+                                    <LinearGradient key={item.value_type} colors={[item.cor1, item.cor2]} useAngle={true}
+                                        angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                                        <Button style={this.estilo.buttom_item_dash} onPress={() => item.method()}>
+                                            <Icon name={item.icon_name} type={item.icon_type} style={this.estilo.icon_item_dash} />
+                                            <Text style={{ fontSize: 23, color: 'white' }} >{item.value} {item.value_sufix}</Text>
+                                            <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{item.value_type}</Text>
+                                        </Button>
+                                    </LinearGradient>
+                                ))}
 
                                 <LinearGradient colors={this.state.plantacao_status ? [this.estilo.cor.green_solid, this.estilo.cor.green] :
                                     [this.estilo.cor.red_solid, this.estilo.cor.red_vivid]} useAngle={true}
@@ -224,18 +205,18 @@ export default class Dash extends Component {
                                     </Button>
                                 </LinearGradient>
 
-                                <LinearGradient colors={[this.state.icon_tab_weather[this.state.tab_weather_atual].cor1,
-                                this.state.icon_tab_weather[this.state.tab_weather_atual].cor2]} useAngle={true}
+                                <LinearGradient colors={[this.card_weather[this.state.card_weather_atual].cor1,
+                                this.card_weather[this.state.card_weather_atual].cor2]} useAngle={true}
                                     angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={[this.estilo.item_dash,
                                     { width: 350, height: 'auto', paddingBottom: 10 }]}>
                                     <View onPress={() => this.setState({ plantacao_status: !this.state.plantacao_status })}>
                                         <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
                                         <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                                            {this.state.icon_tab_weather.map((item) => (
+                                            {this.card_weather.map((item) => (
                                                 <Button key={item.icon} rounded style={this.estilo.button_item_weather}
-                                                    onPress={() => this.setState({ tab_weather_atual: this.state.icon_tab_weather.indexOf(item) })}>
+                                                    onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
                                                     <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                                                    this.state.tab_weather_atual == this.state.icon_tab_weather.indexOf(item) ?
+                                                    this.state.card_weather_atual == this.card_weather.indexOf(item) ?
                                                         { color: this.estilo.cor.white } : null]} />
                                                 </Button>
                                             ))}
