@@ -27,7 +27,7 @@ export default class Card extends Component {
                 <Button style={this.estilo.buttom_item_dash} onPress={() => this.props.item.method ? this.props.item.method() : null}>
                     {this.props.item.icon_name && this.props.item.icon_type ? <Icon name={this.props.item.icon_name} type={this.props.item.icon_type} style={this.estilo.icon_item_dash} /> : null}
                     {this.props.item.value ? <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.props.item.value}{this.props.item.value_sufix}</Text> : null}
-                    {this.props.item.value ? <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{this.props.item.sub_value_prefix}{this.props.item.sub_value}{this.props.item.sub_value_sufix}</Text> : null}
+                    {this.props.item.sub_value ? <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{this.props.item.sub_value_prefix}{this.props.item.sub_value}{this.props.item.sub_value_sufix}</Text> : null}
                 </Button>
             </LinearGradient>
         )
