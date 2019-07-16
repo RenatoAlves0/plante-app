@@ -146,11 +146,11 @@ export default class Dash extends Component {
 
     render() {
         const cards = [
-            { cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: 'ºC', value_type: 'temperatura' },
-            { cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: '%', value_type: 'umidade do solo' },
-            { cor1: this.estilo.cor.orange_light, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: '%', value_type: 'luminosidade' },
-            { cor1: this.estilo.cor.green, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: '%', value_type: 'umidade do ar' },
-            { cor1: this.estilo.cor.blue, cor2: this.estilo.cor.green_ligth, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: '%', value_type: 'chuva' },
+            { cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', value_type: 'temperatura' },
+            { cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', value_type: 'umidade do solo' },
+            { cor1: this.estilo.cor.orange_light, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', value_type: 'luminosidade' },
+            { cor1: this.estilo.cor.green, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', value_type: 'umidade do ar' },
+            { cor1: this.estilo.cor.blue, cor2: this.estilo.cor.green_ligth, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', value_type: 'chuva' },
         ]
         return (
             <Container>
@@ -189,9 +189,9 @@ export default class Dash extends Component {
                                     <LinearGradient key={item.value_type} colors={[item.cor1, item.cor2]} useAngle={true}
                                         angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
                                         <Button style={this.estilo.buttom_item_dash} onPress={() => item.method()}>
-                                            <Icon name={item.icon_name} type={item.icon_type} style={this.estilo.icon_item_dash} />
-                                            <Text style={{ fontSize: 23, color: 'white' }} >{item.value} {item.value_sufix}</Text>
-                                            <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{item.value_type}</Text>
+                                            {item.icon_name && item.icon_type ? <Icon name={item.icon_name} type={item.icon_type} style={this.estilo.icon_item_dash} /> : null}
+                                            {item.value ? <Text style={{ fontSize: 23, color: 'white' }} >{item.value}{item.value_sufix}</Text> : null}
+                                            {item.value_type ? <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{item.value_type}</Text> : null}
                                         </Button>
                                     </LinearGradient>
                                 ))}
