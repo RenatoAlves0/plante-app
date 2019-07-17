@@ -124,7 +124,7 @@ export default class Card extends Component {
                             </Button>
                         ))}
                     </Form>
-                    {this.state.lista_weather.map((item) => (
+                    {this.state.lista_weather.map((item, index) => (
                         <ListItem key={item.id} style={{
                             marginLeft: 15, marginRight: 15, marginBottom: 10,
                             padding: 15, borderBottomWidth: 0, borderRadius: 10,
@@ -133,15 +133,15 @@ export default class Card extends Component {
                             <Col>
                                 <Row>
                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia_semana}</Text>
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>quente?</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                        {/* <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>quente?</Text> */}
                                     </Form>
                                     <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{item.temperatura.min} / </Text>
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.temperatura.max}º</Text>
                                     </Form>
                                 </Row>
-                                <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-end', marginBottom: 5 }}>Sensação térmica</Text>
+                                <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>Sensação térmica</Text>
                                 <Row style={{ alignItems: 'flex-end' }}>
                                     <Form style={{ flexDirection: 'row', width: '50%' }}>
                                         <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
