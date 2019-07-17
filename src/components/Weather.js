@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Button, Icon, View, Form, ListItem, Row } from 'native-base'
+import { Text, Button, Icon, View, Form, ListItem, Row, Col } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -30,96 +30,77 @@ export default class Card extends Component {
         this.load()
     }
 
-    async load() {
-        let aux = [{
-            dia: 'Segunda',
-            data: '15 de jul',
-            temperatura: 32,
-            tipo_temperatura: 'quente'
-        },
-        {
-            dia: 'Terça',
-            data: '16 de jul',
-            temperatura: 30,
-            tipo_temperatura: 'quente'
-        },
-        {
-            dia: 'Quarta',
-            data: '17 de jul',
-            temperatura: 28,
-            tipo_temperatura: 'média'
-        },
-        {
-            dia: 'Quinta',
-            data: '18 de jul',
-            temperatura: 25,
-            tipo_temperatura: 'média'
-        },
-        {
-            dia: 'Sexta',
-            data: '19 de jul',
-            temperatura: 30,
-            tipo_temperatura: 'quente'
-        }]
-        await this.setState({ lista_weather: aux })
-        if (1 == 2) return await axios
+    async load() { }
+
+    async getWeather() {
+        await axios
             // .get('https://api.darksky.net/forecast/cd6497bd71117cbb49fd4f70a5e9dc93/-4.56167,-37.769718')
             .get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
-            .then((data) => {
+            .then(async (data) => {
                 let array = data.data.DailyForecasts
-                let horas_sol, sensacao_termica, sensacao_termica_sombra, temperatura, dia, noite, lua, sol, obj
+                console.log(array)
+                let sensacao_termica, sensacao_termica_sombra,
+                    temperatura, dia, noite, dia_semana, obj, array_obj = []
 
-                array.forEach(element => {
-                    horas_sol = element.HoursOfSun
-                    sensacao_termica = { min: element.RealFeelTemperature.Minimum.Value, max: element.RealFeelTemperature.Maximum.Value }
-                    sensacao_termica_sombra = { min: element.RealFeelTemperatureShade.Minimum.Value, max: element.RealFeelTemperatureShade.Maximum.Value }
-                    temperatura = { min: element.Temperature.Minimum.Value, max: element.Temperature.Maximum.Value }
-
+                await array.forEach((element, index) => {
+                    dia_semana = element.Date
+                    sensacao_termica = {
+                        min: element.RealFeelTemperature.Minimum.Value,
+                        max: element.RealFeelTemperature.Maximum.Value
+                    }
+                    sensacao_termica_sombra = {
+                        min: element.RealFeelTemperatureShade.Minimum.Value,
+                        max: element.RealFeelTemperatureShade.Maximum.Value
+                    }
+                    temperatura = {
+                        min: element.Temperature.Minimum.Value,
+                        max: element.Temperature.Maximum.Value
+                    }
                     dia = {
                         nuvens: element.Day.CloudCover, //%
                         ceu: element.Day.ShortPhrase,
                         chuva_probabilidade: element.Day.RainProbability, //%
                         chuva_mm: element.Day.Rain.Value,
                         vento_velocidade: element.Day.Wind.Speed.Value, //km/h
-                        vento_direcao: element.Day.Wind.Direction.Localized
+                        vento_direcao: element.Day.Wind.Direction.Localized,
+                        sol: {
+                            nascer: element.Sun.Rise,
+                            por: element.Sun.Set,
+                            duracao: element.HoursOfSun
+                        }
                     }
-
                     noite = {
                         nuvens: element.Night.CloudCover, //%
                         ceu: element.Night.ShortPhrase,
                         chuva_probabilidade: element.Night.RainProbability, //%
                         chuva_mm: element.Night.Rain.Value,
                         vento_velocidade: element.Night.Wind.Speed.Value, //km/h
-                        vento_direcao: element.Night.Wind.Direction.Localized
+                        vento_direcao: element.Night.Wind.Direction.Localized,
+                        lua: {
+                            nascer: element.Moon.Rise,
+                            por: element.Moon.Set
+                        }
                     }
-
-                    lua = {
-                        nascer: element.Moon.Rise,
-                        por: element.Moon.Set
-                    }
-
-                    sol = {
-                        nascer: element.Sun.Rise,
-                        por: element.Sun.Set
-                    }
-
                     obj = {
-                        horas_sol: horas_sol,
+                        id: index,
+                        dia_semana: this.getDayOfWeek(dia_semana),
                         sensacao_termica: sensacao_termica,
                         sensacao_termica_sombra: sensacao_termica_sombra,
                         temperatura: temperatura,
                         dia: dia,
-                        noite: noite,
-                        lua: lua,
-                        sol: sol
+                        noite: noite
                     }
-
-                    console.log(obj)
-
+                    array_obj.push(obj)
                 })
-
+                this.setState({ lista_weather: array_obj })
+                console.log(array_obj)
             })
             .catch((erro) => { console.error(erro) })
+    }
+
+    getDayOfWeek(date) {
+        var dayOfWeek = new Date(date).getDay();
+        return isNaN(dayOfWeek) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][dayOfWeek];
     }
 
     render() {
@@ -132,7 +113,7 @@ export default class Card extends Component {
                 }} style={[this.estilo.item_dash,
                 { width: 350, height: 'auto', paddingBottom: 10 }]}>
                 <View>
-                    <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
+                    <Text onPress={() => this.getWeather()} style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
                     <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
                         {this.card_weather.map((item) => (
                             <Button key={item.icon} rounded style={this.estilo.button_item_weather}
@@ -144,17 +125,36 @@ export default class Card extends Component {
                         ))}
                     </Form>
                     {this.state.lista_weather.map((item) => (
-                        <ListItem key={item.dia} style={{ marginTop: -15, paddingRight: 0, marginLeft: 30, marginRight: 30, borderBottomWidth: 0 }}>
-                            <Row>
-                                <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.dia} </Text>
-                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.data} </Text>
-                                </Form>
-                                <Form style={{ flexDirection: 'column', width: '50%', alignItems: 'flex-end' }}>
-                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}> {item.temperatura} ºC </Text>
-                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.tipo_temperatura} </Text>
-                                </Form>
-                            </Row>
+                        <ListItem key={item.id} style={{
+                            marginLeft: 15, marginRight: 15, marginBottom: 10,
+                            padding: 15, borderBottomWidth: 0, borderRadius: 10,
+                            backgroundColor: this.estilo.cor.gray_translucid
+                        }}>
+                            <Col>
+                                <Row>
+                                    <Form style={{ flexDirection: 'column', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia_semana}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>quente?</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{item.temperatura.min} / </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.temperatura.max}º</Text>
+                                    </Form>
+                                </Row>
+                                <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-end', marginBottom: 5 }}>Sensação térmica</Text>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '50%' }}>
+                                        <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.sensacao_termica.min} / </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.sensacao_termica.max}º</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <FeatherIcon name='cloud' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.sensacao_termica_sombra.min} / </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.sensacao_termica_sombra.max}º</Text>
+                                    </Form>
+                                </Row>
+                            </Col>
                         </ListItem>
                     ))}
                 </View>
