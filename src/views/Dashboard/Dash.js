@@ -7,6 +7,7 @@ import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
 import Card from '../../components/Card'
 import Weather from '../../components/Weather'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -160,8 +161,6 @@ export default class Dash extends Component {
                                     { cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.green, method: this.plantacao_status_change, icon_name: 'check-circle', icon_type: 'MaterialCommunityIcons', value: 'Tudo certo' }
                                     : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
 
-                                <Weather />
-
                             </Row>
                             <Form style={this.estilo.form_vazio}></Form>
                         </Content>
@@ -192,6 +191,23 @@ export default class Dash extends Component {
                                     }} />
                             </Row>
                             <Form style={this.estilo.form_vazio}></Form>
+                        </Content>
+                    </Tab>
+                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
+                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
+                        this.state.tab_atual == 2 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]} >Tempo</Text>
+                        <FeatherIcon style={[{ fontSize: 22 },
+                        this.state.tab_atual == 2 ?
+                            { color: this.estilo.cor.black } :
+                            { color: this.estilo.cor.gray }]}
+                            name='cloud' />
+                    </TabHeading>}>
+                        <Content>
+                            <Row style={{ justifyContent: 'center', paddingTop: 10 }}>
+                                <Weather />
+                            </Row>
                         </Content>
                     </Tab>
                 </Tabs>

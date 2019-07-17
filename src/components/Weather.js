@@ -111,7 +111,7 @@ export default class Card extends Component {
                     x: this.card_weather[this.state.card_weather_atual].x || 0.5,
                     y: this.card_weather[this.state.card_weather_atual].y || 0.5
                 }} style={[this.estilo.item_dash,
-                { width: 350, height: 'auto', paddingBottom: 10 }]}>
+                { width: 350, height: 'auto' }]}>
                 <View>
                     <Text onPress={() => this.getWeather()} style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
                     <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
