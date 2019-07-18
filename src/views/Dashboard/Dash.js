@@ -14,6 +14,7 @@ export default class Dash extends Component {
         super(props)
         this.estilo = new estilo()
         this.state = {
+            update_weater: true,
             conectado: true,
             plantacao_status: true,
             regar: false,
@@ -127,7 +128,7 @@ export default class Dash extends Component {
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
                     tabBarUnderlineStyle={{ height: 0 }}
-                    onChangeTab={({ i }) => this.setState({ tab_atual: i })}>
+                    onChangeTab={({ i }) => { this.setState({ tab_atual: i }), i == 2 && this.state.update_weater ? this.setState({ update_weater: false }) : null }}>
                     <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
                         {this.state.loaded ? null : <Loader />}
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
@@ -206,7 +207,8 @@ export default class Dash extends Component {
                     </TabHeading>}>
                         <Content>
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }}>
-                                <Weather />
+                                {this.state.update_weater ?
+                                    <Weather update={true} /> : <Weather />}
                             </Row>
                         </Content>
                     </Tab>
