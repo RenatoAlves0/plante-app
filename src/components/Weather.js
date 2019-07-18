@@ -107,24 +107,23 @@ export default class Card extends Component {
     async lerArquivo(caminho) {
         await rnfs.readDir(caminho)
             .then((result) => {
+                this.setState({ dia_semana_aux: 'vazio' })
                 console.log('Resultado de leitura obtido', result)
                 return Promise.all([rnfs.stat(result[0].path), result[0].path])
             })
             .then((statResult) => {
                 if (statResult[0].isFile()) return rnfs.readFile(statResult[1], 'utf8')
-                this.setState({ dia_semana_aux: 'vazio' })
                 return 'no file'
             })
             .then(async (contents) => {
                 await this.setState({ lista_weather: JSON.parse(contents) })
                 console.log(this.state.lista_weather)
                 this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].dia_semana ?
-                    await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) :
-                    this.setState({ dia_semana_aux: 'vazio' })
+                    await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) : null
             })
             .catch((err) => {
-                console.log(err.message, err.code)
                 this.setState({ dia_semana_aux: 'vazio' })
+                console.log(err.message, err.code)
                 return null
             })
     }
