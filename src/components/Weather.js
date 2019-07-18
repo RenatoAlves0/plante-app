@@ -64,8 +64,8 @@ export default class Card extends Component {
                         vento_velocidade: element.Day.Wind.Speed.Value, //km/h
                         vento_direcao: element.Day.Wind.Direction.Localized,
                         sol: {
-                            nascer: element.Sun.Rise,
-                            por: element.Sun.Set,
+                            nascer: element.Sun.Rise.substring(11, 16),
+                            por: element.Sun.Set.substring(11, 16),
                             duracao: element.HoursOfSun
                         }
                     }
@@ -77,8 +77,8 @@ export default class Card extends Component {
                         vento_velocidade: element.Night.Wind.Speed.Value, //km/h
                         vento_direcao: element.Night.Wind.Direction.Localized,
                         lua: {
-                            nascer: element.Moon.Rise,
-                            por: element.Moon.Set
+                            nascer: element.Moon.Rise.substring(11, 16),
+                            por: element.Moon.Set.substring(11, 16)
                         }
                     }
                     obj = {
@@ -128,7 +128,8 @@ export default class Card extends Component {
                         <ListItem key={item.id} style={{
                             marginLeft: 15, marginRight: 15, marginBottom: 10,
                             padding: 15, borderBottomWidth: 0, borderRadius: 10,
-                            backgroundColor: this.estilo.cor.gray_translucid
+                            backgroundColor: this.estilo.cor.gray_translucid,
+                            display: this.state.card_weather_atual == 0 ? 'flex' : 'none'
                         }}>
                             <Col>
                                 <Row>
@@ -157,6 +158,145 @@ export default class Card extends Component {
                             </Col>
                         </ListItem>
                     ))}
+
+                    {this.state.lista_weather.map((item, index) => (
+                        <ListItem key={item.id} style={{
+                            marginLeft: 15, marginRight: 15, marginBottom: 10,
+                            padding: 15, borderBottomWidth: 0, borderRadius: 10,
+                            backgroundColor: this.estilo.cor.gray_translucid,
+                            display: this.state.card_weather_atual == 1 ? 'flex' : 'none'
+                        }}>
+                            <Col>
+                                <Row>
+                                    <Form style={{ flexDirection: 'column', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia.nuvens}%</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <Form style={{ flexDirection: 'column', width: '100%', alignItems: 'flex-end' }}>
+                                        <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right' }}>{item.dia.ceu}</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Chuva</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>probabilidade </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.chuva_probabilidade}%</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.chuva_mm}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='wind' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Vento</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>velocidade </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.vento_velocidade} km/h</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.vento_direcao}</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Sol</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '33%', justifyContent: 'flex-start' }}>
+                                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.nascer} h </Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '36%', justifyContent: 'flex-end' }}>
+                                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.por} h </Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '30%', justifyContent: 'flex-end' }}>
+                                        <FeatherIcon name='clock' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.duracao} h </Text>
+                                    </Form>
+                                </Row>
+                            </Col>
+                        </ListItem>
+                    ))}
+
+                    {this.state.lista_weather.map((item, index) => (
+                        <ListItem key={item.id} style={{
+                            marginLeft: 15, marginRight: 15, marginBottom: 10,
+                            padding: 15, borderBottomWidth: 0, borderRadius: 10,
+                            backgroundColor: this.estilo.cor.gray_translucid,
+                            display: this.state.card_weather_atual == 2 ? 'flex' : 'none'
+                        }}>
+                            <Col>
+                                <Row>
+                                    <Form style={{ flexDirection: 'column', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.noite.nuvens}%</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <Form style={{ flexDirection: 'column', width: '100%', alignItems: 'flex-end' }}>
+                                        <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right' }}>{item.noite.ceu}</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Chuva</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>probabilidade </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.chuva_probabilidade}%</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.chuva_mm}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='wind' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Vento</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '50%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>velocidade </Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.vento_velocidade} km/h</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.vento_direcao}</Text>
+                                    </Form>
+                                </Row>
+                                <Row>
+                                    <FeatherIcon name='moon' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 8 }} />
+                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>  Lua</Text>
+                                </Row>
+                                <Row style={{ alignItems: 'flex-end' }}>
+                                    <Form style={{ flexDirection: 'row', width: '36%', justifyContent: 'flex-start' }}>
+                                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.noite.lua.nascer} h </Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '33%', justifyContent: 'flex-end' }}>
+                                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.noite.lua.por} h </Text>
+                                    </Form>
+                                </Row>
+                            </Col>
+                        </ListItem>
+                    ))}
+
                 </View>
             </LinearGradient>
         )
