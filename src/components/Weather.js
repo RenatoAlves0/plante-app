@@ -16,7 +16,7 @@ export default class Card extends Component {
         this.card_weather = [
             { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
             { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_light },
-            { icon: 'moon', cor1: this.estilo.cor.blue_dark, cor2: this.estilo.cor.blue },
+            { icon: 'moon', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark },
             // { icon: 'droplet', cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.greenish },
             // { icon: 'wind', cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.greenish }
         ]
@@ -107,7 +107,7 @@ export default class Card extends Component {
         return (
             <LinearGradient colors={[this.card_weather[this.state.card_weather_atual].cor1,
             this.card_weather[this.state.card_weather_atual].cor2]} useAngle={true}
-                angle={45} angleCenter={{
+                angle={90} angleCenter={{
                     x: this.card_weather[this.state.card_weather_atual].x || 0.5,
                     y: this.card_weather[this.state.card_weather_atual].y || 0.5
                 }} style={[this.estilo.item_dash,
