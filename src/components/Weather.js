@@ -210,21 +210,23 @@ export default class Card extends Component {
                                     </Form>
                                 </Row>
                                 <Row style={{ marginTop: 10 }}>
-                                    <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Sol</Text>
+                                    <Form style={{ flexDirection: 'row', width: '42%' }}>
+                                        <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Sol</Text>
+                                    </Form>
+                                    <Form style={{ flexDirection: 'row', width: '33%' }}>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.sol.duracao} h  </Text>
+                                        <FeatherIcon name='clock' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                                    </Form>
                                 </Row>
                                 <Row style={{ marginTop: 10 }}>
-                                    <Form style={{ flexDirection: 'row', width: '33%', justifyContent: 'flex-start' }}>
-                                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                    <Form style={{ flexDirection: 'row', width: '42%' }}>
+                                        <FeatherIcon name='sunrise' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.nascer} h </Text>
                                     </Form>
-                                    <Form style={{ flexDirection: 'row', width: '36%', justifyContent: 'flex-end' }}>
-                                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                                    <Form style={{ flexDirection: 'row', width: '33%' }}>
+                                        <FeatherIcon name='sunset' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.por} h </Text>
-                                    </Form>
-                                    <Form style={{ flexDirection: 'row', width: '30%', justifyContent: 'flex-end' }}>
-                                        <FeatherIcon name='clock' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.duracao} h </Text>
                                     </Form>
                                 </Row>
                             </Col>

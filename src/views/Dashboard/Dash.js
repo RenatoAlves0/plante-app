@@ -197,7 +197,7 @@ export default class Dash extends Component {
                         <Text style={[{ fontWeight: 'normal', fontSize: 17 },
                         this.state.tab_atual == 2 ?
                             { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]} >Tempo</Text>
+                            { color: this.estilo.cor.gray }]} >Clima</Text>
                         <FeatherIcon style={[{ fontSize: 22 },
                         this.state.tab_atual == 2 ?
                             { color: this.estilo.cor.black } :
