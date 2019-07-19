@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { Text, Button, Icon, View, Form, ListItem, Row, Col } from 'native-base'
+import { Text, Button, Icon, View, Form, ListItem, Row, Col, Spinner } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
+import Loader from './Loader'
 
 export default class Card extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
         this.state = {
+            loaded: false,
             card_weather_atual: 0,
             lista_weather: [],
             dia_semana_aux: undefined
@@ -35,6 +37,7 @@ export default class Card extends Component {
             console.log('Dados Weather desatualizados ou inexistentes\nobtendo novos dados ...')
             await this.getWeather()
         }
+        this.setState({ loaded: true })
     }
 
     async getWeather() {
@@ -169,6 +172,7 @@ export default class Card extends Component {
                             </Button>
                         ))}
                     </Form>
+                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white} style={{ alignSelf: 'center', marginBottom: 30 }} />}
                     {this.state.lista_weather.map((item, index) => (
                         <ListItem key={item.id} style={{
                             marginLeft: 15, marginRight: 15, marginBottom: 10,
