@@ -172,7 +172,7 @@ export default class Card extends Component {
                             </Button>
                         ))}
                     </Form>
-                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white} style={{ alignSelf: 'center', marginBottom: 30 }} />}
+                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
                     {this.state.lista_weather.map((item, index) => (
                         <ListItem key={item.id} style={{
                             marginLeft: 15, marginRight: 15, marginBottom: 10,
