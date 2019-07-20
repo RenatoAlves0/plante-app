@@ -207,6 +207,10 @@ export default class Card extends Component {
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia.nuvens}%</Text>
                     </Row>
                 </Row>
+                <Row style={{ justifyContent: 'flex-end' }} >
+                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>tempo de sol </Text>
+                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia.sol.duracao}h</Text>
+                </Row>
                 <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{item.dia.ceu}</Text>
                 <Row style={{ marginTop: 10 }}>
                     <Row>
@@ -242,18 +246,12 @@ export default class Card extends Component {
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  Sol</Text>
                     </Row>
                     <Row>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.sol.duracao} h  </Text>
-                        <FeatherIcon name='clock' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.dia.sol.nascer} h </Text>
                     </Row>
-                </Row>
-                <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='sunrise' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.nascer} h </Text>
-                    </Row>
-                    <Row>
-                        <FeatherIcon name='sunset' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.dia.sol.por} h </Text>
+                    <Row style={{ justifyContent: 'flex-end' }}>
+                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.dia.sol.por} h </Text>
                     </Row>
                 </Row>
             </Col>
@@ -314,11 +312,11 @@ export default class Card extends Component {
                     </Row>
                     <Row>
                         <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.noite.lua.nascer} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.noite.lua.nascer} h </Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.noite.lua.por} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.noite.lua.por} h </Text>
                     </Row>
                 </Row>
             </Col>
