@@ -28,8 +28,8 @@ export default class Dash extends Component {
             },
             loaded: false,
         }
-        this.topico_sensores = 'plante_iot_sensores(renalves.oli@gmail.com)'
-        this.topico_regador = 'plante_iot_regador(renalves.oli@gmail.com)'
+        this.topico_sensores = 'plante_box_sensores(renalves.oli@gmail.com)'
+        this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
         this.uri = 'ws://iot.eclipse.org:80/ws'
         this.client_id = 'plante_app_id(renalves.oli@gmail.com)'
         this.myStorage = {
