@@ -200,38 +200,37 @@ export default class Dash extends Component {
                         </Content>
                     </Tab>
                 </Tabs>
-                {this.state.conectado ?
-                    null : <Modal
-                        transparent
-                        animationType='fade'
-                        visible={this.state.conectado}>
-                        <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
-                        <Container style={{ backgroundColor: this.estilo.cor.gray_translucid, justifyContent: 'center' }}>
-                            <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
-                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                {this.state.conectado ? null : <Modal
+                    transparent
+                    animationType='fade'
+                    visible={true}>
+                    <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
+                    <Container style={{ backgroundColor: this.estilo.cor.gray_translucid, justifyContent: 'center' }}>
+                        <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
+                            useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                            style={{
+                                width: 250, height: 250, borderRadius: 250, marginBottom: 25,
+                                alignSelf: 'center', elevation: 10
+                            }}>
+                            <Button rounded onPress={() => this.conectar()}
                                 style={{
-                                    width: 250, height: 250, borderRadius: 250, marginBottom: 25,
-                                    alignSelf: 'center', elevation: 10
+                                    backgroundColor: '', width: 250, height: 250, borderRadius: 250,
+                                    elevation: 0, justifyContent: 'center'
                                 }}>
-                                <Button rounded onPress={() => this.conectar()}
-                                    style={{
-                                        backgroundColor: '', width: 250, height: 250, borderRadius: 250,
-                                        elevation: 0, justifyContent: 'center'
-                                    }}>
-                                    <Col style={{
-                                        width: 250, height: 250, borderRadius: 250,
-                                        justifyContent: 'center', alignItems: 'center'
-                                    }}>
-                                        <FeatherIcon style={{
-                                            fontSize: 70, color: this.estilo.cor.white, marginBottom: 10,
-                                        }} name='radio' />
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 30, marginBottom: 10 }} >Plante Box</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18 }} >Reconectar</Text>
-                                    </Col>
-                                </Button>
-                            </LinearGradient>
-                        </Container>
-                    </Modal>}
+                                <Col style={{
+                                    width: 250, height: 250, borderRadius: 250,
+                                    justifyContent: 'center', alignItems: 'center'
+                                }}>
+                                    <FeatherIcon style={{
+                                        fontSize: 70, color: this.estilo.cor.white, marginBottom: 10,
+                                    }} name='radio' />
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 30, marginBottom: 10 }} >Plante Box</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18 }} >Conectar</Text>
+                                </Col>
+                            </Button>
+                        </LinearGradient>
+                    </Container>
+                </Modal>}
             </Container>
         )
     }
