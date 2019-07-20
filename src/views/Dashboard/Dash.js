@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Fab, Col, Row, View, Form, Body, Tabs, Tab, ScrollableTab, TabHeading, Header, Toast, Item, Left, Right, ListItem } from 'native-base'
-import { StatusBar } from 'react-native'
+import { Container, Content, Text, Button, Col, Row, Form, Tabs, Tab, TabHeading, Toast } from 'native-base'
+import { StatusBar, Modal } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -135,26 +135,13 @@ export default class Dash extends Component {
                         this.state.tab_atual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Sensores</Text>
-                        <Icon style={[{ fontSize: 25 },
+                        {/* <Icon style={[{ fontSize: 25 },
                         this.state.tab_atual == 0 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
-                            name='gauge' type='MaterialCommunityIcons' />
+                            name='gauge' type='MaterialCommunityIcons' /> */}
                     </TabHeading>}>
                         <Content>
-
-                            {this.state.conectado ? null : <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
-                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
-                                style={{ width: 350, borderRadius: 50, marginTop: 25, alignSelf: 'center' }}>
-                                <Button rounded onPress={() => this.conectar()}
-                                    style={{
-                                        backgroundColor: '',
-                                        width: 350, elevation: 0, justifyContent: 'center'
-                                    }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 17 }} >Conectar ao Plante IoT</Text>
-                                </Button>
-                            </LinearGradient>}
-
                             <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
                                 {cards.map((item) => (<Card key={item.id} item={item} />))}
 
@@ -171,11 +158,11 @@ export default class Dash extends Component {
                         this.state.tab_atual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Atuadores</Text>
-                        <Icon style={[{ fontSize: 22 },
+                        {/* <Icon style={[{ fontSize: 22 },
                         this.state.tab_atual == 1 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
-                            name='robot-industrial' type='MaterialCommunityIcons' />
+                            name='robot-industrial' type='MaterialCommunityIcons' /> */}
                     </TabHeading>}>
                         <Content>
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
@@ -199,11 +186,11 @@ export default class Dash extends Component {
                         this.state.tab_atual == 2 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]} >Clima</Text>
-                        <FeatherIcon style={[{ fontSize: 22 },
+                        {/* <FeatherIcon style={[{ fontSize: 22 },
                         this.state.tab_atual == 2 ?
                             { color: this.estilo.cor.black } :
                             { color: this.estilo.cor.gray }]}
-                            name='cloud' />
+                            name='cloud' /> */}
                     </TabHeading>}>
                         <Content>
                             <Row style={{ justifyContent: 'center', paddingTop: 10 }}>
@@ -213,8 +200,39 @@ export default class Dash extends Component {
                         </Content>
                     </Tab>
                 </Tabs>
-            </Container >
+                {this.state.conectado ?
+                    null : <Modal
+                        transparent
+                        animationType='fade'
+                        visible={this.state.conectado}>
+                        <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
+                        <Container style={{ backgroundColor: this.estilo.cor.gray_translucid, justifyContent: 'center' }}>
+                            <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
+                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                                style={{
+                                    width: 250, height: 250, borderRadius: 250, marginBottom: 25,
+                                    alignSelf: 'center', elevation: 10
+                                }}>
+                                <Button rounded onPress={() => this.conectar()}
+                                    style={{
+                                        backgroundColor: '', width: 250, height: 250, borderRadius: 250,
+                                        elevation: 0, justifyContent: 'center'
+                                    }}>
+                                    <Col style={{
+                                        width: 250, height: 250, borderRadius: 250,
+                                        justifyContent: 'center', alignItems: 'center'
+                                    }}>
+                                        <FeatherIcon style={{
+                                            fontSize: 70, color: this.estilo.cor.white, marginBottom: 10,
+                                        }} name='radio' />
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 30, marginBottom: 10 }} >Plante Box</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18 }} >Reconectar</Text>
+                                    </Col>
+                                </Button>
+                            </LinearGradient>
+                        </Container>
+                    </Modal>}
+            </Container>
         )
     }
 }
-

@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { Text, Button, Icon, View, Form, ListItem, Row, Col, Spinner } from 'native-base'
+import { Text, Button, View, Form, ListItem, Row, Col, Spinner } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
-import Loader from './Loader'
 
 export default class Card extends Component {
     constructor(props) {
@@ -24,7 +23,7 @@ export default class Card extends Component {
         ]
     }
 
-    async componentWillReceiveProps() {
+    componentWillReceiveProps() {
         if (this.props.update) this.load()
     }
 
@@ -104,7 +103,11 @@ export default class Card extends Component {
                     JSON.stringify(array_obj))
                 await this.lerArquivo(rnfs.DocumentDirectoryPath)
             })
-            .catch((erro) => { console.error(erro) })
+            .catch(async (erro) => {
+                console.error(erro)
+                console.log('Servidor AccuWeather ainda não atualizado!')
+                await this.lerArquivo(rnfs.DocumentDirectoryPath)
+            })
     }
 
     async lerArquivo(caminho) {
@@ -172,7 +175,6 @@ export default class Card extends Component {
                             </Button>
                         ))}
                     </Form>
-                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
                     {this.state.lista_weather.map((item, index) => (
                         <ListItem key={item.id} style={{
                             marginLeft: 15, marginRight: 15, marginBottom: 10,
@@ -183,7 +185,10 @@ export default class Card extends Component {
                             <Col>
                                 <Row>
                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>
+                                            {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                                                : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                                    : item.dia_semana}</Text>
                                         {/* <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>quente?</Text> */}
                                     </Form>
                                     <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
@@ -218,7 +223,10 @@ export default class Card extends Component {
                             <Col>
                                 <Row>
                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>
+                                            {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                                                : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                                    : item.dia_semana}</Text>
                                     </Form>
                                     <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
@@ -292,7 +300,10 @@ export default class Card extends Component {
                             <Col>
                                 <Row>
                                     <Form style={{ flexDirection: 'column', width: '50%' }}>
-                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{index == 0 ? 'Hoje' : index == 1 ? 'Amanhã' : item.dia_semana}</Text>
+                                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>
+                                            {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                                                : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                                    : item.dia_semana}</Text>
                                     </Form>
                                     <Form style={{ flexDirection: 'row', width: '50%', justifyContent: 'flex-end' }}>
                                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
@@ -349,7 +360,7 @@ export default class Card extends Component {
                             </Col>
                         </ListItem>
                     ))}
-
+                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
                 </View>
             </LinearGradient>
         )
