@@ -13,7 +13,7 @@ export default class Estilos {
             blue_dark: '#00226d',
             greenish_light: '#07f1f4',
             greenish: '#00bfa5',
-            greenish_solid: '#008f75',
+            greenish_solid: '#007463',
             green_ligth: '#00e770',
             green: '#4cda64',
             green_solid: '#388e3c',
