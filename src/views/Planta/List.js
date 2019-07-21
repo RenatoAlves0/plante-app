@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions, StatusBar, Modal } from 'react-native'
-import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form, View } from 'native-base'
+import { Container, Content, ListItem, Text, SwipeRow, Button, Icon, Fab, Col, Form } from 'native-base'
 import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import BottomMenu from '../../components/BottomMenu'
@@ -9,6 +9,7 @@ import estilo from '../../assets/Estilo'
 import ViewInfos from './View'
 import ListEmpty from '../../components/ListEmpty'
 import Delete from '../../components/Delete'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class ListPlanta extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ export default class ListPlanta extends Component {
               onRowOpen={() => this.setState({ modal: true, item_delete: item })}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
-                  <Icon active name='trash' type='Feather' />
+                  <FeatherIcon active name='trash' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 10 }} />
                 </Button>
               }
               body={
@@ -78,9 +79,9 @@ export default class ListPlanta extends Component {
                     <Text style={{ color: this.estilo.cor.gray }}>
                       {item.familia.nome + ' . ' + item.genero.nome + ' . ' + item.especie.nome}</Text>
                   </Col>
-                  <Button transparent style={{ marginHorizontal: 10 }}
+                  <Button style={{ marginHorizontal: 10, backgroundColor: '', elevation: 0 }}
                     onPress={() => this.setState({ modal_view: true, item_modal_view: item })} >
-                    <Icon name='eye' type='Feather' style={{ color: this.estilo.cor.gray, fontSize: 22 }} />
+                    <FeatherIcon name='eye' style={{ color: this.estilo.cor.gray, fontSize: 22, marginHorizontal: 10 }} />
                   </Button>
                 </ListItem>
               }
@@ -108,7 +109,7 @@ export default class ListPlanta extends Component {
                 <Fab containerStyle={{ position: 'relative' }}
                   style={{ backgroundColor: this.estilo.cor.red }}
                   onPress={() => { this.setState({ modal_view: false }) }}>
-                  <Icon name='x' type='Feather' />
+                  <FeatherIcon name='x' />
                 </Fab>
               </Form>
 

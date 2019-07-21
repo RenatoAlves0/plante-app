@@ -7,6 +7,7 @@ import FormFamilia from '../Familia/Form'
 import FormGenero from '../Genero/Form'
 import FormEspecie from '../Especie/Form'
 import estilo from '../../assets/Estilo'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class FormPlanta extends Component {
     constructor(props) {
@@ -165,7 +166,7 @@ export default class FormPlanta extends Component {
                 <Header style={{ backgroundColor: this.estilo.cor.green_solid }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.plantaList()}>
-                            <Icon style={{ color: 'white' }} name='x' type='Feather' />
+                            <FeatherIcon name='x' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                     </Left>
                     <Body>
@@ -177,7 +178,7 @@ export default class FormPlanta extends Component {
                             && this.state.item.clima._id && this.state.item.solo._id
                             && this.state.item.luz._id && this.state.item.nutriente._id ?
                             <Button rounded transparent onPress={() => this.save()}>
-                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                                <FeatherIcon name='check' style={{ color: this.estilo.cor.white, fontSize: 22 }} />
                             </Button> : null}
                     </Right>
                 </Header>
@@ -199,7 +200,7 @@ export default class FormPlanta extends Component {
                                     {this.state.familias.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addFamilia: true }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { this.setState({ modal: true, addFamilia: true }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -214,7 +215,7 @@ export default class FormPlanta extends Component {
                                     {this.state.generos.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addGenero: true }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { this.setState({ modal: true, addGenero: true }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -229,7 +230,7 @@ export default class FormPlanta extends Component {
                                     {this.state.especies.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { this.setState({ modal: true, addEspecie: true }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { this.setState({ modal: true, addEspecie: true }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -248,7 +249,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.climaForm({ pop: true, item: this.state.item }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { Actions.climaForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -274,7 +275,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.soloForm({ pop: true, item: this.state.item }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { Actions.soloForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -293,7 +294,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.luzForm({ pop: true, item: this.state.item }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { Actions.luzForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form}>
@@ -324,7 +325,7 @@ export default class FormPlanta extends Component {
                                     })}
                                 </Picker>
                             </Row>
-                            <Icon style={this.estilo.buttomadd} name='plus' type='Feather' onPress={() => { Actions.nutrienteForm({ pop: true, item: this.state.item }) }} />
+                            <FeatherIcon style={this.estilo.buttomadd} name='plus' onPress={() => { Actions.nutrienteForm({ pop: true, item: this.state.item }) }} />
                         </Row>
                     </Form>
                     <Form style={this.estilo.form_vazio} />
@@ -344,12 +345,12 @@ export default class FormPlanta extends Component {
                             <Fab containerStyle={{ position: 'relative' }}
                                 style={{ backgroundColor: this.estilo.cor.red }}
                                 onPress={() => { this.setState({ modal: false, addFamilia: false, addGenero: false, addEspecie: false }) }}>
-                                <Icon name='x' type='Feather' />
+                                <FeatherIcon name='x' />
                             </Fab>
                             <Fab containerStyle={{ position: 'relative' }}
                                 style={{ backgroundColor: this.estilo.cor.greenish_solid }}
                                 onPress={() => this.saveSubentidade()}>
-                                <Icon name='check' type='Feather' />
+                                <FeatherIcon name='check' />
                             </Fab>
                         </Form>
 

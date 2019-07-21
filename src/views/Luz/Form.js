@@ -4,6 +4,7 @@ import { StatusBar } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class FormLuz extends Component {
     constructor(props) {
@@ -60,7 +61,7 @@ export default class FormLuz extends Component {
                 <Header style={{ backgroundColor: this.estilo.cor.orange }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
-                            <Icon style={{ color: 'white' }} name='x' type='Feather' />
+                            <FeatherIcon name='x' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                     </Left>
                     <Body>
@@ -70,7 +71,7 @@ export default class FormLuz extends Component {
                         {(this.state.item.horasPorDia || this.state.item.intensidade == 'Sombra')
                             && this.state.validHorasPorDia ?
                             <Button rounded transparent onPress={() => this.save()}>
-                                <Icon style={{ color: 'white' }} name='check' type='Feather' />
+                                <FeatherIcon name='check' style={{ color: this.estilo.cor.white, fontSize: 22 }} />
                             </Button> : null}
                     </Right>
                 </Header>

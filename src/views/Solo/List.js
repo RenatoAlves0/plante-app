@@ -8,6 +8,7 @@ import http from '../../services/Http'
 import estilo from '../../assets/Estilo'
 import ListEmpty from '../../components/ListEmpty'
 import Delete from '../../components/Delete'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class ListSolo extends Component {
   constructor(props) {
@@ -81,7 +82,7 @@ export default class ListSolo extends Component {
               onRowOpen={() => this.setState({ modal: true, item_delete: item })}
               left={
                 <Button full style={this.estilo.swiperow_deletbuttom}>
-                  <Icon active name='trash' type='Feather' />
+                  <FeatherIcon active name='trash' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 10 }} />
                 </Button>
               }
               body={
