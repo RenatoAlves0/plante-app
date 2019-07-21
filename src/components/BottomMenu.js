@@ -19,6 +19,7 @@ export default class BottomMenu extends Component {
       { route: 'soloList', key: 'solo', label: 'Solo', icon: 'grain', type: 'MaterialIcons', size: 24, color: this.estilo.cor.brown, pressColor: this.estilo.cor.gray_white + 'cc' },
       { route: 'luzList', key: 'luz', label: 'Luz', icon: 'wb-sunny', type: 'MaterialIcons', size: 24, color: this.estilo.cor.orange, pressColor: this.estilo.cor.gray_white + 'cc' },
       { route: 'nutrienteList', key: 'nutriente', label: 'Nutriente', icon: 'lab-flask', type: 'Entypo', size: 20, color: this.estilo.cor.purple, pressColor: this.estilo.cor.gray_white + 'cc' },
+      // { route: 'configsList', key: 'configs', label: 'Configs', icon: 'settings', type: 'MaterialCommunityIcons', size: 20, color: this.estilo.cor.gray, pressColor: this.estilo.cor.gray_white + 'cc' },
     ]
   }
 

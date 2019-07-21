@@ -70,8 +70,8 @@ export default class Card extends Component {
                         vento_velocidade: element.Day.Wind.Speed.Value, //km/h
                         vento_direcao: element.Day.Wind.Direction.Localized,
                         sol: {
-                            nascer: element.Sun.Rise.substring(11, 16),
-                            por: element.Sun.Set.substring(11, 16),
+                            nascer: element.Sun.Rise,
+                            por: element.Sun.Set,
                             duracao: element.HoursOfSun
                         }
                     }
@@ -83,10 +83,14 @@ export default class Card extends Component {
                         vento_velocidade: element.Night.Wind.Speed.Value, //km/h
                         vento_direcao: element.Night.Wind.Direction.Localized,
                         lua: {
-                            nascer: element.Moon.Rise.substring(11, 16),
-                            por: element.Moon.Set.substring(11, 16)
+                            nascer: element.Moon.Rise,
+                            por: element.Moon.Set
                         }
                     }
+                    dia.sol.nascer ? dia.sol.nascer = dia.sol.nascer.substring(11, 16) : ''
+                    dia.sol.por ? dia.sol.por = dia.sol.por.substring(11, 16) : ''
+                    noite.lua.nascer ? noite.lua.nascer = noite.lua.nascer.substring(11, 16) : ''
+                    noite.lua.por ? noite.lua.por = noite.lua.por.substring(11, 16) : ''
                     obj = {
                         id: index,
                         dia_semana: this.getDayOfWeek(dia_semana),
@@ -105,6 +109,8 @@ export default class Card extends Component {
             })
             .catch(async (erro) => {
                 console.error(erro)
+                console.log('Resultado obtido do Servidor AccuWeather:')
+                console.log(array)
                 console.log('Servidor AccuWeather ainda não atualizado!')
                 await this.lerArquivo(rnfs.DocumentDirectoryPath)
             })
