@@ -87,7 +87,7 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            width: 160, height: 200, margin: 15, paddingTop: 0,
+            width: 170, height: 200, margin: 15, paddingTop: 0,
             paddingBottom: 0, borderRadius: 10, elevation: 10
         }
 

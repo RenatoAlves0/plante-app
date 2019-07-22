@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Text, Button, View, Form, ListItem, Row, Col, Spinner } from 'native-base'
+import { Dimensions } from 'react-native'
+import { Text, Button, View, Form, ListItem, Row, Col, Spinner, Content } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -336,28 +337,24 @@ export default class Card extends Component {
                 angle={90} angleCenter={{
                     x: this.card_weather[this.state.card_weather_atual].x || 0.5,
                     y: this.card_weather[this.state.card_weather_atual].y || 0.5
-                }} style={[this.estilo.item_dash,
-                { width: 350, height: 'auto' }]}>
-                <View>
-                    <Text style={{ alignSelf: 'center', marginTop: 20, fontSize: 18, color: this.estilo.cor.white + '77' }}>Previsão</Text>
-                    <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
-                        {this.card_weather.map((item) => (
-                            <Button key={item.icon} rounded style={this.estilo.button_item_weather}
-                                onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
-                                <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                                this.state.card_weather_atual == this.card_weather.indexOf(item) ?
-                                    { color: this.estilo.cor.white } : null]} />
-                            </Button>
-                        ))}
-                    </Form>
-                    {this.state.lista_weather.map((item, index) => [
-                        this.renderTemperatura(item, index),
-                        this.renderDia(item, index),
-                        this.renderNoite(item, index)
-                    ])}
-                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
-                </View>
-            </LinearGradient>
+                }} style={[this.estilo.item_dash, { width: 370, height: 'auto' }]}>
+                <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                    {this.card_weather.map((item) => (
+                        <Button key={item.icon} rounded style={this.estilo.button_item_weather}
+                            onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
+                            <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
+                            this.state.card_weather_atual == this.card_weather.indexOf(item) ?
+                                { color: this.estilo.cor.white } : null]} />
+                        </Button>
+                    ))}
+                </Form>
+                {this.state.lista_weather.map((item, index) => [
+                    this.renderTemperatura(item, index),
+                    this.renderDia(item, index),
+                    this.renderNoite(item, index)
+                ])}
+                {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
+            </LinearGradient >
         )
     }
 }

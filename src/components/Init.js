@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { StatusBar } from 'react-native'
 import { Container, Text, Button, Label, View } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
@@ -31,6 +32,7 @@ export default class Init extends Component {
     render() {
         return (
             <Container>
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <View style={{ height: '100%', justifyContent: 'center' }}>
                     <Label style={this.state.label}>
                         Login</Label>

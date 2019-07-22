@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Col, Row, Form, Tabs, Tab, TabHeading, Toast } from 'native-base'
+import { Container, Content, Text, Button, Icon, Row, Form, Tabs, Tab, TabHeading, Toast } from 'native-base'
 import { StatusBar, Modal } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
@@ -45,7 +45,6 @@ export default class Dash extends Component {
             uri: this.uri, clientId: this.client_id, storage: this.myStorage
         })
     }
-
 
     componentWillMount() {
         this.load()
@@ -115,6 +114,11 @@ export default class Dash extends Component {
             })
     }
 
+    sleep = (delay) => {
+        var start = new Date().getTime()
+        while (new Date().getTime() < start + delay);
+    }
+
     render() {
         const cards = [
             { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
@@ -142,6 +146,22 @@ export default class Dash extends Component {
                             name='gauge' type='MaterialCommunityIcons' /> */}
                     </TabHeading>}>
                         <Content>
+                            {this.state.conectado ? null :
+                                <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
+                                    useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                                    style={{
+                                        width: 370, borderRadius: 10, marginTop: 25, alignSelf: 'center', elevation: 10
+                                    }}>
+                                    <Button rounded onPress={() => this.conectar()}
+                                        style={{
+                                            backgroundColor: '', width: 350, borderRadius: 10,
+                                            elevation: 0, justifyContent: 'center'
+                                        }}>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar  </Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
+                                        <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
+                                    </Button>
+                                </LinearGradient>}
                             <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
                                 {cards.map((item) => (<Card key={item.id} item={item} />))}
 
@@ -200,37 +220,6 @@ export default class Dash extends Component {
                         </Content>
                     </Tab>
                 </Tabs>
-                {this.state.conectado ? null : <Modal
-                    transparent
-                    animationType='fade'
-                    visible={true}>
-                    <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
-                    <Container style={{ backgroundColor: this.estilo.cor.gray_translucid, justifyContent: 'center' }}>
-                        <LinearGradient colors={[this.estilo.cor.greenish_light, this.estilo.cor.purple_vivid]}
-                            useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
-                            style={{
-                                width: 250, height: 250, borderRadius: 250, marginBottom: 25,
-                                alignSelf: 'center', elevation: 10
-                            }}>
-                            <Button rounded onPress={() => this.conectar()}
-                                style={{
-                                    backgroundColor: '', width: 250, height: 250, borderRadius: 250,
-                                    elevation: 0, justifyContent: 'center'
-                                }}>
-                                <Col style={{
-                                    width: 250, height: 250, borderRadius: 250,
-                                    justifyContent: 'center', alignItems: 'center'
-                                }}>
-                                    <FeatherIcon style={{
-                                        fontSize: 70, color: this.estilo.cor.white, marginBottom: 10,
-                                    }} name='radio' />
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 30, marginBottom: 10 }} >Plante Box</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18 }} >Conectar</Text>
-                                </Col>
-                            </Button>
-                        </LinearGradient>
-                    </Container>
-                </Modal>}
             </Container>
         )
     }
