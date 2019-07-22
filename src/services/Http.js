@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const baseUrl = 'http://10.0.3.2:3000/'
+const local = 'http://10.0.3.2:5000/'
+const online = 'https://plante-api.herokuapp.com/'
+const baseUrl = online
 
 export default class Http {
     async get(entidade) {
