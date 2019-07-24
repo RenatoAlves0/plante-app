@@ -91,6 +91,11 @@ export default class Estilos {
             paddingBottom: 0, borderRadius: 10, elevation: 10
         }
 
+        this.item_dash_weather = {
+            width: 370, margin: 15, paddingTop: 0, alignSelf: 'center',
+            paddingBottom: 0, borderRadius: 10, elevation: 10
+        }
+
         this.buttom_item_dash = {
             borderRadius: 10, alignItems: 'center', justifyContent: 'center',
             height: '100%', width: '100%', backgroundColor: '',

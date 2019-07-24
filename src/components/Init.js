@@ -46,7 +46,7 @@ export default class Init extends Component {
                         height: 100, margin: 20, elevation: 10,
                         backgroundColor: this.estilo.cor.greenish_solid
                     }} onPress={() => Actions.dash()} >
-                        <Text uppercase={false} style={{ fontSize: 25 }}>Usuário</Text>
+                        <Text uppercase={false} style={{ fontSize: 25 }}>Cliente</Text>
 
                     </Button>
                 </View>

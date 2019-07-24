@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Icon, Row, Form, Tabs, Tab, TabHeading, Toast } from 'native-base'
-import { StatusBar, Modal } from 'react-native'
+import { StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Card from '../../components/Card'
 import Weather from '../../components/Weather'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import BottomMenuCliente from '../../components/BottomMenuCliente'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -119,6 +120,11 @@ export default class Dash extends Component {
         while (new Date().getTime() < start + delay);
     }
 
+    setTabAtual = async (ativa) => {
+        await this.setState({ tab_atual: ativa })
+        this.state.tab_atual == 2 && this.state.update_weater ? this.setState({ update_weater: false }) : null
+    }
+
     render() {
         const cards = [
             { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
@@ -130,22 +136,10 @@ export default class Dash extends Component {
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                <Tabs tabContainerStyle={{ backgroundColor: this.estilo.cor.white }}
-                    tabBarUnderlineStyle={{ height: 0 }}
-                    onChangeTab={({ i }) => { this.setState({ tab_atual: i }), i == 2 && this.state.update_weater ? this.setState({ update_weater: false }) : null }}>
-                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
-                        {this.state.loaded ? null : <Loader />}
-                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.tab_atual == 0 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]} >Sensores</Text>
-                        {/* <Icon style={[{ fontSize: 25 },
-                        this.state.tab_atual == 0 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]}
-                            name='gauge' type='MaterialCommunityIcons' /> */}
-                    </TabHeading>}>
-                        <Content>
+                <Content>
+                    {this.state.loaded ? null : <Loader />}
+                    {this.state.tab_atual == 0 ?
+                        <Form>
                             {this.state.conectado ? null :
                                 <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
                                     useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
@@ -170,57 +164,30 @@ export default class Dash extends Component {
                                     : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
 
                             </Row>
-                            <Form style={this.estilo.form_vazio}></Form>
-                        </Content>
-                    </Tab>
-                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
-                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.tab_atual == 1 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]} >Atuadores</Text>
-                        {/* <Icon style={[{ fontSize: 22 },
-                        this.state.tab_atual == 1 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]}
-                            name='robot-industrial' type='MaterialCommunityIcons' /> */}
-                    </TabHeading>}>
-                        <Content>
-                            <Row style={{ justifyContent: 'center', paddingTop: 10 }} >
-                                <Card item={this.state.regar ?
-                                    {
-                                        cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
-                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
-                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                                    }
-                                    : {
-                                        cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
-                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
-                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                                    }} />
-                            </Row>
-                            <Form style={this.estilo.form_vazio}></Form>
-                        </Content>
-                    </Tab>
-                    <Tab heading={<TabHeading style={{ backgroundColor: '' }}>
-                        <Text style={[{ fontWeight: 'normal', fontSize: 17 },
-                        this.state.tab_atual == 2 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]} >Clima</Text>
-                        {/* <FeatherIcon style={[{ fontSize: 22 },
-                        this.state.tab_atual == 2 ?
-                            { color: this.estilo.cor.black } :
-                            { color: this.estilo.cor.gray }]}
-                            name='cloud' /> */}
-                    </TabHeading>}>
-                        <Content>
-                            <Row style={{ justifyContent: 'center', paddingTop: 10 }}>
-                                {this.state.update_weater ?
-                                    <Weather update={true} /> : <Weather />}
-                            </Row>
-                        </Content>
-                    </Tab>
-                </Tabs>
-            </Container>
+                        </Form> : null}
+
+                    {this.state.tab_atual == 1 ?
+                        <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
+                            <Card item={this.state.regar ?
+                                {
+                                    cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
+                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
+                                    sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                }
+                                : {
+                                    cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
+                                    sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                }} />
+                        </Row> : null}
+                    {this.state.tab_atual == 2 ?
+                        <Form>
+                            {this.state.update_weater ? <Weather update={true} /> : <Weather />}
+                        </Form>
+                        : null}
+                </Content>
+                <BottomMenuCliente method={this.setTabAtual} />
+            </Container >
         )
     }
 }
