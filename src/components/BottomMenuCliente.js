@@ -13,7 +13,8 @@ export default class BottomMenuCliente extends Component {
     this.tabs = [
       { key: 0, label: 'Sensores', icon: 'gauge', type: 'MaterialCommunityIcons', size: 24, color: this.estilo.cor.green_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
       { key: 1, label: 'Atuadores', icon: 'robot-industrial', type: 'MaterialCommunityIcons', size: 24, color: this.estilo.cor.greenish_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
-      { key: 2, label: 'Clima', icon: 'cloud', type: 'Entypo', size: 24, color: this.estilo.cor.blue_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
+      { key: 2, label: 'Clima semanal', icon: 'cloud', type: 'Entypo', size: 24, color: this.estilo.cor.blue_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
+      { key: 3, label: 'Clima hoje', icon: 'cloud', type: 'Entypo', size: 24, color: this.estilo.cor.blue_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
     ]
   }
 
@@ -47,7 +48,7 @@ export default class BottomMenuCliente extends Component {
   render() {
     return (
       <BottomNavigation
-        style={{ height: 60 }}
+        style={{ height: 60, elevation: 0 }}
         onTabPress={(newTab) => { this.setState({ ativa: newTab.key }); this.props.method(newTab.key) }}
         renderTab={this.renderTab(this.state.ativa)}
         tabs={this.tabs}

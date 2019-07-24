@@ -1,19 +1,10 @@
 import React, { Component } from 'react'
-import { Dimensions, ScrollView, Modal } from 'react-native'
-import { Text, Button, View, Form, ListItem, Row, Col, Spinner, Content, Container } from 'native-base'
+import { Text, Button, Form, ListItem, Row, Col, Spinner } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from 'react-native-chart-kit'
 
 export default class Card extends Component {
     constructor(props) {
@@ -50,7 +41,6 @@ export default class Card extends Component {
 
     async getWeather() {
         await axios
-            // .get('https://api.darksky.net/forecast/cd6497bd71117cbb49fd4f70a5e9dc93/-4.56167,-37.769718')
             .get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data.DailyForecasts
@@ -362,46 +352,7 @@ export default class Card extends Component {
                     this.renderNoite(item, index)
                 ])}
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
-            </LinearGradient >)
-        {/* <ScrollView horizontal={true}>
-                    <LineChart
-                        data={{
-                            labels: ['1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h'],
-                            datasets: [{
-                                data: [
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                    Math.random() * 100,
-                                ]
-                            }]
-                        }}
-                        width={Dimensions.get('window').width * 1.5} // from react-native
-                        height={320}
-                        yAxisLabel={'$'}
-                        chartConfig={{
-                            backgroundColor: '#e26a00',
-                            backgroundGradientFrom: '#fb8c00',
-                            backgroundGradientTo: '#ffa726',
-                            decimalPlaces: 2, // optional, defaults to 2dp
-                            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                            style: {}
-                        }}
-                        bezier
-                        style={{
-                            margin: 15,
-                            borderRadius: 10
-                        }}
-                    />
-                </ScrollView> */}
-
+            </LinearGradient >
+        )
     }
 }

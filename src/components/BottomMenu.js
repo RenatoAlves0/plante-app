@@ -54,7 +54,7 @@ export default class BottomMenu extends Component {
   render() {
     return (
       <BottomNavigation
-        style={{ height: 60 }}
+        style={{ height: 60, elevation: 0 }}
         onTabPress={newTab => { this.setState({ ativa: newTab.key }); Actions.push(newTab.route) }}
         renderTab={this.renderTab(this.state.ativa)}
         tabs={this.tabs}
