@@ -23,7 +23,7 @@ export default class Card extends Component {
     render() {
         return (
             <LinearGradient colors={[this.props.item.cor1, this.props.item.cor2]} useAngle={true}
-                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={this.estilo.item_dash}>
+                angle={45} angleCenter={{ x: 0.5, y: 0.5 }} style={[this.estilo.item_dash]}>
                 <Button style={this.estilo.buttom_item_dash} onPress={() => this.props.item.method ? this.props.item.method() : null}>
                     {this.props.item.icon_name && this.props.item.icon_type ? <Icon name={this.props.item.icon_name} type={this.props.item.icon_type} style={this.estilo.icon_item_dash} /> : null}
                     {this.props.item.value ? <Text uppercase={false} style={{ fontSize: 23, color: 'white' }} >{this.props.item.value}{this.props.item.value_sufix}</Text> : null}

@@ -139,61 +139,59 @@ export default class Dash extends Component {
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                <Content>
-                    {this.state.loaded ? null : <Loader />}
-                    {/* 0 */}
-                    <Form style={this.state.tab_atual == 0 ? null : { display: 'none' }}>
-                        {this.state.conectado ? null :
-                            <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
-                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                {this.state.loaded ? null : <Loader />}
+                {/* 0 */}
+                <Content style={this.state.tab_atual == 0 ? null : { display: 'none' }}>
+                    {this.state.conectado ? null :
+                        <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
+                            useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                            style={{
+                                width: 370, borderRadius: 10, marginTop: 25, alignSelf: 'center', elevation: 10
+                            }}>
+                            <Button rounded onPress={() => this.conectar()}
                                 style={{
-                                    width: 370, borderRadius: 10, marginTop: 25, alignSelf: 'center', elevation: 10
+                                    backgroundColor: '', width: 350, borderRadius: 10,
+                                    elevation: 0, justifyContent: 'center'
                                 }}>
-                                <Button rounded onPress={() => this.conectar()}
-                                    style={{
-                                        backgroundColor: '', width: 350, borderRadius: 10,
-                                        elevation: 0, justifyContent: 'center'
-                                    }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar  </Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
-                                    <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
-                                </Button>
-                            </LinearGradient>}
-                        <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
-                            {cards.map((item) => (<Card key={item.id} item={item} />))}
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar  </Text>
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
+                                <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
+                            </Button>
+                        </LinearGradient>}
+                    <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
+                        {cards.map((item) => (<Card key={item.id} item={item} />))}
 
-                            <Card item={this.state.plantacao_status ?
-                                { cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.green, method: this.plantacao_status_change, icon_name: 'check-circle', icon_type: 'MaterialCommunityIcons', value: 'Tudo certo' }
-                                : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
+                        <Card item={this.state.plantacao_status ?
+                            { cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.green, method: this.plantacao_status_change, icon_name: 'check-circle', icon_type: 'MaterialCommunityIcons', value: 'Tudo certo' }
+                            : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
 
-                        </Row>
-                    </Form>
-
-                    {/* 1 */}
-                    <Row style={[this.state.tab_atual == 1 ? null : { display: 'none' },
-                    { justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }]} >
-                        <Card item={this.state.regar ?
-                            {
-                                cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
-                                icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
-                                sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                            }
-                            : {
-                                cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
-                                icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
-                                sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                            }} />
                     </Row>
+                </Content>
 
-                    {/* 2 */}
-                    <Form style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
-                        {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
-                    </Form>
+                {/* 1 */}
+                <Content style={[this.state.tab_atual == 1 ? null : { display: 'none' },
+                { paddingTop: 10, flexDirection: 'row', flexWrap: 'wrap' }]} >
+                    <Card item={this.state.regar ?
+                        {
+                            cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
+                            icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
+                            sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                        }
+                        : {
+                            cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                            icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
+                            sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                        }} />
+                </Content>
 
-                    {/* 2 */}
-                    <Form style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
-                        {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
-                    </Form>
+                {/* 2 */}
+                <Content style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
+                    {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
+                </Content>
+
+                {/* 2 */}
+                <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
+                    {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
                 </Content>
                 <BottomMenuCliente method={this.setTabAtual} />
             </Container >

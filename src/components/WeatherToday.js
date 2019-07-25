@@ -32,34 +32,54 @@ export default class Card extends Component {
 
     async load() {
     }
-
-    // renderTemperatura() {
-    //     return
-    // }
-
     render() {
-        const data = [24, 27, 30, 31, 30, 33, 34, 29, 28, 30, 33, 29]
-        const data1 = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 0]
-        const axesSvg = { fontSize: 18, fill: this.estilo.cor.black };
-        const xAxisHeight = 30
+        const data = [24, 24, 27, 30, 31, 30, 33, 34, 29, 28, 30, 33, 29, 29]
+        const data1 = [0, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 0, 0]
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(value)} strokeWidth={50}>
-                    <Text style={{ marginTop: -22, marginLeft: -8 }}>{value}º</Text>
+                <Svg key={index} translateX={x(index)} translateY={y(value)}>
+                    <Text style={{
+                        marginTop: -35, marginLeft: -8, fontWeight: 'bold',
+                        color: this.estilo.cor.purple, fontSize: 17
+                    }}>{value}º</Text>
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path d={line} stroke={this.estilo.cor.gray_white} fill={'none'} strokeWidth={3} />
+            <Path d={line} stroke={this.estilo.cor.purple + '77'} fill={'none'} strokeWidth={10} />
         )
         return (
-            <LinearGradient colors={[this.card_weather[this.state.card_weather_atual].cor1,
-            this.card_weather[this.state.card_weather_atual].cor2]} useAngle={true}
-                angle={90} angleCenter={{
-                    x: this.card_weather[this.state.card_weather_atual].x || 0.5,
-                    y: this.card_weather[this.state.card_weather_atual].y || 0.5
-                }} style={this.estilo.item_dash_weather}>
-                <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
+            <Container>
+                <ScrollView horizontal={true} style={{
+                    marginTop: 0, maxHeight: 200
+                }}>
+                    <Form style={{ width: Dimensions.get('window').width * 1.5 }}>
+                        <AreaChart
+                            style={{ height: 150 }}
+                            data={data}
+                            svg={{ fill: this.estilo.cor.purple }}
+                            curve={shape.curveNatural}
+                            contentInset={{ left: -20, right: -22 }}
+                            yMin={22}
+                            yMax={50}
+                        >
+                            <Line />
+                            <Decorator />
+                        </AreaChart>
+                        <XAxis
+                            style={{
+                                marginHorizontal: -30, height: 50, paddingTop: 25,
+                                backgroundColor: this.estilo.cor.purple
+                            }}
+                            data={data}
+                            formatLabel={index => data1[index] + 'h'}
+                            contentInset={{ left: 10, right: 0 }}
+                            svg={{ fontSize: 15, fill: this.estilo.cor.white }}
+                            numberOfTicks={12}
+                        />
+                    </Form>
+                </ScrollView>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.purple }}>
                     {this.card_weather.map((item) => (
                         <Button key={item.icon} rounded style={this.estilo.button_item_weather}
                             onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
@@ -68,41 +88,8 @@ export default class Card extends Component {
                                 { color: this.estilo.cor.white } : null]} />
                         </Button>
                     ))}
-                </Form>
-                <ScrollView horizontal={true} style={{ margin: 15, marginTop: 0, borderRadius: 10, backgroundColor: 'white' }}>
-                    {/* {this.renderTemperatura()} */}
-                    <View style={{ padding: 20, flexDirection: 'row', width: Dimensions.get('window').width * 1.7 }}>
-                        {/* <YAxis
-                            data={data}
-                            style={{ marginBottom: xAxisHeight }}
-                            svg={axesSvg}
-                        /> */}
-                        <View style={{ flex: 1, marginLeft: 10 }}>
-                            <AreaChart
-                                style={{ height: 150 }}
-                                data={data}
-                                svg={{ fill: this.estilo.cor.gray_translucid }}
-                                curve={shape.curveNatural}
-                                contentInset={{left: 10, right: 20}}
-                                yMin={0}
-                                yMax={50}
-                            >
-                                <Line />
-                                <Decorator />
-                            </AreaChart>
-                            <XAxis
-                                style={{ marginHorizontal: -10, height: xAxisHeight, paddingTop: 15 }}
-                                data={data}
-                                formatLabel={index => data1[index]+'h'}
-                                contentInset={{ left: 20, right: 30 }}
-                                svg={axesSvg}
-                                numberOfTicks={12}
-                            />
-                        </View>
-                    </View>
-                </ScrollView>
-                {/* {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />} */}
-            </LinearGradient >
+                </View>
+            </Container>
         )
     }
 }
