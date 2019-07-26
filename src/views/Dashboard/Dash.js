@@ -70,7 +70,8 @@ export default class Dash extends Component {
                     text: 'Conecxão perdida!',
                     type: 'danger',
                     duration: 3000,
-                    textStyle: { textAlign: 'center' }
+                    textStyle: { textAlign: 'center' },
+                    position: 'top'
                 })
             }
         })
@@ -105,7 +106,8 @@ export default class Dash extends Component {
                     text: 'Conectado com sucesso!',
                     type: 'success',
                     duration: 3000,
-                    textStyle: { textAlign: 'center' }
+                    textStyle: { textAlign: 'center' },
+                    position: 'top'
                 })
                 return this.client.subscribe(this.topico_sensores)
             })
@@ -116,7 +118,8 @@ export default class Dash extends Component {
                         text: 'Não foi possível conectar!',
                         type: 'danger',
                         duration: 3000,
-                        textStyle: { textAlign: 'center' }
+                        textStyle: { textAlign: 'center' },
+                        position: 'top'
                     })
                 }
             })
