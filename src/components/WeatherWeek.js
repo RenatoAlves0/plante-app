@@ -102,7 +102,7 @@ export default class Card extends Component {
                     array_obj.push(obj)
                 })
                 await this.gravarArquivo(
-                    rnfs.DocumentDirectoryPath + '/weather.json',
+                    rnfs.DocumentDirectoryPath + '/weather_week.json',
                     JSON.stringify(array_obj))
                 await this.lerArquivo(rnfs.DocumentDirectoryPath)
             })
@@ -116,11 +116,17 @@ export default class Card extends Component {
     }
 
     async lerArquivo(caminho) {
+        let index_file
         await rnfs.readDir(caminho)
-            .then((result) => {
+            .then(async (result) => {
                 this.setState({ dia_semana_aux: 'vazio' })
                 console.log('Resultado de leitura obtido', result)
-                return Promise.all([rnfs.stat(result[0].path), result[0].path])
+                await result.forEach(async element => {
+                    if (element.name == 'weather.json') {
+                        index_file = await result.indexOf(element)
+                    }
+                })
+                return Promise.all([rnfs.stat(result[0].path), result[index_file].path])
             })
             .then((statResult) => {
                 if (statResult[0].isFile()) return rnfs.readFile(statResult[1], 'utf8')

@@ -57,6 +57,11 @@ export default class Dash extends Component {
         this.load()
     }
 
+    componentDidMount() {
+        this.setState({ update_weater_week: false })
+        this.setState({ update_weater_today: false })
+    }
+
     async load() {
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) {
@@ -124,8 +129,6 @@ export default class Dash extends Component {
 
     setTabAtual = async (ativa) => {
         await this.setState({ tab_atual: ativa })
-        this.state.tab_atual == 2 && this.state.update_weater_week ? this.setState({ update_weater_week: false }) : null
-        this.state.tab_atual == 3 && this.state.update_weater_today ? this.setState({ update_weater_today: false }) : null
     }
 
     render() {
@@ -189,7 +192,7 @@ export default class Dash extends Component {
                     {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
                 </Content>
 
-                {/* 2 */}
+                {/* 3 */}
                 <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
                 </Content>

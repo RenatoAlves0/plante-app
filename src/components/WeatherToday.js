@@ -18,7 +18,8 @@ export default class Card extends Component {
             loaded: false,
             card_weather_atual: 0,
             lista_weather: [],
-            dia_semana_aux: undefined
+            dia_semana_aux: undefined,
+            hora_aux: undefined,
         }
         this.card_weather = [
             { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
@@ -28,10 +29,147 @@ export default class Card extends Component {
     }
 
     componentWillReceiveProps() {
+        if (this.props.update) this.load()
     }
 
     async load() {
+        await this.lerArquivo(rnfs.DocumentDirectoryPath)
+        console.log(this.state.dia_semana_aux)
+        console.log(this.getStringDayOfWeek(new Date().getDay()))
+        console.log(this.state.hora_aux)
+        console.log(new Date().getHours())
+        if (this.getStringDayOfWeek(new Date().getDay()) == this.state.dia_semana_aux
+            && (new Date().getHours()) - this.state.hora_aux < 3)
+            console.log('Dados Weather (12h) já atualizados')
+        else {
+            console.log('Dados Weather (12h) desatualizados ou inexistentes\nobtendo novos dados ...')
+            await this.getWeather()
+        }
+        this.setState({ loaded: true })
     }
+
+    async getWeather() {
+        await axios
+            .get('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
+            .then(async (data) => {
+                let array = data.data
+                console.log('array')
+                console.log(array)
+                let dia_semana, hora,
+                    situacao, temperatura,
+                    sensacao_termica, temperatura_de_bulbo_umido,
+                    ponto_de_orvalho, vento,
+                    umidade_relativa, chuva, uv, obj, array_obj = []
+
+                await array.forEach((element, index) => {
+                    dia_semana = element.DateTime
+                    hora = element.DateTime
+                    dia_semana ? dia_semana = this.getDayOfWeek(dia_semana) : ''
+                    hora ? hora = new Date(hora).getHours() : ''
+                    situacao = element.IconPhrase
+                    temperatura = element.Temperature.Value
+                    sensacao_termica = element.RealFeelTemperature.Value
+                    temperatura_de_bulbo_umido = element.WetBulbTemperature.Value
+                    ponto_de_orvalho = element.DewPoint.Value
+                    vento = {
+                        velocidade: element.Wind.Speed.Value, //km/h
+                        direcao: element.Wind.Direction.Localized
+                    }
+                    umidade_relativa = element.RelativeHumidity //%
+                    chuva = {
+                        probabilidade: element.RainProbability,
+                        quantidade: element.Rain.Value //mm
+                    }
+                    uv = {
+                        indice: element.UVIndex,
+                        descricao: element.UVIndexText
+                    }
+                    obj = {
+                        dia_semana: dia_semana,
+                        hora: hora,
+                        situacao: situacao,
+                        temperatura: temperatura,
+                        sensacao_termica: sensacao_termica,
+                        temperatura_de_bulbo_umido: temperatura_de_bulbo_umido,
+                        ponto_de_orvalho: ponto_de_orvalho,
+                        vento: vento,
+                        umidade_relativa: umidade_relativa,
+                        chuva: chuva,
+                        uv: uv
+                    }
+                    array_obj.push(obj)
+                })
+                console.log('array_obj')
+                console.log(array_obj)
+                await this.gravarArquivo(
+                    rnfs.DocumentDirectoryPath + '/weather_twelve.json',
+                    JSON.stringify(array_obj))
+                await this.lerArquivo(rnfs.DocumentDirectoryPath)
+            })
+            .catch(async (erro) => {
+                console.error(erro)
+                console.log('Resultado obtido do Servidor AccuWeather (12h):')
+                console.log(array)
+                console.log('Servidor AccuWeather (12h) ainda não atualizado!')
+                await this.lerArquivo(rnfs.DocumentDirectoryPath)
+            })
+    }
+
+    async lerArquivo(caminho) {
+        let index_file
+        await rnfs.readDir(caminho)
+            .then(async (result) => {
+                this.setState({ dia_semana_aux: 'vazio' })
+                this.setState({ hora_aux: 'vazio' })
+                console.log('Resultado de leitura obtido', result)
+                await result.forEach(async element => {
+                    if (element.name == 'weather_twelve.json') {
+                        index_file = await result.indexOf(element)
+                    }
+                })
+                return Promise.all([rnfs.stat(result[0].path), result[index_file].path])
+            })
+            .then((statResult) => {
+                if (statResult[0].isFile()) return rnfs.readFile(statResult[1], 'utf8')
+                return 'no file'
+            })
+            .then(async (contents) => {
+                await this.setState({ lista_weather: JSON.parse(contents) })
+                console.log(this.state.lista_weather)
+                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].dia_semana ?
+                    await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) : null
+                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].hora ?
+                    await this.setState({ hora_aux: this.state.lista_weather[0].hora }) : null
+                console.log(this.state.lista_weather[0].hora)
+            })
+            .catch((err) => {
+                this.setState({ dia_semana_aux: 'vazio' })
+                this.setState({ hora_aux: 'vazio' })
+                console.log(err.message, err.code)
+                return null
+            })
+    }
+
+    async gravarArquivo(caminho, dados) {
+        await rnfs.writeFile(caminho, dados, 'utf8')
+            .then(() => {
+                console.log('Weather (12h) gravado com sucesso no armazenamento interno!')
+            })
+            .catch((err) => {
+                console.log('Falha ao gravar Weather (12h) no armazenamento interno!')
+                console.log(err.message)
+            })
+    }
+
+    getDayOfWeek(date) {
+        var dayOfWeek = new Date(date).getDay()
+        return this.getStringDayOfWeek(dayOfWeek)
+    }
+
+    getStringDayOfWeek(day) {
+        return isNaN(day) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][day]
+    }
+
     render() {
         const data = [24, 24, 27, 30, 31, 30, 33, 34, 29, 28, 30, 33, 29, 29]
         const data1 = [0, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 0, 0]
