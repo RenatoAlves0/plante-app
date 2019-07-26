@@ -17,7 +17,19 @@ export default class Card extends Component {
         this.state = {
             loaded: false,
             card_weather_atual: 0,
-            lista_weather: [],
+            lista_weather: {
+                dia_semana: [],
+                hora: [],
+                situacao: [],
+                temperatura: [],
+                sensacao_termica: [],
+                temperatura_de_bulbo_umido: [],
+                ponto_de_orvalho: [],
+                vento: [],
+                umidade_relativa: [],
+                chuva: [],
+                uv: []
+            },
             dia_semana_aux: undefined,
             hora_aux: undefined,
         }
@@ -34,10 +46,6 @@ export default class Card extends Component {
 
     async load() {
         await this.lerArquivo(rnfs.DocumentDirectoryPath)
-        console.log(this.state.dia_semana_aux)
-        console.log(this.getStringDayOfWeek(new Date().getDay()))
-        console.log(this.state.hora_aux)
-        console.log(new Date().getHours())
         if (this.getStringDayOfWeek(new Date().getDay()) == this.state.dia_semana_aux
             && (new Date().getHours()) - this.state.hora_aux < 3)
             console.log('Dados Weather (12h) já atualizados')
@@ -53,13 +61,27 @@ export default class Card extends Component {
             .get('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data
-                console.log('array')
-                console.log(array)
                 let dia_semana, hora,
                     situacao, temperatura,
                     sensacao_termica, temperatura_de_bulbo_umido,
                     ponto_de_orvalho, vento,
-                    umidade_relativa, chuva, uv, obj, array_obj = []
+                    umidade_relativa, chuva, uv,
+                    array_obj = {
+                        dia_semana: [], hora: [],
+                        situacao: [], temperatura: [],
+                        sensacao_termica: [], temperatura_de_bulbo_umido: [],
+                        ponto_de_orvalho: [], vento: [],
+                        umidade_relativa: [], chuva: [],
+                        uv: []
+                    }
+                let menor_temperatura, menor_sensacao_termica,
+                    menor_temperatura_de_bulbo_umido,
+                    menor_ponto_de_orvalho, menor_vento,
+                    menor_umidade_relativa, menor_chuva, menor_uv,
+                    maior_temperatura, maior_sensacao_termica,
+                    maior_temperatura_de_bulbo_umido,
+                    maior_ponto_de_orvalho, maior_vento,
+                    maior_umidade_relativa, maior_chuva, maior_uv
 
                 await array.forEach((element, index) => {
                     dia_semana = element.DateTime
@@ -84,23 +106,51 @@ export default class Card extends Component {
                         indice: element.UVIndex,
                         descricao: element.UVIndexText
                     }
-                    obj = {
-                        dia_semana: dia_semana,
-                        hora: hora,
-                        situacao: situacao,
-                        temperatura: temperatura,
-                        sensacao_termica: sensacao_termica,
-                        temperatura_de_bulbo_umido: temperatura_de_bulbo_umido,
-                        ponto_de_orvalho: ponto_de_orvalho,
-                        vento: vento,
-                        umidade_relativa: umidade_relativa,
-                        chuva: chuva,
-                        uv: uv
-                    }
-                    array_obj.push(obj)
+
+                    index == 0 ? [
+                        array_obj.dia_semana.push(dia_semana),
+                        array_obj.hora.push(hora),
+                        array_obj.situacao.push(situacao),
+                        array_obj.temperatura.push(temperatura),
+                        array_obj.sensacao_termica.push(sensacao_termica),
+                        array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido),
+                        array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
+                        array_obj.vento.push(vento),
+                        array_obj.umidade_relativa.push(umidade_relativa),
+                        array_obj.chuva.push(chuva),
+                        array_obj.uv.push(uv)
+                    ] : null
+
+                    array_obj.dia_semana.push(dia_semana)
+                    array_obj.hora.push(hora)
+                    array_obj.situacao.push(situacao)
+                    array_obj.temperatura.push(temperatura)
+                    array_obj.sensacao_termica.push(sensacao_termica)
+                    array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido)
+                    array_obj.ponto_de_orvalho.push(ponto_de_orvalho)
+                    array_obj.vento.push(vento)
+                    array_obj.umidade_relativa.push(umidade_relativa)
+                    array_obj.chuva.push(chuva)
+                    array_obj.uv.push(uv)
+
+                    index == 11 ? [
+                        array_obj.dia_semana.push(dia_semana),
+                        array_obj.hora.push(hora),
+                        array_obj.situacao.push(situacao),
+                        array_obj.temperatura.push(temperatura),
+                        array_obj.sensacao_termica.push(sensacao_termica),
+                        array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido),
+                        array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
+                        array_obj.vento.push(vento),
+                        array_obj.umidade_relativa.push(umidade_relativa),
+                        array_obj.chuva.push(chuva),
+                        array_obj.uv.push(uv)
+                    ] : null
                 })
+
                 console.log('array_obj')
                 console.log(array_obj)
+
                 await this.gravarArquivo(
                     rnfs.DocumentDirectoryPath + '/weather_twelve.json',
                     JSON.stringify(array_obj))
@@ -136,11 +186,10 @@ export default class Card extends Component {
             .then(async (contents) => {
                 await this.setState({ lista_weather: JSON.parse(contents) })
                 console.log(this.state.lista_weather)
-                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].dia_semana ?
-                    await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) : null
-                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].hora ?
-                    await this.setState({ hora_aux: this.state.lista_weather[0].hora }) : null
-                console.log(this.state.lista_weather[0].hora)
+                this.state.lista_weather && this.state.lista_weather.dia_semana && this.state.lista_weather.dia_semana[1] ?
+                    await this.setState({ dia_semana_aux: this.state.lista_weather.dia_semana[1] }) : null
+                this.state.lista_weather && this.state.lista_weather.hora && this.state.lista_weather.hora[1] ?
+                    await this.setState({ hora_aux: this.state.lista_weather.hora[1] }) : null
             })
             .catch((err) => {
                 this.setState({ dia_semana_aux: 'vazio' })
@@ -171,15 +220,14 @@ export default class Card extends Component {
     }
 
     render() {
-        const data = [24, 24, 27, 30, 31, 30, 33, 34, 29, 28, 30, 33, 29, 29]
-        const data1 = [0, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 0, 0]
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Text style={{
-                        marginTop: -35, marginLeft: -8, fontWeight: 'bold',
-                        color: this.estilo.cor.purple, fontSize: 17
-                    }}>{value}º</Text>
+                    <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
+                        { color: this.estilo.cor.purple }, {
+                        marginTop: -35, marginLeft: -20, fontWeight: 'bold', width: 43,
+                        fontSize: 17, textAlign: 'center'
+                    }]}>{value}º</Text>
                 </Svg>
             ))
         }
@@ -191,10 +239,10 @@ export default class Card extends Component {
                 <ScrollView horizontal={true} style={{
                     marginTop: 0, maxHeight: 200
                 }}>
-                    <Form style={{ width: Dimensions.get('window').width * 1.5 }}>
+                    <Form style={{ width: Dimensions.get('window').width * 1.7 }}>
                         <AreaChart
                             style={{ height: 150 }}
-                            data={data}
+                            data={this.state.lista_weather.temperatura}
                             svg={{ fill: this.estilo.cor.purple }}
                             curve={shape.curveNatural}
                             contentInset={{ left: -20, right: -22 }}
@@ -206,11 +254,14 @@ export default class Card extends Component {
                         </AreaChart>
                         <XAxis
                             style={{
-                                marginHorizontal: -30, height: 50, paddingTop: 25,
+                                marginLeft: -30, marginRight: -18, height: 50, paddingTop: 25,
                                 backgroundColor: this.estilo.cor.purple
                             }}
-                            data={data}
-                            formatLabel={index => data1[index] + 'h'}
+                            data={this.state.lista_weather.hora}
+                            formatLabel={(index) => {
+                                if (index == 0 || index == 13) return ''
+                                return this.state.lista_weather.hora[index] + 'h'
+                            }}
                             contentInset={{ left: 10, right: 0 }}
                             svg={{ fontSize: 15, fill: this.estilo.cor.white }}
                             numberOfTicks={12}

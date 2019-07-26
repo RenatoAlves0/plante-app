@@ -14,7 +14,8 @@ export default class Card extends Component {
             loaded: false,
             card_weather_atual: 0,
             lista_weather: [],
-            dia_semana_aux: undefined
+            dia_semana_aux: undefined,
+            hora_aux: undefined,
         }
         this.card_weather = [
             { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
@@ -29,13 +30,13 @@ export default class Card extends Component {
 
     async load() {
         await this.lerArquivo(rnfs.DocumentDirectoryPath)
-        console.log(this.state.dia_semana_aux)
-        if (this.getStringDayOfWeek(new Date().getDay()) == this.state.dia_semana_aux)
-            console.log('Dados Weather já atualizados')
-        else {
+        console.log((new Date().getHours()) - this.state.hora_aux)
+        if (this.getStringDayOfWeek(new Date().getDay()) != this.state.dia_semana_aux &&
+            (new Date().getHours()) - this.state.hora_aux > 1) {
             console.log('Dados Weather desatualizados ou inexistentes\nobtendo novos dados ...')
             await this.getWeather()
         }
+        else console.log('Dados Weather já atualizados')
         this.setState({ loaded: true })
     }
 
@@ -44,11 +45,14 @@ export default class Card extends Component {
             .get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data.DailyForecasts
-                let sensacao_termica, sensacao_termica_sombra,
+                let sensacao_termica, sensacao_termica_sombra, hora,
                     temperatura, dia, noite, dia_semana, obj, array_obj = []
 
                 await array.forEach((element, index) => {
+                    console.log(element.Date)
                     dia_semana = element.Date
+                    hora = new Date().getHours()
+                    dia_semana ? dia_semana = this.getDayOfWeek(dia_semana) : ''
                     sensacao_termica = {
                         min: element.RealFeelTemperature.Minimum.Value,
                         max: element.RealFeelTemperature.Maximum.Value
@@ -92,7 +96,8 @@ export default class Card extends Component {
                     noite.lua.por ? noite.lua.por = noite.lua.por.substring(11, 16) : ''
                     obj = {
                         id: index,
-                        dia_semana: this.getDayOfWeek(dia_semana),
+                        hora: hora,
+                        dia_semana: dia_semana,
                         sensacao_termica: sensacao_termica,
                         sensacao_termica_sombra: sensacao_termica_sombra,
                         temperatura: temperatura,
@@ -120,9 +125,10 @@ export default class Card extends Component {
         await rnfs.readDir(caminho)
             .then(async (result) => {
                 this.setState({ dia_semana_aux: 'vazio' })
+                this.setState({ hora_aux: 'vazio' })
                 console.log('Resultado de leitura obtido', result)
                 await result.forEach(async element => {
-                    if (element.name == 'weather.json') {
+                    if (element.name == 'weather_week.json') {
                         index_file = await result.indexOf(element)
                     }
                 })
@@ -137,9 +143,12 @@ export default class Card extends Component {
                 console.log(this.state.lista_weather)
                 this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].dia_semana ?
                     await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) : null
+                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].hora ?
+                    await this.setState({ hora_aux: this.state.lista_weather[0].hora }) : null
             })
             .catch((err) => {
                 this.setState({ dia_semana_aux: 'vazio' })
+                this.setState({ hora_aux: 'vazio' })
                 console.log(err.message, err.code)
                 return null
             })
