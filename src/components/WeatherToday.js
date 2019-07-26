@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { Dimensions, ScrollView, Modal, View } from 'react-native'
-import { Button, Form, ListItem, Row, Col, Spinner, Content, Container, Text } from 'native-base'
+import { Dimensions, ScrollView, View } from 'react-native'
+import { Button, Form, Container, Text } from 'native-base'
 import estilo from '../assets/Estilo'
-import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
-import { Grid, AreaChart, XAxis, YAxis } from 'react-native-svg-charts'
-import { G, Line, Circle, Path, Svg } from 'react-native-svg'
+import { AreaChart, XAxis } from 'react-native-svg-charts'
+import { Path, Svg } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
 export default class Card extends Component {
@@ -61,27 +60,24 @@ export default class Card extends Component {
             .get('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data
-                let dia_semana, hora,
-                    situacao, temperatura,
-                    sensacao_termica, temperatura_de_bulbo_umido,
-                    ponto_de_orvalho, vento,
-                    umidade_relativa, chuva, uv,
+                let dia_semana, hora, situacao, temperatura, sensacao_termica, chuva, uv,
+                    ponto_de_orvalho, vento, umidade_relativa, temperatura_de_bulbo_umido,
                     array_obj = {
-                        dia_semana: [], hora: [],
-                        situacao: [], temperatura: [],
-                        sensacao_termica: [], temperatura_de_bulbo_umido: [],
-                        ponto_de_orvalho: [], vento: [],
-                        umidade_relativa: [], chuva: [],
-                        uv: []
+                        dia_semana: [], hora: [], situacao: [], temperatura: [], sensacao_termica: [],
+                        temperatura_de_bulbo_umido: [], ponto_de_orvalho: [], umidade_relativa: [],
+                        vento: [], chuva: [], uv: [], menor_temperatura: undefined, menor_vento: undefined,
+                        menor_sensacao_termica: undefined, menor_temperatura_de_bulbo_umido: undefined,
+                        menor_ponto_de_orvalho: undefined, menor_chuva: undefined, maior_temperatura: undefined,
+                        menor_umidade_relativa: undefined, maior_umidade_relativa: undefined,
+                        maior_sensacao_termica: undefined, maior_temperatura_de_bulbo_umido: undefined,
+                        maior_ponto_de_orvalho: undefined, maior_vento: undefined, maior_chuva: undefined
                     }
-                let menor_temperatura, menor_sensacao_termica,
-                    menor_temperatura_de_bulbo_umido,
-                    menor_ponto_de_orvalho, menor_vento,
-                    menor_umidade_relativa, menor_chuva, menor_uv,
-                    maior_temperatura, maior_sensacao_termica,
-                    maior_temperatura_de_bulbo_umido,
-                    maior_ponto_de_orvalho, maior_vento,
-                    maior_umidade_relativa, maior_chuva, maior_uv
+                let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento = 100,
+                    menor_temperatura_de_bulbo_umido = 100, menor_ponto_de_orvalho = 100,
+                    menor_umidade_relativa = 100, menor_chuva = menor_uv = 100
+                let maior_temperatura = 0, maior_sensacao_termica = 0, maior_vento = 0,
+                    maior_temperatura_de_bulbo_umido = 0, maior_ponto_de_orvalho = 0,
+                    maior_umidade_relativa = 0, maior_chuva = maior_uv = 0
 
                 await array.forEach((element, index) => {
                     dia_semana = element.DateTime
@@ -93,33 +89,28 @@ export default class Card extends Component {
                     sensacao_termica = element.RealFeelTemperature.Value
                     temperatura_de_bulbo_umido = element.WetBulbTemperature.Value
                     ponto_de_orvalho = element.DewPoint.Value
-                    vento = {
-                        velocidade: element.Wind.Speed.Value, //km/h
-                        direcao: element.Wind.Direction.Localized
-                    }
-                    umidade_relativa = element.RelativeHumidity //%
-                    chuva = {
-                        probabilidade: element.RainProbability,
-                        quantidade: element.Rain.Value //mm
-                    }
-                    uv = {
-                        indice: element.UVIndex,
-                        descricao: element.UVIndexText
-                    }
+                    vento = { velocidade: element.Wind.Speed.Value, direcao: element.Wind.Direction.Localized }
+                    umidade_relativa = element.RelativeHumidity
+                    chuva = { probabilidade: element.RainProbability, quantidade: element.Rain.Value }
+                    uv = { indice: element.UVIndex, descricao: element.UVIndexText }
 
-                    index == 0 ? [
-                        array_obj.dia_semana.push(dia_semana),
-                        array_obj.hora.push(hora),
-                        array_obj.situacao.push(situacao),
-                        array_obj.temperatura.push(temperatura),
-                        array_obj.sensacao_termica.push(sensacao_termica),
-                        array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido),
-                        array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
-                        array_obj.vento.push(vento),
-                        array_obj.umidade_relativa.push(umidade_relativa),
-                        array_obj.chuva.push(chuva),
-                        array_obj.uv.push(uv)
-                    ] : null
+                    menor_temperatura > temperatura ? menor_temperatura = temperatura : null
+                    menor_sensacao_termica > sensacao_termica ? menor_sensacao_termica = sensacao_termica : null
+                    menor_temperatura_de_bulbo_umido > temperatura_de_bulbo_umido ? menor_temperatura_de_bulbo_umido = temperatura_de_bulbo_umido : null
+                    menor_ponto_de_orvalho > ponto_de_orvalho ? menor_ponto_de_orvalho = ponto_de_orvalho : null
+                    menor_vento > vento.velocidade ? menor_vento = vento.velocidade : null
+                    menor_umidade_relativa > umidade_relativa ? menor_umidade_relativa = umidade_relativa : null
+                    menor_chuva > chuva.quantidade ? menor_chuva = chuva.quantidade : null
+                    menor_uv > uv.indice ? menor_uv = uv.indice : null
+
+                    maior_temperatura < temperatura ? maior_temperatura = temperatura : null
+                    maior_sensacao_termica < sensacao_termica ? maior_sensacao_termica = sensacao_termica : null
+                    maior_temperatura_de_bulbo_umido < temperatura_de_bulbo_umido ? maior_temperatura_de_bulbo_umido = temperatura_de_bulbo_umido : null
+                    maior_ponto_de_orvalho < ponto_de_orvalho ? maior_ponto_de_orvalho = ponto_de_orvalho : null
+                    maior_vento < vento.velocidade ? maior_vento = vento.velocidade : null
+                    maior_umidade_relativa < umidade_relativa ? maior_umidade_relativa = umidade_relativa : null
+                    maior_chuva < chuva.quantidade ? maior_chuva = chuva.quantidade : null
+                    maior_uv < uv.indice ? maior_uv = uv.indice : null
 
                     array_obj.dia_semana.push(dia_semana)
                     array_obj.hora.push(hora)
@@ -133,7 +124,7 @@ export default class Card extends Component {
                     array_obj.chuva.push(chuva)
                     array_obj.uv.push(uv)
 
-                    index == 11 ? [
+                    index == 0 || index == 11 ? [
                         array_obj.dia_semana.push(dia_semana),
                         array_obj.hora.push(hora),
                         array_obj.situacao.push(situacao),
@@ -148,8 +139,20 @@ export default class Card extends Component {
                     ] : null
                 })
 
-                console.log('array_obj')
-                console.log(array_obj)
+                array_obj.menor_temperatura = menor_temperatura
+                array_obj.menor_sensacao_termica = menor_sensacao_termica
+                array_obj.menor_temperatura_de_bulbo_umido = menor_temperatura_de_bulbo_umido
+                array_obj.menor_ponto_de_orvalho = menor_ponto_de_orvalho
+                array_obj.menor_vento = menor_vento
+                array_obj.menor_umidade_relativa = menor_umidade_relativa
+                array_obj.menor_chuva = menor_chuva
+                array_obj.maior_temperatura = maior_temperatura
+                array_obj.maior_sensacao_termica = maior_sensacao_termica
+                array_obj.maior_temperatura_de_bulbo_umido = maior_temperatura_de_bulbo_umido
+                array_obj.maior_ponto_de_orvalho = maior_ponto_de_orvalho
+                array_obj.maior_vento = maior_vento
+                array_obj.maior_umidade_relativa = maior_umidade_relativa
+                array_obj.maior_chuva = maior_chuva
 
                 await this.gravarArquivo(
                     rnfs.DocumentDirectoryPath + '/weather_twelve.json',
@@ -246,8 +249,8 @@ export default class Card extends Component {
                             svg={{ fill: this.estilo.cor.purple }}
                             curve={shape.curveNatural}
                             contentInset={{ left: -20, right: -22 }}
-                            yMin={22}
-                            yMax={50}
+                            yMin={this.state.lista_weather.menor_temperatura}
+                            yMax={this.state.lista_weather.maior_temperatura + 5}
                         >
                             <Line />
                             <Decorator />
