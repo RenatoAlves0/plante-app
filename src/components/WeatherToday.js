@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Dimensions, ScrollView, View } from 'react-native'
-import { Button, Form, Container, Text } from 'native-base'
+import { View } from 'react-native'
+import { Button, Container } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
-import { AreaChart, XAxis } from 'react-native-svg-charts'
-import { Path, Svg } from 'react-native-svg'
-import * as shape from 'd3-shape'
+import Chart from './Chart'
 
-export default class Card extends Component {
+export default class WeatherToday extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
@@ -33,9 +31,9 @@ export default class Card extends Component {
             hora_aux: undefined,
         }
         this.card_weather = [
-            { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
-            { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_light },
-            { icon: 'moon', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark },
+            { icon: 'thermometer', cor: this.estilo.cor.purple },
+            { icon: 'wind', cor: this.estilo.cor.greenish_medium },
+            { icon: 'moon', cor: this.estilo.cor.blue },
         ]
     }
 
@@ -46,7 +44,7 @@ export default class Card extends Component {
     async load() {
         await this.lerArquivo(rnfs.DocumentDirectoryPath)
         if (this.getStringDayOfWeek(new Date().getDay()) == this.state.dia_semana_aux
-            && (new Date().getHours()) - this.state.hora_aux < 3)
+            && (new Date().getHours()) - this.state.hora_aux < 1)
             console.log('Dados Weather (12h) já atualizados')
         else {
             console.log('Dados Weather (12h) desatualizados ou inexistentes\nobtendo novos dados ...')
@@ -223,55 +221,26 @@ export default class Card extends Component {
     }
 
     render() {
-        const Decorator = ({ x, y, data }) => {
-            return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
-                        { color: this.estilo.cor.purple }, {
-                        marginTop: -35, marginLeft: -20, fontWeight: 'bold', width: 43,
-                        fontSize: 17, textAlign: 'center'
-                    }]}>{value}º</Text>
-                </Svg>
-            ))
-        }
-        const Line = ({ line }) => (
-            <Path d={line} stroke={this.estilo.cor.purple + '77'} fill={'none'} strokeWidth={10} />
-        )
         return (
             <Container>
-                <ScrollView horizontal={true} style={{
-                    marginTop: 0, maxHeight: 200
-                }}>
-                    <Form style={{ width: Dimensions.get('window').width * 1.7 }}>
-                        <AreaChart
-                            style={{ height: 150 }}
-                            data={this.state.lista_weather.temperatura}
-                            svg={{ fill: this.estilo.cor.purple }}
-                            curve={shape.curveNatural}
-                            contentInset={{ left: -20, right: -22 }}
-                            yMin={this.state.lista_weather.menor_temperatura}
-                            yMax={this.state.lista_weather.maior_temperatura + 5}
-                        >
-                            <Line />
-                            <Decorator />
-                        </AreaChart>
-                        <XAxis
-                            style={{
-                                marginLeft: -30, marginRight: -18, height: 50, paddingTop: 25,
-                                backgroundColor: this.estilo.cor.purple
-                            }}
-                            data={this.state.lista_weather.hora}
-                            formatLabel={(index) => {
-                                if (index == 0 || index == 13) return ''
-                                return this.state.lista_weather.hora[index] + 'h'
-                            }}
-                            contentInset={{ left: 10, right: 0 }}
-                            svg={{ fontSize: 15, fill: this.estilo.cor.white }}
-                            numberOfTicks={12}
-                        />
-                    </Form>
-                </ScrollView>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.purple }}>
+                <View style={[{ flex: 1, justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.temperatura}
+                        label_array={this.state.lista_weather.hora} type_label='º'
+                        min_value={this.state.lista_weather.menor_temperatura}
+                        max_value={this.state.lista_weather.maior_temperatura}
+                        color={this.estilo.cor.purple} />
+                </View>
+                <View style={[{ flex: 1, justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.umidade_relativa}
+                        label_array={this.state.lista_weather.hora} type_label='%'
+                        min_value={this.state.lista_weather.menor_umidade_relativa}
+                        max_value={this.state.lista_weather.maior_umidade_relativa}
+                        color={this.estilo.cor.greenish_medium} />
+                </View>
+
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
                     {this.card_weather.map((item) => (
                         <Button key={item.icon} rounded style={this.estilo.button_item_weather}
                             onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>

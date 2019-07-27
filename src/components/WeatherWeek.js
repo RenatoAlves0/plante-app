@@ -6,7 +6,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
 
-export default class Card extends Component {
+export default class WeatherWeek extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
