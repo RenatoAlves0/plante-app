@@ -38,9 +38,8 @@ export default class Chart extends Component {
             <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={10} />
         )
         return (
-            <ScrollView horizontal={true} style={
-                { maxHeight: '100%' }
-            }>
+            <ScrollView showsHorizontalScrollIndicator={false}
+                horizontal={true} style={{ maxHeight: '100%' }}>
                 <View style={{ width: Dimensions.get('window').width * 2 }}>
                     <AreaChart
                         style={{ height: '80%', marginRight: -1 }}

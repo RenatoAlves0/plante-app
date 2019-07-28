@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
-import { Button, Container } from 'native-base'
+import { ScrollView } from 'react-native'
+import { Button, Container, Text, View, Form } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
@@ -14,6 +14,8 @@ export default class WeatherToday extends Component {
         this.state = {
             loaded: false,
             card_weather_atual: 0,
+            card_weather_temperatura_atual: 0,
+            card_weather_chuva_atual: 0,
             lista_weather: {
                 dia_semana: [],
                 hora: [],
@@ -33,8 +35,19 @@ export default class WeatherToday extends Component {
         }
         this.card_weather = [
             { icon: 'thermometer', cor: this.estilo.cor.purple },
-            { icon: 'wind', cor: this.estilo.cor.greenish_medium },
+            { icon: 'droplet', cor: this.estilo.cor.greenish_medium },
             { icon: 'cloud-drizzle', cor: this.estilo.cor.blue },
+            { icon: 'wind', cor: this.estilo.cor.greenish_medium },
+        ]
+        this.card_weather_temperatura = [
+            { label: 'Real' },
+            { label: 'Sensação térmica' },
+            { label: 'Bulbo úmido' },
+            { label: 'Ponto de orvalho' },
+        ]
+        this.card_weather_chuva = [
+            { label: 'Quantidade' },
+            { label: 'Probabilidade' },
         ]
     }
 
@@ -239,11 +252,39 @@ export default class WeatherToday extends Component {
         return (
             <Container>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 0 &&
+                    this.state.card_weather_temperatura_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura}
                         label_array={this.state.lista_weather.hora} type_label='º'
                         min_value={this.state.lista_weather.menor_temperatura}
                         max_value={this.state.lista_weather.maior_temperatura}
+                        color={this.estilo.cor.purple} />
+                </View>
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 0 &&
+                    this.state.card_weather_temperatura_atual == 1 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.sensacao_termica}
+                        label_array={this.state.lista_weather.hora} type_label='º'
+                        min_value={this.state.lista_weather.menor_sensacao_termica}
+                        max_value={this.state.lista_weather.maior_sensacao_termica}
+                        color={this.estilo.cor.purple} />
+                </View>
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 0 &&
+                    this.state.card_weather_temperatura_atual == 2 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.temperatura_de_bulbo_umido}
+                        label_array={this.state.lista_weather.hora} type_label='º'
+                        min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
+                        max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
+                        color={this.estilo.cor.purple} />
+                </View>
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 0 &&
+                    this.state.card_weather_temperatura_atual == 3 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.ponto_de_orvalho}
+                        label_array={this.state.lista_weather.hora} type_label='º'
+                        min_value={this.state.lista_weather.menor_ponto_de_orvalho}
+                        max_value={this.state.lista_weather.maior_ponto_de_orvalho}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
@@ -255,24 +296,60 @@ export default class WeatherToday extends Component {
                         color={this.estilo.cor.greenish_medium} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 2 &&
+                    this.state.card_weather_chuva_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.chuva_quantidade}
                         label_array={this.state.lista_weather.hora} type_label='mm'
                         min_value={this.state.lista_weather.menor_chuva_quantidade}
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
                         color={this.estilo.cor.blue} />
                 </View>
-
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
-                    {this.card_weather.map((item) => (
-                        <Button key={item.icon} rounded style={this.estilo.button_item_weather}
-                            onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
-                            <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                            this.state.card_weather_atual == this.card_weather.indexOf(item) ?
-                                { color: this.estilo.cor.white } : null]} />
-                        </Button>
-                    ))}
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 2 &&
+                    this.state.card_weather_chuva_atual == 1 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.chuva_probabilidade}
+                        label_array={this.state.lista_weather.hora} type_label='%'
+                        min_value={this.state.lista_weather.menor_chuva_probabilidade}
+                        max_value={this.state.lista_weather.maior_chuva_probabilidade}
+                        color={this.estilo.cor.blue} />
                 </View>
+
+                <View style={{ flex: 1, backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
+                    <Form style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        {this.card_weather.map((item) => (
+                            <Button key={item.icon} rounded style={this.estilo.button_item_weather}
+                                onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
+                                <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
+                                this.state.card_weather_atual == this.card_weather.indexOf(item) ?
+                                    { color: this.estilo.cor.white } : null]} />
+                            </Button>
+                        ))}
+                    </Form>
+                    {this.state.card_weather_atual == 0 ?
+                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
+                            {this.card_weather_temperatura.map((item) => (
+                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: '', elevation: 0 }}
+                                    onPress={() => this.setState({ card_weather_temperatura_atual: this.card_weather_temperatura.indexOf(item) })}>
+                                    <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
+                                    this.state.card_weather_temperatura_atual == this.card_weather_temperatura.indexOf(item) ?
+                                        { color: this.estilo.cor.white } : null]}>{item.label}</Text>
+                                </Button>
+                            ))}
+                        </View> : null}
+
+                    {this.state.card_weather_atual == 2 ?
+                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
+                            {this.card_weather_chuva.map((item) => (
+                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: '', elevation: 0 }}
+                                    onPress={() => this.setState({ card_weather_chuva_atual: this.card_weather_chuva.indexOf(item) })}>
+                                    <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
+                                    this.state.card_weather_chuva_atual == this.card_weather_chuva.indexOf(item) ?
+                                        { color: this.estilo.cor.white } : null]}>{item.label}</Text>
+                                </Button>
+                            ))}
+                        </View> : null}
+                </View>
+
             </Container>
         )
     }
