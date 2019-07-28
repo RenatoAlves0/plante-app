@@ -139,13 +139,13 @@ export default class WeatherToday extends Component {
                     array_obj.sensacao_termica.push(sensacao_termica)
                     array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido)
                     array_obj.ponto_de_orvalho.push(ponto_de_orvalho)
-                    array_obj.vento_direcao.push(vento_direcao)
+                    array_obj.vento_direcao.push({ value: vento_direcao })
                     array_obj.vento_velocidade.push(vento_velocidade)
                     array_obj.umidade_relativa.push(umidade_relativa)
                     array_obj.chuva_quantidade.push(chuva_quantidade)
                     array_obj.chuva_probabilidade.push(chuva_probabilidade)
                     array_obj.uv_indice.push(uv_indice)
-                    array_obj.uv_descricao.push(uv_descricao)
+                    array_obj.uv_descricao.push({ value: uv_descricao })
 
                     index == 0 || index == 11 ? [
                         array_obj.dia_semana.push(dia_semana),
@@ -155,13 +155,13 @@ export default class WeatherToday extends Component {
                         array_obj.sensacao_termica.push(sensacao_termica),
                         array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido),
                         array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
-                        array_obj.vento_direcao.push(vento_direcao),
+                        array_obj.vento_direcao.push({ value: vento_direcao }),
                         array_obj.vento_velocidade.push(vento_velocidade),
                         array_obj.umidade_relativa.push(umidade_relativa),
                         array_obj.chuva_quantidade.push(chuva_quantidade),
                         array_obj.chuva_probabilidade.push(chuva_probabilidade),
                         array_obj.uv_indice.push(uv_indice),
-                        array_obj.uv_descricao.push(uv_descricao)
+                        array_obj.uv_descricao.push({ value: uv_descricao })
                     ] : null
                 })
 
@@ -325,13 +325,13 @@ export default class WeatherToday extends Component {
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.vento_velocidade}
-                        label_descricao_array={this.state.lista_weather.vento_velocidade}
+                        label_descricao_array={this.state.lista_weather.vento_direcao}
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_vento_velocidade}
                         max_value={this.state.lista_weather.maior_vento_velocidade}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
-                {/* <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.uv_indice}
                         label_descricao_array={this.state.lista_weather.uv_descricao}
@@ -339,7 +339,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_uv_indice}
                         max_value={this.state.lista_weather.maior_uv_indice}
                         color={this.estilo.cor.orange} />
-                </View> */}
+                </View>
 
                 <View style={{ flex: 1, backgroundColor: this.state.card_weather_cor }}>
                     <Form style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>

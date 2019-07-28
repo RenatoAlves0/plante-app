@@ -67,7 +67,7 @@ export default class Chart extends Component {
                             data={this.props.label_descricao_array}
                             formatLabel={(index) => {
                                 if (index == 0 || index == 13) return ''
-                                return this.props.label_descricao_array[index]
+                                return this.props.label_descricao_array[index].value
                             }}
                             contentInset={{ left: 10, right: 0 }}
                             svg={{ fontSize: 15, fill: this.estilo.cor.white }}
