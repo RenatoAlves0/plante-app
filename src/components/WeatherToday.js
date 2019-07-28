@@ -317,7 +317,7 @@ export default class WeatherToday extends Component {
                 <View style={{ flex: 1, backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
                     <Form style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         {this.card_weather.map((item) => (
-                            <Button key={item.icon} rounded style={this.estilo.button_item_weather}
+                            <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
                                 onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
                                 <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
                                 this.state.card_weather_atual == this.card_weather.indexOf(item) ?
@@ -328,7 +328,7 @@ export default class WeatherToday extends Component {
                     {this.state.card_weather_atual == 0 ?
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
                             {this.card_weather_temperatura.map((item) => (
-                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: '', elevation: 0 }}
+                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
                                     onPress={() => this.setState({ card_weather_temperatura_atual: this.card_weather_temperatura.indexOf(item) })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
                                     this.state.card_weather_temperatura_atual == this.card_weather_temperatura.indexOf(item) ?
@@ -340,7 +340,7 @@ export default class WeatherToday extends Component {
                     {this.state.card_weather_atual == 2 ?
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
                             {this.card_weather_chuva.map((item) => (
-                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: '', elevation: 0 }}
+                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
                                     onPress={() => this.setState({ card_weather_chuva_atual: this.card_weather_chuva.indexOf(item) })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
                                     this.state.card_weather_chuva_atual == this.card_weather_chuva.indexOf(item) ?

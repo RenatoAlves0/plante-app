@@ -32,7 +32,8 @@ export default class WeatherWeek extends Component {
         await this.lerArquivo(rnfs.DocumentDirectoryPath)
         console.log((new Date().getHours()) - this.state.hora_aux)
         if (this.getStringDayOfWeek(new Date().getDay()) != this.state.dia_semana_aux &&
-            (new Date().getHours()) - this.state.hora_aux > 1) {
+            ((new Date().getHours()) - this.state.hora_aux > 1) ||
+            (new Date().getHours()) - this.state.hora_aux < -1) {
             console.log('Dados Weather desatualizados ou inexistentes\nobtendo novos dados ...')
             await this.getWeather()
         }
@@ -353,7 +354,7 @@ export default class WeatherWeek extends Component {
                 }} style={this.estilo.item_dash_weather}>
                 <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
                     {this.card_weather.map((item) => (
-                        <Button key={item.icon} rounded style={this.estilo.button_item_weather}
+                        <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
                             onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
                             <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
                             this.state.card_weather_atual == this.card_weather.indexOf(item) ?
