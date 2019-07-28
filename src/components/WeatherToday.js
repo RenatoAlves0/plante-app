@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { ScrollView } from 'react-native'
 import { Button, Container, Text, View, Form } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -14,40 +13,35 @@ export default class WeatherToday extends Component {
         this.state = {
             loaded: false,
             card_weather_atual: 0,
-            card_weather_temperatura_atual: 0,
-            card_weather_chuva_atual: 0,
+            card_weather_cor: this.estilo.cor.purple,
+            unidade_de_medida: 'ºC',
             lista_weather: {
-                dia_semana: [],
-                hora: [],
-                situacao: [],
-                temperatura: [],
-                sensacao_termica: [],
-                temperatura_de_bulbo_umido: [],
-                ponto_de_orvalho: [],
-                vento: [],
-                umidade_relativa: [],
-                chuva_quantidade: [],
-                chuva_probabilidade: [],
+                dia_semana: [], hora: [],
+                situacao: [], temperatura: [],
+                sensacao_termica: [], temperatura_de_bulbo_umido: [],
+                ponto_de_orvalho: [], vento_velocidade: [],
+                vento_direcao: [], umidade_relativa: [],
+                chuva_quantidade: [], chuva_probabilidade: [],
                 uv: []
             },
             dia_semana_aux: undefined,
             hora_aux: undefined,
         }
         this.card_weather = [
-            { icon: 'thermometer', cor: this.estilo.cor.purple },
-            { icon: 'droplet', cor: this.estilo.cor.greenish_medium },
-            { icon: 'cloud-drizzle', cor: this.estilo.cor.blue },
-            { icon: 'wind', cor: this.estilo.cor.greenish_medium },
+            { index: 0, icon: 'thermometer', unidade_de_medida: 'ºC', cor: this.estilo.cor.purple },
+            { index: 1, icon: 'droplet', unidade_de_medida: '%', cor: this.estilo.cor.greenish_medium },
+            { index: 2, icon: 'cloud-drizzle', unidade_de_medida: 'mm', cor: this.estilo.cor.blue },
+            { index: 3, icon: 'wind', unidade_de_medida: 'km/h', cor: this.estilo.cor.greenish_medium },
         ]
         this.card_weather_temperatura = [
-            { label: 'Real' },
-            { label: 'Sensação térmica' },
-            { label: 'Bulbo úmido' },
-            { label: 'Ponto de orvalho' },
+            { index: 0, label: 'Real', unidade_de_medida: 'ºC' },
+            { index: 0.1, label: 'Sensação térmica', unidade_de_medida: 'ºC' },
+            { index: 0.2, label: 'Bulbo úmido', unidade_de_medida: 'ºC' },
+            { index: 0.3, label: 'Ponto de orvalho', unidade_de_medida: 'ºC' },
         ]
         this.card_weather_chuva = [
-            { label: 'Quantidade' },
-            { label: 'Probabilidade' },
+            { index: 2, label: 'Quantidade', unidade_de_medida: 'mm' },
+            { index: 2.1, label: 'Probabilidade', unidade_de_medida: '%' },
         ]
     }
 
@@ -74,23 +68,24 @@ export default class WeatherToday extends Component {
             .then(async (data) => {
                 let array = data.data
                 let dia_semana, hora, situacao, temperatura, sensacao_termica, chuva_quantidade, chuva_probabilidade,
-                    uv, ponto_de_orvalho, vento, umidade_relativa, temperatura_de_bulbo_umido,
+                    uv, ponto_de_orvalho, vento_velocidade, vento_direcao, umidade_relativa, temperatura_de_bulbo_umido,
                     array_obj = {
                         dia_semana: [], hora: [], situacao: [], temperatura: [], sensacao_termica: [],
                         temperatura_de_bulbo_umido: [], ponto_de_orvalho: [], umidade_relativa: [], chuva_quantidade: [],
-                        vento: [], chuva_probabilidade: [], uv: [], menor_temperatura: undefined, menor_vento: undefined,
+                        vento_velocidade: [], vento_direcao: [], chuva_probabilidade: [], uv: [],
+                        menor_temperatura: undefined, menor_vento_velocidade: undefined, maior_ponto_de_orvalho: undefined,
                         menor_sensacao_termica: undefined, menor_temperatura_de_bulbo_umido: undefined,
                         menor_ponto_de_orvalho: undefined, menor_chuva_quantidade: undefined, maior_temperatura: undefined,
                         menor_umidade_relativa: undefined, maior_umidade_relativa: undefined,
                         maior_sensacao_termica: undefined, maior_temperatura_de_bulbo_umido: undefined,
-                        maior_ponto_de_orvalho: undefined, maior_vento: undefined, maior_chuva_quantidade: undefined,
+                        maior_vento_velocidade: undefined, maior_chuva_quantidade: undefined,
                         menor_chuva_probabilidade: undefined, maior_chuva_probabilidade: undefined
                     }
-                let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento = 100,
+                let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento_velocidade = 100,
                     menor_temperatura_de_bulbo_umido = 100, menor_ponto_de_orvalho = 100,
                     menor_umidade_relativa = 100, menor_chuva_quantidade = 100,
                     menor_chuva_probabilidade = 100, menor_uv = 100
-                let maior_temperatura = 0, maior_sensacao_termica = 0, maior_vento = 0,
+                let maior_temperatura = 0, maior_sensacao_termica = 0, maior_vento_velocidade = 0,
                     maior_temperatura_de_bulbo_umido = 0, maior_ponto_de_orvalho = 0,
                     maior_umidade_relativa = 0, maior_chuva_quantidade = 0,
                     maior_chuva_probabilidade = 0, maior_uv = 0
@@ -105,7 +100,8 @@ export default class WeatherToday extends Component {
                     sensacao_termica = element.RealFeelTemperature.Value
                     temperatura_de_bulbo_umido = element.WetBulbTemperature.Value
                     ponto_de_orvalho = element.DewPoint.Value
-                    vento = { velocidade: element.Wind.Speed.Value, direcao: element.Wind.Direction.Localized }
+                    vento_velocidade = element.Wind.Speed.Value
+                    vento_direcao = element.Wind.Direction.Localized
                     umidade_relativa = element.RelativeHumidity
                     chuva_quantidade = element.Rain.Value
                     chuva_probabilidade = element.RainProbability
@@ -115,7 +111,7 @@ export default class WeatherToday extends Component {
                     menor_sensacao_termica > sensacao_termica ? menor_sensacao_termica = sensacao_termica : null
                     menor_temperatura_de_bulbo_umido > temperatura_de_bulbo_umido ? menor_temperatura_de_bulbo_umido = temperatura_de_bulbo_umido : null
                     menor_ponto_de_orvalho > ponto_de_orvalho ? menor_ponto_de_orvalho = ponto_de_orvalho : null
-                    menor_vento > vento.velocidade ? menor_vento = vento.velocidade : null
+                    menor_vento_velocidade > vento_velocidade ? menor_vento_velocidade = vento_velocidade : null
                     menor_umidade_relativa > umidade_relativa ? menor_umidade_relativa = umidade_relativa : null
                     menor_chuva_quantidade > chuva_quantidade ? menor_chuva_quantidade = chuva_quantidade : null
                     menor_chuva_probabilidade > chuva_probabilidade ? menor_chuva_probabilidade = chuva_probabilidade : null
@@ -125,7 +121,7 @@ export default class WeatherToday extends Component {
                     maior_sensacao_termica < sensacao_termica ? maior_sensacao_termica = sensacao_termica : null
                     maior_temperatura_de_bulbo_umido < temperatura_de_bulbo_umido ? maior_temperatura_de_bulbo_umido = temperatura_de_bulbo_umido : null
                     maior_ponto_de_orvalho < ponto_de_orvalho ? maior_ponto_de_orvalho = ponto_de_orvalho : null
-                    maior_vento < vento.velocidade ? maior_vento = vento.velocidade : null
+                    maior_vento_velocidade < vento_velocidade ? maior_vento_velocidade = vento_velocidade : null
                     maior_umidade_relativa < umidade_relativa ? maior_umidade_relativa = umidade_relativa : null
                     maior_chuva_quantidade < chuva_quantidade ? maior_chuva_quantidade = chuva_quantidade : null
                     maior_chuva_probabilidade < chuva_probabilidade ? maior_chuva_probabilidade = chuva_probabilidade : null
@@ -138,7 +134,8 @@ export default class WeatherToday extends Component {
                     array_obj.sensacao_termica.push(sensacao_termica)
                     array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido)
                     array_obj.ponto_de_orvalho.push(ponto_de_orvalho)
-                    array_obj.vento.push(vento)
+                    array_obj.vento_direcao.push(vento_direcao)
+                    array_obj.vento_velocidade.push(vento_velocidade)
                     array_obj.umidade_relativa.push(umidade_relativa)
                     array_obj.chuva_quantidade.push(chuva_quantidade)
                     array_obj.chuva_probabilidade.push(chuva_probabilidade)
@@ -152,7 +149,8 @@ export default class WeatherToday extends Component {
                         array_obj.sensacao_termica.push(sensacao_termica),
                         array_obj.temperatura_de_bulbo_umido.push(temperatura_de_bulbo_umido),
                         array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
-                        array_obj.vento.push(vento),
+                        array_obj.vento_direcao.push(vento_direcao),
+                        array_obj.vento_velocidade.push(vento_velocidade),
                         array_obj.umidade_relativa.push(umidade_relativa),
                         array_obj.chuva_quantidade.push(chuva_quantidade),
                         array_obj.chuva_probabilidade.push(chuva_probabilidade),
@@ -164,7 +162,7 @@ export default class WeatherToday extends Component {
                 array_obj.menor_sensacao_termica = menor_sensacao_termica
                 array_obj.menor_temperatura_de_bulbo_umido = menor_temperatura_de_bulbo_umido
                 array_obj.menor_ponto_de_orvalho = menor_ponto_de_orvalho
-                array_obj.menor_vento = menor_vento
+                array_obj.menor_vento_velocidade = menor_vento_velocidade
                 array_obj.menor_umidade_relativa = menor_umidade_relativa
                 array_obj.menor_chuva_quantidade = menor_chuva_quantidade
                 array_obj.menor_chuva_probabilidade = menor_chuva_probabilidade
@@ -172,7 +170,7 @@ export default class WeatherToday extends Component {
                 array_obj.maior_sensacao_termica = maior_sensacao_termica
                 array_obj.maior_temperatura_de_bulbo_umido = maior_temperatura_de_bulbo_umido
                 array_obj.maior_ponto_de_orvalho = maior_ponto_de_orvalho
-                array_obj.maior_vento = maior_vento
+                array_obj.maior_vento_velocidade = maior_vento_velocidade
                 array_obj.maior_umidade_relativa = maior_umidade_relativa
                 array_obj.maior_chuva_quantidade = maior_chuva_quantidade
                 array_obj.maior_chuva_probabilidade = maior_chuva_probabilidade
@@ -251,38 +249,42 @@ export default class WeatherToday extends Component {
     render() {
         return (
             <Container>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 0 &&
-                    this.state.card_weather_temperatura_atual == 0 ? null : { display: 'none' }]}>
+                <Button rounded style={{
+                    backgroundColor: this.state.card_weather_cor + '11',
+                    elevation: 0, alignSelf: 'center', margin: 10, width: 100, justifyContent: 'center'
+                }}>
+                    <Text uppercase={false} style={{ color: this.state.card_weather_cor, fontSize: 17 }}
+                    >{this.state.unidade_de_medida}</Text>
+                </Button>
+
+                <Form style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura}
-                        label_array={this.state.lista_weather.hora} type_label='º'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_temperatura}
                         max_value={this.state.lista_weather.maior_temperatura}
                         color={this.estilo.cor.purple} />
-                </View>
+                </Form>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 0 &&
-                    this.state.card_weather_temperatura_atual == 1 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 0.1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.sensacao_termica}
-                        label_array={this.state.lista_weather.hora} type_label='º'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_sensacao_termica}
                         max_value={this.state.lista_weather.maior_sensacao_termica}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 0 &&
-                    this.state.card_weather_temperatura_atual == 2 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 0.2 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura_de_bulbo_umido}
-                        label_array={this.state.lista_weather.hora} type_label='º'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
                         max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 0 &&
-                    this.state.card_weather_temperatura_atual == 3 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 0.3 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.ponto_de_orvalho}
-                        label_array={this.state.lista_weather.hora} type_label='º'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_ponto_de_orvalho}
                         max_value={this.state.lista_weather.maior_ponto_de_orvalho}
                         color={this.estilo.cor.purple} />
@@ -290,60 +292,70 @@ export default class WeatherToday extends Component {
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.umidade_relativa}
-                        label_array={this.state.lista_weather.hora} type_label='%'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_umidade_relativa}
                         max_value={this.state.lista_weather.maior_umidade_relativa}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 2 &&
-                    this.state.card_weather_chuva_atual == 0 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.chuva_quantidade}
-                        label_array={this.state.lista_weather.hora} type_label='mm'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_chuva_quantidade}
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
                         color={this.estilo.cor.blue} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 2 &&
-                    this.state.card_weather_chuva_atual == 1 ? null : { display: 'none' }]}>
+                this.state.card_weather_atual == 2.1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.chuva_probabilidade}
-                        label_array={this.state.lista_weather.hora} type_label='%'
+                        label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_chuva_probabilidade}
                         max_value={this.state.lista_weather.maior_chuva_probabilidade}
                         color={this.estilo.cor.blue} />
                 </View>
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.vento_velocidade}
+                        label_array={this.state.lista_weather.hora}
+                        min_value={this.state.lista_weather.menor_vento_velocidade}
+                        max_value={this.state.lista_weather.maior_vento_velocidade}
+                        color={this.estilo.cor.greenish_medium} />
+                </View>
 
-                <View style={{ flex: 1, backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
+                <View style={{ flex: 1, backgroundColor: this.state.card_weather_cor }}>
                     <Form style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         {this.card_weather.map((item) => (
                             <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
-                                onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
+                                onPress={() => {
+                                    this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida, card_weather_cor: item.cor })
+                                }}>
                                 <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                                this.state.card_weather_atual == this.card_weather.indexOf(item) ?
+                                this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
                                     { color: this.estilo.cor.white } : null]} />
                             </Button>
                         ))}
                     </Form>
-                    {this.state.card_weather_atual == 0 ?
+                    {this.state.card_weather_atual >= 0 &&
+                        this.state.card_weather_atual < 1 ?
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
                             {this.card_weather_temperatura.map((item) => (
                                 <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
-                                    onPress={() => this.setState({ card_weather_temperatura_atual: this.card_weather_temperatura.indexOf(item) })}>
+                                    onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
-                                    this.state.card_weather_temperatura_atual == this.card_weather_temperatura.indexOf(item) ?
+                                    this.state.card_weather_atual == item.index ?
                                         { color: this.estilo.cor.white } : null]}>{item.label}</Text>
                                 </Button>
                             ))}
                         </View> : null}
 
-                    {this.state.card_weather_atual == 2 ?
+                    {this.state.card_weather_atual >= 2 &&
+                        this.state.card_weather_atual < 3 ?
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
                             {this.card_weather_chuva.map((item) => (
                                 <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
-                                    onPress={() => this.setState({ card_weather_chuva_atual: this.card_weather_chuva.indexOf(item) })}>
+                                    onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
-                                    this.state.card_weather_chuva_atual == this.card_weather_chuva.indexOf(item) ?
+                                    this.state.card_weather_atual == item.index ?
                                         { color: this.estilo.cor.white } : null]}>{item.label}</Text>
                                 </Button>
                             ))}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions, ScrollView } from 'react-native'
-import { Form, Text, View } from 'native-base'
+import { Form, Text, View, Button } from 'native-base'
 import estilo from '../assets/Estilo'
 import { AreaChart, XAxis } from 'react-native-svg-charts'
 import { Path, Svg } from 'react-native-svg'
@@ -26,11 +26,13 @@ export default class Chart extends Component {
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
-                        { color: this.props.color }, {
-                        marginTop: -40, marginLeft: -20, fontWeight: 'bold',
-                        fontSize: 17, width: 80
-                    }]}>{value}{this.props.type_label}</Text>
+                    <Form style={{
+                        flexDirection: 'row', marginTop: -40, marginLeft: -27,
+                        width: 50, height: 25, justifyContent: 'center'
+                    }}>
+                        <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
+                            { color: this.props.color }, { fontWeight: 'bold', fontSize: 18 }]}>{value}</Text>
+                    </Form>
                 </Svg>
             ))
         }
