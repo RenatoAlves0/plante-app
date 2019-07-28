@@ -41,10 +41,6 @@ export default class WeatherToday extends Component {
             { index: 0.2, label: 'Bulbo úmido', unidade_de_medida: 'ºC' },
             { index: 0.3, label: 'Ponto de orvalho', unidade_de_medida: 'ºC' },
         ]
-        this.card_weather_chuva = [
-            { index: 2, label: 'Quantidade', unidade_de_medida: 'mm' },
-            { index: 2.1, label: 'Probabilidade', unidade_de_medida: '%' },
-        ]
     }
 
     componentWillReceiveProps() {
@@ -309,17 +305,10 @@ export default class WeatherToday extends Component {
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.chuva_quantidade}
-                        label_array={this.state.lista_weather.hora}
+                        label_descricao_array={this.state.lista_weather.chuva_probabilidade}
+                        label_array={this.state.lista_weather.hora} label_array_label='%'
                         min_value={this.state.lista_weather.menor_chuva_quantidade}
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
-                        color={this.estilo.cor.blue} />
-                </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
-                this.state.card_weather_atual == 2.1 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.chuva_probabilidade}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_chuva_probabilidade}
-                        max_value={this.state.lista_weather.maior_chuva_probabilidade}
                         color={this.estilo.cor.blue} />
                 </View>
                 <View style={[{ height: '30%', justifyContent: 'flex-end' },
@@ -361,19 +350,6 @@ export default class WeatherToday extends Component {
                         this.state.card_weather_atual < 1 ?
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
                             {this.card_weather_temperatura.map((item) => (
-                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
-                                    onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
-                                    <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
-                                    this.state.card_weather_atual == item.index ?
-                                        { color: this.estilo.cor.white } : null]}>{item.label}</Text>
-                                </Button>
-                            ))}
-                        </View> : null}
-
-                    {this.state.card_weather_atual >= 2 &&
-                        this.state.card_weather_atual < 3 ?
-                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
-                            {this.card_weather_chuva.map((item) => (
                                 <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
                                     onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
