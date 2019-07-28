@@ -24,7 +24,8 @@ export default class WeatherToday extends Component {
                 ponto_de_orvalho: [],
                 vento: [],
                 umidade_relativa: [],
-                chuva: [],
+                chuva_quantidade: [],
+                chuva_probabilidade: [],
                 uv: []
             },
             dia_semana_aux: undefined,
@@ -33,7 +34,7 @@ export default class WeatherToday extends Component {
         this.card_weather = [
             { icon: 'thermometer', cor: this.estilo.cor.purple },
             { icon: 'wind', cor: this.estilo.cor.greenish_medium },
-            { icon: 'moon', cor: this.estilo.cor.blue },
+            { icon: 'cloud-drizzle', cor: this.estilo.cor.blue },
         ]
     }
 
@@ -51,6 +52,7 @@ export default class WeatherToday extends Component {
             await this.getWeather()
         }
         this.setState({ loaded: true })
+        console.log(this.state.lista_weather)
     }
 
     async getWeather() {
@@ -58,24 +60,27 @@ export default class WeatherToday extends Component {
             .get('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data
-                let dia_semana, hora, situacao, temperatura, sensacao_termica, chuva, uv,
-                    ponto_de_orvalho, vento, umidade_relativa, temperatura_de_bulbo_umido,
+                let dia_semana, hora, situacao, temperatura, sensacao_termica, chuva_quantidade, chuva_probabilidade,
+                    uv, ponto_de_orvalho, vento, umidade_relativa, temperatura_de_bulbo_umido,
                     array_obj = {
                         dia_semana: [], hora: [], situacao: [], temperatura: [], sensacao_termica: [],
-                        temperatura_de_bulbo_umido: [], ponto_de_orvalho: [], umidade_relativa: [],
-                        vento: [], chuva: [], uv: [], menor_temperatura: undefined, menor_vento: undefined,
+                        temperatura_de_bulbo_umido: [], ponto_de_orvalho: [], umidade_relativa: [], chuva_quantidade: [],
+                        vento: [], chuva_probabilidade: [], uv: [], menor_temperatura: undefined, menor_vento: undefined,
                         menor_sensacao_termica: undefined, menor_temperatura_de_bulbo_umido: undefined,
-                        menor_ponto_de_orvalho: undefined, menor_chuva: undefined, maior_temperatura: undefined,
+                        menor_ponto_de_orvalho: undefined, menor_chuva_quantidade: undefined, maior_temperatura: undefined,
                         menor_umidade_relativa: undefined, maior_umidade_relativa: undefined,
                         maior_sensacao_termica: undefined, maior_temperatura_de_bulbo_umido: undefined,
-                        maior_ponto_de_orvalho: undefined, maior_vento: undefined, maior_chuva: undefined
+                        maior_ponto_de_orvalho: undefined, maior_vento: undefined, maior_chuva_quantidade: undefined,
+                        menor_chuva_probabilidade: undefined, maior_chuva_probabilidade: undefined
                     }
                 let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento = 100,
                     menor_temperatura_de_bulbo_umido = 100, menor_ponto_de_orvalho = 100,
-                    menor_umidade_relativa = 100, menor_chuva = menor_uv = 100
+                    menor_umidade_relativa = 100, menor_chuva_quantidade = 100,
+                    menor_chuva_probabilidade = 100, menor_uv = 100
                 let maior_temperatura = 0, maior_sensacao_termica = 0, maior_vento = 0,
                     maior_temperatura_de_bulbo_umido = 0, maior_ponto_de_orvalho = 0,
-                    maior_umidade_relativa = 0, maior_chuva = maior_uv = 0
+                    maior_umidade_relativa = 0, maior_chuva_quantidade = 0,
+                    maior_chuva_probabilidade = 0, maior_uv = 0
 
                 await array.forEach((element, index) => {
                     dia_semana = element.DateTime
@@ -89,7 +94,8 @@ export default class WeatherToday extends Component {
                     ponto_de_orvalho = element.DewPoint.Value
                     vento = { velocidade: element.Wind.Speed.Value, direcao: element.Wind.Direction.Localized }
                     umidade_relativa = element.RelativeHumidity
-                    chuva = { probabilidade: element.RainProbability, quantidade: element.Rain.Value }
+                    chuva_quantidade = element.Rain.Value
+                    chuva_probabilidade = element.RainProbability
                     uv = { indice: element.UVIndex, descricao: element.UVIndexText }
 
                     menor_temperatura > temperatura ? menor_temperatura = temperatura : null
@@ -98,7 +104,8 @@ export default class WeatherToday extends Component {
                     menor_ponto_de_orvalho > ponto_de_orvalho ? menor_ponto_de_orvalho = ponto_de_orvalho : null
                     menor_vento > vento.velocidade ? menor_vento = vento.velocidade : null
                     menor_umidade_relativa > umidade_relativa ? menor_umidade_relativa = umidade_relativa : null
-                    menor_chuva > chuva.quantidade ? menor_chuva = chuva.quantidade : null
+                    menor_chuva_quantidade > chuva_quantidade ? menor_chuva_quantidade = chuva_quantidade : null
+                    menor_chuva_probabilidade > chuva_probabilidade ? menor_chuva_probabilidade = chuva_probabilidade : null
                     menor_uv > uv.indice ? menor_uv = uv.indice : null
 
                     maior_temperatura < temperatura ? maior_temperatura = temperatura : null
@@ -107,7 +114,8 @@ export default class WeatherToday extends Component {
                     maior_ponto_de_orvalho < ponto_de_orvalho ? maior_ponto_de_orvalho = ponto_de_orvalho : null
                     maior_vento < vento.velocidade ? maior_vento = vento.velocidade : null
                     maior_umidade_relativa < umidade_relativa ? maior_umidade_relativa = umidade_relativa : null
-                    maior_chuva < chuva.quantidade ? maior_chuva = chuva.quantidade : null
+                    maior_chuva_quantidade < chuva_quantidade ? maior_chuva_quantidade = chuva_quantidade : null
+                    maior_chuva_probabilidade < chuva_probabilidade ? maior_chuva_probabilidade = chuva_probabilidade : null
                     maior_uv < uv.indice ? maior_uv = uv.indice : null
 
                     array_obj.dia_semana.push(dia_semana)
@@ -119,7 +127,8 @@ export default class WeatherToday extends Component {
                     array_obj.ponto_de_orvalho.push(ponto_de_orvalho)
                     array_obj.vento.push(vento)
                     array_obj.umidade_relativa.push(umidade_relativa)
-                    array_obj.chuva.push(chuva)
+                    array_obj.chuva_quantidade.push(chuva_quantidade)
+                    array_obj.chuva_probabilidade.push(chuva_probabilidade)
                     array_obj.uv.push(uv)
 
                     index == 0 || index == 11 ? [
@@ -132,7 +141,8 @@ export default class WeatherToday extends Component {
                         array_obj.ponto_de_orvalho.push(ponto_de_orvalho),
                         array_obj.vento.push(vento),
                         array_obj.umidade_relativa.push(umidade_relativa),
-                        array_obj.chuva.push(chuva),
+                        array_obj.chuva_quantidade.push(chuva_quantidade),
+                        array_obj.chuva_probabilidade.push(chuva_probabilidade),
                         array_obj.uv.push(uv)
                     ] : null
                 })
@@ -143,14 +153,19 @@ export default class WeatherToday extends Component {
                 array_obj.menor_ponto_de_orvalho = menor_ponto_de_orvalho
                 array_obj.menor_vento = menor_vento
                 array_obj.menor_umidade_relativa = menor_umidade_relativa
-                array_obj.menor_chuva = menor_chuva
+                array_obj.menor_chuva_quantidade = menor_chuva_quantidade
+                array_obj.menor_chuva_probabilidade = menor_chuva_probabilidade
                 array_obj.maior_temperatura = maior_temperatura
                 array_obj.maior_sensacao_termica = maior_sensacao_termica
                 array_obj.maior_temperatura_de_bulbo_umido = maior_temperatura_de_bulbo_umido
                 array_obj.maior_ponto_de_orvalho = maior_ponto_de_orvalho
                 array_obj.maior_vento = maior_vento
                 array_obj.maior_umidade_relativa = maior_umidade_relativa
-                array_obj.maior_chuva = maior_chuva
+                array_obj.maior_chuva_quantidade = maior_chuva_quantidade
+                array_obj.maior_chuva_probabilidade = maior_chuva_probabilidade
+
+                console.log('array_obj')
+                console.log(array_obj)
 
                 await this.gravarArquivo(
                     rnfs.DocumentDirectoryPath + '/weather_twelve.json',
@@ -223,7 +238,7 @@ export default class WeatherToday extends Component {
     render() {
         return (
             <Container>
-                <View style={[{ flex: 1, justifyContent: 'flex-end' },
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura}
                         label_array={this.state.lista_weather.hora} type_label='º'
@@ -231,13 +246,21 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_temperatura}
                         color={this.estilo.cor.purple} />
                 </View>
-                <View style={[{ flex: 1, justifyContent: 'flex-end' },
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
                 this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.umidade_relativa}
                         label_array={this.state.lista_weather.hora} type_label='%'
                         min_value={this.state.lista_weather.menor_umidade_relativa}
                         max_value={this.state.lista_weather.maior_umidade_relativa}
                         color={this.estilo.cor.greenish_medium} />
+                </View>
+                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
+                    <Chart data_array={this.state.lista_weather.chuva_quantidade}
+                        label_array={this.state.lista_weather.hora} type_label='mm'
+                        min_value={this.state.lista_weather.menor_chuva_quantidade}
+                        max_value={this.state.lista_weather.maior_chuva_quantidade}
+                        color={this.estilo.cor.blue} />
                 </View>
 
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>

@@ -12,13 +12,7 @@ export default class Chart extends Component {
         this.props.max_value = 0
         this.estilo = new estilo()
         this.state = {
-            loaded: false,
-            // this.props.data_array
-            // this.props.label_array
-            // this.props.type_label
-            // this.props.min_value
-            // this.props.max_value
-            // this.props.color
+            loaded: false
         }
     }
 
@@ -34,35 +28,35 @@ export default class Chart extends Component {
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
                     <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
                         { color: this.props.color }, {
-                        marginTop: -35, marginLeft: -20, fontWeight: 'bold', width: 43,
-                        fontSize: 17, textAlign: 'center'
+                        marginTop: -40, marginLeft: -20, fontWeight: 'bold',
+                        fontSize: 17, width: 80
                     }]}>{value}{this.props.type_label}</Text>
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={10} />
+            <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={10} />
         )
         return (
-            <ScrollView horizontal={true} style={{
-                maxHeight: 45 + this.props.max_value * 3 || 0
-            }}>
-                <View style={{ width: Dimensions.get('window').width * 1.7 }}>
+            <ScrollView horizontal={true} style={
+                { maxHeight: '100%' }
+            }>
+                <View style={{ width: Dimensions.get('window').width * 2 }}>
                     <AreaChart
-                        style={{ height: this.props.max_value * 3 || 0 }}
+                        style={{ height: '80%', marginRight: -1 }}
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
                         contentInset={{ left: -20, right: -22 }}
-                        yMin={this.props.min_value - 1}
-                        yMax={this.props.max_value + 10}
+                        yMin={this.props.min_value}
+                        yMax={this.props.max_value + 20}
                     >
                         <Line />
                         <Decorator />
                     </AreaChart>
                     <XAxis
                         style={{
-                            marginLeft: -30, marginRight: -18, height: 50, paddingTop: 18,
+                            marginLeft: -30, marginRight: -18, height: '21%', paddingTop: 18,
                             backgroundColor: this.props.color, marginTop: -1
                         }}
                         data={this.props.label_array}
