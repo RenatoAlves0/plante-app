@@ -41,10 +41,13 @@ export default class Chart extends Component {
         )
         return (
             <ScrollView showsHorizontalScrollIndicator={false}
-                horizontal={true} style={{ maxHeight: '100%' }}>
+                horizontal={true} style={{ height: '100%' }}>
                 <View style={{ width: Dimensions.get('window').width * 2 }}>
                     <AreaChart
-                        style={{ height: '80%', marginRight: -1 }}
+                        style={{
+                            height: this.props.label_descricao_array ? '60%' : '80%',
+                            marginRight: -1
+                        }}
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
@@ -55,9 +58,24 @@ export default class Chart extends Component {
                         <Line />
                         <Decorator />
                     </AreaChart>
+                    {this.props.label_descricao_array ?
+                        <XAxis
+                            style={{
+                                marginLeft: -30, marginRight: -18, paddingTop: 18, height: '20%',
+                                backgroundColor: this.props.color, marginTop: -1
+                            }}
+                            data={this.props.label_descricao_array}
+                            formatLabel={(index) => {
+                                if (index == 0 || index == 13) return ''
+                                return this.props.label_descricao_array[index]
+                            }}
+                            contentInset={{ left: 10, right: 0 }}
+                            svg={{ fontSize: 15, fill: this.estilo.cor.white }}
+                            numberOfTicks={12}
+                        /> : null}
                     <XAxis
                         style={{
-                            marginLeft: -30, marginRight: -18, height: '21%', paddingTop: 18,
+                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: '21%',
                             backgroundColor: this.props.color, marginTop: -1
                         }}
                         data={this.props.label_array}
@@ -70,7 +88,7 @@ export default class Chart extends Component {
                         numberOfTicks={12}
                     />
                 </View>
-            </ScrollView>
+            </ScrollView >
         )
     }
 }

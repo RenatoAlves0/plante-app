@@ -21,7 +21,7 @@ export default class Estilos {
             lemon: '#c2da4c',
             yellow: '#f1f407',
             orange: '#ffa000',
-            orange_light: '#ff8d33',
+            orange_medium: '#ff8d33',
             brown: '#5d4037',
             brown_vivid: '#754040',
             brwon_light: '#c39898',
