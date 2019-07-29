@@ -61,7 +61,8 @@ export default class Chart extends Component {
                     {this.props.label_descricao_array ?
                         <XAxis
                             style={{
-                                marginLeft: -30, marginRight: -18, paddingTop: 18, height: '20%',
+                                marginLeft: -30, marginRight: -18, paddingTop: 18,
+                                height: this.props.label_descricao_array_big ? '25%' : '20%',
                                 backgroundColor: this.props.color, marginTop: -1
                             }}
                             data={this.props.label_descricao_array}
@@ -71,7 +72,9 @@ export default class Chart extends Component {
                                     || this.props.label_descricao_array[index] + this.props.label_array_label
                             }}
                             contentInset={{ left: 10, right: 0 }}
-                            svg={{ fontSize: 15, fill: this.estilo.cor.white }}
+                            svg={this.props.label_descricao_array_big ?
+                                { skewY: -15, translateY: 10, fontSize: 15, fill: this.estilo.cor.white }
+                                : { fontSize: 15, fill: this.estilo.cor.white }}
                             numberOfTicks={12}
                         /> : null}
                     <XAxis

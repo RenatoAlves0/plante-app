@@ -107,6 +107,7 @@ export default class WeatherToday extends Component {
                     chuva_probabilidade = element.RainProbability
                     uv_indice = element.UVIndex
                     uv_descricao = element.UVIndexText
+                    uv_descricao && uv_descricao == 'Muito alto' ? uv_descricao = 'Muito\nalto' : uv_descricao
 
                     menor_temperatura > temperatura ? menor_temperatura = temperatura : null
                     menor_sensacao_termica > sensacao_termica ? menor_sensacao_termica = sensacao_termica : null
@@ -324,6 +325,7 @@ export default class WeatherToday extends Component {
                 this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.uv_indice}
                         label_descricao_array={this.state.lista_weather.uv_descricao}
+                        label_descricao_array_big={true}
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_uv_indice}
                         max_value={this.state.lista_weather.maior_uv_indice}

@@ -67,7 +67,7 @@ export default class Dash extends Component {
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })
                 Toast.show({
-                    text: 'Conecxão perdida!',
+                    text: 'Conexão perdida!',
                     type: 'danger',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
