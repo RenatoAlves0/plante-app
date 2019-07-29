@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Icon } from 'native-base'
 import BottomNavigation, { ShiftingTab } from 'react-native-material-bottom-navigation'
 import estilo from '../assets/Estilo'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 export default class BottomMenuCliente extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class BottomMenuCliente extends Component {
       { key: 0, label: 'Sensores', icon: 'gauge', type: 'MaterialCommunityIcons', size: 24, color: this.estilo.cor.green_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
       { key: 1, label: 'Atuadores', icon: 'robot-industrial', type: 'MaterialCommunityIcons', size: 24, color: this.estilo.cor.greenish_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
       { key: 2, label: 'Clima semanal', icon: 'cloud', type: 'Entypo', size: 24, color: this.estilo.cor.blue_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
-      { key: 3, label: 'Clima hoje', icon: 'cloud', type: 'Entypo', size: 24, color: this.estilo.cor.blue_solid, pressColor: this.estilo.cor.gray_white + 'cc' },
+      { key: 3, label: 'Clima 12h', icon: 'clock', type: 'Feather', size: 24, color: this.estilo.cor.purple, pressColor: this.estilo.cor.gray_white + 'cc' },
     ]
   }
 
@@ -31,7 +32,9 @@ export default class BottomMenuCliente extends Component {
   }
 
   renderIcon = (icon, color, type, size) => ({ isActive }) => (
-    <Icon style={{ color: color, fontSize: size }} name={icon} type={type} />
+    type == 'Feather' ?
+      <FeatherIcon style={{ color: color, fontSize: size }} name={icon} /> :
+      <Icon style={{ color: color, fontSize: size }} name={icon} type={type} />
   )
 
   renderTab = (ativa) => ({ tab, isActive }) => (

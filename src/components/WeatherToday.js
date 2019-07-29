@@ -254,7 +254,7 @@ export default class WeatherToday extends Component {
 
     render() {
         return (
-            <Container>
+            <View>
                 <Button rounded style={{
                     backgroundColor: this.state.card_weather_cor + '11',
                     elevation: 0, alignSelf: 'center', margin: 10, minWidth: 100, justifyContent: 'center'
@@ -263,15 +263,15 @@ export default class WeatherToday extends Component {
                     >{this.state.variavel_ambiental}  ({this.state.unidade_de_medida})</Text>
                 </Button>
 
-                <Form style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura}
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_temperatura}
                         max_value={this.state.lista_weather.maior_temperatura}
                         color={this.estilo.cor.purple} />
-                </Form>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                </View>
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.sensacao_termica}
                         label_array={this.state.lista_weather.hora}
@@ -279,7 +279,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_sensacao_termica}
                         color={this.estilo.cor.purple} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.2 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura_de_bulbo_umido}
                         label_array={this.state.lista_weather.hora}
@@ -287,7 +287,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
                         color={this.estilo.cor.purple} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.3 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.ponto_de_orvalho}
                         label_array={this.state.lista_weather.hora}
@@ -295,7 +295,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_ponto_de_orvalho}
                         color={this.estilo.cor.purple} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.umidade_relativa}
                         label_array={this.state.lista_weather.hora}
@@ -303,7 +303,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_umidade_relativa}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.chuva_quantidade}
                         label_descricao_array={this.state.lista_weather.chuva_probabilidade}
@@ -312,7 +312,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
                         color={this.estilo.cor.blue} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.vento_velocidade}
                         label_descricao_array={this.state.lista_weather.vento_direcao}
@@ -321,7 +321,7 @@ export default class WeatherToday extends Component {
                         max_value={this.state.lista_weather.maior_vento_velocidade}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
-                <View style={[{ height: '30%', justifyContent: 'flex-end' },
+                <View style={[{ height: 220 },
                 this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.uv_indice}
                         label_descricao_array={this.state.lista_weather.uv_descricao}
@@ -332,7 +332,10 @@ export default class WeatherToday extends Component {
                         color={this.estilo.cor.orange} />
                 </View>
 
-                <View style={{ flex: 1, backgroundColor: this.state.card_weather_cor }}>
+                <Form style={{
+                    backgroundColor: this.state.card_weather_cor,
+                    borderBottomRightRadius: 10, borderBottomLeftRadius: 10
+                }}>
                     <Form style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
                         {this.card_weather.map((item) => (
                             <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
@@ -350,7 +353,7 @@ export default class WeatherToday extends Component {
                     </Form>
                     {this.state.card_weather_atual >= 0 &&
                         this.state.card_weather_atual < 1 ?
-                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row' }}>
+                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row', marginBottom: 20 }}>
                             {this.card_weather_temperatura.map((item) => (
                                 <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
                                     onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
@@ -360,9 +363,8 @@ export default class WeatherToday extends Component {
                                 </Button>
                             ))}
                         </View> : null}
-                </View>
-
-            </Container>
+                </Form>
+            </View>
         )
     }
 }
