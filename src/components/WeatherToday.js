@@ -50,7 +50,7 @@ export default class WeatherToday extends Component {
     async load() {
         await this.lerArquivo(rnfs.DocumentDirectoryPath)
         if (this.getStringDayOfWeek(new Date().getDay()) == this.state.dia_semana_aux
-            && (new Date().getHours()) - this.state.hora_aux < 1)
+            && (new Date().getHours()) - this.state.hora_aux < 2)
             console.log('Dados Weather (12h) já atualizados')
         else {
             console.log('Dados Weather (12h) desatualizados ou inexistentes\nobtendo novos dados ...')
@@ -252,16 +252,31 @@ export default class WeatherToday extends Component {
         return isNaN(day) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][day]
     }
 
+    getSituacaoAtual() {
+        const h = new Date().getHours()
+        const index = this.state.lista_weather.hora.findIndex(obj => obj == h)
+        if (index < 0) return false
+        if (index >= 0 && index <= 13)
+            return this.state.lista_weather.situacao[index]
+    }
+
+    getIndexArrayHoraAtual() {
+        const h = new Date().getHours()
+        const index = this.state.lista_weather.hora.findIndex(obj => obj == h)
+        if (index == 0) return 1
+        if (index == 13) return 12
+        return index
+    }
+
     render() {
         return (
             <View>
-                <Button rounded style={{
-                    backgroundColor: this.state.card_weather_cor + '11',
-                    elevation: 0, alignSelf: 'center', margin: 10, minWidth: 100, justifyContent: 'center'
-                }}>
-                    <Text uppercase={false} style={{ color: this.state.card_weather_cor, fontSize: 17 }}
-                    >{this.state.variavel_ambiental}  ({this.state.unidade_de_medida})</Text>
-                </Button>
+                <Text uppercase={false}
+                    style={{
+                        color: this.state.card_weather_cor, fontSize: 18,
+                        alignSelf: 'center', marginTop: 20, fontWeight: 'bold'
+                    }}
+                >{this.getSituacaoAtual()}  ({this.state.lista_weather.hora[this.getIndexArrayHoraAtual()]}h)</Text>
 
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
@@ -269,6 +284,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_temperatura}
                         max_value={this.state.lista_weather.maior_temperatura}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: 220 },
@@ -277,6 +293,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_sensacao_termica}
                         max_value={this.state.lista_weather.maior_sensacao_termica}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: 220 },
@@ -285,6 +302,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
                         max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: 220 },
@@ -293,6 +311,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_ponto_de_orvalho}
                         max_value={this.state.lista_weather.maior_ponto_de_orvalho}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.purple} />
                 </View>
                 <View style={[{ height: 220 },
@@ -301,6 +320,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_umidade_relativa}
                         max_value={this.state.lista_weather.maior_umidade_relativa}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
                 <View style={[{ height: 220 },
@@ -310,6 +330,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora} label_array_label='%'
                         min_value={this.state.lista_weather.menor_chuva_quantidade}
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.blue} />
                 </View>
                 <View style={[{ height: 220 },
@@ -319,6 +340,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_vento_velocidade}
                         max_value={this.state.lista_weather.maior_vento_velocidade}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.greenish_medium} />
                 </View>
                 <View style={[{ height: 220 },
@@ -329,6 +351,7 @@ export default class WeatherToday extends Component {
                         label_array={this.state.lista_weather.hora}
                         min_value={this.state.lista_weather.menor_uv_indice}
                         max_value={this.state.lista_weather.maior_uv_indice}
+                        hora_atual={this.getIndexArrayHoraAtual()}
                         color={this.estilo.cor.orange} />
                 </View>
 
@@ -336,7 +359,14 @@ export default class WeatherToday extends Component {
                     backgroundColor: this.state.card_weather_cor,
                     borderBottomRightRadius: 10, borderBottomLeftRadius: 10
                 }}>
-                    <Form style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 20 }}>
+                    <Button full rounded disabled style={{
+                        backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 20,
+                        elevation: 0, alignSelf: 'center', marginVertical: 20, minWidth: 100, justifyContent: 'center'
+                    }}>
+                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 17 }}
+                        >{this.state.variavel_ambiental}  ({this.state.unidade_de_medida})</Text>
+                    </Button>
+                    <Form style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
                         {this.card_weather.map((item) => (
                             <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
                                 onPress={() => {

@@ -108,7 +108,7 @@ export default class Estilos {
         }
 
         this.button_item_weather = {
-            marginVertical: 10, paddingHorizontal: 20, backgroundColor: '', elevation: 0, marginHorizontal: 5
+            paddingHorizontal: 20, backgroundColor: '', elevation: 0, marginHorizontal: 5
         }
 
         this.icon_item_weather = {

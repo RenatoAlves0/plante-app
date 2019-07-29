@@ -45,7 +45,8 @@ export default class Chart extends Component {
                 <View style={{ width: Dimensions.get('window').width * 2 }}>
                     <AreaChart
                         style={{
-                            height: this.props.label_descricao_array ? '60%' : '80%',
+                            height: this.props.label_descricao_array_big ? '55%' :
+                                this.props.label_descricao_array ? '60%' : '80%',
                             marginRight: -1
                         }}
                         data={this.props.data_array}
@@ -74,18 +75,34 @@ export default class Chart extends Component {
                             contentInset={{ left: 10, right: 0 }}
                             svg={this.props.label_descricao_array_big ?
                                 { skewY: -15, translateY: 10, fontSize: 15, fill: this.estilo.cor.white }
-                                : { fontSize: 15, fill: this.estilo.cor.white }}
+                                : { fontSize: 15, fill: this.estilo.cor.white }
+                            }
                             numberOfTicks={12}
                         /> : null}
                     <XAxis
                         style={{
-                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: '21%',
-                            backgroundColor: this.props.color, marginTop: -1
+                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: 50,
+                            backgroundColor: this.props.color
                         }}
                         data={this.props.label_array}
                         formatLabel={(index) => {
-                            if (index == 0 || index == 13) return ''
+                            if (index == 0 || index == 13 ||
+                                this.props.hora_atual == index) return ''
                             return this.props.label_array[index] + 'h'
+                        }}
+                        contentInset={{ left: 10, right: 0 }}
+                        svg={{ fontSize: 15, fill: this.estilo.cor.white + '77' }}
+                        numberOfTicks={12}
+                    />
+                    <XAxis
+                        style={{
+                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: 50,
+                            backgroundColor: 'transparent', marginTop: -50
+                        }}
+                        data={this.props.label_array}
+                        formatLabel={(index) => {
+                            if (this.props.hora_atual == index) return this.props.label_array[index] + 'h'
+                            return ''
                         }}
                         contentInset={{ left: 10, right: 0 }}
                         svg={{ fontSize: 15, fill: this.estilo.cor.white }}
