@@ -274,7 +274,7 @@ export default class WeatherToday extends Component {
                 <ScrollView showsHorizontalScrollIndicator={false}
                     horizontal={true} style={{ paddingLeft: 10 }}>
                     {this.state.lista_weather.situacao.map((item, index) => (
-                        index > 0 && index < 13 ?
+                        index > 0 && index < 13 && index >= this.getIndexArrayHoraAtual() ?
                             <Row key={item + index} style={{
                                 marginTop: 20, marginRight: 20,
                                 borderRadius: 100, paddingHorizontal: 15,
