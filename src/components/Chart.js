@@ -35,7 +35,7 @@ export default class Chart extends Component {
                         <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
                             { color: this.props.color }, { fontWeight: 'bold', fontSize: 18 }]}>{value}</Text>
                         <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
-                            { color: this.props.color }, { fontSize: 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
+                            { color: this.props.color }, { fontSize: (this.props.label_data).length > 3 ? 14 : 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
                     </Form>
                 </Svg>
             ))

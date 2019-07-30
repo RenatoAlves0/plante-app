@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Icon } from 'native-base'
+import { ScrollView } from 'react-native'
+import { Icon, Form, Button, Text, Row } from 'native-base'
 import BottomNavigation, { ShiftingTab } from 'react-native-material-bottom-navigation'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -50,12 +51,37 @@ export default class BottomMenuCliente extends Component {
 
   render() {
     return (
-      <BottomNavigation
-        style={{ height: 60, elevation: 0 }}
-        onTabPress={(newTab) => { this.setState({ ativa: newTab.key }); this.props.method(newTab.key) }}
-        renderTab={this.renderTab(this.state.ativa)}
-        tabs={this.tabs}
-      />
+      // <BottomNavigation
+      //   style={{ height: 60, elevation: 10, backgroundColor: this.estilo.cor.white }}
+      //   onTabPress={(newTab) => { this.setState({ ativa: newTab.key }); this.props.method(newTab.key) }}
+      //   renderTab={this.renderTab(this.state.ativa)}
+      //   tabs={this.tabs}
+      // />
+      <ScrollView showsHorizontalScrollIndicator={false}
+        horizontal={true} style={{
+          backgroundColor: this.estilo.cor.white + '00', position: 'absolute',
+          bottom: 0, alignSelf: 'center'
+        }}>
+        <Row style={{ paddingHorizontal: 10 }}>
+          {this.tabs.map((item) => (
+            <Button rounded key={item.icon}
+              onPress={() => { this.setState({ ativa: item.key }); this.props.method(item.key) }}
+              style={{
+                marginVertical: 10, marginHorizontal: 5, elevation: 10,
+                backgroundColor: item.color, height: 50, minWidth: 55, justifyContent: 'center'
+              }}>
+              {item.type == 'Feather' ?
+                <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: item.size, marginHorizontal: 15 }} name={item.icon} /> :
+                <Icon style={{ color: this.estilo.cor.white, fontSize: item.size }} name={item.icon} type={item.type} />
+              }
+              <Text uppercase={false} style={{
+                display: this.state.ativa == item.key ? 'flex' : 'none',
+                fontSize: 15
+              }}>{item.label}</Text>
+            </Button>
+          ))}
+        </Row>
+      </ScrollView>
     )
   }
 }

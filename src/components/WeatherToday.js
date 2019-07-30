@@ -270,15 +270,15 @@ export default class WeatherToday extends Component {
 
     render() {
         return (
-            <View>
+            <Container>
                 <ScrollView showsHorizontalScrollIndicator={false}
-                    horizontal={true} style={{ paddingLeft: 10 }}>
+                    horizontal={true} style={{ paddingLeft: 10, maxHeight: 60 }}>
                     {this.state.lista_weather.situacao.map((item, index) => (
                         index > 0 && index < 13 && index >= this.getIndexArrayHoraAtual() ?
                             <Row key={item + index} style={{
                                 marginTop: 20, marginRight: 20,
-                                borderRadius: 100, paddingHorizontal: 15,
-                                paddingVertical: 7, backgroundColor: this.state.card_weather_cor + '11'
+                                borderRadius: 50, paddingHorizontal: 15,
+                                backgroundColor: this.state.card_weather_cor + '11'
                             }}>
                                 <Text uppercase={false}
                                     style={{ color: this.state.card_weather_cor, fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
@@ -366,9 +366,9 @@ export default class WeatherToday extends Component {
                         color={this.estilo.cor.orange} label_data=' uv' />
                 </View>
 
-                <Form style={{
+                <Container style={{
                     backgroundColor: this.state.card_weather_cor,
-                    borderBottomRightRadius: 10, borderBottomLeftRadius: 10
+                    borderBottomRightRadius: 0, borderBottomLeftRadius: 0
                 }}>
                     <Button full rounded disabled style={{
                         backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 20,
@@ -404,8 +404,8 @@ export default class WeatherToday extends Component {
                                 </Button>
                             ))}
                         </View> : null}
-                </Form>
-            </View>
+                </Container>
+            </Container>
         )
     }
 }

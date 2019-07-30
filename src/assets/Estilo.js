@@ -9,7 +9,7 @@ export default class Estilos {
             purple_vivid: '#c100b7',
             blue_light: '#03c8e2',
             blue: '#1976d2',
-            blue_solid: '#1f65ff',
+            blue_solid: '#1f3fff',
             blue_dark: '#00226d',
             greenish_light: '#07f1f4',
             greenish: '#00d9bb',
