@@ -94,7 +94,7 @@ export default class Estilos {
 
         this.item_dash_weather = {
             width: 370, margin: 15, paddingTop: 0, alignSelf: 'center',
-            paddingBottom: 0, borderRadius: 10, elevation: 10
+            paddingBottom: 5, borderRadius: 10, elevation: 10
         }
 
         this.buttom_item_dash = {

@@ -176,7 +176,7 @@ export default class Dash extends Component {
 
                 {/* 1 */}
                 <Content style={[this.state.tab_atual == 1 ? null : { display: 'none' },
-                { paddingTop: 10, flexDirection: 'row', flexWrap: 'wrap' }]} >
+                { paddingTop: 10, flexDirection: 'row' }]} >
                     <Card item={this.state.regar ?
                         {
                             cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,

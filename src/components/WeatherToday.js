@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Container, Text, View, Form } from 'native-base'
+import { ScrollView } from 'react-native'
+import { Button, Container, Text, View, Form, Content, Row } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
@@ -14,7 +15,6 @@ export default class WeatherToday extends Component {
             loaded: false,
             card_weather_atual: 0,
             card_weather_cor: this.estilo.cor.purple,
-            unidade_de_medida: 'ºC',
             variavel_ambiental: 'Temperatura',
             lista_weather: {
                 dia_semana: [], hora: [],
@@ -29,17 +29,17 @@ export default class WeatherToday extends Component {
             hora_aux: undefined,
         }
         this.card_weather = [
-            { index: 0, icon: 'thermometer', unidade_de_medida: 'ºC', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.purple },
-            { index: 1, icon: 'droplet', unidade_de_medida: '%', variavel_ambiental: 'Umidade', cor: this.estilo.cor.greenish_medium },
-            { index: 2, icon: 'cloud-drizzle', unidade_de_medida: 'mm', variavel_ambiental: 'Chuva', cor: this.estilo.cor.blue },
-            { index: 3, icon: 'wind', unidade_de_medida: 'km/h', variavel_ambiental: 'Vento', cor: this.estilo.cor.greenish_medium },
-            { index: 4, icon: 'sun', unidade_de_medida: 'uv', variavel_ambiental: 'Radiação', cor: this.estilo.cor.orange },
+            { index: 0, icon: 'thermometer', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.purple },
+            { index: 1, icon: 'droplet', variavel_ambiental: 'Umidade', cor: this.estilo.cor.greenish_medium },
+            { index: 2, icon: 'cloud-drizzle', variavel_ambiental: 'Chuva', cor: this.estilo.cor.blue },
+            { index: 3, icon: 'wind', variavel_ambiental: 'Vento', cor: this.estilo.cor.greenish_medium },
+            { index: 4, icon: 'sun', variavel_ambiental: 'Radiação', cor: this.estilo.cor.orange },
         ]
         this.card_weather_temperatura = [
-            { index: 0, label: 'Real', unidade_de_medida: 'ºC' },
-            { index: 0.1, label: 'Sensação térmica', unidade_de_medida: 'ºC' },
-            { index: 0.2, label: 'Bulbo úmido', unidade_de_medida: 'ºC' },
-            { index: 0.3, label: 'Ponto de orvalho', unidade_de_medida: 'ºC' },
+            { index: 0, label: 'Real' },
+            { index: 0.1, label: 'Sensação térmica' },
+            { index: 0.2, label: 'Bulbo úmido' },
+            { index: 0.3, label: 'Ponto de orvalho' },
         ]
     }
 
@@ -271,13 +271,24 @@ export default class WeatherToday extends Component {
     render() {
         return (
             <View>
-                <Text uppercase={false}
-                    style={{
-                        color: this.state.card_weather_cor, fontSize: 18,
-                        alignSelf: 'center', marginTop: 20, fontWeight: 'bold'
-                    }}
-                >{this.getSituacaoAtual()}  ({this.state.lista_weather.hora[this.getIndexArrayHoraAtual()]}h)</Text>
-
+                <ScrollView showsHorizontalScrollIndicator={false}
+                    horizontal={true} style={{ paddingLeft: 10 }}>
+                    {this.state.lista_weather.situacao.map((item, index) => (
+                        index > 0 && index < 13 ?
+                            <Row key={item + index} style={{
+                                marginTop: 20, marginRight: 20,
+                                borderRadius: 100, paddingHorizontal: 15,
+                                paddingVertical: 7, backgroundColor: this.state.card_weather_cor + '11'
+                            }}>
+                                <Text uppercase={false}
+                                    style={{ color: this.state.card_weather_cor, fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
+                                >{item}</Text>
+                                <Text uppercase={false}
+                                    style={{ color: this.state.card_weather_cor, fontSize: 15, alignSelf: 'center' }
+                                    }>  {this.state.lista_weather.hora[index]}h</Text>
+                            </Row> : null
+                    ))}
+                </ScrollView>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                     <Chart data_array={this.state.lista_weather.temperatura}
@@ -285,7 +296,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_temperatura}
                         max_value={this.state.lista_weather.maior_temperatura}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} />
+                        color={this.estilo.cor.purple} label_data='º' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.1 ? null : { display: 'none' }]}>
@@ -294,7 +305,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_sensacao_termica}
                         max_value={this.state.lista_weather.maior_sensacao_termica}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} />
+                        color={this.estilo.cor.purple} label_data='º' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.2 ? null : { display: 'none' }]}>
@@ -303,7 +314,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
                         max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} />
+                        color={this.estilo.cor.purple} label_data='º' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 0.3 ? null : { display: 'none' }]}>
@@ -312,7 +323,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_ponto_de_orvalho}
                         max_value={this.state.lista_weather.maior_ponto_de_orvalho}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} />
+                        color={this.estilo.cor.purple} label_data='º' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
@@ -321,7 +332,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_umidade_relativa}
                         max_value={this.state.lista_weather.maior_umidade_relativa}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.greenish_medium} />
+                        color={this.estilo.cor.greenish_medium} label_data='%' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
@@ -331,7 +342,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_chuva_quantidade}
                         max_value={this.state.lista_weather.maior_chuva_quantidade}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.blue} />
+                        color={this.estilo.cor.blue} label_data=' mm' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
@@ -341,7 +352,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_vento_velocidade}
                         max_value={this.state.lista_weather.maior_vento_velocidade}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.greenish_medium} />
+                        color={this.estilo.cor.greenish_medium} label_data=' km/h' />
                 </View>
                 <View style={[{ height: 220 },
                 this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
@@ -352,7 +363,7 @@ export default class WeatherToday extends Component {
                         min_value={this.state.lista_weather.menor_uv_indice}
                         max_value={this.state.lista_weather.maior_uv_indice}
                         hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.orange} />
+                        color={this.estilo.cor.orange} label_data=' uv' />
                 </View>
 
                 <Form style={{
@@ -361,18 +372,18 @@ export default class WeatherToday extends Component {
                 }}>
                     <Button full rounded disabled style={{
                         backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 20,
-                        elevation: 0, alignSelf: 'center', marginVertical: 20, minWidth: 100, justifyContent: 'center'
+                        elevation: 0, alignSelf: 'center', marginVertical: 20, justifyContent: 'center'
                     }}>
                         <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 17 }}
-                        >{this.state.variavel_ambiental}  ({this.state.unidade_de_medida})</Text>
+                        >{this.state.variavel_ambiental}</Text>
                     </Button>
                     <Form style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
                         {this.card_weather.map((item) => (
                             <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
                                 onPress={() => {
                                     this.setState({
-                                        card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida,
-                                        card_weather_cor: item.cor, variavel_ambiental: item.variavel_ambiental
+                                        card_weather_atual: item.index, card_weather_cor: item.cor,
+                                        variavel_ambiental: item.variavel_ambiental
                                     })
                                 }}>
                                 <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
@@ -386,7 +397,7 @@ export default class WeatherToday extends Component {
                         <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row', marginBottom: 20 }}>
                             {this.card_weather_temperatura.map((item) => (
                                 <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
-                                    onPress={() => this.setState({ card_weather_atual: item.index, unidade_de_medida: item.unidade_de_medida })}>
+                                    onPress={() => this.setState({ card_weather_atual: item.index })}>
                                     <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
                                     this.state.card_weather_atual == item.index ?
                                         { color: this.estilo.cor.white } : null]}>{item.label}</Text>

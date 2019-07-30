@@ -14,6 +14,7 @@ export default class Chart extends Component {
         this.state = {
             loaded: false
         }
+        this.tam = (((this.props.label_data).length || 0) * 10)
     }
 
     componentWillReceiveProps() {
@@ -27,11 +28,14 @@ export default class Chart extends Component {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
                     <Form style={{
-                        flexDirection: 'row', marginTop: -40, marginLeft: -27,
-                        width: 50, height: 25, justifyContent: 'center'
+                        flexDirection: 'row', marginTop: -40, alignItems: this.props.label_data == 'º' ? 'flex-start' : 'baseline',
+                        marginLeft: (this.props.label_data).length > 3 ? -35 : -25,
+                        width: 40 + this.tam, height: 25, justifyContent: 'center'
                     }}>
                         <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
                             { color: this.props.color }, { fontWeight: 'bold', fontSize: 18 }]}>{value}</Text>
+                        <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
+                            { color: this.props.color }, { fontSize: 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
                     </Form>
                 </Svg>
             ))
@@ -42,7 +46,7 @@ export default class Chart extends Component {
         return (
             <ScrollView showsHorizontalScrollIndicator={false}
                 horizontal={true} style={{ height: '100%' }}>
-                <View style={{ width: Dimensions.get('window').width * 2 }}>
+                <View style={{ width: (this.tam * 7) + Dimensions.get('window').width * 2 }}>
                     <AreaChart
                         style={{
                             height: this.props.label_descricao_array_big ? '55%' :
@@ -52,7 +56,7 @@ export default class Chart extends Component {
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
-                        contentInset={{ left: -20, right: -22 }}
+                        contentInset={{ left: -40, right: -40 }}
                         yMin={this.props.min_value}
                         yMax={this.props.max_value + 20}
                     >
@@ -62,7 +66,7 @@ export default class Chart extends Component {
                     {this.props.label_descricao_array ?
                         <XAxis
                             style={{
-                                marginLeft: -30, marginRight: -18, paddingTop: 18,
+                                marginLeft: -50, marginRight: -38, paddingTop: 18,
                                 height: this.props.label_descricao_array_big ? '25%' : '20%',
                                 backgroundColor: this.props.color, marginTop: -1
                             }}
@@ -81,7 +85,7 @@ export default class Chart extends Component {
                         /> : null}
                     <XAxis
                         style={{
-                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: 50,
+                            marginLeft: -50, marginRight: -38, paddingTop: 18, height: 50,
                             backgroundColor: this.props.color
                         }}
                         data={this.props.label_array}
@@ -96,7 +100,7 @@ export default class Chart extends Component {
                     />
                     <XAxis
                         style={{
-                            marginLeft: -30, marginRight: -18, paddingTop: 18, height: 50,
+                            marginLeft: -50, marginRight: -38, paddingTop: 18, height: 50,
                             backgroundColor: 'transparent', marginTop: -50
                         }}
                         data={this.props.label_array}

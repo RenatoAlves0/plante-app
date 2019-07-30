@@ -352,7 +352,7 @@ export default class WeatherWeek extends Component {
                     x: this.card_weather[this.state.card_weather_atual].x || 0.5,
                     y: this.card_weather[this.state.card_weather_atual].y || 0.5
                 }} style={this.estilo.item_dash_weather}>
-                <Form style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                <Form style={{ flexDirection: 'row', alignSelf: 'center', paddingVertical: 10 }}>
                     {this.card_weather.map((item) => (
                         <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
                             onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
