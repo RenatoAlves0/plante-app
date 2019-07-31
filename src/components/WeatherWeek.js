@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ScrollView, Dimensions } from 'react-native'
 import { Text, Button, Form, ListItem, Row, Col, Spinner, View, Content, Container } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
@@ -337,10 +338,11 @@ export default class WeatherWeek extends Component {
     renderNoite(i) {
         if (i == 0 || i == 6) return
         return <ListItem key={i + 'n'} style={{
-            marginLeft: 15, marginRight: 15, marginBottom: 10,
-            padding: 15, borderBottomWidth: 0, borderRadius: 10,
-            backgroundColor: this.estilo.cor.gray_translucid,
-            display: this.state.card_weather_atual == 2 ? 'flex' : 'none'
+            marginVertical: 20, marginLeft: i == 1 ? 40 : 10, marginRight: i == 5 ? 40 : 10,
+            padding: 15, borderRadius: 10, borderBottomWidth: 0,
+            backgroundColor: this.estilo.cor.blue_dark,
+            width: Dimensions.get('screen').width - 80, elevation: 10,
+            display: this.state.card_weather_atual == 2 ? 'flex' : 'flex'
         }}>
             <Col>
                 <Row>
@@ -406,16 +408,27 @@ export default class WeatherWeek extends Component {
 
         return (
             <Container style={{
-                backgroundColor: this.card_weather[this.state.card_weather_atual].cor1, marginTop: 20
+                backgroundColor: this.card_weather[this.state.card_weather_atual].cor1,
+                marginTop: 20
             }}>
                 <Content>
-                    <Form style={{ height: 20 }} />
-                    {this.state.lista_weather.hora.map((value, i) => [
-                        this.renderTemperatura(i),
-                        this.renderDia(i),
-                        this.renderNoite(i),
-                    ])}
-                    <Form style={{ height: 20 }} />
+                    <View style={{}}>
+                        <ScrollView
+                            horizontal
+                            pagingEnabled
+                            zoomScale={0.8}
+                            bouncesZoom={true}
+                            decelerationRate={0.7}
+                            snapToAlignment='center'
+                            snapToInterval={Dimensions.get('window').width - 60} //your element width
+                        >
+                            {this.state.lista_weather.hora.map((value, i) => [
+                                // this.renderTemperatura(i),
+                                // this.renderDia(i),
+                                this.renderNoite(i),
+                            ])}
+                        </ScrollView>
+                    </View>
                 </Content>
                 <Form style={{ flexDirection: 'row', alignSelf: 'center', paddingVertical: 10 }}>
                     {this.card_weather.map((item) => (

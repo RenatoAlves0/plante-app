@@ -31,16 +31,22 @@ export default class BottomMenuCliente extends Component {
               if (item.method) item.method()
             }}
             style={{
-              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 10,
+              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 0,
               minWidth: 55, justifyContent: 'center', flexDirection: 'column'
             }}>
+            {/* style={[{
+              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 0,
+              minWidth: 55, justifyContent: 'center', flexDirection: 'column',
+            }, this.state.ativa == item.key ? {
+              borderBottomWidth: 2, paddingBottom: 3, borderBottomColor: this.estilo.cor.gray_solid
+            } : null]}> */}
             {item.type == 'Feather' ?
               <FeatherIcon style={{
-                color: this.state.ativa == item.key ? this.estilo.cor.gray : this.estilo.cor.gray_medium,
+                color: this.state.ativa == item.key ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium,
                 fontSize: item.size, marginHorizontal: 15
               }} name={item.icon} /> :
               <Icon style={{
-                color: this.state.ativa == item.key ? this.estilo.cor.gray : this.estilo.cor.gray_medium,
+                color: this.state.ativa == item.key ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium,
                 fontSize: item.size
               }} name={item.icon} type={item.type} />
             }

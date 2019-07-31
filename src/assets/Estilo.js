@@ -25,6 +25,7 @@ export default class Estilos {
             brown: '#5d4037',
             brown_vivid: '#754040',
             brwon_light: '#c39898',
+            gray_solid: '#666666',
             gray: '#888888',
             gray_medium: '#acacac',
             gray_white: '#cecece',
