@@ -68,6 +68,14 @@ export default class WeatherToday extends Component {
                 let dia_semana, hora, situacao, temperatura, sensacao_termica, chuva_quantidade, chuva_probabilidade,
                     ponto_de_orvalho, vento_velocidade, vento_direcao, umidade_relativa, temperatura_de_bulbo_umido,
                     uv_indice, uv_descricao
+                let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento_velocidade = 100,
+                    menor_temperatura_de_bulbo_umido = 100, menor_ponto_de_orvalho = 100,
+                    menor_umidade_relativa = 100, menor_chuva_quantidade = 100,
+                    menor_chuva_probabilidade = 100, menor_uv_indice = 100
+                let maior_temperatura = -100, maior_sensacao_termica = -100, maior_vento_velocidade = -100,
+                    maior_temperatura_de_bulbo_umido = -100, maior_ponto_de_orvalho = -100,
+                    maior_umidade_relativa = -100, maior_chuva_quantidade = -100,
+                    maior_chuva_probabilidade = -100, maior_uv_indice = -100
                 array_obj = {
                     dia_semana: [], hora: [], situacao: [], temperatura: [], sensacao_termica: [],
                     temperatura_de_bulbo_umido: [], ponto_de_orvalho: [], umidade_relativa: [], chuva_quantidade: [],
@@ -81,14 +89,6 @@ export default class WeatherToday extends Component {
                     menor_chuva_probabilidade: undefined, maior_chuva_probabilidade: undefined,
                     menor_uv_indice: undefined, maior_uv_indice: undefined
                 }
-                let menor_temperatura = 100, menor_sensacao_termica = 100, menor_vento_velocidade = 100,
-                    menor_temperatura_de_bulbo_umido = 100, menor_ponto_de_orvalho = 100,
-                    menor_umidade_relativa = 100, menor_chuva_quantidade = 100,
-                    menor_chuva_probabilidade = 100, menor_uv_indice = 100
-                let maior_temperatura = 0, maior_sensacao_termica = 0, maior_vento_velocidade = 0,
-                    maior_temperatura_de_bulbo_umido = 0, maior_ponto_de_orvalho = 0,
-                    maior_umidade_relativa = 0, maior_chuva_quantidade = 0,
-                    maior_chuva_probabilidade = 0, maior_uv_indice = 0
 
                 await array.forEach((element, index) => {
                     dia_semana = element.DateTime

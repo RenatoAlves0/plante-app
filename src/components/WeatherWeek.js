@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Button, Form, ListItem, Row, Col, Spinner } from 'native-base'
+import { Text, Button, Form, ListItem, Row, Col, Spinner, View } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -13,12 +13,18 @@ export default class WeatherWeek extends Component {
         this.state = {
             loaded: false,
             card_weather_atual: 0,
-            lista_weather: [],
+            lista_weather: {
+                dia_semana: [], hora: [], dia_nuvens: [], dia_ceu: [], dia_chuva_probabilidade: [],
+                dia_chuva_mm: [], dia_vento_velocidade: [], dia_vento_direcao: [], sol_nascer: [],
+                sol_por: [], sol_duracao: [], noite_nuvens: [], noite_ceu: [], noite_chuva_probabilidade: [],
+                noite_chuva_mm: [], noite_vento_velocidade: [], noite_vento_direcao: [], lua_nascer: [],
+                lua_por: []
+            },
             dia_semana_aux: undefined,
             hora_aux: undefined,
         }
         this.card_weather = [
-            { icon: 'thermometer', cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid },
+            { icon: 'thermometer', cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid },
             { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_medium },
             { icon: 'moon', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark },
         ]
@@ -46,67 +52,114 @@ export default class WeatherWeek extends Component {
             .get('http://dataservice.accuweather.com/forecasts/v1/daily/5day/38025?apikey=AJ8uokBYThYFdXod4T6hebp4pLvEUQom&language=pt-br&details=true&metric=true')
             .then(async (data) => {
                 let array = data.data.DailyForecasts
-                let sensacao_termica, sensacao_termica_sombra, hora,
-                    temperatura, dia, noite, dia_semana, obj, array_obj = []
+                let dia_semana, hora, dia_nuvens, dia_ceu, dia_chuva_probabilidade,
+                    dia_chuva_mm, dia_vento_velocidade, dia_vento_direcao, sol_nascer,
+                    sol_por, sol_duracao, noite_nuvens, noite_ceu, noite_chuva_probabilidade,
+                    noite_chuva_mm, noite_vento_velocidade, noite_vento_direcao, lua_nascer,
+                    lua_por, sensacao_termica_minima, sensacao_termica_minima_sombra, temperatura_minima,
+                    sensacao_termica_maxima, sensacao_termica_maxima_sombra, temperatura_maxima
+
+                array_obj = {
+                    dia_semana: [], hora: [], dia_nuvens: [], dia_ceu: [], dia_chuva_probabilidade: [],
+                    dia_chuva_mm: [], dia_vento_velocidade: [], dia_vento_direcao: [], sol_nascer: [],
+                    sol_por: [], sol_duracao: [], noite_nuvens: [], noite_ceu: [], noite_chuva_probabilidade: [],
+                    noite_chuva_mm: [], noite_vento_velocidade: [], noite_vento_direcao: [], lua_nascer: [],
+                    lua_por: [], sensacao_termica_minima: [], sensacao_termica_minima_sombra: [],
+                    temperatura_minima: [], sensacao_termica_maxima: [],
+                    sensacao_termica_maxima_sombra: [], temperatura_maxima: []
+                }
+
 
                 await array.forEach((element, index) => {
-                    console.log(element.Date)
                     dia_semana = element.Date
                     hora = new Date().getHours()
                     dia_semana ? dia_semana = this.getDayOfWeek(dia_semana) : ''
-                    sensacao_termica = {
-                        min: element.RealFeelTemperature.Minimum.Value,
-                        max: element.RealFeelTemperature.Maximum.Value
-                    }
-                    sensacao_termica_sombra = {
-                        min: element.RealFeelTemperatureShade.Minimum.Value,
-                        max: element.RealFeelTemperatureShade.Maximum.Value
-                    }
-                    temperatura = {
-                        min: element.Temperature.Minimum.Value,
-                        max: element.Temperature.Maximum.Value
-                    }
-                    dia = {
-                        nuvens: element.Day.CloudCover, //%
-                        ceu: element.Day.ShortPhrase,
-                        chuva_probabilidade: element.Day.RainProbability, //%
-                        chuva_mm: element.Day.Rain.Value,
-                        vento_velocidade: element.Day.Wind.Speed.Value, //km/h
-                        vento_direcao: element.Day.Wind.Direction.Localized,
-                        sol: {
-                            nascer: element.Sun.Rise,
-                            por: element.Sun.Set,
-                            duracao: element.HoursOfSun
-                        }
-                    }
-                    noite = {
-                        nuvens: element.Night.CloudCover, //%
-                        ceu: element.Night.ShortPhrase,
-                        chuva_probabilidade: element.Night.RainProbability, //%
-                        chuva_mm: element.Night.Rain.Value,
-                        vento_velocidade: element.Night.Wind.Speed.Value, //km/h
-                        vento_direcao: element.Night.Wind.Direction.Localized,
-                        lua: {
-                            nascer: element.Moon.Rise,
-                            por: element.Moon.Set
-                        }
-                    }
-                    dia.sol.nascer ? dia.sol.nascer = dia.sol.nascer.substring(11, 16) : ''
-                    dia.sol.por ? dia.sol.por = dia.sol.por.substring(11, 16) : ''
-                    noite.lua.nascer ? noite.lua.nascer = noite.lua.nascer.substring(11, 16) : ''
-                    noite.lua.por ? noite.lua.por = noite.lua.por.substring(11, 16) : ''
-                    obj = {
-                        id: index,
-                        hora: hora,
-                        dia_semana: dia_semana,
-                        sensacao_termica: sensacao_termica,
-                        sensacao_termica_sombra: sensacao_termica_sombra,
-                        temperatura: temperatura,
-                        dia: dia,
-                        noite: noite
-                    }
-                    array_obj.push(obj)
+                    sensacao_termica_minima = element.RealFeelTemperature.Minimum.Value
+                    sensacao_termica_maxima = element.RealFeelTemperature.Maximum.Value
+                    sensacao_termica_minima_sombra = element.RealFeelTemperatureShade.Minimum.Value
+                    sensacao_termica_maxima_sombra = element.RealFeelTemperatureShade.Maximum.Value
+                    temperatura_minima = element.Temperature.Minimum.Value
+                    temperatura_maxima = element.Temperature.Maximum.Value
+                    dia_nuvens = element.Day.CloudCover
+                    dia_ceu = element.Day.ShortPhrase
+                    dia_chuva_probabilidade = element.Day.RainProbability
+                    dia_chuva_mm = element.Day.Rain.Value
+                    dia_vento_velocidade = element.Day.Wind.Speed.Value
+                    dia_vento_direcao = element.Day.Wind.Direction.Localized
+                    sol_nascer = element.Sun.Rise
+                    sol_por = element.Sun.Set
+                    sol_duracao = element.HoursOfSun
+                    noite_nuvens = element.Night.CloudCover
+                    noite_ceu = element.Night.ShortPhrase
+                    noite_chuva_probabilidade = element.Night.RainProbability
+                    noite_chuva_mm = element.Night.Rain.Value
+                    noite_vento_velocidade = element.Night.Wind.Speed.Value
+                    noite_vento_direcao = element.Night.Wind.Direction.Localized
+                    lua_nascer = element.Moon.Rise
+                    lua_por = element.Moon.Set
+                    sol_nascer ? sol_nascer = sol_nascer.substring(11, 16) : ''
+                    sol_por ? sol_por = sol_por.substring(11, 16) : ''
+                    lua_nascer ? lua_nascer = lua_nascer.substring(11, 16) : ''
+                    lua_por ? lua_por = lua_por.substring(11, 16) : ''
+
+                    array_obj.hora.push(hora)
+                    array_obj.dia_semana.push(dia_semana)
+                    array_obj.sensacao_termica_minima.push(sensacao_termica_minima)
+                    array_obj.sensacao_termica_maxima.push(sensacao_termica_maxima)
+                    array_obj.sensacao_termica_minima_sombra.push(sensacao_termica_minima_sombra)
+                    array_obj.sensacao_termica_maxima_sombra.push(sensacao_termica_maxima_sombra)
+                    array_obj.temperatura_minima.push(temperatura_minima)
+                    array_obj.temperatura_maxima.push(temperatura_maxima)
+                    array_obj.dia_nuvens.push(dia_nuvens)
+                    array_obj.dia_ceu.push(dia_ceu)
+                    array_obj.dia_chuva_probabilidade.push(dia_chuva_probabilidade)
+                    array_obj.dia_chuva_mm.push(dia_chuva_mm)
+                    array_obj.dia_vento_velocidade.push(dia_vento_velocidade)
+                    array_obj.dia_vento_direcao.push(dia_vento_direcao)
+                    array_obj.sol_nascer.push(sol_nascer)
+                    array_obj.sol_por.push(sol_por)
+                    array_obj.sol_duracao.push(sol_duracao)
+                    array_obj.noite_nuvens.push(noite_nuvens)
+                    array_obj.noite_ceu.push(noite_ceu)
+                    array_obj.noite_chuva_probabilidade.push(noite_chuva_probabilidade)
+                    array_obj.noite_chuva_mm.push(noite_chuva_mm)
+                    array_obj.noite_vento_velocidade.push(noite_vento_velocidade)
+                    array_obj.noite_vento_direcao.push(noite_vento_direcao)
+                    array_obj.lua_nascer.push(lua_nascer)
+                    array_obj.lua_por.push(lua_por)
+
+                    index == 0 || index == 4 ? [
+                        array_obj.hora.push(hora),
+                        array_obj.dia_semana.push(dia_semana),
+                        array_obj.sensacao_termica_minima.push(sensacao_termica_minima),
+                        array_obj.sensacao_termica_maxima.push(sensacao_termica_maxima),
+                        array_obj.sensacao_termica_minima_sombra.push(sensacao_termica_minima_sombra),
+                        array_obj.sensacao_termica_maxima_sombra.push(sensacao_termica_maxima_sombra),
+                        array_obj.temperatura_minima.push(temperatura_minima),
+                        array_obj.temperatura_maxima.push(temperatura_maxima),
+                        array_obj.dia_nuvens.push(dia_nuvens),
+                        array_obj.dia_ceu.push(dia_ceu),
+                        array_obj.dia_chuva_probabilidade.push(dia_chuva_probabilidade),
+                        array_obj.dia_chuva_mm.push(dia_chuva_mm),
+                        array_obj.dia_vento_velocidade.push(dia_vento_velocidade),
+                        array_obj.dia_vento_direcao.push(dia_vento_direcao),
+                        array_obj.sol_nascer.push(sol_nascer),
+                        array_obj.sol_por.push(sol_por),
+                        array_obj.sol_duracao.push(sol_duracao),
+                        array_obj.noite_nuvens.push(noite_nuvens),
+                        array_obj.noite_ceu.push(noite_ceu),
+                        array_obj.noite_chuva_probabilidade.push(noite_chuva_probabilidade),
+                        array_obj.noite_chuva_mm.push(noite_chuva_mm),
+                        array_obj.noite_vento_velocidade.push(noite_vento_velocidade),
+                        array_obj.noite_vento_direcao.push(noite_vento_direcao),
+                        array_obj.lua_nascer.push(lua_nascer),
+                        array_obj.lua_por.push(lua_por)
+                    ] : null
                 })
+
+                console.log('array_obj')
+                console.log(array_obj)
+
                 await this.gravarArquivo(
                     rnfs.DocumentDirectoryPath + '/weather_week.json',
                     JSON.stringify(array_obj))
@@ -142,10 +195,10 @@ export default class WeatherWeek extends Component {
             .then(async (contents) => {
                 await this.setState({ lista_weather: JSON.parse(contents) })
                 console.log(this.state.lista_weather)
-                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].dia_semana ?
-                    await this.setState({ dia_semana_aux: this.state.lista_weather[0].dia_semana }) : null
-                this.state.lista_weather && this.state.lista_weather[0] && this.state.lista_weather[0].hora ?
-                    await this.setState({ hora_aux: this.state.lista_weather[0].hora }) : null
+                this.state.lista_weather && this.state.lista_weather.dia_semana && this.state.lista_weather.dia_semana[1] ?
+                    await this.setState({ dia_semana_aux: this.state.lista_weather.dia_semana[1] }) : null
+                this.state.lista_weather && this.state.lista_weather.hora && this.state.lista_weather.hora[1] ?
+                    await this.setState({ hora_aux: this.state.lista_weather.hora[1] }) : null
             })
             .catch((err) => {
                 this.setState({ dia_semana_aux: 'vazio' })
@@ -175,8 +228,9 @@ export default class WeatherWeek extends Component {
         return isNaN(day) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][day]
     }
 
-    renderTemperatura(item, index) {
-        return <ListItem key={item.id + 't'} style={{
+    renderTemperatura(i) {
+        // if (i == 0 || i == 6) return
+        return <ListItem key={i + 't'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
             backgroundColor: this.estilo.cor.gray_translucid,
@@ -185,33 +239,33 @@ export default class WeatherWeek extends Component {
             <Col>
                 <Row>
                     <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : item.dia_semana}</Text>
+                        {i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                            : i == 2 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                : this.state.lista_weather.dia_semana[i]}</Text>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{item.temperatura.min} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.temperatura.max}º</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_minima[i]} / </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_maxima[i]}º</Text>
                     </Row>
                 </Row>
                 <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>Sensação térmica</Text>
                 <Row>
                     <Row>
                         <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.sensacao_termica.min} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.sensacao_termica.max}º</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima[i]} / </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima[i]}º</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <FeatherIcon name='cloud' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {item.sensacao_termica_sombra.min} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.sensacao_termica_sombra.max}º</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima_sombra[i]} / </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima_sombra[i]}º</Text>
                     </Row>
                 </Row>
             </Col>
         </ListItem>
     }
 
-    renderDia(item, index) {
-        return <ListItem key={item.id + 'd'} style={{
+    renderDia(i) {
+        return <ListItem key={i + 'd'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
             backgroundColor: this.estilo.cor.gray_translucid,
@@ -220,19 +274,19 @@ export default class WeatherWeek extends Component {
             <Col>
                 <Row>
                     <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : item.dia_semana}</Text>
+                        {i == 0 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                            : i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                : this.state.lista_weather.dia_semana[i]}</Text>
                     <Row style={{ width: '50%', justifyContent: 'flex-end' }}>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia.nuvens}%</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.dia_nuvens[i]}%</Text>
                     </Row>
                 </Row>
                 <Row style={{ justifyContent: 'flex-end' }} >
                     <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>tempo de sol </Text>
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.dia.sol.duracao}h</Text>
+                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.sol_duracao[i]}h</Text>
                 </Row>
-                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{item.dia.ceu}</Text>
+                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{this.state.lista_weather.dia_ceu[i]}</Text>
                 <Row style={{ marginTop: 10 }}>
                     <Row>
                         <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
@@ -240,10 +294,10 @@ export default class WeatherWeek extends Component {
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>??? </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.chuva_probabilidade}%</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_chuva_probabilidade[i]}%</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.chuva_mm}</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_chuva_mm[i]}</Text>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
                     </Row>
                 </Row>
@@ -253,11 +307,11 @@ export default class WeatherWeek extends Component {
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Vento</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.vento_velocidade}</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_vento_velocidade[i]}</Text>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> km/h</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.dia.vento_direcao}  </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_vento_direcao[i]}  </Text>
                         <FeatherIcon name='compass' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
                     </Row>
                 </Row>
@@ -268,19 +322,19 @@ export default class WeatherWeek extends Component {
                     </Row>
                     <Row>
                         <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.dia.sol.nascer} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.sol_nascer[i]} h </Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.dia.sol.por} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.sol_por[i]} h </Text>
                     </Row>
                 </Row>
             </Col>
         </ListItem>
     }
 
-    renderNoite(item, index) {
-        return <ListItem key={item.id + 'n'} style={{
+    renderNoite(i) {
+        return <ListItem key={i + 'n'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
             backgroundColor: this.estilo.cor.gray_translucid,
@@ -289,15 +343,15 @@ export default class WeatherWeek extends Component {
             <Col>
                 <Row>
                     <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {index == 0 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : index == 1 ? item.dia_semana == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : item.dia_semana}</Text>
+                        {i == 0 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                            : i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                                : this.state.lista_weather.dia_semana[i]}</Text>
                     <Row style={{ width: '50%', justifyContent: 'flex-end' }}>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{item.noite.nuvens}%</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.noite_nuvens[i]}%</Text>
                     </Row>
                 </Row>
-                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{item.noite.ceu}</Text>
+                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{this.state.lista_weather.noite_ceu[i]}</Text>
                 <Row style={{ marginTop: 10 }}>
                     <Row>
                         <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
@@ -305,10 +359,10 @@ export default class WeatherWeek extends Component {
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>??? </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.chuva_probabilidade}%</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_chuva_probabilidade[i]}%</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.chuva_mm}</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_chuva_mm[i]}</Text>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
                     </Row>
                 </Row>
@@ -318,11 +372,11 @@ export default class WeatherWeek extends Component {
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Vento</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.vento_velocidade}</Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_vento_velocidade[i]}</Text>
                         <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> km/h</Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{item.noite.vento_direcao}  </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_vento_direcao[i]}  </Text>
                         <FeatherIcon name='compass' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
                     </Row>
                 </Row>
@@ -333,11 +387,11 @@ export default class WeatherWeek extends Component {
                     </Row>
                     <Row>
                         <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.noite.lua.nascer} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.lua_nascer[i]} h </Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
                         <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {item.noite.lua.por} h </Text>
+                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.lua_por[i]} h </Text>
                     </Row>
                 </Row>
             </Col>
@@ -345,13 +399,13 @@ export default class WeatherWeek extends Component {
     }
 
     render() {
+        console.log('oioioioioi')
+        console.log(this.state.lista_weather)
+
         return (
-            <LinearGradient colors={[this.card_weather[this.state.card_weather_atual].cor1,
-            this.card_weather[this.state.card_weather_atual].cor2]} useAngle={true}
-                angle={90} angleCenter={{
-                    x: this.card_weather[this.state.card_weather_atual].x || 0.5,
-                    y: this.card_weather[this.state.card_weather_atual].y || 0.5
-                }} style={this.estilo.item_dash_weather}>
+            <View style={{
+                padding: 20, backgroundColor: this.card_weather[this.state.card_weather_atual].cor1, marginTop: 20
+            }}>
                 <Form style={{ flexDirection: 'row', alignSelf: 'center', paddingVertical: 10 }}>
                     {this.card_weather.map((item) => (
                         <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
@@ -362,13 +416,13 @@ export default class WeatherWeek extends Component {
                         </Button>
                     ))}
                 </Form>
-                {this.state.lista_weather.map((item, index) => [
-                    this.renderTemperatura(item, index),
-                    this.renderDia(item, index),
-                    this.renderNoite(item, index)
+                {this.state.lista_weather.hora.map((value, i) => [
+                    this.renderTemperatura(i),
+                    this.renderDia(i),
+                    this.renderNoite(i),
                 ])}
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
-            </LinearGradient >
+            </View>
         )
     }
 }

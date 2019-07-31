@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ScrollView, Dimensions } from 'react-native'
-import { Icon, Button, Text, Row, Item, Col } from 'native-base'
+import { Dimensions } from 'react-native'
+import { Icon, Button, Row } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import { Actions } from 'react-native-router-flux';
@@ -44,10 +44,6 @@ export default class BottomMenuCliente extends Component {
                 fontSize: item.size
               }} name={item.icon} type={item.type} />
             }
-            {/* <Text uppercase={false} style={{
-                  display: this.state.ativa == item.key ? 'flex' : 'none',
-                  fontSize: 17, color: this.estilo.cor.gray, marginLeft: -20, fontWeight: 'bold'
-                }}>{item.label}</Text> */}
           </Button>
         ))}
       </Row>
