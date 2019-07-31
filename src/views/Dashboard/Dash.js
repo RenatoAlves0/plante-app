@@ -193,9 +193,9 @@ export default class Dash extends Component {
                 </Content>
 
                 {/* 2 */}
-                <Content style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
+                <Container style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
                     {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
-                </Content>
+                </Container>
 
                 {/* 3 */}
                 <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>

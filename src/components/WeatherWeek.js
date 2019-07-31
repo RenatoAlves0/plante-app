@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Button, Form, ListItem, Row, Col, Spinner, View } from 'native-base'
+import { Text, Button, Form, ListItem, Row, Col, Spinner, View, Content, Container } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -229,7 +229,7 @@ export default class WeatherWeek extends Component {
     }
 
     renderTemperatura(i) {
-        // if (i == 0 || i == 6) return
+        if (i == 0 || i == 6) return
         return <ListItem key={i + 't'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
@@ -265,6 +265,7 @@ export default class WeatherWeek extends Component {
     }
 
     renderDia(i) {
+        if (i == 0 || i == 6) return
         return <ListItem key={i + 'd'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
@@ -334,6 +335,7 @@ export default class WeatherWeek extends Component {
     }
 
     renderNoite(i) {
+        if (i == 0 || i == 6) return
         return <ListItem key={i + 'n'} style={{
             marginLeft: 15, marginRight: 15, marginBottom: 10,
             padding: 15, borderBottomWidth: 0, borderRadius: 10,
@@ -403,9 +405,18 @@ export default class WeatherWeek extends Component {
         console.log(this.state.lista_weather)
 
         return (
-            <View style={{
-                padding: 20, backgroundColor: this.card_weather[this.state.card_weather_atual].cor1, marginTop: 20
+            <Container style={{
+                backgroundColor: this.card_weather[this.state.card_weather_atual].cor1, marginTop: 20
             }}>
+                <Content>
+                    <Form style={{ height: 20 }} />
+                    {this.state.lista_weather.hora.map((value, i) => [
+                        this.renderTemperatura(i),
+                        this.renderDia(i),
+                        this.renderNoite(i),
+                    ])}
+                    <Form style={{ height: 20 }} />
+                </Content>
                 <Form style={{ flexDirection: 'row', alignSelf: 'center', paddingVertical: 10 }}>
                     {this.card_weather.map((item) => (
                         <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
@@ -416,13 +427,8 @@ export default class WeatherWeek extends Component {
                         </Button>
                     ))}
                 </Form>
-                {this.state.lista_weather.hora.map((value, i) => [
-                    this.renderTemperatura(i),
-                    this.renderDia(i),
-                    this.renderNoite(i),
-                ])}
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
-            </View>
+            </Container>
         )
     }
 }
