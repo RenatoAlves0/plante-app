@@ -71,7 +71,7 @@ export default class Dash extends Component {
                     type: 'danger',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'top'
+                    position: 'bottom'
                 })
             }
         })
@@ -107,7 +107,7 @@ export default class Dash extends Component {
                     type: 'success',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'top'
+                    position: 'bottom'
                 })
                 return this.client.subscribe(this.topico_sensores)
             })
@@ -119,7 +119,7 @@ export default class Dash extends Component {
                         type: 'danger',
                         duration: 3000,
                         textStyle: { textAlign: 'center' },
-                        position: 'top'
+                        position: 'bottom'
                     })
                 }
             })
@@ -146,6 +146,7 @@ export default class Dash extends Component {
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 {this.state.loaded ? null : <Loader />}
+                <BottomMenuCliente method={this.setTabAtual} />
 
                 {/* 0 */}
                 <Content style={this.state.tab_atual == 0 ? null : { display: 'none' }}>
@@ -173,7 +174,6 @@ export default class Dash extends Component {
                             : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
 
                     </Row>
-                    <Form style={{ height: 60 }} />
                 </Content>
 
                 {/* 1 */}
@@ -195,14 +195,12 @@ export default class Dash extends Component {
                 {/* 2 */}
                 <Content style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
                     {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
-                    <Form style={{ height: 60 }} />
                 </Content>
 
                 {/* 3 */}
                 <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
                 </Content>
-                <BottomMenuCliente method={this.setTabAtual} />
             </Container >
         )
     }
