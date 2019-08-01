@@ -23,7 +23,7 @@ export default class BottomMenuCliente extends Component {
 
   render() {
     return (
-      <Row style={{ width: Dimensions.get('window').width, justifyContent: 'center', paddingVertical: 10, height: 60 }}>
+      <Row style={{ width: Dimensions.get('window').width, justifyContent: 'center', height: 60 }}>
         {this.tabs.map((item) => (
           <Button transparent key={item.icon}
             onPress={() => {
@@ -31,15 +31,9 @@ export default class BottomMenuCliente extends Component {
               if (item.method) item.method()
             }}
             style={{
-              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 0,
+              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 0, marginVertical: 5,
               minWidth: 55, justifyContent: 'center', flexDirection: 'column'
             }}>
-            {/* style={[{
-              marginHorizontal: 5, elevation: 0, height: 50, borderRadius: 0,
-              minWidth: 55, justifyContent: 'center', flexDirection: 'column',
-            }, this.state.ativa == item.key ? {
-              borderBottomWidth: 2, paddingBottom: 3, borderBottomColor: this.estilo.cor.gray_solid
-            } : null]}> */}
             {item.type == 'Feather' ?
               <FeatherIcon style={{
                 color: this.state.ativa == item.key ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium,

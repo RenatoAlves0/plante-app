@@ -144,10 +144,9 @@ export default class Dash extends Component {
         ]
         return (
             <Container>
+                <BottomMenuCliente method={this.setTabAtual}/>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 {this.state.loaded ? null : <Loader />}
-                <BottomMenuCliente method={this.setTabAtual} />
-
                 {/* 0 */}
                 <Content style={this.state.tab_atual == 0 ? null : { display: 'none' }}>
                     {this.state.conectado ? null :
@@ -201,7 +200,7 @@ export default class Dash extends Component {
                 <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
                 </Content>
-            </Container >
+            </Container>
         )
     }
 }

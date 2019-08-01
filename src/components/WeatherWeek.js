@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ScrollView, Dimensions } from 'react-native'
-import { Text, Button, Form, ListItem, Row, Col, Spinner, View, Content, Container } from 'native-base'
+import { Text, Form, ListItem, Row, Spinner, Content, Container, View } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -229,218 +229,133 @@ export default class WeatherWeek extends Component {
         return isNaN(day) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][day]
     }
 
-    renderTemperatura(i) {
-        if (i == 0 || i == 6) return
-        return <ListItem key={i + 't'} style={{
-            marginLeft: 15, marginRight: 15, marginBottom: 10,
-            padding: 15, borderBottomWidth: 0, borderRadius: 10,
-            backgroundColor: this.estilo.cor.gray_translucid,
-            display: this.state.card_weather_atual == 0 ? 'flex' : 'none'
-        }}>
-            <Col>
-                <Row>
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : i == 2 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : this.state.lista_weather.dia_semana[i]}</Text>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_minima[i]} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_maxima[i]}º</Text>
-                    </Row>
-                </Row>
-                <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start', marginVertical: 5 }}>Sensação térmica</Text>
-                <Row>
-                    <Row>
-                        <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima[i]} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima[i]}º</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <FeatherIcon name='cloud' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima_sombra[i]} / </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima_sombra[i]}º</Text>
-                    </Row>
-                </Row>
-            </Col>
-        </ListItem>
-    }
-
-    renderDia(i) {
-        if (i == 0 || i == 6) return
-        return <ListItem key={i + 'd'} style={{
-            marginLeft: 15, marginRight: 15, marginBottom: 10,
-            padding: 15, borderBottomWidth: 0, borderRadius: 10,
-            backgroundColor: this.estilo.cor.gray_translucid,
-            display: this.state.card_weather_atual == 1 ? 'flex' : 'none'
-        }}>
-            <Col>
-                <Row>
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {i == 0 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : this.state.lista_weather.dia_semana[i]}</Text>
-                    <Row style={{ width: '50%', justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.dia_nuvens[i]}%</Text>
-                    </Row>
-                </Row>
-                <Row style={{ justifyContent: 'flex-end' }} >
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>tempo de sol </Text>
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.sol_duracao[i]}h</Text>
-                </Row>
-                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{this.state.lista_weather.dia_ceu[i]}</Text>
-                <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Chuva</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>??? </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_chuva_probabilidade[i]}%</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_chuva_mm[i]}</Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
-                    </Row>
-                </Row>
-                <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='wind' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Vento</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_vento_velocidade[i]}</Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> km/h</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_vento_direcao[i]}  </Text>
-                        <FeatherIcon name='compass' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
-                    </Row>
-                </Row>
-                <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='sun' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>  Sol</Text>
-                    </Row>
-                    <Row>
-                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.sol_nascer[i]} h </Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.sol_por[i]} h </Text>
-                    </Row>
-                </Row>
-            </Col>
-        </ListItem>
-    }
-
-    renderNoite(i) {
+    renderCard(i) {
         if (i == 0 || i == 6) return
         return <ListItem key={i + 'n'} style={{
             marginVertical: 20, marginLeft: i == 1 ? 40 : 10, marginRight: i == 5 ? 40 : 10,
-            padding: 15, borderRadius: 10, borderBottomWidth: 0,
-            backgroundColor: this.estilo.cor.blue_dark,
-            width: Dimensions.get('screen').width - 80, elevation: 10,
-            display: this.state.card_weather_atual == 2 ? 'flex' : 'flex'
+            paddingLeft: 0, paddingRight: 0, borderRadius: 10, borderBottomWidth: 0,
+            width: Dimensions.get('screen').width - 80, flexDirection: 'column'
         }}>
-            <Col>
+
+            <Text style={{ fontSize: 25, color: this.estilo.cor.black + '77', fontWeight: 'bold', alignSelf: 'flex-end', marginHorizontal: 5 }}>
+                {i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
+                    : i == 2 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
+                        : this.state.lista_weather.dia_semana[i]}</Text>
+
+            {/* temperatura */}
+            <Form style={{ width: '100%', backgroundColor: this.estilo.cor.black + '77', borderRadius: 10, paddingHorizontal: 25, paddingVertical: 15, marginTop: 20 }}>
+                <Row style={{ alignItems: 'flex-end' }}>
+                    <FeatherIcon name='thermometer' style={{ fontSize: 30, color: 'white', marginLeft: -5 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}> Temperatura</Text>
+                    <Row style={{ justifyContent: 'flex-end', width: '50%' }}>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_minima[i]} / </Text>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.temperatura_maxima[i]}º</Text>
+                    </Row>
+                </Row>
+
+                <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77', alignSelf: 'flex-end', marginVertical: 7 }}>sensação térmica</Text>
                 <Row>
-                    <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold', width: '50%' }}>
-                        {i == 0 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Ontem'
-                            : i == 1 ? this.state.lista_weather.dia_semana[i] == this.getStringDayOfWeek(new Date().getDay()) ? 'Hoje' : 'Amanhã'
-                                : this.state.lista_weather.dia_semana[i]}</Text>
-                    <Row style={{ width: '50%', justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.noite_nuvens[i]}%</Text>
+                    <Row>
+                        <FeatherIcon name='cloud' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima_sombra[i]} / </Text>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima_sombra[i]}º</Text>
+                    </Row>
+                    <Row style={{ justifyContent: 'flex-end' }}>
+                        <FeatherIcon name='sun' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.sensacao_termica_minima[i]} / </Text>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>{this.state.lista_weather.sensacao_termica_maxima[i]}º</Text>
                     </Row>
                 </Row>
-                <Text style={{ fontSize: 14, color: this.estilo.cor.white, textAlign: 'right', width: '100%' }}>{this.state.lista_weather.noite_ceu[i]}</Text>
-                <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='cloud-drizzle' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Chuva</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}>??? </Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_chuva_probabilidade[i]}%</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_chuva_mm[i]}</Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> mm</Text>
+                {/* dia */}
+                <Row style={{ alignItems: 'flex-end', marginBottom: 5, marginTop: 30 }}>
+                    <FeatherIcon name='sun' style={{ fontSize: 30, color: 'white', marginLeft: -5 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>  Dia</Text>
+                    <Row style={{ justifyContent: 'flex-end', width: '50%' }}>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>nuvens </Text>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.dia_nuvens[i]}%</Text>
                     </Row>
                 </Row>
+                <Row style={{ justifyContent: 'flex-end' }} >
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>tempo de sol </Text>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.sol_duracao[i]} h</Text>
+                </Row>
+                <Text style={{ fontSize: 17, color: this.estilo.cor.white, marginVertical: 10 }}>{this.state.lista_weather.dia_ceu[i]}</Text>
                 <Row style={{ marginTop: 10 }}>
-                    <Row>
-                        <FeatherIcon name='wind' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Vento</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_vento_velocidade[i]}</Text>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> km/h</Text>
-                    </Row>
-                    <Row style={{ justifyContent: 'flex-end' }}>
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white }}>{this.state.lista_weather.noite_vento_direcao[i]}  </Text>
-                        <FeatherIcon name='compass' style={{ fontSize: 18, color: this.estilo.cor.white + '77', marginTop: 3 }} />
-                    </Row>
+                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.dia_chuva_probabilidade[i]}%  </Text>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_chuva_mm[i]} mm</Text>
+                </Row>
+                <Row style={{ marginTop: 10 }}>
+                    <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.dia_vento_direcao[i]}  </Text>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>{this.state.lista_weather.dia_vento_velocidade[i]} km/h</Text>
                 </Row>
                 <Row style={{ marginTop: 10 }}>
                     <Row>
-                        <FeatherIcon name='moon' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77', alignSelf: 'flex-start' }}>  Lua</Text>
-                    </Row>
-                    <Row>
-                        <FeatherIcon name='arrow-up' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.lua_nascer[i]} h </Text>
+                        <FeatherIcon name='sunrise' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>  {this.state.lista_weather.sol_nascer[i]} h </Text>
                     </Row>
                     <Row style={{ justifyContent: 'flex-end' }}>
-                        <FeatherIcon name='arrow-down' style={{ fontSize: 18, color: this.estilo.cor.white, marginTop: 3 }} />
-                        <Text style={{ fontSize: 18, color: this.estilo.cor.white + '77' }}> {this.state.lista_weather.lua_por[i]} h </Text>
+                        <FeatherIcon name='sunset' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>  {this.state.lista_weather.sol_por[i]} h </Text>
                     </Row>
                 </Row>
-            </Col>
+                {/* noite */}
+                <Row style={{ alignItems: 'flex-end', marginBottom: 5, marginTop: 30 }}>
+                    <FeatherIcon name='moon' style={{ fontSize: 30, color: 'white', marginLeft: -5 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>  Noite</Text>
+                    <Row style={{ justifyContent: 'flex-end', width: '50%' }}>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77', fontWeight: 'bold' }}>nuvens </Text>
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{this.state.lista_weather.noite_nuvens[i]}%</Text>
+                    </Row>
+                </Row>
+                <Text style={{ fontSize: 17, color: this.estilo.cor.white, marginVertical: 10 }}>{this.state.lista_weather.noite_ceu[i]}</Text>
+                <Row style={{ marginTop: 10 }}>
+                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.noite_chuva_probabilidade[i]}%</Text>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>  {this.state.lista_weather.noite_chuva_mm[i]} mm</Text>
+                </Row>
+                <Row style={{ marginTop: 10 }}>
+                    <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white + '77' }}>  {this.state.lista_weather.noite_vento_direcao[i]}</Text>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white }}>  {this.state.lista_weather.noite_vento_velocidade[i]} km/h</Text>
+                </Row>
+                <Row style={{ marginTop: 10 }}>
+                    <Row>
+                        <FeatherIcon name='arrow-up' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}> {this.state.lista_weather.lua_nascer[i]} h </Text>
+                    </Row>
+                    <Row style={{ justifyContent: 'flex-end' }}>
+                        <FeatherIcon name='arrow-down' style={{ fontSize: 20, color: this.estilo.cor.white + '77', marginTop: 3 }} />
+                        <Text style={{ fontSize: 17, color: this.estilo.cor.white }}> {this.state.lista_weather.lua_por[i]} h </Text>
+                    </Row>
+                </Row>
+            </Form>
         </ListItem>
     }
 
     render() {
-        console.log('oioioioioi')
-        console.log(this.state.lista_weather)
-
         return (
-            <Container style={{
-                backgroundColor: this.card_weather[this.state.card_weather_atual].cor1,
-                marginTop: 20
-            }}>
-                <Content>
-                    <View style={{}}>
+            <Container>
+                <LinearGradient colors={[
+                    this.estilo.cor.blue_dark, this.estilo.cor.blue_dark,
+                    this.estilo.cor.blue_light,
+                    this.estilo.cor.white
+                ]}
+                    style={{ flex: 1 }} angle={0} angleCenter={{ x: 0, y: 0.75 }} useAngle={true} >
+                    <Content>
                         <ScrollView
                             horizontal
                             pagingEnabled
-                            zoomScale={0.8}
-                            bouncesZoom={true}
-                            decelerationRate={0.7}
+                            decelerationRate='fast'
                             snapToAlignment='center'
                             snapToInterval={Dimensions.get('window').width - 60} //your element width
                         >
-                            {this.state.lista_weather.hora.map((value, i) => [
-                                // this.renderTemperatura(i),
-                                // this.renderDia(i),
-                                this.renderNoite(i),
-                            ])}
+                            {this.state.lista_weather.hora.map((value, i) => (this.renderCard(i)))}
                         </ScrollView>
-                    </View>
-                </Content>
-                <Form style={{ flexDirection: 'row', alignSelf: 'center', paddingVertical: 10 }}>
-                    {this.card_weather.map((item) => (
-                        <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
-                            onPress={() => this.setState({ card_weather_atual: this.card_weather.indexOf(item) })}>
-                            <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                            this.state.card_weather_atual == this.card_weather.indexOf(item) ?
-                                { color: this.estilo.cor.white } : null]} />
-                        </Button>
-                    ))}
-                </Form>
-                {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
+                    </Content>
+                    {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
+                </LinearGradient>
             </Container>
         )
     }
