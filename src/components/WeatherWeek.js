@@ -123,8 +123,8 @@ export default class WeatherWeek extends Component {
                     array_obj.dia_chuva_mm.push(dia_chuva_mm)
                     array_obj.dia_vento_velocidade.push(dia_vento_velocidade)
                     array_obj.dia_vento_direcao.push({ value: dia_vento_direcao })
-                    array_obj.sol_nascer.push(sol_nascer)
-                    array_obj.sol_por.push(sol_por)
+                    array_obj.sol_nascer.push({ value: sol_nascer })
+                    array_obj.sol_por.push({ value: sol_por })
                     array_obj.sol_duracao.push(sol_duracao)
                     array_obj.noite_nuvens.push(noite_nuvens)
                     array_obj.noite_ceu.push({ value: noite_ceu })
@@ -132,8 +132,8 @@ export default class WeatherWeek extends Component {
                     array_obj.noite_chuva_mm.push(noite_chuva_mm)
                     array_obj.noite_vento_velocidade.push(noite_vento_velocidade)
                     array_obj.noite_vento_direcao.push({ value: noite_vento_direcao })
-                    array_obj.lua_nascer.push(lua_nascer)
-                    array_obj.lua_por.push(lua_por)
+                    array_obj.lua_nascer.push({ value: lua_nascer })
+                    array_obj.lua_por.push({ value: lua_por })
 
                     index == 0 || index == 4 ? [
                         array_obj.hora.push(hora),
@@ -150,8 +150,8 @@ export default class WeatherWeek extends Component {
                         array_obj.dia_chuva_mm.push(dia_chuva_mm),
                         array_obj.dia_vento_velocidade.push(dia_vento_velocidade),
                         array_obj.dia_vento_direcao.push({ value: dia_vento_direcao }),
-                        array_obj.sol_nascer.push(sol_nascer),
-                        array_obj.sol_por.push(sol_por),
+                        array_obj.sol_nascer.push({ value: sol_nascer }),
+                        array_obj.sol_por.push({ value: sol_por }),
                         array_obj.sol_duracao.push(sol_duracao),
                         array_obj.noite_nuvens.push(noite_nuvens),
                         array_obj.noite_ceu.push({ value: noite_ceu }),
@@ -159,8 +159,8 @@ export default class WeatherWeek extends Component {
                         array_obj.noite_chuva_mm.push(noite_chuva_mm),
                         array_obj.noite_vento_velocidade.push(noite_vento_velocidade),
                         array_obj.noite_vento_direcao.push({ value: noite_vento_direcao }),
-                        array_obj.lua_nascer.push(lua_nascer),
-                        array_obj.lua_por.push(lua_por)
+                        array_obj.lua_nascer.push({ value: lua_nascer }),
+                        array_obj.lua_por.push({ value: lua_por })
                     ] : null
                 })
 
@@ -379,7 +379,7 @@ export default class WeatherWeek extends Component {
                     </Button>
                 </Form>
             </Form>
-            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
+            {/* <View style={{ height: 60, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.sol_nascer}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
@@ -392,7 +392,7 @@ export default class WeatherWeek extends Component {
                     label_array_label={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
-            </View>
+            </View> */}
 
             {/* Sol duração */}
             <Form style={{
@@ -489,7 +489,7 @@ export default class WeatherWeek extends Component {
                     </Button>
                 </Form>
             </Form>
-            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
+            {/* <View style={{ height: 60, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.lua_nascer}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
@@ -502,7 +502,7 @@ export default class WeatherWeek extends Component {
                     label_array_label={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
-            </View>
+            </View> */}
         </ListItem>
     }
 
