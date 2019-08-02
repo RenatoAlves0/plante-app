@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ScrollView, Dimensions } from 'react-native'
-import { Text, Form, ListItem, Row, Spinner, Content, Container, View, Button } from 'native-base'
+import { Text, Form, ListItem, Row, Spinner, Content, Container, View, Button, Col } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -237,16 +237,9 @@ export default class WeatherWeek extends Component {
 
     renderTemperatura() {
         return <ListItem style={{
-            marginLeft: 50, marginRight: 10, borderBottomWidth: 0,
+            marginLeft: 50, marginRight: 10, borderBottomWidth: 0, marginTop: 40,
             width: Dimensions.get('screen').width - 80, flexDirection: 'column'
         }}>
-            <Form style={{
-                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
-            }}>
-                <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Temperatura  </Text>
-                <FeatherIcon name='thermometer' style={{ fontSize: 20, color: 'white', marginLeft: -5 }} />
-            </Form>
             <View style={{ height: 70 }}>
                 <Chart data_array={this.state.lista_weather.temperatura_maxima}
                     opacity={''}
@@ -311,7 +304,7 @@ export default class WeatherWeek extends Component {
 
     renderDia() {
         return <ListItem style={{
-            marginLeft: 10, marginRight: 10, borderBottomWidth: 0,
+            marginLeft: 10, marginRight: 10, borderBottomWidth: 0, marginTop: 10,
             width: Dimensions.get('screen').width - 80, flexDirection: 'column'
         }}>
             <Form style={{
@@ -421,7 +414,7 @@ export default class WeatherWeek extends Component {
 
     renderNoite() {
         return <ListItem style={{
-            marginLeft: 10, marginRight: 40, borderBottomWidth: 0,
+            marginLeft: 10, marginRight: 40, borderBottomWidth: 0, marginTop: 10,
             width: Dimensions.get('screen').width - 80, flexDirection: 'column'
         }}>
             <Form style={{
@@ -522,18 +515,46 @@ export default class WeatherWeek extends Component {
                     decelerationRate='fast'
                     snapToAlignment='center'
                     snapToInterval={Dimensions.get('window').width - 60}>
-                    <Content>
-                        <LinearGradient colors={[this.estilo.cor.purple, this.estilo.cor.blue, this.estilo.cor.blue_dark]}
-                            style={{
-                                flexDirection: 'row',
-                                width: 3 * (Dimensions.get('window').width - 40)
-                            }}
-                            angle={90} angleCenter={{ x: .7, y: .5 }} useAngle={true} >
-                            {(this.renderTemperatura())}
-                            {(this.renderDia())}
-                            {(this.renderNoite())}
-                        </LinearGradient>
-                    </Content>
+                    <Col>
+                        <Content style={{ marginTop: 40 }}>
+                            <LinearGradient colors={[this.estilo.cor.purple, this.estilo.cor.purple, this.estilo.cor.blue, this.estilo.cor.blue_dark, this.estilo.cor.blue_dark]}
+                                style={{
+                                    flexDirection: 'row',
+                                    width: 3 * (Dimensions.get('window').width - 40)
+                                }}
+                                angle={90} angleCenter={{ x: .5, y: .5 }} useAngle={true} >
+                                {(this.renderTemperatura())}
+                                {(this.renderDia())}
+                                {(this.renderNoite())}
+                            </LinearGradient>
+                        </Content>
+                        <Form style={{
+                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
+                            backgroundColor: this.estilo.cor.purple, borderRadius: 100, marginLeft: 80, marginRight: 20, marginBottom: -40,
+                            position: 'absolute', top: 20, justifyContent: 'center', elevation: 10
+                        }}>
+                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Temperatura    </Text>
+                            <FeatherIcon name='thermometer' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
+                        </Form>
+
+                        <Form style={{
+                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
+                            backgroundColor: this.estilo.cor.blue, borderRadius: 100, marginLeft: 20, marginRight: 20, marginBottom: -40,
+                            position: 'absolute', top: 20, left: Dimensions.get('window').width, justifyContent: 'center', elevation: 10
+                        }}>
+                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Dia    </Text>
+                            <FeatherIcon name='sun' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
+                        </Form>
+
+                        <Form style={{
+                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
+                            backgroundColor: this.estilo.cor.blue_dark, borderRadius: 100, marginLeft: 20, marginRight: 80, marginBottom: -40,
+                            position: 'absolute', top: 20, left: (2 * Dimensions.get('window').width) - 60, justifyContent: 'center', elevation: 10
+                        }}>
+                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Noite    </Text>
+                            <FeatherIcon name='moon' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
+                        </Form>
+                    </Col>
                 </ScrollView>
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
             </Container>
