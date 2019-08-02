@@ -110,7 +110,7 @@ export default class WeatherWeek extends Component {
                     lua_por ? lua_por = lua_por.substring(11, 16) : ''
 
                     array_obj.hora.push(hora)
-                    array_obj.dia_semana.push(dia_semana)
+                    array_obj.dia_semana.push({ value: dia_semana })
                     array_obj.sensacao_termica_minima.push(sensacao_termica_minima)
                     array_obj.sensacao_termica_maxima.push(sensacao_termica_maxima)
                     array_obj.sensacao_termica_minima_sombra.push(sensacao_termica_minima_sombra)
@@ -137,7 +137,7 @@ export default class WeatherWeek extends Component {
 
                     index == 0 || index == 4 ? [
                         array_obj.hora.push(hora),
-                        array_obj.dia_semana.push(dia_semana),
+                        array_obj.dia_semana.push({ value: dia_semana }),
                         array_obj.sensacao_termica_minima.push(sensacao_termica_minima),
                         array_obj.sensacao_termica_maxima.push(sensacao_termica_maxima),
                         array_obj.sensacao_termica_minima_sombra.push(sensacao_termica_minima_sombra),
@@ -510,16 +510,17 @@ export default class WeatherWeek extends Component {
         return (
             <Container>
                 <ScrollView
+                    style={{ height: '100%' }}
                     horizontal
                     pagingEnabled
                     decelerationRate='fast'
                     snapToAlignment='center'
                     snapToInterval={Dimensions.get('window').width - 60}>
                     <Col>
-                        <Content style={{ marginTop: 40 }}>
+                        <Content style={{ marginTop: 40, height: '100%' }}>
                             <LinearGradient colors={[this.estilo.cor.purple, this.estilo.cor.purple, this.estilo.cor.blue, this.estilo.cor.blue_dark, this.estilo.cor.blue_dark]}
                                 style={{
-                                    flexDirection: 'row',
+                                    flexDirection: 'row', height: '100%',
                                     width: 3 * (Dimensions.get('window').width - 40)
                                 }}
                                 angle={90} angleCenter={{ x: .5, y: .5 }} useAngle={true} >

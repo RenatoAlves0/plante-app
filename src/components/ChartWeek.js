@@ -58,7 +58,7 @@ export default class ChartWeek extends Component {
                         curve={shape.curveNatural}
                         contentInset={{ left: -40, right: -40 }}
                         yMin={min - 1}
-                        yMax={max - min >= 50 ? max + 10 : max + 1}
+                        yMax={max - min >= 40 ? max + 10 : max + 1}
                     >
                         <Line />
                         <Decorator />
@@ -92,7 +92,8 @@ export default class ChartWeek extends Component {
                     formatLabel={(index) => {
                         if (index == 0 || index == 6) return ''
                         if (this.props.label_array[index])
-                            return this.props.label_array[index].substring(0, 3)
+                            return this.props.label_array[index].value.substring(0, 3)
+                                || this.props.label_array[index].substring(0, 3)
                     }}
                     contentInset={{ left: 10, right: 0 }}
                     svg={{ fontSize: 15, fill: this.estilo.cor.white + '77', fontWeight: 'bold' }}
