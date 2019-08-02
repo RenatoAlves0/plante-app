@@ -379,20 +379,20 @@ export default class WeatherWeek extends Component {
                     </Button>
                 </Form>
             </Form>
-            {/* <View style={{ height: 60, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.sol_nascer}
                     label_array={this.state.lista_weather.dia_semana}
-                    label_array_label={'h'}
+                    label_array_label_value={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
             <View style={{ height: 60, marginTop: 10, display: this.state.sol == 1 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.sol_por}
                     label_array={this.state.lista_weather.dia_semana}
-                    label_array_label={'h'}
+                    label_array_label_value={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
-            </View> */}
+            </View>
 
             {/* Sol duração */}
             <Form style={{
@@ -489,20 +489,20 @@ export default class WeatherWeek extends Component {
                     </Button>
                 </Form>
             </Form>
-            {/* <View style={{ height: 60, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.lua_nascer}
                     label_array={this.state.lista_weather.dia_semana}
-                    label_array_label={'h'}
+                    label_array_label_value={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
             <View style={{ height: 60, marginTop: 10, display: this.state.lua == 1 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.lua_por}
                     label_array={this.state.lista_weather.dia_semana}
-                    label_array_label={'h'}
+                    label_array_label_value={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
-            </View> */}
+            </View>
         </ListItem>
     }
 
@@ -511,6 +511,7 @@ export default class WeatherWeek extends Component {
             <Container>
                 <ScrollView
                     style={{ height: '100%' }}
+                    stickyHeaderIndices={[1, 2, 3]}
                     horizontal
                     pagingEnabled
                     decelerationRate='fast'

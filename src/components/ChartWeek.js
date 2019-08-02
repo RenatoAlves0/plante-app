@@ -72,9 +72,13 @@ export default class ChartWeek extends Component {
                         data={this.props.label_descricao_array}
                         formatLabel={(index) => {
                             if (index == 0 || index == 6) return ''
-                            if (this.props.label_descricao_array[index])
+                            if (this.props.label_descricao_array[index]) {
+                                if (this.props.label_array_label_value)
+                                    return this.props.label_descricao_array[index].value + this.props.label_array_label_value
+                                        || this.props.label_descricao_array[index] + this.props.label_array_label_value
                                 return this.props.label_descricao_array[index].value
                                     || this.props.label_descricao_array[index] + this.props.label_array_label
+                            }
                         }}
                         contentInset={{ left: 10, right: 0 }}
                         svg={this.props.label_descricao_array_big ?
