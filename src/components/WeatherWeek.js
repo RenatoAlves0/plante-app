@@ -533,7 +533,7 @@ export default class WeatherWeek extends Component {
                         <Form style={{
                             flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
                             backgroundColor: this.estilo.cor.purple, borderRadius: 100, marginLeft: 80, marginRight: 20, marginBottom: -40,
-                            position: 'absolute', top: 20, justifyContent: 'center', elevation: 10
+                            position: 'absolute', top: 18, justifyContent: 'center', elevation: 10
                         }}>
                             <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Temperatura    </Text>
                             <FeatherIcon name='thermometer' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
@@ -542,7 +542,7 @@ export default class WeatherWeek extends Component {
                         <Form style={{
                             flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
                             backgroundColor: this.estilo.cor.blue, borderRadius: 100, marginLeft: 20, marginRight: 20, marginBottom: -40,
-                            position: 'absolute', top: 20, left: Dimensions.get('window').width, justifyContent: 'center', elevation: 10
+                            position: 'absolute', top: 18, left: Dimensions.get('window').width, justifyContent: 'center', elevation: 10
                         }}>
                             <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Dia    </Text>
                             <FeatherIcon name='sun' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
@@ -551,7 +551,7 @@ export default class WeatherWeek extends Component {
                         <Form style={{
                             flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
                             backgroundColor: this.estilo.cor.blue_dark, borderRadius: 100, marginLeft: 20, marginRight: 80, marginBottom: -40,
-                            position: 'absolute', top: 20, left: (2 * Dimensions.get('window').width) - 60, justifyContent: 'center', elevation: 10
+                            position: 'absolute', top: 18, left: (2 * Dimensions.get('window').width) - 60, justifyContent: 'center', elevation: 10
                         }}>
                             <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Noite    </Text>
                             <FeatherIcon name='moon' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />

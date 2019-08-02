@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Row, Form, Toast } from 'native-base'
+import { Container, Content, Text, Button, Icon, Row, Form, Toast, View } from 'native-base'
 import { StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
@@ -144,7 +144,7 @@ export default class Dash extends Component {
         ]
         return (
             <Container>
-                <BottomMenuCliente method={this.setTabAtual}/>
+                <BottomMenuCliente method={this.setTabAtual} />
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 {this.state.loaded ? null : <Loader />}
                 {/* 0 */}
@@ -176,8 +176,8 @@ export default class Dash extends Component {
                 </Content>
 
                 {/* 1 */}
-                <Content style={[this.state.tab_atual == 1 ? null : { display: 'none' },
-                { paddingTop: 10, flexDirection: 'row' }]} >
+                <View style={[this.state.tab_atual == 1 ? null : { display: 'none' },
+                { paddingTop: 10, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }]} >
                     <Card item={this.state.regar ?
                         {
                             cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
@@ -189,7 +189,7 @@ export default class Dash extends Component {
                             icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
                             sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                         }} />
-                </Content>
+                </View>
 
                 {/* 2 */}
                 <Container style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
