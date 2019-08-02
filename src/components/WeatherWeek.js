@@ -7,6 +7,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
 import Chart from './ChartWeek'
+import { thisExpression } from '@babel/types';
 
 export default class WeatherWeek extends Component {
     constructor(props) {
@@ -14,9 +15,9 @@ export default class WeatherWeek extends Component {
         this.estilo = new estilo()
         this.state = {
             loaded: false,
-            sensacao_termica: 'sol',
-            sol: 'nascer',
-            lua: 'nascer',
+            sensacao_termica: 0,
+            sol: 0,
+            lua: 0,
             card_weather_atual: 0,
             lista_weather: {
                 dia_semana: [], hora: [], dia_nuvens: [], dia_ceu: [], dia_chuva_probabilidade: [],
@@ -264,45 +265,42 @@ export default class WeatherWeek extends Component {
                     backgroundColor: this.estilo.cor.white + '11', paddingVertical: 10,
                     paddingHorizontal: 20, borderRadius: 50
                 }}>Sensação térmica</Text>
-
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0, marginLeft: 15,
-                    borderRadius: 0, borderTopLeftRadius: 50, borderBottomLeftRadius: 50
-                }} onPress={() => this.setState({ sensacao_termica: 'sol' })}>
-                    {this.state.sensacao_termica == 'sol' ?
-                        <Text uppercase={false}>Sol</Text> :
-                        <FeatherIcon name='sun'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0,
-                    borderRadius: 0, borderTopRightRadius: 50, borderBottomRightRadius: 50
-                }} onPress={() => this.setState({ sensacao_termica: 'sombra' })}>
-                    {this.state.sensacao_termica == 'sombra' ?
-                        <Text uppercase={false}>Sombra</Text> :
-                        <FeatherIcon name='cloud'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
+                <Form style={{ backgroundColor: this.estilo.cor.white + '11', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                    <Button rounded transparent style={{ backgroundColor: this.state.sensacao_termica == 0 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ sensacao_termica: 0 })}>
+                        {this.state.sensacao_termica == 0 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Sol</Text> :
+                            <FeatherIcon name='sun'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                    <Button rounded transparent style={{ backgroundColor: this.state.sensacao_termica == 1 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ sensacao_termica: 1 })}>
+                        {this.state.sensacao_termica == 1 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Sombra</Text> :
+                            <FeatherIcon name='cloud'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                </Form>
             </Form>
 
-            <View style={{ height: 70, marginTop: 20, display: this.state.sensacao_termica == 'sol' ? 'flex' : 'none' }}>
+            <View style={{ height: 70, marginTop: 20, display: this.state.sensacao_termica == 0 ? 'flex' : 'none' }}>
                 <Chart data_array={this.state.lista_weather.sensacao_termica_maxima}
                     opacity={''}
                     color={this.estilo.cor.white} label_data='º' />
             </View>
-            <View style={{ height: 80, marginTop: 10, display: this.state.sensacao_termica == 'sol' ? 'flex' : 'none' }}>
+            <View style={{ height: 80, marginTop: 10, display: this.state.sensacao_termica == 0 ? 'flex' : 'none' }}>
                 <Chart data_array={this.state.lista_weather.sensacao_termica_minima}
                     label_array={this.state.lista_weather.dia_semana}
                     opacity={'77'}
                     color={this.estilo.cor.white} label_data='º' />
             </View>
 
-            <View style={{ height: 70, marginTop: 20, display: this.state.sensacao_termica == 'sombra' ? 'flex' : 'none' }}>
+            <View style={{ height: 70, marginTop: 20, display: this.state.sensacao_termica == 1 ? 'flex' : 'none' }}>
                 <Chart data_array={this.state.lista_weather.sensacao_termica_maxima_sombra}
                     opacity={''}
                     color={this.estilo.cor.white} label_data='º' />
             </View>
-            <View style={{ height: 80, marginTop: 10, display: this.state.sensacao_termica == 'sombra' ? 'flex' : 'none' }}>
+            <View style={{ height: 80, marginTop: 10, display: this.state.sensacao_termica == 1 ? 'flex' : 'none' }}>
                 <Chart data_array={this.state.lista_weather.sensacao_termica_minima_sombra}
                     label_array={this.state.lista_weather.dia_semana}
                     opacity={'77'}
@@ -371,33 +369,31 @@ export default class WeatherWeek extends Component {
                     backgroundColor: this.estilo.cor.white + '11', paddingVertical: 10,
                     paddingHorizontal: 20, borderRadius: 50
                 }}>Sol</Text>
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0, marginLeft: 15,
-                    borderRadius: 0, borderTopLeftRadius: 50, borderBottomLeftRadius: 50
-                }} onPress={() => this.setState({ sol: 'nascer' })}>
-                    {this.state.sol == 'nascer' ?
-                        <Text uppercase={false}>Nascer</Text> :
-                        <FeatherIcon name='sunrise'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0,
-                    borderRadius: 0, borderTopRightRadius: 50, borderBottomRightRadius: 50
-                }} onPress={() => this.setState({ sol: 'por' })}>
-                    {this.state.sol == 'por' ?
-                        <Text uppercase={false}>Por</Text> :
-                        <FeatherIcon name='sunset'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
+                <Form style={{ backgroundColor: this.estilo.cor.white + '11', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                    <Button rounded transparent style={{ backgroundColor: this.state.sol == 0 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ sol: 0 })}>
+                        {this.state.sol == 0 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Nascer</Text> :
+                            <FeatherIcon name='sunrise'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                    <Button rounded transparent style={{ backgroundColor: this.state.sol == 1 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ sol: 1 })}>
+                        {this.state.sol == 1 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Por</Text> :
+                            <FeatherIcon name='sunset'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                </Form>
             </Form>
-            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 'nascer' ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.sol_nascer}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
-            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 'por' ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.sol == 1 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.sol_por}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
@@ -483,33 +479,31 @@ export default class WeatherWeek extends Component {
                     backgroundColor: this.estilo.cor.white + '11', paddingVertical: 10,
                     paddingHorizontal: 20, borderRadius: 50
                 }}>Lua</Text>
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0, marginLeft: 15,
-                    borderRadius: 0, borderTopLeftRadius: 50, borderBottomLeftRadius: 50
-                }} onPress={() => this.setState({ lua: 'nascer' })}>
-                    {this.state.lua == 'nascer' ?
-                        <Text uppercase={false}>Nascer</Text> :
-                        <FeatherIcon name='arrow-up'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
-                <Button style={{
-                    backgroundColor: this.estilo.cor.white + '11', elevation: 0,
-                    borderRadius: 0, borderTopRightRadius: 50, borderBottomRightRadius: 50
-                }} onPress={() => this.setState({ lua: 'por' })}>
-                    {this.state.lua == 'por' ?
-                        <Text uppercase={false}>Por</Text> :
-                        <FeatherIcon name='arrow-down'
-                            style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                </Button>
+                <Form style={{ backgroundColor: this.estilo.cor.white + '11', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                    <Button rounded transparent style={{ backgroundColor: this.state.lua == 0 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ lua: 0 })}>
+                        {this.state.lua == 0 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Nascer</Text> :
+                            <FeatherIcon name='arrow-up'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                    <Button rounded transparent style={{ backgroundColor: this.state.lua == 1 ? this.estilo.cor.white + '33' : 'transparent' }}
+                        onPress={() => this.setState({ lua: 1 })}>
+                        {this.state.lua == 1 ?
+                            <Text uppercase={false} style={{ color: 'white' }}>Por</Text> :
+                            <FeatherIcon name='arrow-down'
+                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                    </Button>
+                </Form>
             </Form>
-            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 'nascer' ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.lua_nascer}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
-            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 'por' ? 'flex' : 'none' }}>
+            <View style={{ height: 60, marginTop: 10, display: this.state.lua == 1 ? 'flex' : 'none' }}>
                 <Chart label_descricao_array={this.state.lista_weather.lua_por}
                     label_array={this.state.lista_weather.dia_semana}
                     label_array_label={'h'}
@@ -522,18 +516,14 @@ export default class WeatherWeek extends Component {
     render() {
         return (
             <Container>
-                <Content>
-                    <ScrollView
-                        horizontal
-                        pagingEnabled
-                        decelerationRate='fast'
-                        snapToAlignment='center'
-                        snapToInterval={Dimensions.get('window').width - 60}>
-                        <LinearGradient colors={[
-                            this.estilo.cor.purple,
-                            this.estilo.cor.blue,
-                            this.estilo.cor.blue_dark,
-                        ]}
+                <ScrollView
+                    horizontal
+                    pagingEnabled
+                    decelerationRate='fast'
+                    snapToAlignment='center'
+                    snapToInterval={Dimensions.get('window').width - 60}>
+                    <Content>
+                        <LinearGradient colors={[this.estilo.cor.purple, this.estilo.cor.blue, this.estilo.cor.blue_dark]}
                             style={{
                                 flexDirection: 'row',
                                 width: 3 * (Dimensions.get('window').width - 40)
@@ -543,8 +533,8 @@ export default class WeatherWeek extends Component {
                             {(this.renderDia())}
                             {(this.renderNoite())}
                         </LinearGradient>
-                    </ScrollView>
-                </Content>
+                    </Content>
+                </ScrollView>
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
             </Container>
         )
