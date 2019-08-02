@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, StatusBar } from 'react-native'
 import { Button, Container, Text, View, Form, Content, Row } from 'native-base'
 import estilo from '../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -271,6 +271,7 @@ export default class WeatherToday extends Component {
     render() {
         return (
             <Container>
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 <ScrollView showsHorizontalScrollIndicator={false}
                     horizontal={true} style={{ paddingLeft: 10, maxHeight: 60 }}>
                     {this.state.lista_weather.situacao.map((item, index) => (

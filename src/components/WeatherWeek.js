@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { ScrollView, Dimensions } from 'react-native'
+import { StatusBar, Dimensions } from 'react-native'
 import { Text, Form, ListItem, Row, Spinner, Content, Container, View, Button, Col } from 'native-base'
 import estilo from '../assets/Estilo'
-import LinearGradient from 'react-native-linear-gradient'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
 import Chart from './ChartWeek'
-import { thisExpression } from '@babel/types';
 
 export default class WeatherWeek extends Component {
     constructor(props) {
@@ -31,9 +29,9 @@ export default class WeatherWeek extends Component {
             hora_aux: undefined,
         }
         this.card_weather = [
-            { icon: 'thermometer', cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid },
-            { icon: 'sun', cor1: this.estilo.cor.orange, cor2: this.estilo.cor.orange_medium },
-            { icon: 'moon', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark },
+            { index: 0, icon: 'thermometer', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.purple },
+            { index: 1, icon: 'sun', variavel_ambiental: 'Luz', cor: this.estilo.cor.blue },
+            { index: 2, icon: 'moon', variavel_ambiental: 'Noite', cor: this.estilo.cor.blue_dark },
         ]
     }
 
@@ -236,11 +234,15 @@ export default class WeatherWeek extends Component {
     }
 
     renderTemperatura() {
-        return <ListItem style={{
-            marginLeft: 50, marginRight: 10, borderBottomWidth: 0, marginTop: 40,
-            width: Dimensions.get('screen').width - 80, flexDirection: 'column'
-        }}>
-            <View style={{ height: 70 }}>
+        return <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
+            <Form style={{
+                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
+                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
+            }}>
+                <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Temperatura    </Text>
+                <FeatherIcon name='thermometer' style={{ fontSize: 20, color: 'white', marginLeft: -5 }} />
+            </Form>
+            <View style={{ height: 70, marginTop: 40 }}>
                 <Chart data_array={this.state.lista_weather.temperatura_maxima}
                     opacity={''}
                     color={this.estilo.cor.white} label_data='º' />
@@ -299,14 +301,11 @@ export default class WeatherWeek extends Component {
                     opacity={'77'}
                     color={this.estilo.cor.white} label_data='º' />
             </View>
-        </ListItem>
+        </View>
     }
 
     renderDia() {
-        return <ListItem style={{
-            marginLeft: 10, marginRight: 10, borderBottomWidth: 0, marginTop: 10,
-            width: Dimensions.get('screen').width - 80, flexDirection: 'column'
-        }}>
+        return <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
             <Form style={{
                 flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
                 backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
@@ -409,14 +408,11 @@ export default class WeatherWeek extends Component {
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
-        </ListItem>
+        </View>
     }
 
     renderNoite() {
-        return <ListItem style={{
-            marginLeft: 10, marginRight: 40, borderBottomWidth: 0, marginTop: 10,
-            width: Dimensions.get('screen').width - 80, flexDirection: 'column'
-        }}>
+        return <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
             <Form style={{
                 flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
                 backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
@@ -503,61 +499,35 @@ export default class WeatherWeek extends Component {
                     opacity={''}
                     color={this.estilo.cor.white} />
             </View>
-        </ListItem>
+        </View>
     }
 
     render() {
         return (
-            <Container>
-                <ScrollView
-                    style={{ height: '100%' }}
-                    stickyHeaderIndices={[1, 2, 3]}
-                    horizontal
-                    pagingEnabled
-                    decelerationRate='fast'
-                    snapToAlignment='center'
-                    snapToInterval={Dimensions.get('window').width - 60}>
-                    <Col>
-                        <Content style={{ marginTop: 40, height: '100%' }}>
-                            <LinearGradient colors={[this.estilo.cor.purple, this.estilo.cor.purple, this.estilo.cor.blue, this.estilo.cor.blue_dark, this.estilo.cor.blue_dark]}
-                                style={{
-                                    flexDirection: 'row', height: '100%',
-                                    width: 3 * (Dimensions.get('window').width - 40)
-                                }}
-                                angle={90} angleCenter={{ x: .5, y: .5 }} useAngle={true} >
-                                {(this.renderTemperatura())}
-                                {(this.renderDia())}
-                                {(this.renderNoite())}
-                            </LinearGradient>
-                        </Content>
-                        <Form style={{
-                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
-                            backgroundColor: this.estilo.cor.purple, borderRadius: 100, marginLeft: 80, marginRight: 20, marginBottom: -40,
-                            position: 'absolute', top: 18, justifyContent: 'center', elevation: 10
-                        }}>
-                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Temperatura    </Text>
-                            <FeatherIcon name='thermometer' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
-                        </Form>
+            <Container style={{ flex: 1 }}>
+                <StatusBar backgroundColor={this.card_weather[this.state.card_weather_atual].cor} barStyle='light-content' />
+                <Content style={{ backgroundColor: this.card_weather[this.state.card_weather_atual].cor, flex: 1 }}>
+                    {this.state.card_weather_atual == 0 ? this.renderTemperatura() : null}
+                    {this.state.card_weather_atual == 1 ? this.renderDia() : null}
+                    {this.state.card_weather_atual == 2 ? this.renderNoite() : null}
+                </Content>
 
-                        <Form style={{
-                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
-                            backgroundColor: this.estilo.cor.blue, borderRadius: 100, marginLeft: 20, marginRight: 20, marginBottom: -40,
-                            position: 'absolute', top: 18, left: Dimensions.get('window').width, justifyContent: 'center', elevation: 10
-                        }}>
-                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Dia    </Text>
-                            <FeatherIcon name='sun' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
-                        </Form>
+                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.card_weather[this.state.card_weather_atual].cor }}>
+                    {this.card_weather.map((item) => (
+                        <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
+                            onPress={() => {
+                                this.setState({
+                                    card_weather_atual: item.index, card_weather_cor: item.cor,
+                                    variavel_ambiental: item.variavel_ambiental
+                                })
+                            }}>
+                            <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
+                            this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
+                                { color: this.estilo.cor.white } : null]} />
+                        </Button>
+                    ))}
+                </Form>
 
-                        <Form style={{
-                            flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, width: Dimensions.get('window').width - 160,
-                            backgroundColor: this.estilo.cor.blue_dark, borderRadius: 100, marginLeft: 20, marginRight: 80, marginBottom: -40,
-                            position: 'absolute', top: 18, left: (2 * Dimensions.get('window').width) - 60, justifyContent: 'center', elevation: 10
-                        }}>
-                            <Text style={{ fontSize: 20, color: this.estilo.cor.white, fontWeight: 'bold' }}>Noite    </Text>
-                            <FeatherIcon name='moon' style={{ fontSize: 25, color: 'white', marginLeft: -5 }} />
-                        </Form>
-                    </Col>
-                </ScrollView>
                 {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
             </Container>
         )

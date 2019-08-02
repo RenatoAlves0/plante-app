@@ -49,7 +49,7 @@ export default class ChartWeek extends Component {
             <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[6, 6]} />
         )
         return (
-            <View style={{ width: Dimensions.get('window').width - 100 }}>
+            <View style={{ width: Dimensions.get('window').width - 50 }}>
                 {this.props.data_array ?
                     <AreaChart
                         style={{ height: 70, marginRight: -1 }}
@@ -58,7 +58,7 @@ export default class ChartWeek extends Component {
                         curve={shape.curveNatural}
                         contentInset={{ left: -40, right: -40 }}
                         yMin={min - 1}
-                        yMax={max - min >= 40 ? max + 10 : max + 1}
+                        yMax={max - min >= 20 ? max + 10 : max + 1}
                     >
                         <Line />
                         <Decorator />

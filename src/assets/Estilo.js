@@ -113,7 +113,7 @@ export default class Estilos {
         }
 
         this.icon_item_weather = {
-            fontSize: 30, color: this.cor.white + '77'
+            fontSize: 25, color: this.cor.white + '77'
         }
     }
 }
