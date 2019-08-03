@@ -324,8 +324,8 @@ export default class WeatherWeek extends Component {
             {/* Vento */}
 
             <Form style={{
-                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
+                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, marginBottom: 40,
+                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginTop: 20
             }}>
                 <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
                 <FeatherIcon name='wind' style={{ fontSize: 20, color: 'white', marginLeft: -5 }} />
@@ -431,8 +431,8 @@ export default class WeatherWeek extends Component {
             {/* Vento */}
 
             <Form style={{
-                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginVertical: 20
+                flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, marginBottom: 40,
+                backgroundColor: this.estilo.cor.white + '11', borderRadius: 100, marginTop: 20
             }}>
                 <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
                 <FeatherIcon name='wind' style={{ fontSize: 20, color: 'white', marginLeft: -5 }} />

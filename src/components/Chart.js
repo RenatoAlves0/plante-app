@@ -51,7 +51,7 @@ export default class Chart extends Component {
                         style={{
                             height: this.props.label_descricao_array_big ? '55%' :
                                 this.props.label_descricao_array ? '60%' : '80%',
-                            marginRight: -1
+                            marginRight: -1, marginBottom: -2
                         }}
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
@@ -68,7 +68,7 @@ export default class Chart extends Component {
                             style={{
                                 marginLeft: -50, marginRight: -38, paddingTop: 18,
                                 height: this.props.label_descricao_array_big ? '25%' : '20%',
-                                backgroundColor: this.props.color, marginTop: -1
+                                backgroundColor: this.props.color, marginBottom: -1
                             }}
                             data={this.props.label_descricao_array}
                             formatLabel={(index) => {
