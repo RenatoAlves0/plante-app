@@ -272,140 +272,166 @@ export default class WeatherToday extends Component {
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                <ScrollView showsHorizontalScrollIndicator={false}
-                    horizontal={true} style={{ paddingLeft: 10, maxHeight: 60 }}>
-                    {this.state.lista_weather.situacao.map((item, index) => (
-                        index > 0 && index < 13 && index >= this.getIndexArrayHoraAtual() ?
-                            <Row key={item + index} style={{
-                                marginTop: 20, marginRight: 20,
-                                borderRadius: 50, paddingHorizontal: 15,
-                                backgroundColor: this.state.card_weather_cor + '11'
-                            }}>
-                                <Text uppercase={false}
-                                    style={{ color: this.state.card_weather_cor, fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
-                                >{item}</Text>
-                                <Text uppercase={false}
-                                    style={{ color: this.state.card_weather_cor, fontSize: 15, alignSelf: 'center' }
-                                    }>  {this.state.lista_weather.hora[index]}h</Text>
-                            </Row> : null
-                    ))}
-                </ScrollView>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.temperatura}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_temperatura}
-                        max_value={this.state.lista_weather.maior_temperatura}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} label_data='º' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 0.1 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.sensacao_termica}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_sensacao_termica}
-                        max_value={this.state.lista_weather.maior_sensacao_termica}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} label_data='º' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 0.2 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.temperatura_de_bulbo_umido}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
-                        max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} label_data='º' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 0.3 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.ponto_de_orvalho}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_ponto_de_orvalho}
-                        max_value={this.state.lista_weather.maior_ponto_de_orvalho}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.purple} label_data='º' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.umidade_relativa}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_umidade_relativa}
-                        max_value={this.state.lista_weather.maior_umidade_relativa}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.greenish_medium} label_data='%' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.chuva_quantidade}
-                        label_descricao_array={this.state.lista_weather.chuva_probabilidade}
-                        label_array={this.state.lista_weather.hora} label_array_label='%'
-                        min_value={this.state.lista_weather.menor_chuva_quantidade}
-                        max_value={this.state.lista_weather.maior_chuva_quantidade}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.blue} label_data=' mm' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.vento_velocidade}
-                        label_descricao_array={this.state.lista_weather.vento_direcao}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_vento_velocidade}
-                        max_value={this.state.lista_weather.maior_vento_velocidade}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.greenish_medium} label_data=' km/h' />
-                </View>
-                <View style={[{ height: 220 },
-                this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
-                    <Chart data_array={this.state.lista_weather.uv_indice}
-                        label_descricao_array={this.state.lista_weather.uv_descricao}
-                        label_descricao_array_big={true}
-                        label_array={this.state.lista_weather.hora}
-                        min_value={this.state.lista_weather.menor_uv_indice}
-                        max_value={this.state.lista_weather.maior_uv_indice}
-                        hora_atual={this.getIndexArrayHoraAtual()}
-                        color={this.estilo.cor.orange} label_data=' uv' />
-                </View>
 
-                <Container style={{
-                    backgroundColor: this.state.card_weather_cor,
-                    borderBottomRightRadius: 0, borderBottomLeftRadius: 0
-                }}>
-                    <Button full rounded disabled style={{
-                        backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 20,
-                        elevation: 0, alignSelf: 'center', marginVertical: 20, justifyContent: 'center'
-                    }}>
-                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 17 }}
-                        >{this.state.variavel_ambiental}</Text>
-                    </Button>
-                    <Form style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
-                        {this.card_weather.map((item) => (
-                            <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
-                                onPress={() => {
-                                    this.setState({
-                                        card_weather_atual: item.index, card_weather_cor: item.cor,
-                                        variavel_ambiental: item.variavel_ambiental
-                                    })
+                <Content>
+                    <ScrollView showsHorizontalScrollIndicator={false}
+                        horizontal={true} style={{ maxHeight: 60, paddingLeft: 20, paddingRight: 20, marginBottom: 20 }}>
+                        {this.state.lista_weather.situacao.map((item, index) => (
+                            index > 0 && index < 13 && index >= this.getIndexArrayHoraAtual() ?
+                                <Row key={item + index} style={{
+                                    marginTop: 20, marginRight: 20, height: 40,
+                                    borderRadius: 10, paddingHorizontal: 20,
+                                    backgroundColor: this.estilo.cor.gray + '11'
                                 }}>
-                                <FeatherIcon name={item.icon} style={[this.estilo.icon_item_weather,
-                                this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
-                                    { color: this.estilo.cor.white } : null]} />
-                            </Button>
+                                    <Text uppercase={false}
+                                        style={{ color: this.state.card_weather_cor, fontSize: 17, alignSelf: 'center', fontWeight: 'bold' }}
+                                    >{item}</Text>
+                                    <Text uppercase={false}
+                                        style={{ color: this.state.card_weather_cor, fontSize: 15, alignSelf: 'center' }
+                                        }>  {this.state.lista_weather.hora[index]}h</Text>
+                                </Row> : null
                         ))}
+                        <Form style={{ width: 20, height: 20 }} />
+                    </ScrollView>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.purple,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                        <Text style={{
+                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                            alignSelf: 'center', backgroundColor: this.estilo.cor.white + '11',
+                            paddingHorizontal: 20, paddingVertical: 10, borderRadius: 50, margin: 20
+                        }}>Real</Text>
+                        <Chart data_array={this.state.lista_weather.temperatura}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_temperatura}
+                            max_value={this.state.lista_weather.maior_temperatura}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.purple} label_data='º' />
                     </Form>
-                    {this.state.card_weather_atual >= 0 &&
-                        this.state.card_weather_atual < 1 ?
-                        <View style={{ flexWrap: 'wrap', justifyContent: 'center', flexDirection: 'row', marginBottom: 20 }}>
-                            {this.card_weather_temperatura.map((item) => (
-                                <Button key={item.label} rounded style={{ margin: 10, backgroundColor: this.estilo.cor.white + '11', elevation: 0 }}
-                                    onPress={() => this.setState({ card_weather_atual: item.index })}>
-                                    <Text uppercase={false} style={[{ color: this.estilo.cor.white + '77', fontSize: 17 },
-                                    this.state.card_weather_atual == item.index ?
-                                        { color: this.estilo.cor.white } : null]}>{item.label}</Text>
-                                </Button>
-                            ))}
-                        </View> : null}
-                </Container>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.purple_vivid,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                        <Text style={{
+                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                            alignSelf: 'center', backgroundColor: this.estilo.cor.white + '11',
+                            paddingHorizontal: 20, paddingVertical: 10, borderRadius: 50, margin: 20
+                        }}>Sensação térmica</Text>
+                        <Chart data_array={this.state.lista_weather.sensacao_termica}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_sensacao_termica}
+                            max_value={this.state.lista_weather.maior_sensacao_termica}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.purple_vivid} label_data='º' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.blue,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                        <Text style={{
+                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                            alignSelf: 'center', backgroundColor: this.estilo.cor.white + '11',
+                            paddingHorizontal: 20, paddingVertical: 10, borderRadius: 50, margin: 20
+                        }}>Bulbo úmido</Text>
+                        <Chart data_array={this.state.lista_weather.temperatura_de_bulbo_umido}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_temperatura_de_bulbo_umido}
+                            max_value={this.state.lista_weather.maior_temperatura_de_bulbo_umido}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.blue} label_data='º' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.greenish_medium,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
+                        <Text style={{
+                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                            alignSelf: 'center', backgroundColor: this.estilo.cor.white + '11',
+                            paddingHorizontal: 20, paddingVertical: 10, borderRadius: 50, margin: 20
+                        }}>Ponto de orvalho</Text>
+                        <Chart data_array={this.state.lista_weather.ponto_de_orvalho}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_ponto_de_orvalho}
+                            max_value={this.state.lista_weather.maior_ponto_de_orvalho}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.greenish_medium} label_data='º' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.greenish_medium,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
+                        <Chart data_array={this.state.lista_weather.umidade_relativa}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_umidade_relativa}
+                            max_value={this.state.lista_weather.maior_umidade_relativa}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.greenish_medium} label_data='%' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.blue,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
+                        <Chart data_array={this.state.lista_weather.chuva_quantidade}
+                            label_descricao_array={this.state.lista_weather.chuva_probabilidade}
+                            label_array={this.state.lista_weather.hora} label_array_label='%'
+                            min_value={this.state.lista_weather.menor_chuva_quantidade}
+                            max_value={this.state.lista_weather.maior_chuva_quantidade}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.blue} label_data=' mm' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.greenish_medium,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
+                        <Chart data_array={this.state.lista_weather.vento_velocidade}
+                            label_descricao_array={this.state.lista_weather.vento_direcao}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_vento_velocidade}
+                            max_value={this.state.lista_weather.maior_vento_velocidade}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.greenish_medium} label_data=' km/h' />
+                    </Form>
+
+                    <Form style={[{
+                        backgroundColor: this.estilo.cor.orange,
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                    }, this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
+                        <Chart data_array={this.state.lista_weather.uv_indice}
+                            label_descricao_array={this.state.lista_weather.uv_descricao}
+                            label_descricao_array_big={true}
+                            label_array={this.state.lista_weather.hora}
+                            min_value={this.state.lista_weather.menor_uv_indice}
+                            max_value={this.state.lista_weather.maior_uv_indice}
+                            hora_atual={this.getIndexArrayHoraAtual()}
+                            color={this.estilo.cor.orange} label_data=' uv' />
+                    </Form>
+                </Content>
+                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.white, paddingVertical: 5 }}>
+                    {this.card_weather.map((item) => (
+                        <Button key={item.icon} rounded style={{ paddingHorizontal: 10, backgroundColor: '', elevation: 0 }}
+                            onPress={() => {
+                                this.setState({
+                                    card_weather_atual: item.index, card_weather_cor: item.cor,
+                                    variavel_ambiental: item.variavel_ambiental
+                                })
+                            }}>
+                            {item.index == this.state.card_weather_atual ?
+                                <Text uppercase={false} style={{ color: this.estilo.cor.gray_solid, fontSize: 18, marginLeft: -20 }}
+                                >{item.variavel_ambiental}</Text> : null}
+                            <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
+                            this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
+                                { color: this.estilo.cor.gray_solid } : null]} />
+                        </Button>
+                    ))}
+                </Form>
             </Container>
         )
     }

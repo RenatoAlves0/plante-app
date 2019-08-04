@@ -16,12 +16,6 @@ export default class ChartWeek extends Component {
         }
     }
 
-    componentWillReceiveProps() {
-    }
-
-    async load() {
-    }
-
     render() {
         const min = this.props.data_array ? Math.min(... this.props.data_array) : 0
         const max = this.props.data_array ? Math.max(... this.props.data_array) : 0
@@ -83,7 +77,8 @@ export default class ChartWeek extends Component {
                         contentInset={{ left: 10, right: 0 }}
                         svg={this.props.label_descricao_array_big ?
                             { skewY: -15, translateY: 10, fontSize: 15, fill: this.estilo.cor.white }
-                            : { fontSize: 15, fill: this.estilo.cor.white }
+                            : this.props.label_descricao_array_bold ? { fontSize: 15, fill: this.estilo.cor.white, fontWeight: 'bold' }
+                                : { fontSize: 15, fill: this.estilo.cor.white }
                         }
                         numberOfTicks={12}
                     /> : null}

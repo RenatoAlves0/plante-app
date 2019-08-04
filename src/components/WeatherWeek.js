@@ -13,6 +13,7 @@ export default class WeatherWeek extends Component {
         this.estilo = new estilo()
         this.state = {
             loaded: false,
+            card_weather_cor: this.estilo.cor.purple,
             sensacao_termica: 0,
             sol: 0,
             lua: 0,
@@ -29,9 +30,9 @@ export default class WeatherWeek extends Component {
             hora_aux: undefined,
         }
         this.card_weather = [
-            { index: 0, icon: 'thermometer', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.white },
-            { index: 1, icon: 'sun', variavel_ambiental: 'Luz', cor: this.estilo.cor.blue },
-            { index: 2, icon: 'moon', variavel_ambiental: 'Noite', cor: this.estilo.cor.blue_dark },
+            { index: 0, icon: 'thermometer', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.purple },
+            { index: 1, icon: 'sun', variavel_ambiental: 'Dia', cor: this.estilo.cor.orange },
+            { index: 2, icon: 'moon', variavel_ambiental: 'Noite', cor: this.estilo.cor.orange_medium },
         ]
     }
 
@@ -238,7 +239,7 @@ export default class WeatherWeek extends Component {
             <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
                 <View style={{
                     backgroundColor: this.estilo.cor.purple, borderRadius: 10, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginVertical: 20, elevation: 10
+                    alignSelf: 'center', padding: 20, marginBottom: 20, marginTop: 10, elevation: 10
                 }}>
                     <Form style={{
                         flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
@@ -322,7 +323,7 @@ export default class WeatherWeek extends Component {
             <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
                 <View style={{
                     backgroundColor: this.estilo.cor.blue, borderRadius: 10, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginVertical: 20, elevation: 10
+                    alignSelf: 'center', padding: 20, marginBottom: 20, marginTop: 10, elevation: 10
                 }}>
                     <Form style={{
                         flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
@@ -414,14 +415,14 @@ export default class WeatherWeek extends Component {
                         <Chart label_descricao_array={this.state.lista_weather.sol_nascer}
                             label_array={this.state.lista_weather.dia_semana}
                             label_array_label_value={'h'}
-                            opacity={''}
+                            opacity={''} label_descricao_array_bold={true}
                             color={this.estilo.cor.white} />
                     </View>
                     <View style={{ height: 50, marginTop: 10, display: this.state.sol == 1 ? 'flex' : 'none' }}>
                         <Chart label_descricao_array={this.state.lista_weather.sol_por}
                             label_array={this.state.lista_weather.dia_semana}
                             label_array_label_value={'h'}
-                            opacity={''}
+                            opacity={''} label_descricao_array_bold={true}
                             color={this.estilo.cor.white} />
                     </View>
                 </View>
@@ -442,7 +443,7 @@ export default class WeatherWeek extends Component {
                         <Chart label_descricao_array={this.state.lista_weather.sol_duracao}
                             label_array={this.state.lista_weather.dia_semana}
                             label_array_label={'h'}
-                            opacity={''}
+                            opacity={''} label_descricao_array_bold={true}
                             color={this.estilo.cor.white} />
                     </View>
                 </View>
@@ -455,7 +456,7 @@ export default class WeatherWeek extends Component {
             <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
                 <View style={{
                     backgroundColor: this.estilo.cor.blue, borderRadius: 10, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginVertical: 20, elevation: 10
+                    alignSelf: 'center', padding: 20, marginBottom: 20, marginTop: 10, elevation: 10
                 }}>
                     <Form style={{
                         flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
@@ -547,14 +548,14 @@ export default class WeatherWeek extends Component {
                         <Chart label_descricao_array={this.state.lista_weather.lua_nascer}
                             label_array={this.state.lista_weather.dia_semana}
                             label_array_label_value={'h'}
-                            opacity={''}
+                            opacity={''} label_descricao_array_bold={true}
                             color={this.estilo.cor.white} />
                     </View>
                     <View style={{ height: 50, marginTop: 10, display: this.state.lua == 1 ? 'flex' : 'none' }}>
                         <Chart label_descricao_array={this.state.lista_weather.lua_por}
                             label_array={this.state.lista_weather.dia_semana}
                             label_array_label_value={'h'}
-                            opacity={''}
+                            opacity={''} label_descricao_array_bold={true}
                             color={this.estilo.cor.white} />
                     </View>
                 </View>
@@ -564,21 +565,25 @@ export default class WeatherWeek extends Component {
 
     render() {
         return (
-            <Container style={{ flex: 1 }}>
+            <Container style={{ flex: 1, backgroundColor: 'red' }}>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='light-content' />
+
                 {this.state.card_weather_atual == 0 ? this.renderTemperatura() :
                     this.state.card_weather_atual == 1 ? this.renderDia() :
                         this.state.card_weather_atual == 2 ? this.renderNoite() : null}
 
-                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.white }}>
+                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.white, paddingVertical: 5 }}>
                     {this.card_weather.map((item) => (
-                        <Button key={item.icon} large rounded style={this.estilo.button_item_weather}
+                        <Button key={item.icon} rounded style={{ paddingHorizontal: 10, backgroundColor: '', elevation: 0 }}
                             onPress={() => {
                                 this.setState({
                                     card_weather_atual: item.index, card_weather_cor: item.cor,
                                     variavel_ambiental: item.variavel_ambiental
                                 })
                             }}>
+                            {item.index == this.state.card_weather_atual ?
+                                <Text uppercase={false} style={{ color: this.estilo.cor.gray_solid, fontSize: 18, marginLeft: -20 }}
+                                >{item.variavel_ambiental}</Text> : null}
                             <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
                             this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
                                 { color: this.estilo.cor.gray_solid } : null]} />
@@ -586,7 +591,6 @@ export default class WeatherWeek extends Component {
                     ))}
                 </Form>
 
-                {this.state.loaded ? null : <Spinner color={this.estilo.cor.white + '77'} style={{ alignSelf: 'center', marginBottom: 30 }} />}
             </Container>
         )
     }

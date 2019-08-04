@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Icon, Row, Form, Toast, View } from 'native-base'
+import { Container, Content, Text, Button, Row, Toast, View } from 'native-base'
 import { StatusBar } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
@@ -71,7 +71,7 @@ export default class Dash extends Component {
                     type: 'danger',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'bottom'
+                    position: 'top'
                 })
             }
         })
@@ -107,7 +107,7 @@ export default class Dash extends Component {
                     type: 'success',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'bottom'
+                    position: 'top'
                 })
                 return this.client.subscribe(this.topico_sensores)
             })
@@ -119,7 +119,7 @@ export default class Dash extends Component {
                         type: 'danger',
                         duration: 3000,
                         textStyle: { textAlign: 'center' },
-                        position: 'bottom'
+                        position: 'top'
                     })
                 }
             })
@@ -159,7 +159,7 @@ export default class Dash extends Component {
                                         backgroundColor: '', width: 350, borderRadius: 10,
                                         elevation: 0, justifyContent: 'center'
                                     }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar  </Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar ao  </Text>
                                     <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
                                     <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
                                 </Button>
@@ -201,9 +201,9 @@ export default class Dash extends Component {
                 </Container>
 
                 {/* 3 */}
-                <Content style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
+                <Container style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
-                </Content>
+                </Container>
                 <BottomMenuCliente method={this.setTabAtual} />
             </Container>
         )
