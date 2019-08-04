@@ -28,7 +28,7 @@ export default class ChartWeek extends Component {
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Circle cx={x(index)} cy={y(value)} r={2.5} y={-5} fill={this.estilo.cor.white} />
+                    <Circle cx={x(index)} cy={y(value)} r={4} y={-5} fill={this.props.color} />
                     {this.props.label_data ?
                         <Form style={{
                             flexDirection: (this.props.label_data).length > 3 ? 'column' : 'row',
@@ -37,19 +37,19 @@ export default class ChartWeek extends Component {
                             marginLeft: (this.props.label_data).length > 3 ? -20 : -25,
                             width: 40 + (((this.props.label_data).length || 0) * 10), height: 25, justifyContent: 'center'
                         }}>
-                            <Text style={[index == 0 || index == 6 ? { color: 'transparent' } :
-                                { color: this.props.color + this.props.opacity }, { fontSize: 16 }]}>{value}</Text>
-                            <Text style={[index == 0 || index == 6 ? { color: 'transparent' } :
-                                { color: this.props.color + this.props.opacity }, { fontSize: (this.props.label_data).length > 1 ? 12 : 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
+                            <Text style={index == 0 || index == 6 ? { color: 'transparent' } :
+                                { color: this.props.color + this.props.opacity, fontSize: 17, fontWeight: 'bold' }}>{value}</Text>
+                            <Text style={index == 0 || index == 6 ? { color: 'transparent' } :
+                                { color: this.props.color + this.props.opacity, fontSize: (this.props.label_data).length > 1 ? 12 : 15, paddingBottom: 2 }}>{this.props.label_data || ''}</Text>
                         </Form> : null}
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[6, 6]} />
+            <Path y={-5} d={line} stroke={this.props.color + this.props.opacity} fill={'none'} strokeWidth={2} strokeDasharray={[4, 4]} />
         )
         return (
-            <View style={{ width: Dimensions.get('window').width - 50 }}>
+            <View style={{ width: Dimensions.get('window').width - 80 }}>
                 {this.props.data_array ?
                     <AreaChart
                         style={{ height: 70, marginRight: -1 }}
@@ -100,7 +100,7 @@ export default class ChartWeek extends Component {
                                 || this.props.label_array[index].substring(0, 3)
                     }}
                     contentInset={{ left: 10, right: 0 }}
-                    svg={{ fontSize: 15, fill: this.estilo.cor.white + '77', fontWeight: 'bold' }}
+                    svg={{ fontSize: 16, fill: this.estilo.cor.white }}
                     numberOfTicks={12}
                 /> : null}
             </View>
