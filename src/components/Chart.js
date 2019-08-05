@@ -48,7 +48,7 @@ export default class Chart extends Component {
         )
         return (
             <View style={{
-                height: (50 * (this.props.max_value - this.props.min_value) || 0) + 50
+                height: ((this.props.max_value - this.props.min_value) == 0 ? 50 : 250)
                     + (this.props.label_descricao_array ? this.props.label_descricao_array_big ? 50 : 40 : 0)
                     + (!(this.props.max_value - this.props.min_value) && this.props.label_descricao_array ? 70 : 0),
 
@@ -59,7 +59,7 @@ export default class Chart extends Component {
                     <View style={{ width: (this.tam * 7) + Dimensions.get('window').width * 2 }}>
                         <AreaChart
                             style={{
-                                height: this.props.max_value ? (50 * (this.props.max_value - this.props.min_value)) : 70,
+                                height: ((this.props.max_value - this.props.min_value) == 0 ? 20 : 200),
                                 marginRight: -1, marginBottom: -2, borderRadius: 10, minHeight: 70
                             }}
                             data={this.props.data_array}
