@@ -152,11 +152,11 @@ export default class Dash extends Component {
                             <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
                                 useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                 style={{
-                                    width: 370, borderRadius: 10, marginTop: 25, alignSelf: 'center', elevation: 10
+                                    width: 370, borderRadius: 20, marginTop: 25, alignSelf: 'center', elevation: 10
                                 }}>
                                 <Button rounded onPress={() => this.conectar()}
                                     style={{
-                                        backgroundColor: '', width: 350, borderRadius: 10,
+                                        backgroundColor: '', width: 350, borderRadius: 20,
                                         elevation: 0, justifyContent: 'center'
                                     }}>
                                     <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar ao  </Text>

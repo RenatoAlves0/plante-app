@@ -589,7 +589,7 @@ export default class WeatherWeek extends Component {
                     this.state.card_weather_atual == 1 ? this.renderDia() :
                         this.state.card_weather_atual == 2 ? this.renderNoite() : null}
 
-            </Container>
+            </Container >
         )
     }
 }
