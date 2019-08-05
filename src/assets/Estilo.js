@@ -44,7 +44,7 @@ export default class Estilos {
             padding: 10,
             backgroundColor: this.cor.gray_white + '99',
             margin: 10, marginBottom: 0,
-            borderRadius: 10,
+            borderRadius: 20,
             flexDirection: 'column'
         }
 
@@ -54,7 +54,7 @@ export default class Estilos {
 
         this.subrow = {
             backgroundColor: this.cor.gray_white + '99',
-            borderRadius: 10,
+            borderRadius: 20,
             marginTop: 5
         }
 
@@ -72,11 +72,11 @@ export default class Estilos {
 
         this.swiperow_deletbuttom = {
             backgroundColor: this.cor.red, paddingBottom: 6,
-            elevation: 0, margin: 10, borderRadius: 10
+            elevation: 0, margin: 10, borderRadius: 20
         }
 
         this.contentmodal = {
-            backgroundColor: 'white', borderRadius: 10, marginHorizontal: 10, marginTop: 10
+            backgroundColor: 'white', borderRadius: 20, marginHorizontal: 10, marginTop: 10
         }
 
         this.head_contentmodal = {
@@ -90,16 +90,16 @@ export default class Estilos {
 
         this.item_dash = {
             width: 170, height: 200, margin: 15, paddingTop: 0,
-            paddingBottom: 0, borderRadius: 10, elevation: 10
+            paddingBottom: 0, borderRadius: 20, elevation: 10
         }
 
         this.item_dash_weather = {
             width: 370, margin: 15, paddingTop: 0, alignSelf: 'center',
-            paddingBottom: 5, borderRadius: 10, elevation: 10
+            paddingBottom: 5, borderRadius: 20, elevation: 10
         }
 
         this.buttom_item_dash = {
-            borderRadius: 10, alignItems: 'center', justifyContent: 'center',
+            borderRadius: 20, alignItems: 'center', justifyContent: 'center',
             height: '100%', width: '100%', backgroundColor: '',
             flexDirection: 'column', elevation: 0
         }

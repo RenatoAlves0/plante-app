@@ -44,7 +44,7 @@ export default class Chart extends Component {
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-10} d={line} stroke={this.estilo.cor.white} fill={'none'} strokeWidth={2} strokeDasharray={[4, 4]} />
+            <Path y={-10} d={line} stroke={this.estilo.cor.white + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[0, 0]} />
         )
         return (
             <View style={{
@@ -60,7 +60,7 @@ export default class Chart extends Component {
                         <AreaChart
                             style={{
                                 height: ((this.props.max_value - this.props.min_value) == 0 ? 20 : 200),
-                                marginRight: -1, marginBottom: -2, borderRadius: 10, minHeight: 70
+                                marginRight: -1, marginBottom: -2, borderRadius: 20, minHeight: 70
                             }}
                             data={this.props.data_array}
                             svg={{ fill: this.props.color }}

@@ -40,7 +40,7 @@ export default class ChartWeek extends Component {
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-5} d={line} stroke={this.props.color + this.props.opacity} fill={'none'} strokeWidth={2} strokeDasharray={[4, 4]} />
+            <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[0, 0]} />
         )
         return (
             <View style={{ width: Dimensions.get('window').width - 80 }}>

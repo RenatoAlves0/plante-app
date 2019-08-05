@@ -272,7 +272,27 @@ export default class WeatherToday extends Component {
         return (
             <Container>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-
+                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.white, paddingVertical: 5 }}>
+                    {this.card_weather.map((item) => (
+                        <Button key={item.icon} rounded style={{
+                            paddingHorizontal: 15, backgroundColor: '', elevation: 0,
+                            backgroundColor: this.state.card_weather_atual == item.index ? this.state.card_weather_cor : 'transparent'
+                        }}
+                            onPress={() => {
+                                this.setState({
+                                    card_weather_atual: item.index, card_weather_cor: item.cor,
+                                    variavel_ambiental: item.variavel_ambiental
+                                })
+                            }}>
+                            {item.index == this.state.card_weather_atual ?
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 15, marginLeft: -10 }}
+                                >{item.variavel_ambiental}</Text> : null}
+                            <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
+                            this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
+                                { color: this.estilo.cor.white } : null]} />
+                        </Button>
+                    ))}
+                </Form>
                 <Content>
                     <ScrollView showsHorizontalScrollIndicator={false}
                         horizontal={true} style={{ maxHeight: 60, paddingLeft: 20, paddingRight: 20, marginBottom: 20 }}>
@@ -280,7 +300,7 @@ export default class WeatherToday extends Component {
                             index > 0 && index < 13 && index >= this.getIndexArrayHoraAtual() ?
                                 <Row key={item + index} style={{
                                     marginTop: 20, marginRight: 20, height: 40,
-                                    borderRadius: 10, paddingHorizontal: 20,
+                                    borderRadius: 20, paddingHorizontal: 20,
                                     backgroundColor: this.estilo.cor.gray + '11'
                                 }}>
                                     <Text uppercase={false}
@@ -296,7 +316,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.purple,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                         <Text style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
@@ -313,7 +333,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.purple_vivid,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                         <Text style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
@@ -330,7 +350,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.blue,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                         <Text style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
@@ -347,7 +367,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.greenish_medium,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 0 ? null : { display: 'none' }]}>
                         <Text style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
@@ -364,7 +384,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.greenish_medium,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 1 ? null : { display: 'none' }]}>
                         <Chart data_array={this.state.lista_weather.umidade_relativa}
                             label_array={this.state.lista_weather.hora}
@@ -376,7 +396,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.blue,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 2 ? null : { display: 'none' }]}>
                         <Chart data_array={this.state.lista_weather.chuva_quantidade}
                             label_descricao_array={this.state.lista_weather.chuva_probabilidade}
@@ -389,7 +409,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.greenish_medium,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 3 ? null : { display: 'none' }]}>
                         <Chart data_array={this.state.lista_weather.vento_velocidade}
                             label_descricao_array={this.state.lista_weather.vento_direcao}
@@ -402,7 +422,7 @@ export default class WeatherToday extends Component {
 
                     <Form style={[{
                         backgroundColor: this.estilo.cor.orange,
-                        marginBottom: 20, marginHorizontal: 20, borderRadius: 10, elevation: 10
+                        marginBottom: 20, marginHorizontal: 20, borderRadius: 20, elevation: 10
                     }, this.state.card_weather_atual == 4 ? null : { display: 'none' }]}>
                         <Chart data_array={this.state.lista_weather.uv_indice}
                             label_descricao_array={this.state.lista_weather.uv_descricao}
@@ -414,24 +434,6 @@ export default class WeatherToday extends Component {
                             color={this.estilo.cor.orange} label_data=' uv' />
                     </Form>
                 </Content>
-                <Form style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: this.estilo.cor.white, paddingVertical: 5 }}>
-                    {this.card_weather.map((item) => (
-                        <Button key={item.icon} rounded style={{ paddingHorizontal: 10, backgroundColor: '', elevation: 0 }}
-                            onPress={() => {
-                                this.setState({
-                                    card_weather_atual: item.index, card_weather_cor: item.cor,
-                                    variavel_ambiental: item.variavel_ambiental
-                                })
-                            }}>
-                            {item.index == this.state.card_weather_atual ?
-                                <Text uppercase={false} style={{ color: this.estilo.cor.gray_solid, fontSize: 18, marginLeft: -20 }}
-                                >{item.variavel_ambiental}</Text> : null}
-                            <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
-                            this.state.card_weather_atual >= item.index && this.state.card_weather_atual < item.index + 1 ?
-                                { color: this.estilo.cor.gray_solid } : null]} />
-                        </Button>
-                    ))}
-                </Form>
             </Container>
         )
     }

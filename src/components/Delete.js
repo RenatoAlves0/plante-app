@@ -28,10 +28,10 @@ export default class Delete extends Component {
             }}>
                 <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
                 <Form style={{
-                    padding: 10, borderRadius: 10, width: '70%', flexDirection: 'column',
+                    padding: 10, borderRadius: 20, width: '70%', flexDirection: 'column',
                     alignContent: 'center', backgroundColor: this.estilo.cor.red
                 }} >
-                    <Button full style={{ backgroundColor: this.estilo.cor.red, borderRadius: 10, elevation: 0 }}
+                    <Button full style={{ backgroundColor: this.estilo.cor.red, borderRadius: 20, elevation: 0 }}
                         onPress={() => this.props.delete(true)}>
                         <Text style={{ color: this.estilo.cor.white, fontWeight: 'bold' }} >
                             Apagar</Text>
@@ -39,7 +39,7 @@ export default class Delete extends Component {
 
                     <Form style={this.estilo.form_vazio}></Form>
 
-                    <Button full style={{ backgroundColor: this.estilo.cor.white, borderRadius: 10, elevation: 0 }}
+                    <Button full style={{ backgroundColor: this.estilo.cor.white, borderRadius: 20, elevation: 0 }}
                         onPress={() => this.props.delete(false)}>
                         <Text style={{ color: this.estilo.cor.red, fontWeight: 'bold' }} >
                             Cancelar</Text>
