@@ -89,8 +89,8 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            width: 170, height: 200, margin: 15, paddingTop: 0,
-            paddingBottom: 0, borderRadius: 20, elevation: 10
+            width: 150, height: 200, marginHorizontal: 10, paddingTop: 0,
+            paddingBottom: 0, borderRadius: 20, elevation: 10, marginVertical: 20
         }
 
         this.item_dash_weather = {

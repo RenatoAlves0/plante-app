@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Row, Toast, View } from 'native-base'
-import { StatusBar } from 'react-native'
+import { Container, Content, Text, Button, Row, Toast, View, Form } from 'native-base'
+import { StatusBar, ScrollView } from 'react-native'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -19,7 +19,10 @@ export default class Dash extends Component {
             update_weater_week: true,
             update_weater_today: true,
             conectado: true,
-            plantacao_status: true,
+            sensor_atuador_cor: this.estilo.cor.purple_vivid,
+            sensor_atuador_atual: 0,
+            tipo_previsao_tempo_cor: this.estilo.cor.purple,
+            tipo_previsao_tempo_atual: 0,
             regar: false,
             tab_atual: 0,
             sensores: {
@@ -31,6 +34,14 @@ export default class Dash extends Component {
             },
             loaded: false,
         }
+        this.sensor_atuador = [
+            { index: 0, icon: 'activity', label: 'Sensores', cor: this.estilo.cor.purple_vivid },
+            { index: 1, icon: 'command', label: 'Atuadores', cor: this.estilo.cor.blue },
+        ]
+        this.tipo_previsao_tempo = [
+            { index: 0, icon: 'calendar', label: 'Semanal', cor: this.estilo.cor.purple },
+            { index: 1, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
+        ]
         this.topico_sensores = 'plante_box_sensores(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
         this.uri = 'ws://iot.eclipse.org:80/ws'
@@ -88,10 +99,6 @@ export default class Dash extends Component {
             message.destinationName = this.topico_sensores
             this.client.send(message)
         }
-    }
-
-    plantacao_status_change = () => {
-        this.setState({ plantacao_status: !this.state.plantacao_status })
     }
 
     regar_change = () => {
@@ -152,7 +159,7 @@ export default class Dash extends Component {
                             <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
                                 useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                 style={{
-                                    width: 370, borderRadius: 20, marginTop: 25, alignSelf: 'center', elevation: 10
+                                    width: 370, borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 5
                                 }}>
                                 <Button rounded onPress={() => this.conectar()}
                                     style={{
@@ -165,14 +172,74 @@ export default class Dash extends Component {
                                 </Button>
                             </LinearGradient>}
                         <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                        <Row style={{ justifyContent: 'center', paddingTop: 10, flexWrap: 'wrap' }} >
-                            {cards.map((item) => (<Card key={item.id} item={item} />))}
 
-                            <Card item={this.state.plantacao_status ?
-                                { cor1: this.estilo.cor.green_solid, cor2: this.estilo.cor.green, method: this.plantacao_status_change, icon_name: 'check-circle', icon_type: 'MaterialCommunityIcons', value: 'Tudo certo' }
-                                : { cor1: this.estilo.cor.red_solid, cor2: this.estilo.cor.red_vivid, method: this.plantacao_status_change, icon_name: 'alert-circle', icon_type: 'MaterialCommunityIcons', value: 'Algo errado' }} />
+                        <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray }}
+                        >Plantação</Text>
+                        <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
+                            {this.sensor_atuador.map((item) => (
+                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
+                                    onPress={() => { this.setState({ sensor_atuador_atual: item.index, sensor_atuador_cor: item.cor, label: item.label }) }}>
+                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium }} />
+                                    <Text uppercase={false} style={{
+                                        color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                    }}>  {item.label}</Text>
+                                </Button>
+                            ))}
+                        </Form>
+                        <ScrollView style={{ display: this.state.sensor_atuador_atual == 0 ? 'flex' : 'none' }}
+                            horizontal
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            decelerationRate='fast'
+                            snapToAlignment='start'
+                            snapToInterval={170}>
+                            <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
+                                <Form style={{ width: 10, height: 200 }} />
+                                {cards.map((item) => (<Card key={item.id} item={item} />))}
+                                <Form style={{ width: 61, height: 200 }} />
+                            </Row>
+                        </ScrollView>
 
-                        </Row>
+                        <ScrollView style={{ display: this.state.sensor_atuador_atual == 1 ? 'flex' : 'none' }}
+                            horizontal
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            decelerationRate='fast'
+                            snapToAlignment='start'
+                            snapToInterval={170}>
+
+                            <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
+                                <Form style={{ width: 10, height: 200 }} />
+                                <Card item={this.state.regar ?
+                                    {
+                                        cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
+                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
+                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    }
+                                    : {
+                                        cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
+                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    }} />
+                                <Form style={{ width: 61, height: 200 }} />
+                            </Row>
+                        </ScrollView>
+
+                        {/* Previsão */}
+
+                        <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray }}
+                        >Previsão do tempo</Text>
+                        <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
+                            {this.tipo_previsao_tempo.map((item) => (
+                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
+                                    onPress={() => { this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label }) }}>
+                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium }} />
+                                    <Text uppercase={false} style={{
+                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                    }}>  {item.label}</Text>
+                                </Button>
+                            ))}
+                        </Form>
                     </Content>
                     : null}
 
