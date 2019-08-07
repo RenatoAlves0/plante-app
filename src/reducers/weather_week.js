@@ -159,7 +159,7 @@ async function lerArquivo(caminho) {
         })
         .then(async (contents) => {
             weather_week = JSON.parse(contents)
-            console.log(weather_week)
+            return weather_week
         })
         .catch((err) => {
             console.log(err.message, err.code)

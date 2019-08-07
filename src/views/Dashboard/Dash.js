@@ -11,7 +11,7 @@ import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import BottomMenuCliente from '../../components/BottomMenuCliente'
 
-import { weather_week_update, get_weather_week } from '../../actions/index'
+import { weather_today_update, weather_week_update, get_weather_today, get_weather_week } from '../../actions/index'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -75,13 +75,11 @@ class Dash extends Component {
     componentDidMount() {
         this.setState({ update_weater_week: false })
         this.setState({ update_weater_today: false })
+        this.props.get_weather_week()
+        this.props.get_weather_today()
     }
 
     async load() {
-        await this.props.get_weather_week()
-        console.log('this.props')
-        console.log(this.props)
-
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })
@@ -150,9 +148,6 @@ class Dash extends Component {
     }
 
     render() {
-        console.log('\nthis.props.weather_week')
-        console.log(this.props.weather_week)
-
         const cards = [
             { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
             { id: 1, cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
@@ -160,6 +155,7 @@ class Dash extends Component {
             { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
             { id: 4, cor1: this.estilo.cor.blue_dark, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
+        console.log(this.props)
         return (
             <Container>
                 {this.state.loaded ? null : <Loader />}
@@ -251,13 +247,6 @@ class Dash extends Component {
                                 </Button>
                             ))}
                         </Form>
-                        <Button dark bordered onPress={() => { this.props.weather_week_update() }}>
-                            <Text>Weather Week Update</Text>
-                        </Button>
-
-                        <Button dark bordered onPress={async () => { await this.props.get_weather_week(), console.log(this.props) }}>
-                            <Text>Get Weather Week</Text>
-                        </Button>
                     </Content>
                     : null}
 
@@ -296,12 +285,16 @@ class Dash extends Component {
 }
 function mapStateToProps(state) {
     return {
-        weather_week: state.weather_week
+        weather_week: state.weather_week,
+        weather_today: state.weather_today,
     }
 }
 
 function matchDispatchToProps(dispatch) {
-    return bindActionCreators({ weather_week_update: weather_week_update, get_weather_week: get_weather_week }, dispatch)
+    return bindActionCreators({
+        weather_today_update: weather_today_update, weather_week_update: weather_week_update,
+        get_weather_today: get_weather_today, get_weather_week: get_weather_week
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Dash)
