@@ -1,27 +1,21 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Row, Toast, View, Form } from 'native-base'
 import { StatusBar, ScrollView } from 'react-native'
-import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
 import Card from '../../components/Card'
-// import WeatherWeek from '../../components/WeatherWeek'
-// import WeatherToday from '../../components/WeatherToday'
 import FeatherIcon from 'react-native-vector-icons/Feather'
-import BottomMenuCliente from '../../components/BottomMenuCliente'
+import weatherToday from '../../services/WeatherToday'
+import weatherWeek from '../../services/WeatherWeek'
 
-import { weather_today_update, weather_week_update, get_weather_today, get_weather_week } from '../../actions/index'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-
-class Dash extends Component {
+export default class Dash extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
         this.state = {
-            update_weater_week: true,
-            update_weater_today: true,
+            weather_today: [],
+            weather_week: [],
             conectado: true,
             sensor_atuador_cor: this.estilo.cor.purple_vivid,
             sensor_atuador_atual: 0,
@@ -64,19 +58,9 @@ class Dash extends Component {
         })
     }
 
-    componentWillMount() {
-        this.load()
-    }
-
-    componentWillReceiveProps() {
-        this.load()
-    }
-
-    componentDidMount() {
-        this.setState({ update_weater_week: false })
-        this.setState({ update_weater_today: false })
-        this.props.get_weather_week()
-        this.props.get_weather_today()
+    async componentWillMount() {
+        await this.setState({ weather_today: await weatherToday.get() })
+        await this.setState({ weather_week: await weatherWeek.get() })
     }
 
     async load() {
@@ -138,15 +122,6 @@ class Dash extends Component {
             })
     }
 
-    sleep = (delay) => {
-        var start = new Date().getTime()
-        while (new Date().getTime() < start + delay);
-    }
-
-    setTabAtual = async (ativa) => {
-        await this.setState({ tab_atual: ativa })
-    }
-
     render() {
         const cards = [
             { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
@@ -155,10 +130,9 @@ class Dash extends Component {
             { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
             { id: 4, cor1: this.estilo.cor.blue_dark, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
-        console.log(this.props)
+
         return (
             <Container>
-                {this.state.loaded ? null : <Loader />}
                 {/* 0 */}
                 {this.state.tab_atual == 0 ?
                     <Content>
@@ -277,24 +251,8 @@ class Dash extends Component {
                 {/* 3 */}
                 {/* <Container style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
-                </Container>
-                <BottomMenuCliente method={this.setTabAtual} /> */}
+                </Container>*/}
             </Container>
         )
     }
 }
-function mapStateToProps(state) {
-    return {
-        weather_week: state.weather_week,
-        weather_today: state.weather_today,
-    }
-}
-
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators({
-        weather_today_update: weather_today_update, weather_week_update: weather_week_update,
-        get_weather_today: get_weather_today, get_weather_week: get_weather_week
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(Dash)
