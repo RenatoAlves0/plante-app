@@ -6,12 +6,16 @@ import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
 import Card from '../../components/Card'
-import WeatherWeek from '../../components/WeatherWeek'
-import WeatherToday from '../../components/WeatherToday'
+// import WeatherWeek from '../../components/WeatherWeek'
+// import WeatherToday from '../../components/WeatherToday'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import BottomMenuCliente from '../../components/BottomMenuCliente'
 
-export default class Dash extends Component {
+import { weather_week_update, get_weather_week } from '../../actions/index'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+class Dash extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
@@ -74,6 +78,10 @@ export default class Dash extends Component {
     }
 
     async load() {
+        await this.props.get_weather_week()
+        console.log('this.props')
+        console.log(this.props)
+
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })
@@ -142,6 +150,9 @@ export default class Dash extends Component {
     }
 
     render() {
+        console.log('\nthis.props.weather_week')
+        console.log(this.props.weather_week)
+
         const cards = [
             { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
             { id: 1, cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
@@ -240,6 +251,13 @@ export default class Dash extends Component {
                                 </Button>
                             ))}
                         </Form>
+                        <Button dark bordered onPress={() => { this.props.weather_week_update() }}>
+                            <Text>Weather Week Update</Text>
+                        </Button>
+
+                        <Button dark bordered onPress={async () => { await this.props.get_weather_week(), console.log(this.props) }}>
+                            <Text>Get Weather Week</Text>
+                        </Button>
                     </Content>
                     : null}
 
@@ -263,16 +281,27 @@ export default class Dash extends Component {
                     </Content> : null}
 
                 {/* 2 */}
-                <Container style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
+                {/* <Container style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
                     {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
-                </Container>
+                </Container> */}
 
                 {/* 3 */}
-                <Container style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
+                {/* <Container style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
                     {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
                 </Container>
-                <BottomMenuCliente method={this.setTabAtual} />
+                <BottomMenuCliente method={this.setTabAtual} /> */}
             </Container>
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+        weather_week: state.weather_week
+    }
+}
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({ weather_week_update: weather_week_update, get_weather_week: get_weather_week }, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Dash)
