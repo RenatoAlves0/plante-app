@@ -24,33 +24,32 @@ export default class Chart extends Component {
     }
 
     render() {
-        const min = this.props.data_array ? Math.min(... this.props.data_array) : 0
+        const min = this.props.data_array ? Math.min(... this.props.data_array) - 1 : 0
         const max = this.props.data_array ? Math.max(... this.props.data_array) : 0
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Circle cx={x(index)} cy={y(value)} r={4} y={-10} fill={this.estilo.cor.white} />
                     <Form style={{
                         flexDirection: 'row', marginTop: -40, alignItems: this.props.label_data == 'º' ? 'flex-start' : 'baseline',
                         marginLeft: (this.props.label_data).length > 3 ? -35 : -25,
                         width: 40 + this.tam, height: 25, justifyContent: 'center'
                     }}>
                         <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
-                            { color: this.estilo.cor.white }, { fontWeight: 'bold', fontSize: 17 }]}>{value}</Text>
+                            { color: this.props.color }, { fontWeight: 'bold', fontSize: 18 }]}>{value}</Text>
                         <Text style={[index == 0 || index == 13 ? { color: 'transparent' } :
-                            { color: this.estilo.cor.white }, { fontSize: (this.props.label_data).length > 3 ? 14 : 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
+                            { color: this.props.color }, { fontSize: (this.props.label_data).length > 3 ? 14 : 15, paddingBottom: 2 }]}>{this.props.label_data || ''}</Text>
                     </Form>
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-10} d={line} stroke={this.estilo.cor.white + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[0, 0]} />
+            <Path y={-2} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={10} strokeDasharray={[0, 0]} />
         )
         return (
             <View style={{
-                height: ((this.props.max_value - this.props.min_value) == 0 ? 50 : 250)
+                height: ((max - min) == 0 ? 50 : 250)
                     + (this.props.label_descricao_array ? this.props.label_descricao_array_big ? 50 : 40 : 0)
-                    + (!(this.props.max_value - this.props.min_value) && this.props.label_descricao_array ? 70 : 0),
+                    + (!(max - min) && this.props.label_descricao_array ? 70 : 0),
 
                 minHeight: this.props.label_descricao_array ? 500 : 70
             }} >
@@ -59,14 +58,14 @@ export default class Chart extends Component {
                     <View style={{ width: (this.tam * 7) + Dimensions.get('window').width * 2 }}>
                         <AreaChart
                             style={{
-                                height: ((this.props.max_value - this.props.min_value) == 0 ? 20 : 200),
-                                marginRight: -1, marginBottom: -2, borderRadius: 20, minHeight: 70
+                                height: ((max - min) == 0 ? 20 : 200),
+                                marginRight: -1, marginBottom: 0, borderRadius: 20, minHeight: 70
                             }}
                             data={this.props.data_array}
                             svg={{ fill: this.props.color }}
                             curve={shape.curveNatural}
-                            contentInset={{ left: -40, right: -40, top: 40 }}
-                            yMin={min - 1}
+                            contentInset={{ left: -20, right: -20, top: 40 }}
+                            yMin={min}
                             yMax={max - min >= 20 ? max + 10 : max + 1}
                         >
                             <Line />
@@ -75,10 +74,10 @@ export default class Chart extends Component {
                         {this.props.label_descricao_array ?
                             <XAxis
                                 style={{
-                                    marginLeft: -50, marginRight: -38,
+                                    marginLeft: -30, marginRight: -18,
                                     paddingTop: this.props.label_descricao_array_big ? 10 : 18,
                                     height: this.props.label_descricao_array_big ? 51 : 41,
-                                    backgroundColor: '', marginBottom: -1
+                                    backgroundColor: this.props.color, marginBottom: -1
                                 }}
                                 data={this.props.label_descricao_array}
                                 formatLabel={(index) => {
@@ -95,8 +94,8 @@ export default class Chart extends Component {
                             /> : null}
                         <XAxis
                             style={{
-                                marginLeft: -50, marginRight: -38, paddingTop: 18, height: 52,
-                                borderRadius: 20
+                                marginLeft: -30, marginRight: -18, height: 52,
+                                backgroundColor: this.props.color, paddingTop: 18
                             }}
                             data={this.props.label_array}
                             formatLabel={(index) => {
@@ -104,7 +103,7 @@ export default class Chart extends Component {
                                 return this.props.label_array[index] + 'h'
                             }}
                             contentInset={{ left: 10, right: 0 }}
-                            svg={{ fontSize: 15, fill: this.estilo.cor.white }}
+                            svg={{ fontSize: 16, fill: this.estilo.cor.white }}
                             numberOfTicks={12}
                         />
                     </View>

@@ -8,6 +8,8 @@ import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import weatherToday from '../../services/WeatherToday'
 import weatherWeek from '../../services/WeatherWeek'
+import ChartToday from '../../components/Chart'
+import ChartWeek from '../../components/ChartWeek'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -37,8 +39,8 @@ export default class Dash extends Component {
             { index: 1, icon: 'command', label: 'Atuadores', cor: this.estilo.cor.blue },
         ]
         this.tipo_previsao_tempo = [
-            { index: 0, icon: 'calendar', label: 'Semanal', cor: this.estilo.cor.purple },
-            { index: 1, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
+            { index: 0, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
+            { index: 1, icon: 'calendar', label: '5 dias', cor: this.estilo.cor.purple },
         ]
         this.topico_sensores = 'plante_box_sensores(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
@@ -124,12 +126,15 @@ export default class Dash extends Component {
 
     render() {
         const cards = [
-            { id: 0, cor1: this.estilo.cor.red_vivid, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
+            { id: 0, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
             { id: 1, cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
             { id: 2, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
             { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
             { id: 4, cor1: this.estilo.cor.blue_dark, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
+
+        console.log(this.state.weather_today);
+
 
         return (
             <Container>
@@ -221,6 +226,25 @@ export default class Dash extends Component {
                                 </Button>
                             ))}
                         </Form>
+
+                        {this.state.weather_today.temperatura ?
+                            <Form style={[this.state.tipo_previsao_tempo_atual != 0 ? { height: 0, width: 0, opacity: 0 } : { marginTop: 20 }]}>
+                                <ChartToday data_array={this.state.weather_today.temperatura}
+                                    label_array={this.state.weather_today.hora}
+                                    color={this.estilo.cor.purple} label_data='º' />
+                            </Form> : null}
+
+                        {this.state.weather_week.temperatura_maxima ?
+                            <Form style={[this.state.tipo_previsao_tempo_atual != 1 ? { height: 0, width: 0, opacity: 0 } : { marginTop: 50 }]}>
+                                <ChartWeek data_array={this.state.weather_week.temperatura_maxima}
+                                    opacity={''}
+                                    color={this.estilo.cor.purple} label_data='º' />
+                                <ChartWeek data_array={this.state.weather_week.temperatura_minima}
+                                    label_array={this.state.weather_week.dia_semana}
+                                    opacity={'77'} background={this.estilo.cor.purple}
+                                    color={this.estilo.cor.purple} label_data='º' />
+                            </Form> : null}
+
                     </Content>
                     : null}
 

@@ -22,7 +22,6 @@ export default class ChartWeek extends Component {
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
-                    <Circle cx={x(index)} cy={y(value)} r={4} y={-5} fill={this.props.color} />
                     {this.props.label_data ?
                         <Form style={{
                             flexDirection: (this.props.label_data).length > 3 ? 'column' : 'row',
@@ -32,23 +31,26 @@ export default class ChartWeek extends Component {
                             width: 40 + (((this.props.label_data).length || 0) * 10), height: 25, justifyContent: 'center'
                         }}>
                             <Text style={index == 0 || index == 6 ? { color: 'transparent' } :
-                                { color: this.props.color + this.props.opacity, fontSize: 17, fontWeight: 'bold' }}>{value}</Text>
+                                { color: this.props.background ? this.estilo.cor.white + 'aa' : this.props.color + this.props.opacity, fontSize: 18, fontWeight: 'bold' }}>{value}</Text>
                             <Text style={index == 0 || index == 6 ? { color: 'transparent' } :
-                                { color: this.props.color + this.props.opacity, fontSize: (this.props.label_data).length > 1 ? 12 : 15, paddingBottom: 2 }}>{this.props.label_data || ''}</Text>
+                                { color: this.props.background ? this.estilo.cor.white + 'aa' : this.props.color + this.props.opacity, fontSize: (this.props.label_data).length > 1 ? 14 : 15, paddingBottom: 2 }}>{this.props.label_data || ''}</Text>
                         </Form> : null}
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-5} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={2} strokeDasharray={[0, 0]} />
+            <Path y={-2} d={line} stroke={this.props.background ? this.estilo.cor.white + 'aa' : this.props.color + '77'} fill={'none'} strokeWidth={this.props.background ? 2 : 10} strokeDasharray={[0, 0]} />
         )
         return (
-            <View style={{ width: Dimensions.get('window').width - 80 }}>
+            <View style={{
+                width: Dimensions.get('window').width,
+                backgroundColor: this.props.background ? this.props.background : 'transparent'
+            }}>
                 {this.props.data_array ?
                     <AreaChart
-                        style={{ height: 70, marginRight: -1 }}
+                        style={{ height: 70, marginRight: -1, marginBottom: -1 }}
                         data={this.props.data_array}
-                        svg={{ fill: 'transparent' }}
+                        svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
                         contentInset={{ left: -40, right: -40 }}
                         yMin={min - 1}
@@ -84,8 +86,8 @@ export default class ChartWeek extends Component {
                     /> : null}
                 {this.props.label_array ? <XAxis
                     style={{
-                        marginLeft: -50, marginRight: -38, height: 20,
-                        backgroundColor: 'transparent', marginTop: 10
+                        marginLeft: -50, marginRight: -38, height: 52,
+                        backgroundColor: this.props.color, marginTop: 18
                     }}
                     data={this.props.label_array}
                     formatLabel={(index) => {

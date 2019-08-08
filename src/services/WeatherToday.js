@@ -152,6 +152,10 @@ class WeatherToday {
                         index_file = await result.indexOf(element)
                     }
                 })
+                if (!index_file) {
+                    await this.update()
+                    this.get()
+                }
                 return Promise.all([rnfs.stat(result[0].path), result[index_file].path])
             })
             .then((statResult) => {

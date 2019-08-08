@@ -139,6 +139,10 @@ class WeatherWeek {
                         index_file = await result.indexOf(element)
                     }
                 })
+                if (!index_file) {
+                    await this.update()
+                    this.get()
+                }
                 return Promise.all([rnfs.stat(result[0].path), result[index_file].path])
             })
             .then((statResult) => {
@@ -167,7 +171,7 @@ class WeatherWeek {
 
     getDayOfWeek(date) {
         var dayOfWeek = new Date(date).getDay()
-        return getStringDayOfWeek(dayOfWeek)
+        return this.getStringDayOfWeek(dayOfWeek)
     }
 
     getStringDayOfWeek(day) {
