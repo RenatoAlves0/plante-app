@@ -78,9 +78,9 @@ export default class ChartWeek extends Component {
                         }}
                         contentInset={{ left: 10, right: 0 }}
                         svg={this.props.label_descricao_array_big ?
-                            { skewY: -15, translateY: 10, fontSize: 15, fill: this.estilo.cor.white }
-                            : this.props.label_descricao_array_bold ? { fontSize: 15, fill: this.estilo.cor.white, fontWeight: 'bold' }
-                                : { fontSize: 15, fill: this.estilo.cor.white }
+                            { skewY: -15, translateY: 10, fontSize: 15, fill: this.props.font_color ? this.estilo.cor.orange : this.estilo.cor.white }
+                            : this.props.label_descricao_array_bold ? { fontSize: 15, fill: this.props.font_color ? this.estilo.cor.orange : this.estilo.cor.white, fontWeight: 'bold' }
+                                : { fontSize: 15, fill: this.props.font_color ? this.estilo.cor.orange : this.estilo.cor.white }
                         }
                         numberOfTicks={12}
                     /> : null}
@@ -97,7 +97,7 @@ export default class ChartWeek extends Component {
                                 || this.props.label_array[index].substring(0, 3)
                     }}
                     contentInset={{ left: 10, right: 0 }}
-                    svg={{ fontSize: 16, fill: this.estilo.cor.white }}
+                    svg={{ fontSize: 16, fill: this.props.font_color ? this.props.font_color : this.estilo.cor.white }}
                     numberOfTicks={12}
                 /> : null}
             </View>
