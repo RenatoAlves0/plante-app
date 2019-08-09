@@ -44,11 +44,11 @@ export default class ChartWeek extends Component {
         return (
             <View style={{
                 width: Dimensions.get('window').width,
-                backgroundColor: this.props.background ? this.props.background : 'transparent'
+                backgroundColor: this.props.background ? this.props.background : this.estilo.cor.white
             }}>
                 {this.props.data_array ?
                     <AreaChart
-                        style={{ height: min == 0 && max == 0 ? 4 : 90, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
+                        style={{ height: min == 0 && max == 0 ? 4 : 90, marginRight: -1, marginBottom: -2, marginTop: min == 0 && max == 0 ? 20 : 0 }}
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}

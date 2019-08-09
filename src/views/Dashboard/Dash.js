@@ -9,7 +9,7 @@ import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import weatherToday from '../../services/WeatherToday'
 import weatherWeek from '../../services/WeatherWeek'
-import ChartToday from '../../components/Chart'
+import ChartToday from '../../components/ChartToday'
 import ChartWeek from '../../components/ChartWeek'
 
 export default class Dash extends Component {
@@ -143,7 +143,7 @@ export default class Dash extends Component {
                 {/* Botão de reconexão com o Plante Box */}
                 <Content>
                     {this.state.conectado ? null :
-                        <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
+                        <LinearGradient colors={[this.estilo.cor.purple_vivid, this.estilo.cor.greenish]}
                             useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                             style={{
                                 width: 370, borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 5
@@ -221,7 +221,7 @@ export default class Dash extends Component {
                             <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}>Previsão do tempo</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <Button rounded style={{ backgroundColor: '', elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
+                            <Button transparent rounded style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
                                 onPress={async () => {
                                     await weatherToday.update(), await this.setState({ weather_today: await weatherToday.get() }),
                                         await weatherWeek.update(), await this.setState({ weather_week: await weatherWeek.get() })
@@ -234,7 +234,7 @@ export default class Dash extends Component {
                     <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
                         <Form style={{ width: '70%', flexDirection: 'row' }}>
                             {this.tipo_previsao_tempo.map((item) => (
-                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
+                                <Button key={item.icon} transparent rounded style={{ elevation: 0, marginHorizontal: 5 }}
                                     onPress={() => { this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label }) }}>
                                     <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
                                     <Text uppercase={false} style={{
@@ -244,8 +244,8 @@ export default class Dash extends Component {
                             ))}
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <Button rounded style={{ backgroundColor: '', elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={async () => { Actions.week() }}>
+                            <Button transparent rounded style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
+                                onPress={async () => { this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : this.state.tipo_previsao_tempo_atual == 1 ? Actions.week() : null }}>
                                 <FeatherIcon name='arrow-right' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                             </Button>
                         </Form>
@@ -255,6 +255,7 @@ export default class Dash extends Component {
                         <Form style={[this.state.tipo_previsao_tempo_atual != 0 ? this.estilo.hide : { marginTop: 20 }]}>
                             <ChartToday data_array={this.state.weather_today.temperatura}
                                 label_array={this.state.weather_today.hora}
+                                opacity={''}
                                 color={this.estilo.cor.purple} label_data='º' />
                         </Form> : null}
 

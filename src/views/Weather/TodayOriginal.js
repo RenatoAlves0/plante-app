@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { ScrollView, StatusBar } from 'react-native'
 import { Button, Container, Text, View, Form, Content, Row } from 'native-base'
-import estilo from '../assets/Estilo'
+import estilo from '../../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 import rnfs from 'react-native-fs'
-import Chart from './Chart'
+import Chart from '../../components/Chart'
 
 export default class WeatherToday extends Component {
     constructor(props) {
