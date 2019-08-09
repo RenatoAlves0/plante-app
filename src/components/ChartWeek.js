@@ -39,7 +39,7 @@ export default class ChartWeek extends Component {
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-2} d={line} stroke={this.props.background ? this.estilo.cor.white + 'aa' : this.props.color + '77'} fill={'none'} strokeWidth={this.props.background ? 2 : 10} strokeDasharray={[0, 0]} />
+            <Path y={-2} d={line} stroke={this.props.background ? this.estilo.cor.white + '77' : this.props.color + '77'} fill={'none'} strokeWidth={this.props.background ? 5 : 10} strokeDasharray={[0, 0]} />
         )
         return (
             <View style={{
@@ -48,7 +48,7 @@ export default class ChartWeek extends Component {
             }}>
                 {this.props.data_array ?
                     <AreaChart
-                        style={{ height: 70, marginRight: -1, marginBottom: -1 }}
+                        style={{ height: min == 0 && max == 0 ? 7 : 70, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
                         data={this.props.data_array}
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
@@ -62,8 +62,8 @@ export default class ChartWeek extends Component {
                 {this.props.label_descricao_array ?
                     <XAxis
                         style={{
-                            marginLeft: -50, marginRight: -38,
-                            height: 20, backgroundColor: 'transparent'
+                            marginLeft: -50, marginRight: -38, height: 52, marginBottom: -1,
+                            paddingTop: 18, backgroundColor: this.props.color
                         }}
                         data={this.props.label_descricao_array}
                         formatLabel={(index) => {

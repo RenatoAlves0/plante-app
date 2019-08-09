@@ -58,20 +58,20 @@ export default class Week extends Component {
                         backgroundColor: this.estilo.cor.purple_vivid, paddingVertical: 10,
                         paddingHorizontal: 20, borderRadius: 50, alignSelf: 'center'
                     }}>Sensação térmica</Text>
-                    <Form style={{ backgroundColor: this.estilo.cor.purple_vivid + '77', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
-                        <Button rounded transparent style={{ backgroundColor: this.state.sensacao_termica == 0 ? this.estilo.cor.purple_vivid + '77' : 'transparent' }}
+                    <Form style={{ backgroundColor: this.estilo.cor.purple_vivid, marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                        <Button rounded transparent
                             onPress={() => this.setState({ sensacao_termica: 0 })}>
                             {this.state.sensacao_termica == 0 ?
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Sol</Text> :
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderRightWidth: 1, borderRightColor: this.estilo.cor.white }}>Sol</Text> :
                                 <FeatherIcon name='sun'
-                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
                         </Button>
-                        <Button rounded transparent style={{ backgroundColor: this.state.sensacao_termica == 1 ? this.estilo.cor.purple_vivid + '77' : 'transparent' }}
+                        <Button rounded transparent
                             onPress={() => this.setState({ sensacao_termica: 1 })}>
                             {this.state.sensacao_termica == 1 ?
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Sombra</Text> :
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderLeftWidth: 1, borderLeftColor: this.estilo.cor.white }}>Sombra</Text> :
                                 <FeatherIcon name='cloud'
-                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
                         </Button>
                     </Form>
                 </Form>
@@ -102,132 +102,101 @@ export default class Week extends Component {
     renderDia() {
         return <Content style={{ backgroundColor: this.estilo.cor.white, flex: 1 }}>
             <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
-                {/* Sol */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.orange, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, marginTop: 10, elevation: 10
-                }}>
-                    <Form style={{ flexDirection: 'row', marginBottom: 20 }}>
-                        <Text style={{
-                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
-                            backgroundColor: this.estilo.cor.white + '11', paddingVertical: 10,
-                            paddingHorizontal: 20, borderRadius: 50
-                        }}>Sol</Text>
-                        <Form style={{ backgroundColor: this.estilo.cor.white + '11', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
-                            <Button rounded transparent style={{ backgroundColor: this.state.sol == 0 ? this.estilo.cor.white + '33' : 'transparent' }}
-                                onPress={() => this.setState({ sol: 0 })}>
-                                {this.state.sol == 0 ?
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Nascer</Text> :
-                                    <FeatherIcon name='sunrise'
-                                        style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                            </Button>
-                            <Button rounded transparent style={{ backgroundColor: this.state.sol == 1 ? this.estilo.cor.white + '33' : 'transparent' }}
-                                onPress={() => this.setState({ sol: 1 })}>
-                                {this.state.sol == 1 ?
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Por</Text> :
-                                    <FeatherIcon name='sunset'
-                                        style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                            </Button>
-                        </Form>
-                    </Form>
-                    <View style={{ height: 50, marginTop: 10, display: this.state.sol == 0 ? 'flex' : 'none' }}>
-                        <Chart label_descricao_array={this.state.weather_week.sol_nascer}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_array_label_value={'h'}
-                            opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.white} />
-                    </View>
-                    <View style={{ height: 50, marginTop: 10, display: this.state.sol == 1 ? 'flex' : 'none' }}>
-                        <Chart label_descricao_array={this.state.weather_week.sol_por}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_array_label_value={'h'}
-                            opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.white} />
-                    </View>
-                </View>
-
-                {/* Sol duração */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.orange_medium, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
-                }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 20
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Tempo de sol    </Text>
-                        <FeatherIcon name='clock' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
-                    </Form>
-                    <View style={{ height: 50, marginTop: 10 }}>
-                        <Chart label_descricao_array={this.state.weather_week.sol_duracao}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_array_label={'h'}
-                            opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.white} />
-                    </View>
-                </View>
-
-                {/* Chuva */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.blue, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
-                }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 20
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Chuva    </Text>
-                        <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
-                    </Form>
-                    <View style={{ height: 120, marginTop: 10 }}>
-                        <Chart data_array={this.state.weather_week.dia_chuva_mm}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_descricao_array={this.state.weather_week.dia_chuva_probabilidade}
-                            label_array_label={'%'}
-                            opacity={''}
-                            color={this.estilo.cor.white} label_data=' mm' />
-                    </View>
-                </View>
 
                 {/* Vento */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.greenish_medium, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, marginBottom: 60,
+                    backgroundColor: this.estilo.cor.greenish_medium, borderRadius: 200, marginVertical: 30
                 }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 40
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
-                        <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
-                    </Form>
-                    <View style={{ height: 120, marginTop: 20 }}>
-                        <Chart data_array={this.state.weather_week.dia_vento_velocidade}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_descricao_array={this.state.weather_week.dia_vento_direcao}
-                            opacity={''}
-                            color={this.estilo.cor.white} label_data=' km/h' />
-                    </View>
-                </View>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
+                    <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart data_array={this.state.weather_week.dia_vento_velocidade}
+                    label_array={this.state.weather_week.dia_semana}
+                    label_descricao_array={this.state.weather_week.dia_vento_direcao}
+                    opacity={''}
+                    color={this.estilo.cor.greenish_medium} label_data=' km/h' />
 
                 {/* Nuvens */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.gray, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
+                    backgroundColor: this.estilo.cor.blue_light, borderRadius: 200, marginVertical: 30
                 }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 20
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Nuvens    </Text>
-                        <FeatherIcon name='cloud' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Nuvens    </Text>
+                    <FeatherIcon name='cloud' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart data_array={this.state.weather_week.dia_nuvens}
+                    label_array={this.state.weather_week.dia_semana}
+                    opacity={''}
+                    color={this.estilo.cor.blue_light} label_data='%' />
+
+                {/* Chuva */}
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
+                    backgroundColor: this.estilo.cor.blue, borderRadius: 200, marginVertical: 30
+                }}>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Chuva    </Text>
+                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart data_array={this.state.weather_week.dia_chuva_mm}
+                    label_array={this.state.weather_week.dia_semana}
+                    label_descricao_array={this.state.weather_week.dia_chuva_probabilidade}
+                    label_array_label={'%'}
+                    opacity={''}
+                    color={this.estilo.cor.blue} label_data=' mm' />
+
+                {/* Tempo de sol */}
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, marginVertical: 30,
+                    backgroundColor: this.estilo.cor.orange_medium, borderRadius: 200
+                }}>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Tempo de sol    </Text>
+                    <FeatherIcon name='clock' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart label_descricao_array={this.state.weather_week.sol_duracao}
+                    label_array={this.state.weather_week.dia_semana}
+                    label_array_label={'h'}
+                    opacity={''} label_descricao_array_bold={true}
+                    color={this.estilo.cor.orange_medium} />
+
+                {/* Sol */}
+                <Form style={{ flexDirection: 'row', marginVertical: 30 }}>
+                    <Text style={{
+                        fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                        backgroundColor: this.estilo.cor.orange, paddingVertical: 10,
+                        paddingHorizontal: 20, borderRadius: 50, alignSelf: 'center'
+                    }}>Sol</Text>
+                    <Form style={{ backgroundColor: this.estilo.cor.orange, marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                        <Button rounded transparent
+                            onPress={() => this.setState({ sol: 0 })}>
+                            {this.state.sol == 0 ?
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderRightWidth: 1, borderRightColor: this.estilo.cor.white }}>Nascer</Text> :
+                                <FeatherIcon name='sunrise'
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
+                        </Button>
+                        <Button rounded transparent
+                            onPress={() => this.setState({ sol: 1 })}>
+                            {this.state.sol == 1 ?
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderLeftWidth: 1, borderLeftColor: this.estilo.cor.white }}>Por</Text> :
+                                <FeatherIcon name='sunset'
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
+                        </Button>
                     </Form>
-                    <View style={{ height: 100, marginTop: 20 }}>
-                        <Chart data_array={this.state.weather_week.dia_nuvens}
-                            label_array={this.state.weather_week.dia_semana}
-                            opacity={''}
-                            color={this.estilo.cor.white} label_data='%' />
-                    </View>
+                </Form>
+
+                <View style={this.state.sol == 0 ? null : this.estilo.hide}>
+                    <Chart label_descricao_array={this.state.weather_week.sol_nascer}
+                        label_array={this.state.weather_week.dia_semana}
+                        label_array_label_value={'h'}
+                        opacity={''} label_descricao_array_bold={true}
+                        color={this.estilo.cor.orange} />
+                </View>
+                <View style={this.state.sol == 1 ? null : this.estilo.hide}>
+                    <Chart label_descricao_array={this.state.weather_week.sol_por}
+                        label_array={this.state.weather_week.dia_semana}
+                        label_array_label_value={'h'}
+                        opacity={''} label_descricao_array_bold={true}
+                        color={this.estilo.cor.orange} />
                 </View>
             </View>
         </Content>
@@ -236,97 +205,26 @@ export default class Week extends Component {
     renderNoite() {
         return <Content style={{ backgroundColor: this.estilo.cor.white, flex: 1 }}>
             <View style={{ width: Dimensions.get('screen').width, alignItems: 'center' }}>
-                {/* Lua */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.blue_dark, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, marginTop: 10, elevation: 10
-                }}>
-                    <Form style={{ flexDirection: 'row', marginBottom: 20 }}>
-                        <Text style={{
-                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
-                            backgroundColor: this.estilo.cor.white + '11', paddingVertical: 10,
-                            paddingHorizontal: 20, borderRadius: 50
-                        }}>Lua</Text>
-                        <Form style={{ backgroundColor: this.estilo.cor.white + '11', marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
-                            <Button rounded transparent style={{ backgroundColor: this.state.lua == 0 ? this.estilo.cor.white + '33' : 'transparent' }}
-                                onPress={() => this.setState({ lua: 0 })}>
-                                {this.state.lua == 0 ?
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Nascer</Text> :
-                                    <FeatherIcon name='arrow-up'
-                                        style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                            </Button>
-                            <Button rounded transparent style={{ backgroundColor: this.state.lua == 1 ? this.estilo.cor.white + '33' : 'transparent' }}
-                                onPress={() => this.setState({ lua: 1 })}>
-                                {this.state.lua == 1 ?
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white }}>Por</Text> :
-                                    <FeatherIcon name='arrow-down'
-                                        style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + '77' }} />}
-                            </Button>
-                        </Form>
-                    </Form>
-                    <View style={{ height: 50, marginTop: 10, display: this.state.lua == 0 ? 'flex' : 'none' }}>
-                        <Chart label_descricao_array={this.state.weather_week.lua_nascer}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_array_label_value={'h'}
-                            opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.white} />
-                    </View>
-                    <View style={{ height: 50, marginTop: 10, display: this.state.lua == 1 ? 'flex' : 'none' }}>
-                        <Chart label_descricao_array={this.state.weather_week.lua_por}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_array_label_value={'h'}
-                            opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.white} />
-                    </View>
-                </View>
 
-                {/* Chuva */}
-                <View style={{
-                    backgroundColor: this.estilo.cor.blue, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
-                }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 20
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Chuva    </Text>
-                        <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
-                    </Form>
-                    <View style={{ height: 120, marginTop: 10 }}>
-                        <Chart data_array={this.state.weather_week.noite_chuva_mm}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_descricao_array={this.state.weather_week.noite_chuva_probabilidade}
-                            label_array_label={'%'}
-                            opacity={''}
-                            color={this.estilo.cor.white} label_data=' mm' />
-                    </View>
-                </View>
                 {/* Vento */}
 
-                <View style={{
-                    backgroundColor: this.estilo.cor.greenish_medium, borderRadius: 20, alignItems: 'center',
-                    alignSelf: 'center', padding: 20, marginBottom: 20, elevation: 10
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20, marginBottom: 60,
+                    backgroundColor: this.estilo.cor.greenish_medium, borderRadius: 200, marginVertical: 30
                 }}>
-                    <Form style={{
-                        flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 200, marginBottom: 40
-                    }}>
-                        <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
-                        <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
-                    </Form>
-                    <View style={{ height: 120, marginTop: 20 }}>
-                        <Chart data_array={this.state.weather_week.noite_vento_velocidade}
-                            label_array={this.state.weather_week.dia_semana}
-                            label_descricao_array={this.state.weather_week.noite_vento_direcao}
-                            opacity={''}
-                            color={this.estilo.cor.white} label_data=' km/h' />
-                    </View>
-                </View>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Vento    </Text>
+                    <FeatherIcon name='wind' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart data_array={this.state.weather_week.noite_vento_velocidade}
+                    label_array={this.state.weather_week.dia_semana}
+                    label_descricao_array={this.state.weather_week.noite_vento_direcao}
+                    opacity={''}
+                    color={this.estilo.cor.greenish_medium} label_data=' km/h' />
 
                 {/* Nuvens */}
                 <Form style={{
                     flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
-                    backgroundColor: this.estilo.cor.gray, borderRadius: 200, marginBottom: 20
+                    backgroundColor: this.estilo.cor.blue_light, borderRadius: 200, marginVertical: 30
                 }}>
                     <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Nuvens    </Text>
                     <FeatherIcon name='cloud' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
@@ -334,9 +232,63 @@ export default class Week extends Component {
                 <Form>
                     <Chart data_array={this.state.weather_week.noite_nuvens}
                         label_array={this.state.weather_week.dia_semana}
-                        opacity={''} background={this.estilo.cor.gray}
-                        color={this.estilo.cor.gray} label_data='%' />
+                        opacity={''}
+                        color={this.estilo.cor.blue_light} label_data='%' />
                 </Form>
+
+                {/* Chuva */}
+                <Form style={{
+                    flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 20,
+                    backgroundColor: this.estilo.cor.blue, borderRadius: 200, marginVertical: 30
+                }}>
+                    <Text style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Chuva    </Text>
+                    <FeatherIcon name='cloud-drizzle' style={{ fontSize: 20, color: this.estilo.cor.white, marginLeft: -5 }} />
+                </Form>
+                <Chart data_array={this.state.weather_week.noite_chuva_mm}
+                    label_array={this.state.weather_week.dia_semana}
+                    label_descricao_array={this.state.weather_week.noite_chuva_probabilidade}
+                    label_array_label={'%'}
+                    opacity={''}
+                    color={this.estilo.cor.blue} label_data=' mm' />
+
+                {/* Lua */}
+                <Form style={{ flexDirection: 'row', marginVertical: 30 }}>
+                    <Text style={{
+                        fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                        backgroundColor: this.estilo.cor.blue_dark, paddingVertical: 10,
+                        paddingHorizontal: 20, borderRadius: 50, alignSelf: 'center'
+                    }}>Lua</Text>
+                    <Form style={{ backgroundColor: this.estilo.cor.blue_dark, marginLeft: 15, flexDirection: 'row', borderRadius: 50 }}>
+                        <Button rounded transparent
+                            onPress={() => this.setState({ lua: 0 })}>
+                            {this.state.lua == 0 ?
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderRightWidth: 1, borderRightColor: this.estilo.cor.white }}>Nascer</Text> :
+                                <FeatherIcon name='arrow-up'
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
+                        </Button>
+                        <Button rounded transparent
+                            onPress={() => this.setState({ lua: 1 })}>
+                            {this.state.lua == 1 ?
+                                <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, borderLeftWidth: 1, borderLeftColor: this.estilo.cor.white }}>Por</Text> :
+                                <FeatherIcon name='arrow-down'
+                                    style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white + 'AA' }} />}
+                        </Button>
+                    </Form>
+                </Form>
+                <View style={this.state.lua == 0 ? null : this.estilo.hide}>
+                    <Chart label_descricao_array={this.state.weather_week.lua_nascer}
+                        label_array={this.state.weather_week.dia_semana}
+                        label_array_label_value={'h'}
+                        opacity={''} label_descricao_array_bold={true}
+                        color={this.estilo.cor.blue_dark} />
+                </View>
+                <View style={this.state.lua == 1 ? null : this.estilo.hide}>
+                    <Chart label_descricao_array={this.state.weather_week.lua_por}
+                        label_array={this.state.weather_week.dia_semana}
+                        label_array_label_value={'h'}
+                        opacity={''} label_descricao_array_bold={true}
+                        color={this.estilo.cor.blue_dark} />
+                </View>
             </View>
         </Content>
     }
