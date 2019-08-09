@@ -64,6 +64,7 @@ export default class Dash extends Component {
     async componentWillMount() {
         await this.setState({ weather_today: await weatherToday.get() })
         await this.setState({ weather_week: await weatherWeek.get() })
+        this.load()
     }
 
     async load() {
