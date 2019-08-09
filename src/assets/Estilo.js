@@ -115,6 +115,10 @@ export default class Estilos {
         this.icon_item_weather = {
             fontSize: 25, color: this.cor.white + '77'
         }
+
+        this.hide = {
+            height: 0, width: 0, opacity: 0
+        }
     }
 }
 

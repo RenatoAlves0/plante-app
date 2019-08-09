@@ -18,6 +18,7 @@ import luzForm from '../views/Luz/Form'
 import nutrienteList from '../views/Nutriente/List'
 import nutrienteForm from '../views/Nutriente/Form'
 import dash from '../views/Dashboard/Dash'
+import week from '../views/Weather/Week'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -48,6 +49,7 @@ export default class Routes extends Component {
                             <Scene key='nutrienteList' component={nutrienteList} hideNavBar />
                             <Scene key='nutrienteForm' component={nutrienteForm} hideNavBar />
                             <Scene key='dash' component={dash} hideNavBar />
+                            <Scene key='week' component={week} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>

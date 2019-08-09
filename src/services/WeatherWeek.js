@@ -130,7 +130,7 @@ class WeatherWeek {
     }
 
     async get() {
-        let index_file
+        let index_file = -1
         return await rnfs.readDir(rnfs.DocumentDirectoryPath)
             .then(async (result) => {
                 console.log('Resultado de leitura obtido', result)
@@ -139,7 +139,7 @@ class WeatherWeek {
                         index_file = await result.indexOf(element)
                     }
                 })
-                if (!index_file) {
+                if (index_file < 0) {
                     await this.update()
                     this.get()
                 }

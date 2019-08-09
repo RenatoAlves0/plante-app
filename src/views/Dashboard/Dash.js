@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Row, Toast, View, Form } from 'native-base'
 import { StatusBar, ScrollView } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
 import LinearGradient from 'react-native-linear-gradient'
@@ -138,121 +139,65 @@ export default class Dash extends Component {
 
         return (
             <Container>
-                {/* 0 */}
-                {this.state.tab_atual == 0 ?
-                    <Content>
-                        {this.state.conectado ? null :
-                            <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
-                                useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                {/* Botão de reconexão com o Plante Box */}
+                <Content>
+                    {this.state.conectado ? null :
+                        <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.purple_vivid]}
+                            useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
+                            style={{
+                                width: 370, borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 5
+                            }}>
+                            <Button rounded onPress={() => this.conectar()}
                                 style={{
-                                    width: 370, borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 5
+                                    backgroundColor: '', width: 350, borderRadius: 20,
+                                    elevation: 0, justifyContent: 'center'
                                 }}>
-                                <Button rounded onPress={() => this.conectar()}
-                                    style={{
-                                        backgroundColor: '', width: 350, borderRadius: 20,
-                                        elevation: 0, justifyContent: 'center'
-                                    }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar ao  </Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
-                                    <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
-                                </Button>
-                            </LinearGradient>}
-                        <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar ao  </Text>
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
+                                <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
+                            </Button>
+                        </LinearGradient>}
+                    <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
 
-                        <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray }}
-                        >Plantação</Text>
-                        <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
-                            {this.sensor_atuador.map((item) => (
-                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
-                                    onPress={() => { this.setState({ sensor_atuador_atual: item.index, sensor_atuador_cor: item.cor, label: item.label }) }}>
-                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium }} />
-                                    <Text uppercase={false} style={{
-                                        color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
-                                    }}>  {item.label}</Text>
-                                </Button>
-                            ))}
-                        </Form>
-                        <ScrollView style={{ display: this.state.sensor_atuador_atual == 0 ? 'flex' : 'none' }}
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            decelerationRate='fast'
-                            snapToAlignment='start'
-                            snapToInterval={170}>
-                            <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
-                                <Form style={{ width: 10, height: 200 }} />
-                                {cards.map((item) => (<Card key={item.id} item={item} />))}
-                                <Form style={{ width: 61, height: 200 }} />
-                            </Row>
-                        </ScrollView>
+                    {/* Plantação */}
 
-                        <ScrollView style={{ display: this.state.sensor_atuador_atual == 1 ? 'flex' : 'none' }}
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            decelerationRate='fast'
-                            snapToAlignment='start'
-                            snapToInterval={170}>
+                    <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
+                    >Plantação</Text>
+                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
+                        {this.sensor_atuador.map((item) => (
+                            <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
+                                onPress={() => { this.setState({ sensor_atuador_atual: item.index, sensor_atuador_cor: item.cor, label: item.label }) }}>
+                                <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                                <Text uppercase={false} style={{
+                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                }}>  {item.label}</Text>
+                            </Button>
+                        ))}
+                    </Form>
+                    <ScrollView style={[this.state.sensor_atuador_atual == 0 ? {} : this.estilo.hide]}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        decelerationRate='fast'
+                        snapToAlignment='start'
+                        snapToInterval={170}>
+                        <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
+                            <Form style={{ width: 10, height: 200 }} />
+                            {cards.map((item) => (<Card key={item.id} item={item} />))}
+                            <Form style={{ width: 61, height: 200 }} />
+                        </Row>
+                    </ScrollView>
 
-                            <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
-                                <Form style={{ width: 10, height: 200 }} />
-                                <Card item={this.state.regar ?
-                                    {
-                                        cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
-                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
-                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                                    }
-                                    : {
-                                        cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
-                                        icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
-                                        sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
-                                    }} />
-                                <Form style={{ width: 61, height: 200 }} />
-                            </Row>
-                        </ScrollView>
+                    <ScrollView style={[this.state.sensor_atuador_atual == 1 ? {} : this.estilo.hide]}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        decelerationRate='fast'
+                        snapToAlignment='start'
+                        snapToInterval={170}>
 
-                        {/* Previsão */}
-
-                        <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray }}
-                        >Previsão do tempo</Text>
-                        <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
-                            {this.tipo_previsao_tempo.map((item) => (
-                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
-                                    onPress={() => { this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label }) }}>
-                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium }} />
-                                    <Text uppercase={false} style={{
-                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
-                                    }}>  {item.label}</Text>
-                                </Button>
-                            ))}
-                        </Form>
-
-                        {this.state.weather_today.temperatura ?
-                            <Form style={[this.state.tipo_previsao_tempo_atual != 0 ? { height: 0, width: 0, opacity: 0 } : { marginTop: 20 }]}>
-                                <ChartToday data_array={this.state.weather_today.temperatura}
-                                    label_array={this.state.weather_today.hora}
-                                    color={this.estilo.cor.purple} label_data='º' />
-                            </Form> : null}
-
-                        {this.state.weather_week.temperatura_maxima ?
-                            <Form style={[this.state.tipo_previsao_tempo_atual != 1 ? { height: 0, width: 0, opacity: 0 } : { marginTop: 50 }]}>
-                                <ChartWeek data_array={this.state.weather_week.temperatura_maxima}
-                                    opacity={''}
-                                    color={this.estilo.cor.purple} label_data='º' />
-                                <ChartWeek data_array={this.state.weather_week.temperatura_minima}
-                                    label_array={this.state.weather_week.dia_semana}
-                                    opacity={'77'} background={this.estilo.cor.purple}
-                                    color={this.estilo.cor.purple} label_data='º' />
-                            </Form> : null}
-
-                    </Content>
-                    : null}
-
-                {/* 1 */}
-                {this.state.tab_atual == 1 ?
-                    <Content>
-                        <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                        <View style={{ paddingTop: 10, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1 }} >
+                        <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
+                            <Form style={{ width: 10, height: 200 }} />
                             <Card item={this.state.regar ?
                                 {
                                     cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
@@ -260,22 +205,70 @@ export default class Dash extends Component {
                                     sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                                 }
                                 : {
-                                    cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                                    cor1: this.estilo.cor.gray_solid, cor2: this.estilo.cor.gray_white, method: this.regar_change,
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
                                     sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                                 }} />
-                        </View>
-                    </Content> : null}
+                            <Form style={{ width: 61, height: 200 }} />
+                        </Row>
+                    </ScrollView>
 
-                {/* 2 */}
-                {/* <Container style={this.state.tab_atual == 2 ? null : { display: 'none' }}>
-                    {this.state.update_weater_week ? <WeatherWeek update={true} /> : <WeatherWeek />}
-                </Container> */}
+                    {/* Previsão do tempo */}
 
-                {/* 3 */}
-                {/* <Container style={this.state.tab_atual == 3 ? null : { display: 'none' }}>
-                    {this.state.update_weater_today ? <WeatherToday update={true} /> : <WeatherToday />}
-                </Container>*/}
+                    <Row>
+                        <Form style={{ width: '70%' }}>
+                            <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}>Previsão do tempo</Text>
+                        </Form>
+                        <Form style={{ width: '30%' }}>
+                            <Button rounded style={{ backgroundColor: '', elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
+                                onPress={async () => {
+                                    await weatherToday.update(), await this.setState({ weather_today: await weatherToday.get() }),
+                                        await weatherWeek.update(), await this.setState({ weather_week: await weatherWeek.get() })
+                                }}>
+                                <FeatherIcon name='refresh-cw' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                            </Button>
+                        </Form>
+                    </Row>
+
+                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
+                        <Form style={{ width: '70%', flexDirection: 'row' }}>
+                            {this.tipo_previsao_tempo.map((item) => (
+                                <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
+                                    onPress={() => { this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label }) }}>
+                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                                    <Text uppercase={false} style={{
+                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                    }}>  {item.label}</Text>
+                                </Button>
+                            ))}
+                        </Form>
+                        <Form style={{ width: '30%' }}>
+                            <Button rounded style={{ backgroundColor: '', elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
+                                onPress={async () => { Actions.week() }}>
+                                <FeatherIcon name='arrow-right' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                            </Button>
+                        </Form>
+                    </Form>
+
+                    {this.state.weather_today.temperatura ?
+                        <Form style={[this.state.tipo_previsao_tempo_atual != 0 ? this.estilo.hide : { marginTop: 20 }]}>
+                            <ChartToday data_array={this.state.weather_today.temperatura}
+                                label_array={this.state.weather_today.hora}
+                                color={this.estilo.cor.purple} label_data='º' />
+                        </Form> : null}
+
+                    {this.state.weather_week.temperatura_maxima ?
+                        <Form style={[this.state.tipo_previsao_tempo_atual != 1 ? this.estilo.hide : { marginTop: 50 }]}>
+                            <ChartWeek data_array={this.state.weather_week.temperatura_maxima}
+                                opacity={''}
+                                color={this.estilo.cor.purple} label_data='º' />
+                            <ChartWeek data_array={this.state.weather_week.temperatura_minima}
+                                label_array={this.state.weather_week.dia_semana}
+                                opacity={'77'} background={this.estilo.cor.purple}
+                                color={this.estilo.cor.purple} label_data='º' />
+                        </Form> : null}
+
+                </Content>
             </Container>
         )
     }

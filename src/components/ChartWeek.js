@@ -87,7 +87,7 @@ export default class ChartWeek extends Component {
                 {this.props.label_array ? <XAxis
                     style={{
                         marginLeft: -50, marginRight: -38, height: 52,
-                        backgroundColor: this.props.color, marginTop: 18
+                        backgroundColor: this.props.color, paddingTop: 18
                     }}
                     data={this.props.label_array}
                     formatLabel={(index) => {
