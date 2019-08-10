@@ -27,7 +27,7 @@ export default class Week extends Component {
             { key: 'chuva', icon: 'cloud-drizzle', variavel_ambiental: 'Chuva', cor: this.estilo.cor.blue },
             { key: 'nuvem', icon: 'cloud', variavel_ambiental: 'Nuvens', cor: this.estilo.cor.blue_light },
             { key: 'vento', icon: 'wind', variavel_ambiental: 'Vento', cor: this.estilo.cor.greenish_medium },
-            { key: 'sol', icon: 'sun', variavel_ambiental: 'Sol', cor: this.estilo.cor.orange_medium },
+            { key: 'sol', icon: 'sun', variavel_ambiental: 'Sol', cor: this.estilo.cor.orange },
             { key: 'lua', icon: 'moon', variavel_ambiental: 'Lua', cor: this.estilo.cor.blue_dark },
         ]
     }
@@ -177,25 +177,25 @@ export default class Week extends Component {
                     {/* Sol */}
                     <Form style={this.state.weather_atual == 'sol' ? null : this.estilo.hide}>
 
-                        <Row style={{ backgroundColor: this.estilo.cor.orange_medium, justifyContent: 'center', height: 50, paddingTop: 15 }}>
+                        <Row style={{ backgroundColor: this.estilo.cor.orange, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Nascer</Text>
                             <FeatherIcon name='sunrise' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.sol_nascer}
                             label_array_label_value={'h'}
                             opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.orange_medium} />
+                            color={this.estilo.cor.orange} />
 
-                        <Row style={{ backgroundColor: this.estilo.cor.orange, justifyContent: 'center', height: 50, paddingTop: 15 }}>
+                        <Row style={{ backgroundColor: this.estilo.cor.orange_medium, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Por</Text>
                             <FeatherIcon name='sunset' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.sol_por}
                             label_array_label_value={'h'}
                             opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.orange} />
+                            color={this.estilo.cor.orange_medium} />
 
-                        <Row style={{ backgroundColor: this.estilo.cor.orange_medium, justifyContent: 'center', height: 51, paddingTop: 15, marginBottom: -1 }}>
+                        <Row style={{ backgroundColor: this.estilo.cor.orange, justifyContent: 'center', height: 51, paddingTop: 15, marginBottom: -1 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>Duração</Text>
                             <FeatherIcon name='clock' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
                         </Row>
@@ -203,7 +203,7 @@ export default class Week extends Component {
                             label_array={this.state.weather_week.dia_semana}
                             label_array_label={'h'}
                             opacity={''} label_descricao_array_bold={true}
-                            color={this.estilo.cor.orange_medium} />
+                            color={this.estilo.cor.orange} />
                     </Form>
 
                     {/* Lua */}

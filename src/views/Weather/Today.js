@@ -27,7 +27,7 @@ export default class Today extends Component {
             { key: 'umidade', icon: 'droplet', variavel_ambiental: 'Umidade', cor: this.estilo.cor.blue_light },
             { key: 'chuva', icon: 'cloud-drizzle', variavel_ambiental: 'Chuva', cor: this.estilo.cor.blue },
             { key: 'vento', icon: 'wind', variavel_ambiental: 'Vento', cor: this.estilo.cor.greenish_medium },
-            { key: 'radiacao', icon: 'sun', variavel_ambiental: 'Radiação', cor: this.estilo.cor.orange_medium },
+            { key: 'radiacao', icon: 'sun', variavel_ambiental: 'Radiação', cor: this.estilo.cor.orange },
         ]
 
         this.weather_temperatura = [
@@ -118,7 +118,7 @@ export default class Today extends Component {
                             label_descricao_array={this.state.weather_today.uv_descricao}
                             label_descricao_array_big={true}
                             label_array={this.state.weather_today.hora}
-                            color={this.estilo.cor.orange_medium} label_data=' uv' />
+                            color={this.estilo.cor.orange} label_data=' uv' />
                     </Form>
                     {/* Gŕaficos (acima) */}
                 </View>
