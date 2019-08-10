@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Content, Text, Button, Row, Toast, View, Form } from 'native-base'
-import { StatusBar, ScrollView } from 'react-native'
+import { Container, Content, Text, Button, Row, Toast, Form } from 'native-base'
+import { StatusBar, ScrollView, Animated, Easing } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -19,6 +19,7 @@ export default class Dash extends Component {
         this.state = {
             weather_today: [],
             weather_week: [],
+            weather_updated: true,
             conectado: true,
             sensor_atuador_cor: this.estilo.cor.purple_vivid,
             sensor_atuador_atual: 0,
@@ -59,6 +60,26 @@ export default class Dash extends Component {
         this.client = new Client({
             uri: this.uri, clientId: this.client_id, storage: this.myStorage
         })
+    }
+
+    spinValue = new Animated.Value(0)
+
+    componentDidMount() {
+        this.spin()
+    }
+
+    spin = () => {
+        this.spinValue.setValue(0)
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: 1,
+                duration: 1000,
+                easing: Easing.linear,
+                useNativeDriver: true
+            }
+        ).start(() => this.spin())
+
     }
 
     async componentWillMount() {
@@ -126,17 +147,25 @@ export default class Dash extends Component {
             })
     }
 
+    async updateWeather() {
+        await this.setState({ weather_updated: false })
+        await weatherToday.update()
+        await this.setState({ weather_today: await weatherToday.get() })
+        await weatherWeek.update()
+        await this.setState({ weather_week: await weatherWeek.get() })
+        await this.setState({ weather_updated: true })
+    }
+
     render() {
+        const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
+
         const cards = [
             { id: 0, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
             { id: 1, cor1: this.estilo.cor.brown_vivid, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
             { id: 2, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
             { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
-            { id: 4, cor1: this.estilo.cor.blue_dark, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
+            { id: 4, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
-
-        console.log(this.state.weather_today);
-
 
         return (
             <Container>
@@ -222,11 +251,10 @@ export default class Dash extends Component {
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={async () => {
-                                    await weatherToday.update(), await this.setState({ weather_today: await weatherToday.get() }),
-                                        await weatherWeek.update(), await this.setState({ weather_week: await weatherWeek.get() })
-                                }}>
-                                <FeatherIcon name='refresh-cw' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                                onPress={async () => this.updateWeather()}>
+                                <Animated.View style={this.state.weather_updated ? null : { transform: [{ rotate }] }}>
+                                    <FeatherIcon name='refresh-cw' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                                </Animated.View>
                             </Button>
                         </Form>
                     </Row>

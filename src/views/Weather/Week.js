@@ -56,39 +56,35 @@ export default class Week extends Component {
                 {/* Opções (abaixo) */}
                 {/* Sensação Térmica */}
                 <Form style={this.state.weather_atual == 'temperatura' && this.state.temperatura_tipo == 'sensacao_termica' ?
-                    { backgroundColor: this.estilo.cor.gray_white_light, flexDirection: 'row', borderRadius: 50, marginTop: 40, alignSelf: 'center' } : this.estilo.hide} >
+                    { flexDirection: 'row', borderRadius: 50, marginTop: 40, alignSelf: 'center' } : this.estilo.hide} >
                     <Button rounded transparent
                         onPress={() => this.setState({ sensacao_termica: 0 })}>
-                        {this.state.sensacao_termica == 0 ?
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.gray_solid, borderRightWidth: 1, borderRightColor: this.estilo.cor.gray_solid }}>Sol</Text> :
-                            <FeatherIcon name='sun'
-                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.gray_medium }} />}
+                        <FeatherIcon name='sun'
+                            style={{ fontSize: 20, color: this.state.sensacao_termica == 0 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                        <Text uppercase={false} style={{ paddingLeft: 10, fontSize: 17, color: this.state.sensacao_termica == 0 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }}>Sol</Text>
                     </Button>
                     <Button rounded transparent
                         onPress={() => this.setState({ sensacao_termica: 1 })}>
-                        {this.state.sensacao_termica == 1 ?
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.gray_solid, borderLeftWidth: 1, borderLeftColor: this.estilo.cor.gray_solid }}>Sombra</Text> :
-                            <FeatherIcon name='cloud'
-                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.gray_medium }} />}
+                        <FeatherIcon name='cloud'
+                            style={{ marginLeft: 10, fontSize: 20, color: this.state.sensacao_termica == 1 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                        <Text uppercase={false} style={{ paddingLeft: 10, paddingRight: 0, fontSize: 17, color: this.state.sensacao_termica == 1 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }}>Sombra</Text>
                     </Button>
                 </Form>
 
                 {/* Dia / Noite */}
                 <Form style={this.state.weather_atual == 'temperatura' || this.state.weather_atual == 'sol' || this.state.weather_atual == 'lua' ? this.estilo.hide :
-                    { backgroundColor: this.estilo.cor.gray_white_light, flexDirection: 'row', borderRadius: 50, marginTop: 40, alignSelf: 'center' }}>
+                    { flexDirection: 'row', marginTop: 40, alignSelf: 'center' }}>
                     <Button rounded transparent
                         onPress={() => this.setState({ turno: 0 })}>
-                        {this.state.turno == 0 ?
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.gray_solid, borderRightWidth: 1, borderRightColor: this.estilo.cor.gray_solid }}>Dia</Text> :
-                            <FeatherIcon name='sun'
-                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.gray_medium }} />}
+                        <FeatherIcon name='sun'
+                            style={{ fontSize: 20, color: this.state.turno == 0 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                        <Text uppercase={false} style={{ paddingLeft: 10, fontSize: 17, color: this.state.turno == 0 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }}>Dia</Text>
                     </Button>
                     <Button rounded transparent
                         onPress={() => this.setState({ turno: 1 })}>
-                        {this.state.turno == 1 ?
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.gray_solid, borderLeftWidth: 1, borderLeftColor: this.estilo.cor.gray_solid }}>Noite</Text> :
-                            <FeatherIcon name='moon'
-                                style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.gray_medium }} />}
+                        <FeatherIcon name='moon'
+                            style={{ marginLeft: 10, fontSize: 20, color: this.state.turno == 1 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                        <Text uppercase={false} style={{ paddingLeft: 10, paddingRight: 0, fontSize: 17, color: this.state.turno == 1 ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }}>Noite</Text>
                     </Button>
                 </Form>
                 {/* Opções (acima) */}
