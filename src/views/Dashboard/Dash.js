@@ -17,8 +17,8 @@ export default class Dash extends Component {
         super(props)
         this.estilo = new estilo()
         this.state = {
-            weather_today: [],
-            weather_week: [],
+            weather_today: {},
+            weather_week: {},
             weather_updated: true,
             conectado: true,
             sensor_atuador_cor: this.estilo.cor.purple_vivid,
@@ -250,7 +250,7 @@ export default class Dash extends Component {
                             <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}>Previsão do tempo</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <Button transparent rounded style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
+                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
                                 onPress={async () => this.updateWeather()}>
                                 <Animated.View style={this.state.weather_updated ? null : { transform: [{ rotate }] }}>
                                     <FeatherIcon name='refresh-cw' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
@@ -279,7 +279,7 @@ export default class Dash extends Component {
                         </Form>
                     </Form>
 
-                    {this.state.weather_today.temperatura ?
+                    {this.state.weather_today && this.state.weather_today.temperatura ?
                         <Form style={[this.state.tipo_previsao_tempo_atual != 0 ? this.estilo.hide : { marginTop: 20 }]}>
                             <ChartToday data_array={this.state.weather_today.temperatura}
                                 label_array={this.state.weather_today.hora}
@@ -287,7 +287,7 @@ export default class Dash extends Component {
                                 color={this.estilo.cor.purple} label_data='º' />
                         </Form> : null}
 
-                    {this.state.weather_week.temperatura_maxima ?
+                    {this.state.weather_week && this.state.weather_week.temperatura_maxima ?
                         <Form style={[this.state.tipo_previsao_tempo_atual != 1 ? this.estilo.hide : { marginTop: 50 }]}>
                             <ChartWeek data_array={this.state.weather_week.temperatura_maxima}
                                 opacity={''}

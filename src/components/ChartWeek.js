@@ -53,7 +53,7 @@ export default class ChartWeek extends Component {
                         svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
                         contentInset={{ left: -40, right: -40 }}
-                        yMin={min - 1}
+                        yMin={min != 0 ? min - 1 : min}
                         yMax={max - min >= 20 ? max + 10 : max + 1}
                     >
                         <Line />
