@@ -235,24 +235,33 @@ export default class Week extends Component {
                     <Form style={{ flexDirection: 'row', marginVertical: 30, justifyContent: 'center' }}>
                         {/* Genérico */}
                         <Button rounded style={this.state.weather_atual == 'temperatura' ? this.estilo.hide : {
-                            backgroundColor: this.estilo.cor.white + '22', borderRadius: 50,
+                            backgroundColor: this.estilo.cor.white + '11', borderRadius: 20,
                             paddingVertical: 10, paddingHorizontal: 20, alignSelf: 'center',
-                            elevation: 0
+                            elevation: 0, borderRadius: 20
                         }}>
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}
+                            <Text uppercase={false} style={{
+                                color: this.estilo.cor.white, fontWeight: 'bold',
+                                fontSize: 17, paddingLeft: 30, paddingRight: 30
+                            }}
                             >{this.state.variavel_ambiental}</Text>
                         </Button>
 
                         {/* Temperatura / Sensação Térmica */}
                         <Form style={this.state.weather_atual == 'temperatura' ?
                             { flexDirection: 'row', flexWrap: 'wrap' } : this.estilo.hide} >
-                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '22', marginHorizontal: 10, elevation: 0 }}
+                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20 }}
                                 onPress={() => this.setState({ temperatura_tipo: 'temperatura' })}>
-                                <Text uppercase={false} style={{ fontSize: 17, color: this.state.temperatura_tipo == 'temperatura' ? this.estilo.cor.white : this.estilo.cor.white + '77' }}>Temperatura</Text>
+                                <Text uppercase={false} style={{
+                                    color: this.state.temperatura_tipo == 'temperatura' ? this.estilo.cor.white : this.estilo.cor.white + '77',
+                                    fontSize: 17, paddingLeft: 30, paddingRight: 30
+                                }}>Temperatura</Text>
                             </Button>
-                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '22', marginHorizontal: 10, elevation: 0 }}
+                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20 }}
                                 onPress={() => this.setState({ temperatura_tipo: 'sensacao_termica' })}>
-                                <Text uppercase={false} style={{ fontSize: 17, color: this.state.temperatura_tipo == 'sensacao_termica' ? this.estilo.cor.white : this.estilo.cor.white + '77' }}>Sensação térmica</Text>
+                                <Text uppercase={false} style={{
+                                    color: this.state.temperatura_tipo == 'sensacao_termica' ? this.estilo.cor.white : this.estilo.cor.white + '77',
+                                    fontSize: 17, paddingLeft: 30, paddingRight: 30
+                                }}>Sensação térmica</Text>
                             </Button>
                         </Form>
                     </Form>

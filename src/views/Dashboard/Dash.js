@@ -82,13 +82,13 @@ export default class Dash extends Component {
 
     }
 
-    async componentWillMount() {
-        await this.setState({ weather_today: await weatherToday.get() })
-        await this.setState({ weather_week: await weatherWeek.get() })
+    componentWillMount() {
         this.load()
     }
 
     async load() {
+        await this.setState({ weather_today: await weatherToday.get() })
+        await this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })

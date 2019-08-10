@@ -32,9 +32,9 @@ export default class Today extends Component {
 
         this.weather_temperatura = [
             { key: 'temperatura', label: 'Temperatura' },
+            { key: 'ponto_orvalho', label: 'Ponto de orvalho' },
             { key: 'sensacao_termica', label: 'Sensação térmica' },
             { key: 'bulbo_umido', label: 'Bulbo úmido' },
-            { key: 'ponto_orvalho', label: 'Ponto de orvalho' },
         ]
     }
 
@@ -128,11 +128,13 @@ export default class Today extends Component {
                     <Form style={{ flexDirection: 'row', marginVertical: 30, justifyContent: 'center' }}>
                         {/* Genérico */}
                         <Button rounded style={this.state.weather_atual == 'temperatura' ? this.estilo.hide : {
-                            backgroundColor: this.estilo.cor.white + '22', borderRadius: 50,
-                            paddingVertical: 10, paddingHorizontal: 20, alignSelf: 'center',
-                            elevation: 0
+                            backgroundColor: this.estilo.cor.white + '11', borderRadius: 20,
+                            paddingVertical: 10, alignSelf: 'center', elevation: 0
                         }}>
-                            <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}
+                            <Text uppercase={false} style={{
+                                fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                                paddingLeft: 30, paddingRight: 30
+                            }}
                             >{this.state.variavel_ambiental}</Text>
                         </Button>
 
@@ -140,9 +142,15 @@ export default class Today extends Component {
                         <Form style={this.state.weather_atual != 'temperatura' ? this.estilo.hide :
                             { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', paddingBottom: 5 }} >
                             {this.weather_temperatura.map((item) => (
-                                <Button key={item.key} rounded style={{ backgroundColor: this.estilo.cor.white + '22', marginHorizontal: 10, elevation: 0, marginTop: 10 }}
+                                <Button rounded key={item.key} style={{
+                                    backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0,
+                                    marginVertical: 10, borderRadius: 20
+                                }}
                                     onPress={() => this.setState({ temperatura_tipo: item.key })}>
-                                    <Text uppercase={false} style={{ fontSize: 17, color: item.key == this.state.temperatura_tipo ? this.estilo.cor.white : this.estilo.cor.white + '77' }}>{item.label}</Text>
+                                    <Text uppercase={false} style={{
+                                        fontSize: 17, color: item.key == this.state.temperatura_tipo ? this.estilo.cor.white : this.estilo.cor.white + '77',
+                                        paddingLeft: 30, paddingRight: 30
+                                    }}>{item.label}</Text>
                                 </Button>
                             ))}
                         </Form>
