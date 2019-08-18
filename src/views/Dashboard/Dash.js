@@ -272,10 +272,20 @@ export default class Dash extends Component {
                             ))}
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <Button transparent rounded style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={async () => { this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : this.state.tipo_previsao_tempo_atual == 1 ? Actions.week() : null }}>
-                                <FeatherIcon name='arrow-right' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
-                            </Button>
+                            <LinearGradient colors={[this.estilo.cor.purple_vivid, this.estilo.cor.purple]}
+                                useAngle={true} angle={this.state.tipo_previsao_tempo_atual == 0 ? 45 : 270} angleCenter={{ x: 0.5, y: 0.5 }}
+                                style={{
+                                    borderRadius: 20, alignSelf: 'flex-end', elevation: 5,
+                                    borderTopRightRadius: 0, borderBottomRightRadius: 0
+                                }}>
+                                <Button transparent rounded style={{
+                                    paddingLeft: 15, paddingRight: 25, borderRadius: 20, alignSelf: 'flex-end',
+                                    borderTopRightRadius: 0, borderBottomRightRadius: 0
+                                }}
+                                    onPress={async () => { this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : this.state.tipo_previsao_tempo_atual == 1 ? Actions.week() : null }}>
+                                    <FeatherIcon name='arrow-right' style={{ fontSize: 22, color: this.estilo.cor.white }} />
+                                </Button>
+                            </LinearGradient>
                         </Form>
                     </Form>
 
