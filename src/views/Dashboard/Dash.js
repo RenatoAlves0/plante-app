@@ -46,7 +46,7 @@ export default class Dash extends Component {
         ]
         this.topico_sensores = 'plante_box_sensores(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
-        this.uri = 'ws://iot.eclipse.org:80/ws'
+        this.uri = 'ws://test.mosquitto.org:8080/ws'
         this.client_id = 'plante_app_id(renalves.oli@gmail.com)'
         this.myStorage = {
             setItem: (key, item) => {
@@ -134,6 +134,10 @@ export default class Dash extends Component {
                 return this.client.subscribe(this.topico_sensores)
             })
             .catch((responseObject) => {
+                console.log('...')
+                console.log(responseObject)
+                console.log(this.uri)
+
                 if (responseObject.errorCode !== 0) {
                     this.setState({ conectado: false })
                     Toast.show({
