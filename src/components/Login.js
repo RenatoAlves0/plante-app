@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { StatusBar, Image, Dimensions } from 'react-native'
-import { Container, Text, Button, Label, View, Content, Input, Item, Form } from 'native-base'
+import { Container, Text, Button, View, Content, Input, Form } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 import http from '../services/Http'
 import LinearGradient from 'react-native-linear-gradient';
 
-export default class Init extends Component {
+export default class Login extends Component {
 
     constructor(props) {
         super(props)
@@ -28,7 +28,9 @@ export default class Init extends Component {
 
     async logar() {
         let login = {}
+        console.log('login')
         login = await this.http.logar(this.state.login)
+        console.log(login)
         if (login && login._id && login.usuario) {
             Actions.dash()
         }
@@ -88,21 +90,34 @@ export default class Init extends Component {
                         </Button>
                     </LinearGradient>
 
-                    {/* <Label style={this.state.label}>
-                        Login</Label> */}
-                    {/* <Button full rounded style={{
-                        height: 100, margin: 20, elevation: 10,
-                        backgroundColor: this.estilo.cor.blue_solid
-                    }} onPress={() => Actions.plantaList()} >
-                        <Text uppercase={false} style={{ fontSize: 25 }}>Administrador</Text>
-                    </Button>
-                    <Button full rounded style={{
-                        height: 100, margin: 20, elevation: 10,
-                        backgroundColor: this.estilo.cor.greenish_solid
-                    }} onPress={() => Actions.dash()} >
-                        <Text uppercase={false} style={{ fontSize: 25 }}>Cliente</Text>
+                    <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.greenish_solid]}
+                        useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
+                        style={{
+                            width: '90%', alignSelf: 'center', borderRadius: 20, marginTop: 20, elevation: 3,
+                        }}>
+                        <Button onPress={() => Actions.dash()}
+                            style={{
+                                backgroundColor: 'transparent', width: '100%', borderRadius: 20,
+                                elevation: 0, justifyContent: 'center', height: 50
+                            }}>
+                            <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >Cliente</Text>
+                        </Button>
+                    </LinearGradient>
 
-                    </Button> */}
+                    <LinearGradient colors={[this.estilo.cor.blue, this.estilo.cor.blue_dark]}
+                        useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
+                        style={{
+                            width: '90%', alignSelf: 'center', borderRadius: 20, marginVertical: 20, elevation: 3,
+                        }}>
+                        <Button onPress={() => Actions.plantaList()}
+                            style={{
+                                backgroundColor: 'transparent', width: '100%', borderRadius: 20,
+                                elevation: 0, justifyContent: 'center', height: 50
+                            }}>
+                            <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >Administrador</Text>
+                        </Button>
+                    </LinearGradient>
+
                 </Content>
             </Container>
         )

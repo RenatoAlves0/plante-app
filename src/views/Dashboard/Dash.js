@@ -38,7 +38,7 @@ export default class Dash extends Component {
         }
         this.sensor_atuador = [
             { index: 0, icon: 'activity', label: 'Sensores', cor: this.estilo.cor.purple_vivid },
-            { index: 1, icon: 'command', label: 'Atuadores', cor: this.estilo.cor.blue },
+            { index: 1, icon: 'command', label: 'Regador', cor: this.estilo.cor.blue },
         ]
         this.tipo_previsao_tempo = [
             { index: 0, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
@@ -195,8 +195,21 @@ export default class Dash extends Component {
 
                     {/* Plantação */}
 
-                    <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
-                    >Plantação</Text>
+                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 20 }}>
+                        <Form style={{ width: '70%', flexDirection: 'row' }}>
+                            <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
+                            >Plantação</Text>
+                        </Form>
+                        <Form style={{ width: '30%' }}>
+                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
+                                onPress={() => { Actions.today() }}>
+                                <Animated.View style={this.state.weather_updated ? null : { transform: [{ rotate }] }}>
+                                    <FeatherIcon name='grid' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                                </Animated.View>
+                            </Button>
+                        </Form>
+                    </Form>
+
                     <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
                         {this.sensor_atuador.map((item) => (
                             <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
@@ -276,7 +289,7 @@ export default class Dash extends Component {
                             ))}
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <LinearGradient colors={[this.estilo.cor.purple_vivid, this.estilo.cor.purple]}
+                            <LinearGradient colors={[this.estilo.cor.gray_solid, this.estilo.cor.gray_medium]}
                                 useAngle={true} angle={this.state.tipo_previsao_tempo_atual == 0 ? 45 : 270} angleCenter={{ x: 0.5, y: 0.5 }}
                                 style={{
                                     borderRadius: 20, alignSelf: 'flex-end', elevation: 5,

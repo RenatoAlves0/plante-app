@@ -17,7 +17,7 @@ export default class BottomMenuCliente extends Component {
       { key: 1, label: 'Atuadores', icon: 'command', type: 'Feather', size: 25, color: this.estilo.cor.greenish_solid },
       { key: 2, label: 'Clima semanal', icon: 'cloud', type: 'Feather', size: 25, color: this.estilo.cor.blue_solid },
       { key: 3, label: 'Clima 12h', icon: 'clock', type: 'Feather', size: 25, color: this.estilo.cor.purple },
-      { key: 4, label: 'Sair', icon: 'log-out', type: 'Feather', size: 25, color: this.estilo.cor.red, method: () => Actions.init() },
+      { key: 4, label: 'Sair', icon: 'log-out', type: 'Feather', size: 25, color: this.estilo.cor.red, method: () => Actions.login() },
     ]
   }
 

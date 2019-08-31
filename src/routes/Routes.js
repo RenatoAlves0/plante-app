@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native'
 import { Router, Scene, Stack } from 'react-native-router-flux'
 import { Container, Root } from 'native-base'
 import estilo from '../assets/Estilo'
-import init from '../components/Init'
+import login from '../components/Login'
 import plantaList from '../views/Planta/List'
 import plantaForm from '../views/Planta/Form'
 import familiaForm from '../views/Familia/Form'
@@ -35,7 +35,7 @@ export default class Routes extends Component {
                 <Root>
                     <Router>
                         <Stack key='root'>
-                            <Scene key='init' component={init} initial hideNavBar />
+                            <Scene key='login' component={login} initial hideNavBar />
                             <Scene key='plantaList' component={plantaList} hideNavBar />
                             <Scene key='plantaForm' component={plantaForm} hideNavBar />
                             <Scene key='familiaForm' component={familiaForm} hideNavBar />

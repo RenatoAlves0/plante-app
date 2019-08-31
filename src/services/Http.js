@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const local = 'http://10.0.3.2:5000/'
 const online = 'https://plante-api-user.herokuapp.com/'
-const baseUrl = online
+const baseUrl = local
 
 export default class Http {
     async logar(dados) {
