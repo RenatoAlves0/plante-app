@@ -44,7 +44,7 @@ export default class Estilos {
             padding: 10,
             backgroundColor: this.cor.gray_white + '99',
             margin: 10, marginBottom: 0,
-            borderRadius: 20,
+            borderRadius: 10,
             flexDirection: 'column'
         }
 
@@ -54,7 +54,7 @@ export default class Estilos {
 
         this.subrow = {
             backgroundColor: this.cor.gray_white + '99',
-            borderRadius: 20,
+            borderRadius: 10,
             marginTop: 5
         }
 

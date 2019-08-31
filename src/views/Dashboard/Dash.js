@@ -125,7 +125,7 @@ export default class Dash extends Component {
             .then(() => {
                 this.setState({ conectado: true })
                 Toast.show({
-                    text: 'Conectado com sucesso!',
+                    text: 'Conectado ao Plante Box!',
                     type: 'success',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
@@ -141,7 +141,7 @@ export default class Dash extends Component {
                 if (responseObject.errorCode !== 0) {
                     this.setState({ conectado: false })
                     Toast.show({
-                        text: 'Não foi possível conectar!',
+                        text: 'Falha ao conectar com o Plante Box!',
                         type: 'danger',
                         duration: 3000,
                         textStyle: { textAlign: 'center' },

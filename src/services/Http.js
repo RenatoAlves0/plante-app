@@ -1,15 +1,22 @@
 import axios from 'axios'
 
 const local = 'http://10.0.3.2:5000/'
-const online = 'https://plante-api.herokuapp.com/'
+const online = 'https://plante-api-user.herokuapp.com/'
 const baseUrl = online
 
 export default class Http {
+    async logar(dados) {
+        return await axios
+            .get(baseUrl + 'logins/logar', { params: { login: dados.login, senha: dados.senha } })
+            .then((data) => { return data.data })
+            .catch(() => { return {} })
+    }
+
     async get(entidade) {
         return await axios
             .get(baseUrl + entidade)
             .then((data) => { return data.data })
-            .catch((erro) => { console.error(erro) })
+            .catch(() => { return [] })
     }
 
     async post(entidade, dados) {
@@ -31,7 +38,6 @@ export default class Http {
             .then((data) => {
                 return data[data.length - 1]
             })
-
     }
 
     async delete(entidade, _id) {
