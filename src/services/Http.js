@@ -35,11 +35,12 @@ export default class Http {
             .catch((erro) => { console.error(erro) })
     }
 
-    async getLast(entidade) {
-        return await this.get(entidade)
+    async getLast(entidade, i) {
+        return await this.get(entidade, i)
             .then((data) => {
                 return data[data.length - 1]
             })
+            .catch((erro) => { console.error(erro) })
     }
 
     async delete(entidade, _id, i) {

@@ -4,7 +4,8 @@ import { Container, Text, Button, View, Content, Input, Form } from 'native-base
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 import http from '../services/Http'
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient'
+// import planilha from '../assets/planilha_estados_cidades'
 
 export default class Login extends Component {
 
@@ -26,11 +27,41 @@ export default class Login extends Component {
         }
     }
 
+    componentWillMount() {
+        this.load()
+    }
+
+    async load() {
+    }
+
+    // async importarPlanilha() {
+    // planilha.forEach(async (estado, index) => {
+    //     estado.pais = '5d699a2f0762797037d357fc'
+    //     await this.http.post('estados', estado, 0)
+    //         .then(async (value) => {
+    //             console.log(value)
+    //             await estado.cidades.forEach(async (cidade) => {
+    //                 let c = {
+    //                     nome: cidade,
+    //                     estado: value._id
+    //                 }
+    //                 await this.saveCidade(c)
+    //             })
+    //         })
+    //         .catch(error => { console.error(error) })
+    // })
+
+    // }
+
+    // async saveCidade(cidade) {
+    //     await this.http.post('cidades', cidade, 0)
+    //         .then(value => console.log(value))
+    //         .catch(error => { console.error(error) })
+    // }
+
     async logar() {
         let login = {}
-        console.log('login')
         login = await this.http.logar(this.state.login)
-        console.log(login)
         if (login && login._id && login.usuario) {
             Actions.dash()
         }

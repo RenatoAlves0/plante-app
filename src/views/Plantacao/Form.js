@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StatusBar, Dimensions } from 'react-native'
-import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form } from 'native-base'
+import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form, Right } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
@@ -27,6 +27,30 @@ export default class PlantacaoForm extends Component {
         }
     }
 
+    componentWillMount() {
+        this.load()
+    }
+
+    componentWillReceiveProps() {
+        this.load()
+    }
+
+    async load() {
+        if (this.props.item) this.setState({ item: this.props.item })
+        await this.plantas()
+    }
+
+    async plantas() {
+        if (this.props.item) this.setState({ cultura: this.props.item.cultura })
+        this.http.get('plantas', 1).then((data) => {
+            this.setState({ culturas: data })
+        })
+    }
+
+    async save() {
+
+    }
+
     render() {
         return (
             <Container>
@@ -37,8 +61,8 @@ export default class PlantacaoForm extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantação</Text>
                     </Body>
-                    <Button disabled rounded transparent onPress={() => Actions.pop()}>
-                        <FeatherIcon name='arrow-left' style={{ color: 'transparent', fontSize: 22, marginHorizontal: 5 }} />
+                    <Button rounded transparent onPress={() => this.save()}>
+                        <FeatherIcon name='check' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
@@ -64,7 +88,7 @@ export default class PlantacaoForm extends Component {
                                     onValueChange={(value) => {
                                         this.setState({ item: { ...this.state.item, cultura: value } })
                                     }}>
-                                    {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome} value={item.nome} /> })}
+                                    {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item.nome} /> })}
                                 </Picker>
                             </Row>
                         </Row>
