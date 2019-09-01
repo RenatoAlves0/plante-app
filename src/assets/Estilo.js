@@ -89,13 +89,13 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            width: 150, height: 200, marginHorizontal: 10, paddingTop: 0,
+            width: Dimensions.get('screen').width * .37, height: 200, marginHorizontal: 10, paddingTop: 0,
             paddingBottom: 0, borderRadius: 20, elevation: 10, marginVertical: 20
         }
 
         this.item_dash_weather = {
-            width: 370, margin: 15, paddingTop: 0, alignSelf: 'center',
-            paddingBottom: 5, borderRadius: 20, elevation: 10
+            width: '90%', marginVertical: 15, marginHorizontal: 10, paddingTop: 0,
+            alignSelf: 'center', paddingBottom: 5, borderRadius: 20, elevation: 10
         }
 
         this.buttom_item_dash = {

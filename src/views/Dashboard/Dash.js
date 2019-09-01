@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Row, Toast, Form } from 'native-base'
-import { StatusBar, ScrollView, Animated, Easing } from 'react-native'
+import { StatusBar, ScrollView, Animated, Easing, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -202,10 +202,8 @@ export default class Dash extends Component {
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={() => { Actions.today() }}>
-                                <Animated.View style={this.state.weather_updated ? null : { transform: [{ rotate }] }}>
-                                    <FeatherIcon name='grid' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
-                                </Animated.View>
+                                onPress={() => { Actions.plantacaoList() }}>
+                                <FeatherIcon name='grid' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                             </Button>
                         </Form>
                     </Form>
@@ -227,7 +225,7 @@ export default class Dash extends Component {
                         showsHorizontalScrollIndicator={false}
                         decelerationRate='fast'
                         snapToAlignment='start'
-                        snapToInterval={170}>
+                        snapToInterval={20 + Dimensions.get('screen').width * .37}>
                         <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
                             <Form style={{ width: 10, height: 200 }} />
                             {cards.map((item) => (<Card key={item.id} item={item} />))}
@@ -241,7 +239,7 @@ export default class Dash extends Component {
                         showsHorizontalScrollIndicator={false}
                         decelerationRate='fast'
                         snapToAlignment='start'
-                        snapToInterval={170}>
+                        snapToInterval={20 + Dimensions.get('screen').width * .37}>
 
                         <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
                             <Form style={{ width: 10, height: 200 }} />

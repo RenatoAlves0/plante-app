@@ -35,14 +35,14 @@ export default class ListPlanta extends Component {
   }
 
   async load() {
-    await this.http.get('plantas').then((data) => {
+    await this.http.get('plantas', 1).then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   delete = async (confirm) => {
     await this.setState({ modal: false })
-    confirm ? await this.http.delete('plantas', this.state.item_delete._id)
+    confirm ? await this.http.delete('plantas', this.state.item_delete._id, 1)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(this.state.item_delete), 1)

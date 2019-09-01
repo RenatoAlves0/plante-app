@@ -71,49 +71,49 @@ export default class FormPlanta extends Component {
 
     async familia() {
         if (this.props.item) this.setState({ familia: this.props.item.familia })
-        this.http.get('familias').then((data) => {
+        this.http.get('familias', 1).then((data) => {
             this.setState({ familias: data })
         })
     }
 
     async genero() {
         if (this.props.item) this.setState({ genero: this.props.item.genero })
-        this.http.get('generos').then((data) => {
+        this.http.get('generos', 1).then((data) => {
             this.setState({ generos: data })
         })
     }
 
     async especie() {
         if (this.props.item) this.setState({ especie: this.props.item.especie })
-        this.http.get('especies').then((data) => {
+        this.http.get('especies', 1).then((data) => {
             this.setState({ especies: data })
         })
     }
 
     async climas() {
         if (this.props.item) this.setState({ clima: this.props.item.clima })
-        this.http.get('climas').then((data) => {
+        this.http.get('climas', 1).then((data) => {
             this.setState({ climas: data })
         })
     }
 
     async solos() {
         if (this.props.item) this.setState({ solo: this.props.item.solo })
-        this.http.get('solos').then((data) => {
+        this.http.get('solos', 1).then((data) => {
             this.setState({ solos: data })
         })
     }
 
     async luzs() {
         if (this.props.item) this.setState({ luz: this.props.item.luz })
-        this.http.get('luzs').then((data) => {
+        this.http.get('luzs', 1).then((data) => {
             this.setState({ luzs: data })
         })
     }
 
     async nutrientes() {
         if (this.props.item) this.setState({ nutriente: this.props.item.nutriente })
-        this.http.get('nutrientes').then((data) => {
+        this.http.get('nutrientes', 1).then((data) => {
             this.setState({ nutrientes: data })
         })
     }
@@ -135,9 +135,9 @@ export default class FormPlanta extends Component {
 
     async save() {
         this.state.item._id ?
-            await this.http.put('plantas', this.state.item._id, this.corrigir_json(this.state.item))
+            await this.http.put('plantas', this.state.item._id, this.corrigir_json(this.state.item), 1)
                 .then((data) => { return data }) :
-            await this.http.post('plantas', this.state.item)
+            await this.http.post('plantas', this.state.item, 1)
                 .then((data) => { return data })
         Actions.plantaList()
     }

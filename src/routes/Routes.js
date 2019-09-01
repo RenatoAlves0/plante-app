@@ -20,6 +20,8 @@ import nutrienteForm from '../views/Nutriente/Form'
 import dash from '../views/Dashboard/Dash'
 import week from '../views/Weather/Week'
 import today from '../views/Weather/Today'
+import plantacaoList from '../views/Plantacao/List'
+import plantacaoForm from '../views/Plantacao/Form'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -52,6 +54,8 @@ export default class Routes extends Component {
                             <Scene key='dash' component={dash} hideNavBar />
                             <Scene key='week' component={week} hideNavBar />
                             <Scene key='today' component={today} hideNavBar />
+                            <Scene key='plantacaoList' component={plantacaoList} hideNavBar />
+                            <Scene key='plantacaoForm' component={plantacaoForm} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>

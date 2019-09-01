@@ -47,10 +47,10 @@ export default class FormLuz extends Component {
 
     async save() {
         if (this.state.item._id)
-            await this.http.put('luzs', this.state.item._id, this.state.item)
+            await this.http.put('luzs', this.state.item._id, this.state.item, 1)
                 .then((data) => { return data })
         else
-            await this.http.post('luzs', this.state.item)
+            await this.http.post('luzs', this.state.item, 1)
                 .then((data) => { return data })
         this.props.pop ? Actions.plantaForm({ item: this.props.item }) : Actions.luzList()
     }

@@ -28,7 +28,7 @@ export default class Delete extends Component {
             }}>
                 <StatusBar backgroundColor={this.estilo.cor.gray_translucid} barStyle="dark-content" />
                 <Form style={{
-                    padding: 10, borderRadius: 20, width: '70%', flexDirection: 'column',
+                    padding: 10, borderRadius: 25, width: '70%', flexDirection: 'column',
                     alignContent: 'center', backgroundColor: this.estilo.cor.red
                 }} >
                     <Button full style={{ backgroundColor: this.estilo.cor.red, borderRadius: 20, elevation: 0 }}

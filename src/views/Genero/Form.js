@@ -33,13 +33,13 @@ export default class FormGenero extends Component {
 
     async familia() {
         if (this.props.item) this.setState({ familia: this.props.item.familia })
-        this.http.get('familias').then((data) => {
+        this.http.get('familias', 1).then((data) => {
             this.setState({ familias: data })
         })
     }
 
     async save() {
-        await this.http.post('generos', this.state.item)
+        await this.http.post('generos', this.state.item, 1)
             .then((data) => { return data })
     }
 

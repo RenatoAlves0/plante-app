@@ -33,13 +33,13 @@ export default class FormEspecie extends Component {
 
     async genero() {
         if (this.props.item) this.setState({ genero: this.props.item.genero })
-        this.http.get('generos').then((data) => {
+        this.http.get('generos', 1).then((data) => {
             this.setState({ generos: data })
         })
     }
 
     async save() {
-        await this.http.post('especies', this.state.item)
+        await this.http.post('especies', this.state.item, 1)
             .then((data) => { return data })
     }
 

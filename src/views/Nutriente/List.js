@@ -32,14 +32,14 @@ export default class ListNutriente extends Component {
   }
 
   async load() {
-    await this.http.get('nutrientes').then((data) => {
+    await this.http.get('nutrientes', 1).then((data) => {
       this.setState({ lista: data, loaded: true })
     })
   }
 
   delete = async (confirm) => {
     await this.setState({ modal: false })
-    confirm ? await this.http.delete('nutrientes', this.state.item_delete._id)
+    confirm ? await this.http.delete('nutrientes', this.state.item_delete._id, 1)
       .then(async (data) => {
         if (data == 'Ok') {
           await this.state.lista.splice(this.state.lista.indexOf(this.state.item_delete), 1)

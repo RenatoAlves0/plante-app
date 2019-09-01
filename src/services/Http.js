@@ -1,34 +1,36 @@
 import axios from 'axios'
 
-const local = 'http://10.0.3.2:5000/'
-const online = 'https://plante-api-user.herokuapp.com/'
-const baseUrl = local
+const baseUrl = [
+    'https://plante-api-user.herokuapp.com/',
+    'https://plante-api.herokuapp.com/',
+    'http://10.0.3.2:5000/'
+]
 
 export default class Http {
     async logar(dados) {
         return await axios
-            .get(baseUrl + 'logins/logar', { params: { login: dados.login, senha: dados.senha } })
+            .get(baseUrl[0] + 'logins/logar', { params: { login: dados.login, senha: dados.senha } })
             .then((data) => { return data.data })
             .catch(() => { return {} })
     }
 
-    async get(entidade) {
+    async get(entidade, i) {
         return await axios
-            .get(baseUrl + entidade)
+            .get(baseUrl[i] + entidade)
             .then((data) => { return data.data })
             .catch(() => { return [] })
     }
 
-    async post(entidade, dados) {
+    async post(entidade, dados, i) {
         return await axios
-            .post(baseUrl + entidade, dados)
+            .post(baseUrl[i] + entidade, dados)
             .then((data) => { return data.data })
             .catch((erro) => { console.error(erro) })
     }
 
-    async put(entidade, _id, dados) {
+    async put(entidade, _id, dados, i) {
         return await axios
-            .put(baseUrl + entidade + '/' + _id, dados)
+            .put(baseUrl[i] + entidade + '/' + _id, dados)
             .then((data) => { return data.data })
             .catch((erro) => { console.error(erro) })
     }
@@ -40,10 +42,10 @@ export default class Http {
             })
     }
 
-    async delete(entidade, _id) {
+    async delete(entidade, _id, i) {
         try {
             return await axios
-                .delete(baseUrl + entidade + '/' + _id)
+                .delete(baseUrl[i] + entidade + '/' + _id)
                 .then((data) => { return 'Ok' })
         } catch (error) {
             return 'Não foi possível excluir'
