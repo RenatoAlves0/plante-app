@@ -19,10 +19,12 @@ export default class PlantacaoForm extends Component {
                 nome: undefined,
                 cultura: undefined,
                 localizacao: undefined,
+                estado: undefined,
                 cidade: undefined,
                 usuario: undefined
             },
             culturas: [],
+            estados: [],
             cidades: []
         }
     }
@@ -38,6 +40,7 @@ export default class PlantacaoForm extends Component {
     async load() {
         if (this.props.item) this.setState({ item: this.props.item })
         await this.plantas()
+        await this.estados()
     }
 
     async plantas() {
@@ -47,9 +50,14 @@ export default class PlantacaoForm extends Component {
         })
     }
 
-    async save() {
-
+    async estados() {
+        if (this.props.item) this.setState({ estado: this.props.item.estado })
+        this.http.get('estados', 0).then((data) => {
+            this.setState({ estados: data })
+        })
     }
+
+    async save() { }
 
     render() {
         return (
@@ -101,6 +109,23 @@ export default class PlantacaoForm extends Component {
                                 onChangeText={(value) => {
                                     this.setState({ item: { ...this.state.item, localizacao: value + '' } })
                                 }} />
+                        </Row>
+                    </Form>
+
+                    <Form style={this.estilo.form}>
+                        <Label>Estado</Label>
+                        <Row>
+                            <Row style={this.estilo.subrow}>
+                                <Picker
+                                    mode='dialog'
+                                    iosIcon={<Icon name='arrow-down' />}
+                                    selectedValue={this.state.item.estado}
+                                    onValueChange={(value) => {
+                                        this.setState({ item: { ...this.state.item, estado: value } })
+                                    }}>
+                                    {this.state.estados.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.sigla + ')'} value={item.nome} /> })}
+                                </Picker>
+                            </Row>
                         </Row>
                     </Form>
 
