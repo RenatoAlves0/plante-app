@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 import http from '../services/Http'
 import LinearGradient from 'react-native-linear-gradient'
+import loginService from '../services/Login'
 // import planilha from '../assets/planilha_estados_cidades'
 
 export default class Login extends Component {
@@ -28,10 +29,7 @@ export default class Login extends Component {
     }
 
     componentWillMount() {
-        this.load()
-    }
-
-    async load() {
+        this.logar()
     }
 
     // async importarPlanilha() {
@@ -60,10 +58,19 @@ export default class Login extends Component {
     // }
 
     async logar() {
-        let login = {}
-        login = await this.http.logar(this.state.login)
-        if (login && login._id && login.usuario) {
+        let login = undefined
+        login = await loginService.get()
+        if (login && login._id) {
             Actions.dash()
+            return
+        }
+
+        if (this.state.login && this.state.login.login && this.state.login.senha) {
+            login = await this.http.logar(this.state.login)
+            if (login && login._id && login.usuario) {
+                loginService.update(login)
+                Actions.dash()
+            }
         }
     }
 

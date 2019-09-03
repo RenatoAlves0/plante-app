@@ -23,7 +23,7 @@ export default class Http {
 
     async get(entidade, i) {
         return await axios
-            .get(baseUrl[0] + entidade)
+            .get(baseUrl[i] + entidade)
             .then((data) => { return data.data })
             .catch(() => { return [] })
     }

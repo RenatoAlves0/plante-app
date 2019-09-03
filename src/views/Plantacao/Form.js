@@ -6,6 +6,7 @@ import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
 import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import loginService from '../../services/Login'
 
 export default class PlantacaoForm extends Component {
 
@@ -16,6 +17,7 @@ export default class PlantacaoForm extends Component {
         this.state = {
             validHorasPorDia: true,
             item: {
+                login: undefined,
                 nome: undefined,
                 cultura: undefined,
                 localizacao: undefined,
@@ -40,13 +42,20 @@ export default class PlantacaoForm extends Component {
 
     async load() {
         if (this.props.item) this.setState({ item: this.props.item })
+        await this.login()
         await this.plantas()
         await this.estados()
     }
 
+    async login() {
+        let login = undefined
+        login = await loginService.get()
+        if (login && login._id) this.setState({ item: { ...this.state.item, login: login } })
+    }
+
     async plantas() {
         if (this.props.item) this.setState({ cultura: this.props.item.cultura })
-        this.http.get('plantas', 1).then((data) => {
+        await this.http.get('plantas', 1).then((data) => {
             this.setState({ culturas: data })
         })
     }
@@ -103,9 +112,8 @@ export default class PlantacaoForm extends Component {
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
                                     selectedValue={this.state.item.cultura}
-                                    onValueChange={async (value) => {
-                                        await this.setState({ item: { ...this.state.item, cultura: value } });
-                                        await this.cidades()
+                                    onValueChange={(value) => {
+                                        this.setState({ item: { ...this.state.item, cultura: value } })
                                     }}>
                                     {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item.nome} /> })}
                                 </Picker>
