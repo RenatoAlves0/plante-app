@@ -23,6 +23,7 @@ export default class PlantacaoForm extends Component {
                 cidade: undefined,
                 usuario: undefined
             },
+            search: '',
             culturas: [],
             estados: [],
             cidades: []
@@ -55,6 +56,15 @@ export default class PlantacaoForm extends Component {
         this.http.get('estados', 0).then((data) => {
             this.setState({ estados: data })
         })
+    }
+
+    async cidades() {
+        this.setState({ cidade: undefined })
+        if (this.props.item && this.props.item.cidade) this.setState({ cidade: this.props.item.cidade })
+        if (this.state.item.estado && this.state.item.estado._id)
+            this.http.cidadesByEstado(this.state.item.estado._id).then((data) => {
+                this.setState({ cidades: data.cidades[0] })
+            })
     }
 
     async save() { }
@@ -93,8 +103,9 @@ export default class PlantacaoForm extends Component {
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
                                     selectedValue={this.state.item.cultura}
-                                    onValueChange={(value) => {
-                                        this.setState({ item: { ...this.state.item, cultura: value } })
+                                    onValueChange={async (value) => {
+                                        await this.setState({ item: { ...this.state.item, cultura: value } });
+                                        await this.cidades()
                                     }}>
                                     {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item.nome} /> })}
                                 </Picker>
@@ -105,7 +116,7 @@ export default class PlantacaoForm extends Component {
                     <Form style={this.estilo.form}>
                         <Label>Localização</Label>
                         <Row>
-                            <Input keyboardType='numeric' autoFocus={true} value={this.state.item.localizacao}
+                            <Input keyboardType='numeric' value={this.state.item.localizacao}
                                 onChangeText={(value) => {
                                     this.setState({ item: { ...this.state.item, localizacao: value + '' } })
                                 }} />
@@ -120,31 +131,33 @@ export default class PlantacaoForm extends Component {
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
                                     selectedValue={this.state.item.estado}
-                                    onValueChange={(value) => {
-                                        this.setState({ item: { ...this.state.item, estado: value } })
+                                    onValueChange={async (value) => {
+                                        await this.setState({ item: { ...this.state.item, estado: value } })
+                                        await this.cidades()
                                     }}>
-                                    {this.state.estados.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.sigla + ')'} value={item.nome} /> })}
+                                    {this.state.estados.map((item) => { return <Item key={item._id} label={item.nome + ' (' + item.sigla + ')'} value={item} /> })}
                                 </Picker>
                             </Row>
                         </Row>
                     </Form>
 
-                    <Form style={this.estilo.form}>
-                        <Label>Cidade</Label>
-                        <Row>
-                            <Row style={this.estilo.subrow}>
-                                <Picker
-                                    mode='dialog'
-                                    iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.item.cidade}
-                                    onValueChange={(value) => {
-                                        this.setState({ item: { ...this.state.item, cidade: value } })
-                                    }}>
-                                    {this.state.cidades.map((item) => { return <Item key={item.nome} label={item.nome} value={item.nome} /> })}
-                                </Picker>
+                    {this.state.cidades && this.state.cidades[0] ?
+                        <Form style={this.estilo.form}>
+                            <Label>Cidade</Label>
+                            <Row>
+                                <Row style={this.estilo.subrow}>
+                                    <Picker
+                                        mode='dialog'
+                                        iosIcon={<Icon name='arrow-down' />}
+                                        selectedValue={this.state.item.cidade}
+                                        onValueChange={(value) => {
+                                            this.setState({ item: { ...this.state.item, cidade: value } })
+                                        }}>
+                                        {this.state.cidades.map((item) => { return <Item key={item._id} label={item.nome} value={item} /> })}
+                                    </Picker>
+                                </Row>
                             </Row>
-                        </Row>
-                    </Form>
+                        </Form> : null}
                     <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
