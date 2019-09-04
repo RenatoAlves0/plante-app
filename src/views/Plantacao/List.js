@@ -95,7 +95,7 @@ export default class PlantacaoList extends Component {
                                         useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                         style={{
                                             width: '100%', borderRadius: 20, marginTop: 20,
-                                            alignSelf: 'center', elevation: 5, minHeight: 150, padding: 20
+                                            alignSelf: 'center', elevation: 10, minHeight: 150, padding: 20
                                         }}>
                                         <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
                                         <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
