@@ -4,7 +4,6 @@ import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Ico
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
-import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import loginService from '../../services/Login'
 
@@ -17,14 +16,14 @@ export default class PlantacaoForm extends Component {
         this.state = {
             validHorasPorDia: true,
             item: {
-                login: undefined,
                 nome: undefined,
                 cultura: undefined,
                 localizacao: undefined,
-                estado: undefined,
                 cidade: undefined,
                 usuario: undefined
             },
+            estado: undefined,
+            login: undefined,
             search: '',
             culturas: [],
             estados: [],
@@ -50,7 +49,10 @@ export default class PlantacaoForm extends Component {
     async login() {
         let login = undefined
         login = await loginService.get()
-        if (login && login._id) this.setState({ item: { ...this.state.item, login: login } })
+        if (login && login._id) {
+            await this.setState({ login: login })
+            this.setState({ item: { ...this.state.item, usuario: this.state.login.usuario } })
+        }
     }
 
     async plantas() {
@@ -68,15 +70,22 @@ export default class PlantacaoForm extends Component {
     }
 
     async cidades() {
-        this.setState({ cidade: undefined })
         if (this.props.item && this.props.item.cidade) this.setState({ cidade: this.props.item.cidade })
-        if (this.state.item.estado && this.state.item.estado._id)
-            this.http.cidadesByEstado(this.state.item.estado._id).then((data) => {
-                this.setState({ cidades: data.cidades[0] })
+        if (this.state.estado && this.state.estado._id)
+            this.http.cidadesByEstado(this.state.estado._id).then(async (data) => {
+                await this.setState({ cidades: data.cidades[0] })
+                this.setState({ item: { ...this.state.item, cidade: this.state.cidades[0]._id } })
             })
     }
 
-    async save() { }
+    async save() {
+        this.state.item._id ?
+            await this.http.put('plantacaos', this.state.item._id, this.state.item, 0)
+                .then((data) => { return data }) :
+            await this.http.post('plantacaos', this.state.item, 0)
+                .then((data) => { return data })
+        Actions.plantacaoList()
+    }
 
     render() {
         return (
@@ -115,7 +124,7 @@ export default class PlantacaoForm extends Component {
                                     onValueChange={(value) => {
                                         this.setState({ item: { ...this.state.item, cultura: value } })
                                     }}>
-                                    {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item.nome} /> })}
+                                    {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item._id} /> })}
                                 </Picker>
                             </Row>
                         </Row>
@@ -138,9 +147,9 @@ export default class PlantacaoForm extends Component {
                                 <Picker
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.item.estado}
+                                    selectedValue={this.state.estado}
                                     onValueChange={async (value) => {
-                                        await this.setState({ item: { ...this.state.item, estado: value } })
+                                        await this.setState({ estado: value })
                                         await this.cidades()
                                     }}>
                                     {this.state.estados.map((item) => { return <Item key={item._id} label={item.nome + ' (' + item.sigla + ')'} value={item} /> })}
@@ -161,7 +170,7 @@ export default class PlantacaoForm extends Component {
                                         onValueChange={(value) => {
                                             this.setState({ item: { ...this.state.item, cidade: value } })
                                         }}>
-                                        {this.state.cidades.map((item) => { return <Item key={item._id} label={item.nome} value={item} /> })}
+                                        {this.state.cidades.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
                                     </Picker>
                                 </Row>
                             </Row>
