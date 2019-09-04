@@ -90,60 +90,56 @@ export default class PlantacaoList extends Component {
                         <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
                             <Form style={{ width: Dimensions.get('screen').width * .05, height: 200 }} />
                             {this.state.plantacoes.map((item) => (
-                                <View key={item._id} style={{ width: Dimensions.get('screen').width * .8, marginLeft: Dimensions.get('screen').width * .05, paddingBottom: 30 }} >
-                                    <LinearGradient colors={[this.estilo.cor.green_solid, this.estilo.cor.greenish_medium]}
+                                <View key={item._id} style={{ width: Dimensions.get('screen').width * .8, marginLeft: Dimensions.get('screen').width * .05 }} >
+                                    <LinearGradient colors={[this.estilo.cor.greenish_solid, this.estilo.cor.greenish_medium]}
                                         useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                         style={{
                                             width: '100%', borderRadius: 20, marginTop: 20,
                                             alignSelf: 'center', elevation: 5, minHeight: 150, padding: 20
                                         }}>
                                         <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
-                                        <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '77', marginVertical: 10 }} />
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, fontWeight: 'bold' }} >{item.cultura.nome}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 15, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
+                                        <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.nome}</Text>
+                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
                                     </LinearGradient>
 
                                     <Content>
 
                                         {/* Clima */}
-                                        <Col style={{ alignItems: 'flex-end', marginTop: 20 }}>
+                                        <Col style={{ alignItems: 'flex-end', marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
                                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >{'Clima ' + item.cultura.clima.tipo}</Text>
                                             <Row style={{ alignItems: 'flex-end' }}>
-                                                <Icon name='thermometer' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.gray, fontSize: 23 }} />
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>Temperatura  </Text>
-                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }} >
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Temperatura  </Text>
+                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                                     {item.cultura.clima.temperaturaMinima + ' | ' + item.cultura.clima.temperaturaMaxima + ' ºC'}
                                                 </Text>
                                             </Row>
                                             <Row style={{ alignItems: 'flex-end' }}>
-                                                <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.gray, fontSize: 23 }} />
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>Umidade do ar  </Text>
-                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }} >
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Umidade do ar  </Text>
+                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                                     {item.cultura.clima.umidadeMinima + ' | ' + item.cultura.clima.umidadeMaxima + ' %'}
                                                 </Text>
                                             </Row>
                                         </Col>
 
                                         {/* Solo */}
-                                        <Col style={{ marginTop: 20 }}>
-                                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold', marginLeft: 6 }} >Solo</Text>
+                                        <Col style={{ marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >Solo</Text>
                                             <Row style={{ alignItems: 'flex-end' }}>
-                                                <Icon name='test-tube' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.gray, fontSize: 23 }} />
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>Acidez  </Text>
-                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }} >
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Acidez  </Text>
+                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                                     {item.cultura.solo.phMinimo + ' | ' + item.cultura.solo.phMaximo + ' ph'}
                                                 </Text>
                                             </Row>
                                             <Row style={{ alignItems: 'flex-end' }}>
-                                                <Icon name='water' type='MaterialCommunityIcons' style={{ color: this.estilo.cor.gray, fontSize: 23 }} />
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>Umidade  </Text>
-                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }} >
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Umidade  </Text>
+                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                                     {item.cultura.solo.umidadeMinima + ' | ' + item.cultura.solo.umidadeMaxima + ' %'}
                                                 </Text>
                                             </Row>
-                                            <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap', marginLeft: 6 }}>
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>{item.cultura.solo.quantidadeAreia > 0 ? 'Areia (' + item.cultura.solo.quantidadeAreia + ') ' : null}
+                                            <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{item.cultura.solo.quantidadeAreia > 0 ? 'Areia (' + item.cultura.solo.quantidadeAreia + ') ' : null}
                                                     {item.cultura.solo.quantidadeArgila > 0 ? 'Argila (' + item.cultura.solo.quantidadeArgila + ') ' : null}
                                                     {item.cultura.solo.quantidadeHumus > 0 ? 'Húmus (' + item.cultura.solo.quantidadeHumus + ') ' : null}
                                                     {item.cultura.solo.quantidadeMusgoSphagnum > 0 ? 'Sphagnum (' + item.cultura.solo.quantidadeMusgoSphagnum + ') ' : null}
@@ -153,30 +149,29 @@ export default class PlantacaoList extends Component {
                                         </Col>
 
                                         {/* Luz */}
-                                        <Col style={{ alignItems: 'flex-end', marginTop: 20 }}>
-                                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>Luz</Text>
-                                            <Row style={{ alignItems: 'flex-end' }}>
-                                                {item.cultura.luz.intensidade == 'Forte' ? <Icon style={{ fontSize: 30, color: this.estilo.cor.gray }} name='wb-sunny' type='MaterialIcons' /> : null}
-                                                {item.cultura.luz.intensidade == 'Média' ? <Icon style={{ fontSize: 26, color: this.estilo.cor.gray }} name='wb-sunny' type='MaterialIcons' /> : null}
-                                                {item.cultura.luz.intensidade == 'Fraca' ? <Icon style={{ fontSize: 22, color: this.estilo.cor.gray }} name='wb-sunny' type='MaterialIcons' /> : null}
-                                                {item.cultura.luz.intensidade == 'Sombra' ? <Icon style={{ fontSize: 22, color: this.estilo.cor.gray }} name='cloud' type='MaterialIcons' /> : null}
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}> Intesidade  </Text>
-                                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }}>
-                                                    {item.cultura.luz.intensidade}
-                                                </Text>
-                                            </Row>
+                                        <Col style={{ alignItems: 'flex-end', marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                            {item.cultura.luz.intensidade == 'Sombra' || !item.cultura.luz.horasPorDia ?
+                                                <Row style={{ alignItems: 'flex-end' }}>
+                                                    <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>Sombra</Text>
+                                                </Row>
+                                                : <Row style={{ alignItems: 'flex-end' }}>
+                                                    <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>Luz </Text>
+                                                    <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>
+                                                        {item.cultura.luz.intensidade}
+                                                    </Text>
+                                                </Row>}
                                             {item.cultura.luz.intensidade == 'Sombra' || !item.cultura.luz.horasPorDia ? null :
                                                 <Row style={{ alignItems: 'flex-end' }}>
-                                                    <Text style={{ fontSize: 18, color: this.estilo.cor.gray, fontWeight: 'bold' }}>{item.cultura.luz.horasPorDia}</Text>
-                                                    <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>{item.cultura.luz.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'}</Text>
+                                                    <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>{item.cultura.luz.horasPorDia}</Text>
+                                                    <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{item.cultura.luz.horasPorDia > 1 ? ' horas' : ' hora'} {'por dia'}</Text>
                                                 </Row>}
                                         </Col>
 
                                         {/* Nutrientes */}
-                                        <Col style={{ marginTop: 20 }}>
-                                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold', marginLeft: 6 }} >Nutrientes</Text>
-                                            <Row style={{ flexWrap: 'wrap', marginLeft: 6 }}>
-                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>
+                                        <Col style={{ marginTop: 20, marginBottom: 30, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >Nutrientes</Text>
+                                            <Row style={{ flexWrap: 'wrap' }}>
+                                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>
                                                     {item.cultura.nutriente.nitrogenio > 0 ? 'Nitrogênio (' + item.cultura.nutriente.nitrogenio + ') ' : null}
                                                     {item.cultura.nutriente.fosforo > 0 ? 'Fósforo (' + item.cultura.nutriente.fosforo + ') ' : null}
                                                     {item.cultura.nutriente.potassio > 0 ? 'Potássio (' + item.cultura.nutriente.potassio + ') ' : null}</Text>
@@ -186,8 +181,8 @@ export default class PlantacaoList extends Component {
                                                 || item.cultura.nutriente.manganes || item.cultura.nutriente.boro
                                                 || item.cultura.nutriente.cobre || item.cultura.nutriente.zinco
                                                 || item.cultura.nutriente.cloro || item.cultura.nutriente.molibdenio ?
-                                                <Row style={{ flexWrap: 'wrap', marginLeft: 6 }}>
-                                                    <Text style={{ fontSize: 16, color: this.estilo.cor.gray }}>
+                                                <Row style={{ flexWrap: 'wrap' }}>
+                                                    <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>
                                                         {item.cultura.nutriente.magnesio > 0 ? 'Magnésio (' + item.cultura.nutriente.magnesio + ') ' : null}
                                                         {item.cultura.nutriente.calcio > 0 ? 'Cálcio (' + item.cultura.nutriente.calcio + ') ' : null}
                                                         {item.cultura.nutriente.enxofre > 0 ? 'Enxôfre (' + item.cultura.nutriente.enxofre + ') ' : null}
@@ -211,4 +206,3 @@ export default class PlantacaoList extends Component {
         )
     }
 }
-

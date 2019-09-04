@@ -74,7 +74,7 @@ export default class PlantacaoForm extends Component {
         if (this.state.estado && this.state.estado._id)
             this.http.cidadesByEstado(this.state.estado._id).then(async (data) => {
                 await this.setState({ cidades: data.cidades[0] })
-                this.setState({ item: { ...this.state.item, cidade: this.state.cidades[0]._id } })
+                this.state.cidades[0]._id ? this.setState({ item: { ...this.state.item, cidade: this.state.cidades[0]._id } }) : null
             })
     }
 
