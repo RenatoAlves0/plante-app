@@ -22,6 +22,7 @@ import week from '../views/Weather/Week'
 import today from '../views/Weather/Today'
 import plantacaoList from '../views/Plantacao/List'
 import plantacaoForm from '../views/Plantacao/Form'
+import plantacaoView from '../views/Plantacao/View'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -56,6 +57,7 @@ export default class Routes extends Component {
                             <Scene key='today' component={today} hideNavBar />
                             <Scene key='plantacaoList' component={plantacaoList} hideNavBar />
                             <Scene key='plantacaoForm' component={plantacaoForm} hideNavBar />
+                            <Scene key='plantacaoView' component={plantacaoView} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>
