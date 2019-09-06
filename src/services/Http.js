@@ -21,6 +21,13 @@ export default class Http {
             .catch(() => { return {} })
     }
 
+    async plantacoesByUsuario(dados) {
+        return await axios
+            .get(baseUrl[0] + 'plantacaos/usuario/' + dados)
+            .then((data) => { return data.data })
+            .catch(() => { return {} })
+    }
+
     async get(entidade, i) {
         return await axios
             .get(baseUrl[i] + entidade)

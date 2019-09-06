@@ -6,7 +6,6 @@ import estilo from '../assets/Estilo'
 import http from '../services/Http'
 import LinearGradient from 'react-native-linear-gradient'
 import loginService from '../services/Login'
-// import planilha from '../assets/planilha_estados_cidades'
 
 export default class Login extends Component {
 
@@ -31,31 +30,6 @@ export default class Login extends Component {
     componentWillMount() {
         this.logar()
     }
-
-    // async importarPlanilha() {
-    // planilha.forEach(async (estado, index) => {
-    //     estado.pais = '5d699a2f0762797037d357fc'
-    //     await this.http.post('estados', estado, 0)
-    //         .then(async (value) => {
-    //             console.log(value)
-    //             await estado.cidades.forEach(async (cidade) => {
-    //                 let c = {
-    //                     nome: cidade,
-    //                     estado: value._id
-    //                 }
-    //                 await this.saveCidade(c)
-    //             })
-    //         })
-    //         .catch(error => { console.error(error) })
-    // })
-
-    // }
-
-    // async saveCidade(cidade) {
-    //     await this.http.post('cidades', cidade, 0)
-    //         .then(value => console.log(value))
-    //         .catch(error => { console.error(error) })
-    // }
 
     async logar() {
         let login = undefined

@@ -7,6 +7,7 @@ import http from '../../services/Http'
 import Card from '../../components/Card'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import LinearGradient from 'react-native-linear-gradient'
+import loginService from '../../services/Login'
 
 export default class PlantacaoList extends Component {
 
@@ -15,7 +16,8 @@ export default class PlantacaoList extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
-            plantacoes: []
+            plantacoes: [],
+            usuario: undefined
         }
     }
     componentWillMount() {
@@ -23,12 +25,19 @@ export default class PlantacaoList extends Component {
     }
 
     async load() {
+        await this.login()
         await this.plantacoes()
+    }
+
+    async login() {
+        await loginService.get().then(async (data) => {
+            await this.setState({ usuario: data.usuario })
+        })
     }
 
     async plantacoes() {
         let aux = [], obj = {}
-        this.http.get('plantacaos', 0).then(async (data) => {
+        this.http.plantacoesByUsuario(this.state.usuario).then(async (data) => {
             await data.forEach(async plantacao => {
                 await this.http.get('plantas/' + plantacao.cultura, 1).then(async (_data) => {
                     obj = plantacao
@@ -81,6 +90,9 @@ export default class PlantacaoList extends Component {
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <Content>
                     <ScrollView style={[this.state.plantacoes && this.state.plantacoes[0] ? {} : this.estilo.hide]}
+                        onMomentumScrollEnd={event => {
+                            console.log(event.nativeEvent.contentOffset)
+                        }}
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
@@ -95,19 +107,24 @@ export default class PlantacaoList extends Component {
                                         useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                                         style={{
                                             width: '100%', borderRadius: 20, marginTop: 20,
-                                            alignSelf: 'center', elevation: 10, minHeight: 150, padding: 20
+                                            alignSelf: 'center', elevation: 10, minHeight: 150
                                         }}>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
-                                        <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.nome}</Text>
-                                        <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                        <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
+                                            onPress={() => Actions.plantacaoForm({ item: item })}>
+                                            <View onPress style={{ width: Dimensions.get('screen').width * .8 - 40, margin: 20 }}>
+                                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
+                                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
+                                                <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
+                                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.nome}</Text>
+                                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                            </View>
+                                        </Button>
                                     </LinearGradient>
 
-                                    <Content>
+                                    <View style={{ backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10, marginVertical: 20 }}>
 
                                         {/* Clima */}
-                                        <Col style={{ alignItems: 'flex-end', marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                        <Col style={{ alignItems: 'flex-end', marginTop: 10 }}>
                                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >{'Clima ' + item.cultura.clima.tipo}</Text>
                                             <Row style={{ alignItems: 'flex-end' }}>
                                                 <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Temperatura  </Text>
@@ -124,7 +141,7 @@ export default class PlantacaoList extends Component {
                                         </Col>
 
                                         {/* Solo */}
-                                        <Col style={{ marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                        <Col style={{ marginTop: 20 }}>
                                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >Solo</Text>
                                             <Row style={{ alignItems: 'flex-end' }}>
                                                 <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Acidez  </Text>
@@ -149,7 +166,7 @@ export default class PlantacaoList extends Component {
                                         </Col>
 
                                         {/* Luz */}
-                                        <Col style={{ alignItems: 'flex-end', marginTop: 20, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                        <Col style={{ alignItems: 'flex-end', marginTop: 20 }}>
                                             {item.cultura.luz.intensidade == 'Sombra' || !item.cultura.luz.horasPorDia ?
                                                 <Row style={{ alignItems: 'flex-end' }}>
                                                     <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>Sombra</Text>
@@ -168,7 +185,7 @@ export default class PlantacaoList extends Component {
                                         </Col>
 
                                         {/* Nutrientes */}
-                                        <Col style={{ marginTop: 20, marginBottom: 30, backgroundColor: this.estilo.cor.gray_white, borderRadius: 20, paddingHorizontal: 20, paddingVertical: 10, elevation: 10 }}>
+                                        <Col style={{ marginTop: 20, marginBottom: 10 }}>
                                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >Nutrientes</Text>
                                             <Row style={{ flexWrap: 'wrap' }}>
                                                 <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>
@@ -195,7 +212,7 @@ export default class PlantacaoList extends Component {
                                                         {item.cultura.nutriente.molibdenio > 0 ? 'Molibdenio (' + item.cultura.nutriente.molibdenio + ') ' : null}</Text>
                                                 </Row> : null}
                                         </Col>
-                                    </Content>
+                                    </View>
                                 </View>
                             ))}
                             <Form style={{ width: Dimensions.get('screen').width * .1, height: 200 }} />
