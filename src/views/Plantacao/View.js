@@ -135,7 +135,7 @@ export default class PlantacaoView extends Component {
                     <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
                         useAngle={true} angle={45} angleCenter={{ x: 0.8, y: 0.5 }}
                         style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 10,
+                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
                             alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
                         }}>
                         <Row style={{ marginBottom: 10 }}>
@@ -168,7 +168,7 @@ export default class PlantacaoView extends Component {
                     <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
                         useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                         style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 10,
+                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
                             alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
                         }}>
                         {this.props.item.cultura.luz.intensidade == 'Sombra' || !this.props.item.cultura.luz.horasPorDia ?
@@ -194,7 +194,7 @@ export default class PlantacaoView extends Component {
                     <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
                         useAngle={true} angle={45} angleCenter={{ x: 0.8, y: 0.5 }}
                         style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 10, marginBottom: 20,
+                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20, marginBottom: 20,
                             alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
                         }}>
                         <Row style={{ marginBottom: 10 }}>

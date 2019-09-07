@@ -72,7 +72,7 @@ export default class PlantacaoList extends Component {
                         <LinearGradient key={item._id} colors={[this.estilo.cor.greenish_solid, this.estilo.cor.greenish_medium]}
                             useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                             style={{
-                                width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 10,
+                                width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
                                 alignSelf: 'center', elevation: 10, minHeight: 150
                             }}>
                             <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
