@@ -65,7 +65,7 @@ export default class PlantacaoView extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{this.props.item.nome}</Text>
                     </Body>
-                    <Left style={{ alignItems: 'flex-end' }}>
+                    <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                     </Left>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.greenish_medium} barStyle="light-content" />

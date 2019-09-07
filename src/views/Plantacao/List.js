@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StatusBar, Dimensions, ScrollView } from 'react-native'
-import { Container, Text, Button, Content, Row, Header, Body, Item, Form, Col, Icon, View } from 'native-base'
+import { Container, Text, Button, Content, Row, Header, Body, Item, Form, Col, Icon, View, Left } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
@@ -56,15 +56,19 @@ export default class PlantacaoList extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
-                    <Button rounded transparent onPress={() => Actions.pop()}>
-                        <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
-                    </Button>
+                    <Left>
+                        <Button rounded transparent onPress={() => Actions.pop()}>
+                            <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        </Button>
+                    </Left>
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantações</Text>
                     </Body>
-                    <Button rounded transparent onPress={() => this.nova_plantacao()}>
-                        <FeatherIcon name='plus' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 10 }} />
-                    </Button>
+                    <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
+                        <Button rounded transparent onPress={() => this.nova_plantacao()}>
+                            <FeatherIcon name='plus' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 10 }} />
+                        </Button>
+                    </Left>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <Content>

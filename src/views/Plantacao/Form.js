@@ -107,7 +107,7 @@ export default class PlantacaoForm extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantação</Text>
                     </Body>
-                    <Left style={{ alignItems: 'flex-end' }}>
+                    <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                         {this.state.item.nome && this.state.item.localizacao ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <FeatherIcon name='check' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
