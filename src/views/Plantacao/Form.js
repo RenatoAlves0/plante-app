@@ -101,7 +101,7 @@ export default class PlantacaoForm extends Component {
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
-                            <FeatherIcon name='arrow-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                            <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                     </Left>
                     <Body>

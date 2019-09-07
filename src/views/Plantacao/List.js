@@ -57,7 +57,7 @@ export default class PlantacaoList extends Component {
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
                     <Button rounded transparent onPress={() => Actions.pop()}>
-                        <FeatherIcon name='arrow-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantações</Text>
@@ -72,12 +72,11 @@ export default class PlantacaoList extends Component {
                         <LinearGradient key={item._id} colors={[this.estilo.cor.greenish_solid, this.estilo.cor.greenish_medium]}
                             useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
                             style={{
-                                width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
+                                width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 10,
                                 alignSelf: 'center', elevation: 10, minHeight: 150
                             }}>
                             <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
                                 onPress={() => Actions.plantacaoView({ item: item })}>
-                                {/* onPress={() => Actions.plantacaoForm({ item: item })}> */}
                                 <View onPress style={{ width: '90%', margin: 20 }}>
                                     <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
                                     <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
