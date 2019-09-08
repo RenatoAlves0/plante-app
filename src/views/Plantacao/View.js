@@ -119,7 +119,7 @@ export default class PlantacaoView extends Component {
                     <Form style={{
                         backgroundColor: this.estilo.cor.white,
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: -50,
-                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                        alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
                         <Row style={{ marginBottom: 10, flexWrap: 'wrap' }}>
                             <FeatherIcon name='thermometer' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
@@ -143,7 +143,7 @@ export default class PlantacaoView extends Component {
                     <Form style={{
                         backgroundColor: this.estilo.cor.white,
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                        alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='grain' type='MaterialIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
@@ -175,7 +175,7 @@ export default class PlantacaoView extends Component {
                     <Form style={{
                         backgroundColor: this.estilo.cor.white,
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                        alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
                         {this.props.item.cultura.luz.intensidade == 'Sombra' || !this.props.item.cultura.luz.horasPorDia ?
                             <Row style={{ marginBottom: 10, alignItems: 'flex-end' }}>
@@ -200,7 +200,7 @@ export default class PlantacaoView extends Component {
                     <Form style={{
                         backgroundColor: this.estilo.cor.white,
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginVertical: 20,
-                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                        alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='chemistry' type='SimpleLineIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />

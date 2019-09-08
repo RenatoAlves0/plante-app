@@ -63,6 +63,12 @@ export default class Estilos {
             flexDirection: 'column'
         }
 
+        this.form_user = {
+            backgroundColor: this.cor.white,
+            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
+            alignSelf: 'center', elevation: 60, padding: 15, flexWrap: 'wrap'
+        }
+
         this.form_vazio = {
             marginBottom: 10
         }

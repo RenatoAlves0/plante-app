@@ -116,25 +116,27 @@ export default class PlantacaoForm extends Component {
                             </Button> : null}
                     </Left>
                 </Header>
-                {this.state.cor ? <Form style={{ flexDirection: 'row', backgroundColor: this.estilo.cor_platacao[this.state.item.cor] }}>
-                    <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                        <Form style={{ marginLeft: 10 }} />
-                        {this.estilo.cor_platacao.map((cor, index) => (
-                            <Button rounded small key={cor} style={{
-                                backgroundColor: cor, marginVertical: 20,
-                                marginHorizontal: 10, width: 30, elevation: 10
-                            }} onPress={() => {
-                                this.setState({ item: { ...this.state.item, cor: index } })
-                            }}>
-                                <Text></Text>
-                            </Button>
-                        ))}
-                        <Form style={{ marginRight: 10 }} />
-                    </ScrollView>
-                </Form> : null}
                 <StatusBar backgroundColor={this.estilo.cor_platacao[this.state.item.cor]} barStyle="light-content" />
                 <Content>
-                    <Form style={this.estilo.form}>
+                    <Form style={{ flexDirection: 'row', backgroundColor: this.estilo.cor_platacao[this.state.item.cor], paddingBottom: 60 }}>
+                        {this.state.cor ?
+                            <ScrollView keyboardShouldPersistTaps={'handled'} showsHorizontalScrollIndicator={false} horizontal>
+                                <Form style={{ marginLeft: 10 }} />
+                                {this.estilo.cor_platacao.map((cor, index) => (
+                                    <Button rounded small key={cor} style={{
+                                        backgroundColor: cor, marginVertical: 20,
+                                        marginHorizontal: 10, width: 30, elevation: 10
+                                    }} onPress={() => {
+                                        this.setState({ item: { ...this.state.item, cor: index } })
+                                    }}>
+                                        <Text></Text>
+                                    </Button>
+                                ))}
+                                <Form style={{ marginRight: 10 }} />
+                            </ScrollView>
+                            : null}
+                    </Form>
+                    <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
                         <Label>Nome</Label>
                         <Row>
                             <Input keyboardType='default' autoFocus={true} value={this.state.item.nome}
@@ -144,7 +146,7 @@ export default class PlantacaoForm extends Component {
                         </Row>
                     </Form>
 
-                    <Form style={this.estilo.form}>
+                    <Form style={this.estilo.form_user}>
                         <Label>Cultura</Label>
                         <Row>
                             <Row style={this.estilo.subrow}>
@@ -159,7 +161,7 @@ export default class PlantacaoForm extends Component {
                         </Row>
                     </Form>
 
-                    <Form style={this.estilo.form}>
+                    <Form style={this.estilo.form_user}>
                         <Label>Localização</Label>
                         <Row>
                             <Input keyboardType='numeric' value={this.state.item.localizacao}
@@ -169,7 +171,7 @@ export default class PlantacaoForm extends Component {
                         </Row>
                     </Form>
 
-                    <Form style={this.estilo.form}>
+                    <Form style={this.estilo.form_user}>
                         <Label>Estado</Label>
                         <Row>
                             <Row style={this.estilo.subrow}>
@@ -189,7 +191,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
 
                     {this.state.cidades && this.state.cidades[0] ?
-                        <Form style={this.estilo.form}>
+                        <Form style={[this.estilo.form_user, { marginBottom: 10 }]}>
                             <Label>Cidade</Label>
                             <Row>
                                 <Row style={this.estilo.subrow}>
