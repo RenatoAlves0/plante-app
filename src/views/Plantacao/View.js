@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions } from 'react-native'
+import { StatusBar, Dimensions, ScrollView } from 'react-native'
 import { Container, Text, Button, Content, Row, Header, Body, Form, Icon, View, Left } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
 import FeatherIcon from 'react-native-vector-icons/Feather'
-import LinearGradient from 'react-native-linear-gradient'
 import loginService from '../../services/Login'
 
 export default class PlantacaoView extends Component {
@@ -14,6 +13,14 @@ export default class PlantacaoView extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
+            item: {
+                nome: undefined,
+                cultura: { _id: undefined },
+                localizacao: undefined,
+                cidade: { _id: undefined },
+                usuario: undefined,
+                cor: 0,
+            },
             plantacoes: [],
             usuario: undefined,
             principal: false,
@@ -25,6 +32,7 @@ export default class PlantacaoView extends Component {
     }
 
     async load() {
+        if (this.props.item) await this.setState({ item: this.props.item })
     }
 
     async login() {
@@ -56,7 +64,7 @@ export default class PlantacaoView extends Component {
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: this.estilo.cor.greenish_medium, elevation: 0 }}>
+                <Header style={{ backgroundColor: this.estilo.cor_platacao[this.state.item.cor], elevation: 0 }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
                             <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
@@ -68,11 +76,11 @@ export default class PlantacaoView extends Component {
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                     </Left>
                 </Header>
-                <StatusBar backgroundColor={this.estilo.cor.greenish_medium} barStyle="light-content" />
+                <StatusBar backgroundColor={this.estilo.cor_platacao[this.state.item.cor]} barStyle="light-content" />
                 <Content>
                     <View style={{
-                        backgroundColor: this.estilo.cor.greenish_medium, elevation: 10,
-                        paddingTop: 20, paddingHorizontal: 30, paddingBottom: 20
+                        backgroundColor: this.estilo.cor_platacao[this.state.item.cor], elevation: 10,
+                        paddingTop: 20, paddingHorizontal: 30, paddingBottom: 70
                     }}>
                         <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{this.props.item.localizacao + ', ' + this.props.item.cidade.nome}</Text>
                         <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
@@ -95,7 +103,7 @@ export default class PlantacaoView extends Component {
                             </Button>
 
                             <Button style={{
-                                backgroundColor: this.estilo.cor.white + '11',
+                                backgroundColor: this.state.principal ? this.estilo.cor.white + '11' : 'transparent',
                                 borderRadius: 20, marginTop: 20, justifyContent: 'flex-end',
                                 elevation: 0, paddingHorizontal: 10
                             }} onPress={() => this.setState({ principal: !this.state.principal })}>
@@ -104,15 +112,15 @@ export default class PlantacaoView extends Component {
                                 }}>Principal</Text>
                             </Button>
                         </Row>
+
                     </View>
 
                     {/* Clima */}
-                    <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
-                        useAngle={true} angle={45} angleCenter={{ x: 0.3, y: 0.5 }}
-                        style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                            alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
-                        }}>
+                    <Form style={{
+                        backgroundColor: this.estilo.cor.white,
+                        width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: -50,
+                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                    }}>
                         <Row style={{ marginBottom: 10, flexWrap: 'wrap' }}>
                             <FeatherIcon name='thermometer' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >{'  Clima ' + this.props.item.cultura.clima.tipo}</Text>
@@ -129,15 +137,14 @@ export default class PlantacaoView extends Component {
                                 {this.props.item.cultura.clima.umidadeMinima + ' | ' + this.props.item.cultura.clima.umidadeMaxima + ' %'}
                             </Text>
                         </Row>
-                    </LinearGradient>
+                    </Form>
 
                     {/* Solo */}
-                    <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
-                        useAngle={true} angle={45} angleCenter={{ x: 0.8, y: 0.5 }}
-                        style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                            alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
-                        }}>
+                    <Form style={{
+                        backgroundColor: this.estilo.cor.white,
+                        width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
+                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                    }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='grain' type='MaterialIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Solo</Text>
@@ -162,15 +169,14 @@ export default class PlantacaoView extends Component {
                                 {this.props.item.cultura.solo.quantidadeTerraVegetal > 0 ? 'Terra (' + this.props.item.cultura.solo.quantidadeTerraVegetal + ') ' : null}
                                 {this.props.item.cultura.solo.quantidadeTurfa > 0 ? 'Turfa (' + this.props.item.cultura.solo.quantidadeTurfa + ') ' : null}</Text>
                         </Row>
-                    </LinearGradient>
+                    </Form>
 
                     {/* Luz */}
-                    <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
-                        useAngle={true} angle={45} angleCenter={{ x: 0.5, y: 0.5 }}
-                        style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                            alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
-                        }}>
+                    <Form style={{
+                        backgroundColor: this.estilo.cor.white,
+                        width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
+                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                    }}>
                         {this.props.item.cultura.luz.intensidade == 'Sombra' || !this.props.item.cultura.luz.horasPorDia ?
                             <Row style={{ marginBottom: 10, alignItems: 'flex-end' }}>
                                 <FeatherIcon name='cloud' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
@@ -188,15 +194,14 @@ export default class PlantacaoView extends Component {
                                 <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>{this.props.item.cultura.luz.horasPorDia}</Text>
                                 <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{this.props.item.cultura.luz.horasPorDia > 1 ? '  horas' : '  hora'} {'por dia'}</Text>
                             </Row>}
-                    </LinearGradient>
+                    </Form>
 
                     {/* Nutrientes */}
-                    <LinearGradient colors={[this.estilo.cor.white, this.estilo.cor.white]}
-                        useAngle={true} angle={45} angleCenter={{ x: 0.8, y: 0.5 }}
-                        style={{
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20, marginBottom: 20,
-                            alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
-                        }}>
+                    <Form style={{
+                        backgroundColor: this.estilo.cor.white,
+                        width: Dimensions.get('screen').width * .9, borderRadius: 20, marginVertical: 20,
+                        alignSelf: 'center', elevation: 100, padding: 20, flexWrap: 'wrap'
+                    }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='chemistry' type='SimpleLineIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Nutrientes</Text>
@@ -225,7 +230,7 @@ export default class PlantacaoView extends Component {
                                     {this.props.item.cultura.nutriente.cloro > 0 ? 'Cloro (' + this.props.item.cultura.nutriente.cloro + ') ' : null}
                                     {this.props.item.cultura.nutriente.molibdenio > 0 ? 'Molibdenio (' + this.props.item.cultura.nutriente.molibdenio + ') ' : null}</Text>
                             </Row> : null}
-                    </LinearGradient>
+                    </Form>
                 </Content>
             </Container>
         )

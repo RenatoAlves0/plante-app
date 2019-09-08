@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions } from 'react-native'
+import { StatusBar, Dimensions, ScrollView } from 'react-native'
 import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form, Right, Left } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
@@ -8,7 +8,6 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import loginService from '../../services/Login'
 
 export default class PlantacaoForm extends Component {
-
     constructor(props) {
         super(props)
         this.estilo = new estilo()
@@ -20,14 +19,16 @@ export default class PlantacaoForm extends Component {
                 cultura: { _id: undefined },
                 localizacao: undefined,
                 cidade: { _id: undefined },
-                usuario: undefined
+                usuario: undefined,
+                cor: 5,
             },
             estado: { _id: undefined },
             login: undefined,
             search: '',
             culturas: [],
             estados: [],
-            cidades: []
+            cidades: [],
+            cor: false
         }
     }
 
@@ -44,6 +45,7 @@ export default class PlantacaoForm extends Component {
         await this.login()
         await this.plantas()
         await this.estados()
+        this.setState({ cor: true })
     }
 
     async login() {
@@ -97,24 +99,40 @@ export default class PlantacaoForm extends Component {
 
     render() {
         return (
-            <Container>
-                <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
+            <Container style={{}}>
+                <Header style={{ backgroundColor: this.estilo.cor_platacao[this.state.item.cor], elevation: 0 }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
-                            <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                            <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantação</Text>
+                        <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantação</Text>
                     </Body>
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                         {this.state.item.nome && this.state.item.localizacao ?
                             <Button rounded transparent onPress={() => this.save()}>
-                                <FeatherIcon name='check' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                                <FeatherIcon name='check' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
                             </Button> : null}
                     </Left>
                 </Header>
-                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+                {this.state.cor ? <Form style={{ flexDirection: 'row', backgroundColor: this.estilo.cor_platacao[this.state.item.cor] }}>
+                    <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                        <Form style={{ marginLeft: 10 }} />
+                        {this.estilo.cor_platacao.map((cor, index) => (
+                            <Button rounded small key={cor} style={{
+                                backgroundColor: cor, marginVertical: 20,
+                                marginHorizontal: 10, width: 30, elevation: 10
+                            }} onPress={() => {
+                                this.setState({ item: { ...this.state.item, cor: index } })
+                            }}>
+                                <Text></Text>
+                            </Button>
+                        ))}
+                        <Form style={{ marginRight: 10 }} />
+                    </ScrollView>
+                </Form> : null}
+                <StatusBar backgroundColor={this.estilo.cor_platacao[this.state.item.cor]} barStyle="light-content" />
                 <Content>
                     <Form style={this.estilo.form}>
                         <Label>Nome</Label>

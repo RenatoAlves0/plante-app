@@ -5,6 +5,8 @@ export default class Estilos {
             red_solid: '#962020',
             red: '#d32f2f',
             red_vivid: '#ff1036',
+            pink_solid: '#e66369',
+            pink: '#eb3f96',
             purple: '#7b1fa2',
             purple_vivid: '#c100b7',
             blue_light: '#039cb0',
@@ -19,7 +21,7 @@ export default class Estilos {
             green: '#4cda64',
             green_solid: '#388e3c',
             lemon: '#c2da4c',
-            yellow: '#f1f407',
+            yellow: '#f0d30f',
             orange: '#ffa000',
             orange_medium: '#ff7600',
             brown: '#5d4037',
@@ -35,10 +37,23 @@ export default class Estilos {
             black: '#000000'
         }
 
-        this.title = {
-            color: 'white',
-            fontSize: 20
-        }
+        this.cor_platacao = [
+            this.cor.brown_vivid,
+            this.cor.red,
+            this.cor.orange_medium,
+            this.cor.yellow,
+            this.cor.green_solid,
+            this.cor.greenish_medium,
+            this.cor.blue_light,
+            this.cor.purple,
+            this.cor.purple_vivid,
+            this.cor.pink_solid,
+        ],
+
+            this.title = {
+                color: 'white',
+                fontSize: 20
+            }
 
         this.form = {
             padding: 10,
