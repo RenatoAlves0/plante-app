@@ -110,7 +110,7 @@ export default class Estilos {
         }
 
         this.item_dash = {
-            width: Dimensions.get('screen').width * .37, height: 200, marginHorizontal: 10, paddingTop: 0,
+            width: 170, height: 200, marginHorizontal: 10, paddingTop: 0,
             paddingBottom: 0, borderRadius: 20, elevation: 10, marginVertical: 20
         }
 

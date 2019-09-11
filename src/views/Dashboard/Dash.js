@@ -225,11 +225,11 @@ export default class Dash extends Component {
                         showsHorizontalScrollIndicator={false}
                         decelerationRate='fast'
                         snapToAlignment='start'
-                        snapToInterval={20 + Dimensions.get('screen').width * .37}>
+                        snapToInterval={20 + 170}>
                         <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
                             <Form style={{ width: 10, height: 200 }} />
                             {cards.map((item) => (<Card key={item.id} item={item} />))}
-                            <Form style={{ width: 61, height: 200 }} />
+                            <Form style={{ width: Dimensions.get('screen').width - 200 }} />
                         </Row>
                     </ScrollView>
 
@@ -239,7 +239,7 @@ export default class Dash extends Component {
                         showsHorizontalScrollIndicator={false}
                         decelerationRate='fast'
                         snapToAlignment='start'
-                        snapToInterval={20 + Dimensions.get('screen').width * .37}>
+                        snapToInterval={20 + 170}>
 
                         <Row style={{ justifyContent: 'center', flexWrap: 'wrap' }} >
                             <Form style={{ width: 10, height: 200 }} />
@@ -254,7 +254,7 @@ export default class Dash extends Component {
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
                                     sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                                 }} />
-                            <Form style={{ width: 61, height: 200 }} />
+                            <Form style={{ width: Dimensions.get('screen').width - 200 }} />
                         </Row>
                     </ScrollView>
 
