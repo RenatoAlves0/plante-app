@@ -123,7 +123,7 @@ export default class PlantacaoForm extends Component {
                             <ScrollView keyboardShouldPersistTaps={'handled'} showsHorizontalScrollIndicator={false} horizontal>
                                 <Form style={{ marginLeft: 10 }} />
                                 {this.estilo.cor_platacao.map((cor, index) => (
-                                    <Button rounded small key={cor} style={{
+                                    <Button rounded small key={index} style={{
                                         backgroundColor: cor, marginVertical: 20,
                                         marginHorizontal: 10, width: 30, elevation: 10
                                     }} onPress={() => {
@@ -152,7 +152,7 @@ export default class PlantacaoForm extends Component {
                                 iosIcon={<Icon name='arrow-down' />}
                                 selectedValue={this.state.item.cultura._id}
                                 onValueChange={(value) => { this.setState({ item: { ...this.state.item, cultura: { ...this.state.item.cultura, _id: value } } }) }}>
-                                {this.state.culturas.map((item) => { return <Item key={item.nome} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item._id} /> })}
+                                {this.state.culturas.map((item) => { return <Item key={item._id} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item._id} /> })}
                             </Picker>
                         </Row>
                     </Form>

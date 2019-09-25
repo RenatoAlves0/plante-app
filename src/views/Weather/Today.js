@@ -101,7 +101,7 @@ export default class Today extends Component {
                         <Chart data_array={this.state.weather_today.chuva_quantidade}
                             label_descricao_array={this.state.weather_today.chuva_probabilidade}
                             label_array={this.state.weather_today.hora} label_array_label='%'
-                            color={this.estilo.cor.blue} label_data='º' />
+                            color={this.estilo.cor.blue} label_data=' mm' />
                     </Form>
 
                     {/* Vento */}
