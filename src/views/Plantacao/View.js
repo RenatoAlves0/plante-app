@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StatusBar, Dimensions, ScrollView } from 'react-native'
-import { Container, Text, Button, Content, Row, Header, Body, Form, Icon, View, Left } from 'native-base'
+import { Container, Text, Button, Content, Row, Header, Body, Form, Icon, View, Left, Spinner } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
@@ -23,7 +23,8 @@ export default class PlantacaoView extends Component {
             },
             plantacoes: [],
             usuario: undefined,
-            principal: false,
+            button_principal_disabled: false,
+            principal: { plantacao: undefined },
         }
     }
 
@@ -32,12 +33,23 @@ export default class PlantacaoView extends Component {
     }
 
     async load() {
+        this.setState({ button_principal_disabled: true })
         if (this.props.item) await this.setState({ item: this.props.item })
+        await this.get_user()
+        this.setState({ button_principal_disabled: false })
     }
 
-    async login() {
+    async get_user() {
         await loginService.get().then(async (data) => {
             await this.setState({ usuario: data.usuario })
+        })
+
+        await this.get_plantacao_principal()
+    }
+
+    async get_plantacao_principal() {
+        await this.http.plantacoesPrincipaisByUsuario(this.state.usuario).then(async (data) => {
+            data == '' ? {} : this.setState({ principal: data[0] })
         })
     }
 
@@ -59,6 +71,21 @@ export default class PlantacaoView extends Component {
         if (value >= 1.5 && value < 3) return 'Muito Ácido'
         if (value >= 0 && value < 1.5) return 'Extremamente Ácido'
         else return 'Ph deve estar entre 0 e 7'
+    }
+
+    async change_plantacao_principal() {
+        this.setState({ button_principal_disabled: true })
+        let aux = {
+            usuario: this.state.usuario,
+            plantacao: this.state.item._id
+        }
+
+        this.state.principal == undefined ?
+            await this.http.post('plantacaoPrincipals', aux, 0)
+                .then((data) => { this.get_plantacao_principal() }) :
+            await this.http.put('plantacaoPrincipals', this.state.principal._id, aux, 0)
+                .then((data) => { this.get_plantacao_principal() })
+        this.setState({ button_principal_disabled: false })
     }
 
     render() {
@@ -103,12 +130,13 @@ export default class PlantacaoView extends Component {
                             </Button>
 
                             <Button style={{
-                                backgroundColor: this.state.principal ? this.estilo.cor.white + '11' : 'transparent',
+                                backgroundColor: this.state.principal.plantacao == this.state.item._id ? this.estilo.cor.white : 'transparent',
                                 borderRadius: 20, marginTop: 20, justifyContent: 'flex-end',
                                 elevation: 0, paddingHorizontal: 10
-                            }} onPress={() => this.setState({ principal: !this.state.principal })}>
+                            }} onPress={() => this.change_plantacao_principal()} disabled={this.state.button_principal_disabled} >
+                                {this.state.button_principal_disabled ? <Spinner size='small' color={this.state.principal.plantacao == this.state.item._id ? this.estilo.cor_platacao[this.state.item.cor] : this.estilo.cor.white + '77'} /> : null}
                                 <Text uppercase={false} style={{
-                                    color: this.state.principal ? this.estilo.cor.white : this.estilo.cor.white + '77', fontSize: 18
+                                    color: this.state.principal.plantacao == this.state.item._id ? this.estilo.cor_platacao[this.state.item.cor] : this.estilo.cor.white + '77', fontSize: 18
                                 }}>Principal</Text>
                             </Button>
                         </Row>
