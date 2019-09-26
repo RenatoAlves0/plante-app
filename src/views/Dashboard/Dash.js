@@ -44,7 +44,7 @@ export default class Dash extends Component {
             { index: 0, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
             { index: 1, icon: 'calendar', label: '5 dias', cor: this.estilo.cor.purple },
         ]
-        this.topico_sensores = 'plante_box_sensores(renalves.oli@gmail.com)'
+        this.topico_sensores_app = 'plante_box_sensores_app(renalves.oli@gmail.com)'
         this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
         this.uri = 'ws://test.mosquitto.org:8080/ws'
         this.client_id = 'plante_app_id(renalves.oli@gmail.com)'
@@ -102,18 +102,11 @@ export default class Dash extends Component {
             }
         })
         this.client.on('messageReceived', (message) => {
-            this.setState({ sensores: JSON.parse(message.payloadString) })
+            if (message._destinationName == this.topico_sensores_app)
+                this.setState({ sensores: JSON.parse(message.payloadString) })
         })
         this.conectar()
         this.setState({ loaded: true })
-    }
-
-    teste = async () => {
-        if (this.state.conectado) {
-            let message = new Message('{\"t\":25.36,\"u\":87.56,\"uS\":70.00,\"l\":68.14,\"c\":43.00}')
-            message.destinationName = this.topico_sensores
-            this.client.send(message)
-        }
     }
 
     regar_change = () => {
@@ -136,7 +129,7 @@ export default class Dash extends Component {
                     textStyle: { textAlign: 'center' },
                     position: 'top'
                 })
-                return this.client.subscribe(this.topico_sensores)
+                return this.client.subscribe(this.topico_sensores_app)
             })
             .catch((responseObject) => {
                 console.log('...')
@@ -169,11 +162,11 @@ export default class Dash extends Component {
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
 
         const cards = [
-            { id: 0, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, method: this.teste, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
-            { id: 1, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
-            { id: 2, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, method: this.teste, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
-            { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, method: this.teste, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
-            { id: 4, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, method: this.teste, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
+            { id: 0, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
+            { id: 1, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
+            { id: 2, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
+            { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
+            { id: 4, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
         ]
 
         return (
