@@ -44,10 +44,10 @@ export default class Dash extends Component {
             { index: 0, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
             { index: 1, icon: 'calendar', label: '5 dias', cor: this.estilo.cor.purple },
         ]
-        this.topico_sensores_app = 'plante_box_sensores_app(renalves.oli@gmail.com)'
-        this.topico_regador = 'plante_box_regador(renalves.oli@gmail.com)'
+        this.topico_sensores = 'plante_sensores.5d699b7e0762797037d35801'
+        this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
         this.uri = 'ws://test.mosquitto.org:8080/ws'
-        this.client_id = 'plante_app_id(renalves.oli@gmail.com)'
+        this.client_id = 'plante_app.5d699b7e0762797037d35801'
         this.myStorage = {
             setItem: (key, item) => {
                 myStorage[key] = item
@@ -102,7 +102,7 @@ export default class Dash extends Component {
             }
         })
         this.client.on('messageReceived', (message) => {
-            if (message._destinationName == this.topico_sensores_app)
+            if (message._destinationName == this.topico_sensores)
                 this.setState({ sensores: JSON.parse(message.payloadString) })
         })
         this.conectar()
@@ -129,7 +129,7 @@ export default class Dash extends Component {
                     textStyle: { textAlign: 'center' },
                     position: 'top'
                 })
-                return this.client.subscribe(this.topico_sensores_app)
+                return this.client.subscribe(this.topico_sensores)
             })
             .catch((responseObject) => {
                 console.log('...')
