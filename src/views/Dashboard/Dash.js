@@ -308,6 +308,14 @@ export default class Dash extends Component {
                                 label_array={this.state.weather_today.hora}
                                 opacity={''}
                                 color={this.estilo.cor.purple} label_data='º' />
+                            <Form style={{ backgroundColor: this.estilo.cor.purple, paddingVertical: 20 }} >
+                                <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20, alignSelf: 'center' }}>
+                                    <Text uppercase={false} style={{
+                                        color: this.estilo.cor.white,
+                                        fontSize: 17, paddingLeft: 30, paddingRight: 30
+                                    }}>Temperatura</Text>
+                                </Button>
+                            </Form>
                         </Form> : null}
 
                     {this.state.weather_week && this.state.weather_week.temperatura_maxima ?
@@ -319,10 +327,18 @@ export default class Dash extends Component {
                                 label_array={this.state.weather_week.dia_semana}
                                 opacity={'77'} background={this.estilo.cor.purple}
                                 color={this.estilo.cor.purple} label_data='º' />
+                            <Form style={{ backgroundColor: this.estilo.cor.purple, paddingVertical: 20 }} >
+                                <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20, alignSelf: 'center' }}>
+                                    <Text uppercase={false} style={{
+                                        color: this.estilo.cor.white,
+                                        fontSize: 17, paddingLeft: 30, paddingRight: 30
+                                    }}>Temperatura</Text>
+                                </Button>
+                            </Form>
                         </Form> : null}
 
                 </Content>
-            </Container>
+            </Container >
         )
     }
 }
