@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StatusBar, Dimensions } from 'react-native'
 import { Container, Text, Button, Content, Header, Body, Form, View, Left } from 'native-base'
+import Loader from '../../components/Loader'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
@@ -15,6 +16,7 @@ export default class PlantacaoList extends Component {
         this.http = new http()
         this.state = {
             plantacoes: [],
+            loaded: false,
             usuario: undefined
         }
     }
@@ -25,6 +27,7 @@ export default class PlantacaoList extends Component {
     async load() {
         await this.login()
         await this.plantacoes()
+        this.setState({ loaded: true })
     }
 
     async login() {
@@ -70,6 +73,7 @@ export default class PlantacaoList extends Component {
                     </Left>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
+                {this.state.loaded ? null : <Loader />}
                 <Content>
                     {this.state.plantacoes.map((item) => (
                         <Form key={item._id} style={{

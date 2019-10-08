@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions } from 'react-native'
+import { StatusBar, Dimensions, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { Text, Form, Container, View, Button, Header, Body, Row } from 'native-base'
 import estilo from '../../assets/Estilo'
@@ -266,21 +266,23 @@ export default class Week extends Component {
                         </Form>
                     </Form>
 
-                    <Form style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', paddingVertical: 5 }}>
-                        {this.weather.map((item) => (
-                            <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
-                                onPress={() => {
-                                    this.setState({
-                                        weather_atual: item.key, weather_cor: item.cor,
-                                        variavel_ambiental: item.variavel_ambiental
-                                    })
-                                }}>
-                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
-                                this.state.weather_atual == item.key ?
-                                    { color: this.estilo.cor.white } : null]} />
-                            </Button>
-                        ))}
-                    </Form>
+                    <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
+                        <Form style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 5, paddingLeft: 10 }}>
+                            {this.weather.map((item) => (
+                                <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
+                                    onPress={() => {
+                                        this.setState({
+                                            weather_atual: item.key, weather_cor: item.cor,
+                                            variavel_ambiental: item.variavel_ambiental
+                                        })
+                                    }}>
+                                    <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
+                                    this.state.weather_atual == item.key ?
+                                        { color: this.estilo.cor.white } : null]} />
+                                </Button>
+                            ))}
+                        </Form>
+                    </ScrollView>
                 </Form>
             </Container >
         )

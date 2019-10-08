@@ -292,11 +292,11 @@ export default class Dash extends Component {
                                     borderTopRightRadius: 0, borderBottomRightRadius: 0
                                 }}>
                                 <Button transparent rounded style={{
-                                    paddingLeft: 15, paddingRight: 25, borderRadius: 20, alignSelf: 'flex-end',
+                                    borderRadius: 20, alignSelf: 'flex-end',
                                     borderTopRightRadius: 0, borderBottomRightRadius: 0
                                 }}
                                     onPress={async () => { this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : this.state.tipo_previsao_tempo_atual == 1 ? Actions.week() : null }}>
-                                    <FeatherIcon name='arrow-right' style={{ fontSize: 22, color: this.estilo.cor.white }} />
+                                    <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.white, marginLeft: 15, marginRight: 25, }} />
                                 </Button>
                             </LinearGradient>
                         </Form>
