@@ -41,9 +41,9 @@ export default class Card extends Component {
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>do ideal</Text>
                         </Form>
                         {this.props.item.alerta ? <Button style={{
-                            position: 'absolute', top: 0, right: 0, width: 30, height: 30,
-                            backgroundColor: this.estilo.cor.red_vivid, elevation: 7,
-                            borderTopRightRadius: 20, borderBottomLeftRadius: 10
+                            position: 'absolute', top: 10, right: 10, height: 25,
+                            backgroundColor: this.estilo.cor.red_vivid, width: 25,
+                            borderRadius: 20, elevation: 10
                         }}
                             onPress={() => this.setState({ alerta: !this.state.alerta })}><Text /></Button> : null}
                         {!this.state.alerta && this.props.item.icon_name && this.props.item.icon_type ? <Icon name={this.props.item.icon_name} type={this.props.item.icon_type} style={this.estilo.icon_item_dash} /> : null}

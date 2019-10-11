@@ -17,7 +17,8 @@ export default class PlantacaoList extends Component {
         this.state = {
             plantacoes: [],
             loaded: false,
-            usuario: undefined
+            usuario: undefined,
+            principal: undefined
         }
     }
     componentWillMount() {
@@ -26,8 +27,15 @@ export default class PlantacaoList extends Component {
 
     async load() {
         await this.login()
+        await this.get_plantacao_principal()
         await this.plantacoes()
         this.setState({ loaded: true })
+    }
+
+    async get_plantacao_principal() {
+        await this.http.plantacoesPrincipaisByUsuario(this.state.usuario).then(async (data) => {
+            data == '' ? {} : this.setState({ principal: data[0] })
+        })
     }
 
     async login() {
@@ -81,14 +89,19 @@ export default class PlantacaoList extends Component {
                             width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
                             alignSelf: 'center', elevation: 10, minHeight: 150
                         }}>
+                            {this.state.principal.plantacao == item._id ? <Button style={{
+                                position: 'absolute', top: 10, right: 10, height: 25,
+                                backgroundColor: this.estilo.cor.white, width: 25,
+                                borderRadius: 20, elevation: 10
+                            }}><Text /></Button> : null}
                             <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
                                 onPress={() => Actions.plantacaoView({ item: item })}>
                                 <View onPress style={{ width: '90%', margin: 20 }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.nome}</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.nome}</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
                                     <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.nome}</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0 }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.cultura.nome}</Text>
+                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
                                 </View>
                             </Button>
                         </Form>))}
