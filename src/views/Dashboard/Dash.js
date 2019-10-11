@@ -118,7 +118,7 @@ export default class Dash extends Component {
     }
 
     async conectar() {
-        this.client.connect()
+        this.client.connect({ keepAliveInterval: 30000, timeout: 360000 })
             .then(() => {
                 this.setState({ conectado: true })
                 Toast.show({
