@@ -34,10 +34,10 @@ export default class Card extends Component {
                     </Button>
                     : <Form style={this.estilo.buttom_item_dash}>
                         <Form style={[this.state.alerta ? {
-                            position: 'absolute', width: 160, height: 190, paddingTop: 30, alignItems: 'center',
+                            position: 'absolute', width: 160, height: 190, justifyContent: 'center', alignItems: 'center',
                             backgroundColor: this.estilo.cor.white, top: 5, right: 5, borderRadius: 16
                         } : this.estilo.hide]}>
-                            <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', color: this.props.item.cor1 }}>{this.props.item.alerta}</Text>
+                            <Text style={{ fontSize: 23, textAlign: 'center', color: this.props.item.cor1 }}>{this.props.item.alerta}</Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>do ideal</Text>
                         </Form>
                         {this.props.item.alerta ? <Button style={{
