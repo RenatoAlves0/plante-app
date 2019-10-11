@@ -27,13 +27,8 @@ export default class Dash extends Component {
             tipo_previsao_tempo_atual: 0,
             regar: false,
             tab_atual: 0,
-            sensores: {
-                t: undefined,
-                u: undefined,
-                uS: undefined,
-                l: undefined,
-                c: undefined
-            },
+            sensores: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
+            alertas: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             loaded: false,
         }
         this.sensor_atuador = [
@@ -46,6 +41,7 @@ export default class Dash extends Component {
         ]
         this.topico_sensores = 'plante_sensores.5d699b7e0762797037d35801'
         this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
+        this.topico_alertas = 'plante_alertas.5d699b7e0762797037d35801'
         this.uri = 'ws://test.mosquitto.org:8080/ws'
         this.client_id = 'plante_app.5d699b7e0762797037d35801'
         this.myStorage = {
@@ -90,6 +86,7 @@ export default class Dash extends Component {
         await this.setState({ weather_today: await weatherToday.get() })
         await this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
+            console.log(responseObject)
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })
                 Toast.show({
@@ -104,6 +101,8 @@ export default class Dash extends Component {
         this.client.on('messageReceived', (message) => {
             if (message._destinationName == this.topico_sensores)
                 this.setState({ sensores: JSON.parse(message.payloadString) })
+            if (message._destinationName == this.topico_alertas)
+                this.setState({ alertas: JSON.parse(message.payloadString) })
         })
         this.conectar()
         this.setState({ loaded: true })
@@ -129,7 +128,8 @@ export default class Dash extends Component {
                     textStyle: { textAlign: 'center' },
                     position: 'top'
                 })
-                return this.client.subscribe(this.topico_sensores)
+                this.client.subscribe(this.topico_sensores)
+                this.client.subscribe(this.topico_alertas)
             })
             .catch((responseObject) => {
                 console.log('...')
@@ -162,11 +162,11 @@ export default class Dash extends Component {
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
 
         const cards = [
-            { id: 0, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura' },
-            { id: 1, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo' },
-            { id: 2, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade' },
-            { id: 3, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar' },
-            { id: 4, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva' },
+            { id: 0, action: false, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura', alerta: this.state.alertas.t },
+            { id: 1, action: false, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo', alerta: this.state.alertas.uS },
+            { id: 2, action: false, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade', alerta: this.state.alertas.l },
+            { id: 3, action: false, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar', alerta: this.state.alertas.u },
+            { id: 4, action: false, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva', alerta: this.state.alertas.c },
         ]
 
         return (
@@ -243,12 +243,12 @@ export default class Dash extends Component {
                             <Form style={{ width: 10, height: 200 }} />
                             <Card item={this.state.regar ?
                                 {
-                                    cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
+                                    action: true, cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
                                     sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                                 }
                                 : {
-                                    cor1: this.estilo.cor.gray_solid, cor2: this.estilo.cor.gray_white, method: this.regar_change,
+                                    action: true, cor1: this.estilo.cor.gray_solid, cor2: this.estilo.cor.gray_white, method: this.regar_change,
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
                                     sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
                                 }} />
@@ -336,9 +336,8 @@ export default class Dash extends Component {
                                 </Button>
                             </Form>
                         </Form> : null}
-
                 </Content>
-            </Container >
+            </Container>
         )
     }
 }
