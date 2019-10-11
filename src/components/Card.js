@@ -34,8 +34,8 @@ export default class Card extends Component {
                     </Button>
                     : <Form style={this.estilo.buttom_item_dash}>
                         <Form style={[this.state.alerta ? {
-                            position: 'absolute', width: 150, height: 180, paddingTop: 30, alignItems: 'center',
-                            backgroundColor: this.estilo.cor.white, top: 10, right: 10, borderRadius: 15
+                            position: 'absolute', width: 160, height: 190, paddingTop: 30, alignItems: 'center',
+                            backgroundColor: this.estilo.cor.white, top: 5, right: 5, borderRadius: 16
                         } : this.estilo.hide]}>
                             <Text style={{ fontSize: 30, textAlign: 'center', fontWeight: 'bold', color: this.props.item.cor1 }}>{this.props.item.alerta}</Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>do ideal</Text>
