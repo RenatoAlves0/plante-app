@@ -92,7 +92,7 @@ export default class PlantacaoList extends Component {
                             {this.state.principal.plantacao == item._id ? <Button style={{
                                 position: 'absolute', top: 10, right: 10, height: 25,
                                 backgroundColor: this.estilo.cor.white, width: 25,
-                                borderRadius: 20, elevation: 10
+                                borderRadius: 20, elevation: 7
                             }}><Text /></Button> : null}
                             <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
                                 onPress={() => Actions.plantacaoView({ item: item })}>
