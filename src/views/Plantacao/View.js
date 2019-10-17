@@ -21,7 +21,6 @@ export default class PlantacaoView extends Component {
                 usuario: undefined,
                 cor: 0,
             },
-            plantacoes: [],
             usuario: undefined,
             button_principal_disabled: false,
             principal: { plantacao: undefined },
@@ -49,7 +48,7 @@ export default class PlantacaoView extends Component {
 
     async get_plantacao_principal() {
         await this.http.plantacoesPrincipaisByUsuario(this.state.usuario).then(async (data) => {
-            data == '' ? {} : this.setState({ principal: data[0] })
+            await data == '' ? {} : this.setState({ principal: data[0] })
         })
     }
 
@@ -74,18 +73,21 @@ export default class PlantacaoView extends Component {
     }
 
     async change_plantacao_principal() {
-        this.setState({ button_principal_disabled: true })
+        await this.setState({ button_principal_disabled: true })
         let aux = {
             usuario: this.state.usuario,
             plantacao: this.state.item._id
         }
 
-        this.state.principal == undefined ?
+        await this.state.principal == undefined ?
             await this.http.post('plantacaoPrincipals', aux, 0)
-                .then((data) => { this.get_plantacao_principal() }) :
+                .then(() => { this.get_plantacao_principal() }) :
             await this.http.put('plantacaoPrincipals', this.state.principal._id, aux, 0)
-                .then((data) => { this.get_plantacao_principal() })
-        this.setState({ button_principal_disabled: false })
+                .then(() => { this.get_plantacao_principal() })
+        await this.setState({ button_principal_disabled: false })
+        //IMPLEMENTAR FUNCIONALIDADE DE ENVIO DA UMIDADE MÁXIMA PARA O PLANTE BOX
+        // console.log(this.props.item.cultura.solo.umidadeMaxima)
+        // topico_plantacao_principal "plante_plantacao_principal.5d699b7e0762797037d35801"
     }
 
     render() {
