@@ -104,7 +104,7 @@ export default class Dash extends Component {
             if (message._destinationName == this.topico_alertas)
                 this.setState({ alertas: JSON.parse(message.payloadString) })
         })
-        this.conectar()
+        await this.conectar()
         this.setState({ loaded: true })
     }
 
@@ -118,8 +118,10 @@ export default class Dash extends Component {
     }
 
     async conectar() {
-        this.client.connect({ keepAliveInterval: 120, timeout: 360000 })
-            .then(() => {
+        await this.client.connect({ keepAliveInterval: 120, timeout: 360000 })
+            .then(async () => {
+                await this.client.subscribe(this.topico_sensores)
+                await this.client.subscribe(this.topico_alertas)
                 this.setState({ conectado: true })
                 Toast.show({
                     text: 'Conectado ao Plante Box!',
@@ -128,8 +130,6 @@ export default class Dash extends Component {
                     textStyle: { textAlign: 'center' },
                     position: 'top'
                 })
-                this.client.subscribe(this.topico_sensores)
-                this.client.subscribe(this.topico_alertas)
             })
             .catch((responseObject) => {
                 console.log('...')
