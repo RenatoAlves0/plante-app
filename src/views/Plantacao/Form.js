@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions, ScrollView } from 'react-native'
-import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form, Right, Left } from 'native-base'
+import { StatusBar, ScrollView } from 'react-native'
+import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form, Left } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import loginService from '../../services/Login'
+import { translate } from '../../i18n/locales'
 
 export default class PlantacaoForm extends Component {
     constructor(props) {
@@ -107,7 +108,7 @@ export default class PlantacaoForm extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantação</Text>
+                        <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('plantacao')}</Text>
                     </Body>
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                         {this.state.item.nome && this.state.item.localizacao ?
@@ -137,7 +138,7 @@ export default class PlantacaoForm extends Component {
                             : null}
                     </Form>
                     <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
-                        <Label>Nome</Label>
+                        <Label>{translate('nome')}</Label>
                         <Input keyboardType='default' autoFocus={true} value={this.state.item.nome}
                             onChangeText={(value) => {
                                 this.setState({ item: { ...this.state.item, nome: value } })
@@ -145,7 +146,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
 
                     <Form style={this.estilo.form_user}>
-                        <Label>Cultura</Label>
+                        <Label>{translate('cultura')}</Label>
                         <Row style={this.estilo.subrow}>
                             <Picker
                                 mode='dialog'
@@ -158,7 +159,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
 
                     <Form style={this.estilo.form_user}>
-                        <Label>Localização</Label>
+                        <Label>{translate('localizacao')}</Label>
                         <Input keyboardType='numeric' value={this.state.item.localizacao}
                             onChangeText={(value) => {
                                 this.setState({ item: { ...this.state.item, localizacao: value + '' } })
@@ -166,7 +167,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
 
                     <Form style={this.estilo.form_user}>
-                        <Label>Estado</Label>
+                        <Label>{translate('estado')}</Label>
                         <Row style={this.estilo.subrow}>
                             <Picker
                                 mode='dialog'
@@ -183,7 +184,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
 
                     <Form style={[this.estilo.form_user, { marginBottom: 10 }]}>
-                        <Label>Cidade</Label>
+                        <Label>{translate('cidade')}</Label>
                         {this.state.cidades && this.state.cidades[0] ?
                             <Row style={this.estilo.subrow}>
                                 <Picker

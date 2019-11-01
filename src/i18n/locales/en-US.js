@@ -1,0 +1,21 @@
+export default {
+    conectar_ao: 'Connect to',
+    plantacao: 'Plantation',
+    plantacoes: 'Plantations',
+    sensores: 'Sensors',
+    regador: 'Watering can',
+    previsao_do_tempo: 'Weather forecast',
+    horas: 'hours',
+    dias: 'days',
+    temperatura: 'Temperature',
+    umidade_do_solo: 'Soil moisture',
+    luminosidade: 'Brightness',
+    umidade_do_ar: 'Air humidity',
+    chuva: 'Rain',
+    principal: 'Main',
+    nome: 'Name',
+    cultura: 'Cultivation',
+    localizacao: 'Location',
+    estado: 'State',
+    cidade: 'City'
+}

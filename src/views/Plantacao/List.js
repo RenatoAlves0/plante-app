@@ -6,8 +6,8 @@ import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
 import FeatherIcon from 'react-native-vector-icons/Feather'
-import LinearGradient from 'react-native-linear-gradient'
 import loginService from '../../services/Login'
+import { translate } from '../../i18n/locales'
 
 export default class PlantacaoList extends Component {
     constructor(props) {
@@ -72,7 +72,7 @@ export default class PlantacaoList extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Plantações</Text>
+                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('plantacoes')}</Text>
                     </Body>
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                         <Button rounded transparent onPress={() => this.nova_plantacao()}>

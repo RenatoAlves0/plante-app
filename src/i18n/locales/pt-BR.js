@@ -1,0 +1,21 @@
+export default {
+    conectar_ao: 'Conectar ao',
+    plantacao: 'Plantação',
+    plantacoes: 'Plantações',
+    sensores: 'Sensores',
+    regador: 'Regador',
+    previsao_do_tempo: 'Previsão do tempo',
+    horas: 'horas',
+    dias: 'dias',
+    temperatura: 'Temperatura',
+    umidade_do_solo: 'Umidade do solo',
+    luminosidade: 'Luminosidade',
+    umidade_do_ar: 'Umidade do ar',
+    chuva: 'Chuva',
+    principal: 'Principal',
+    nome: 'Nome',
+    cultura: 'Cultura',
+    localizacao: 'Localização',
+    estado: 'Estado',
+    cidade: 'Cidade'
+}

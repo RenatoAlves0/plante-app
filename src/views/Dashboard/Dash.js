@@ -11,6 +11,7 @@ import weatherToday from '../../services/WeatherToday'
 import weatherWeek from '../../services/WeatherWeek'
 import ChartToday from '../../components/ChartToday'
 import ChartWeek from '../../components/ChartWeek'
+import { translate } from '../../i18n/locales'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -32,12 +33,12 @@ export default class Dash extends Component {
             loaded: false,
         }
         this.sensor_atuador = [
-            { index: 0, icon: 'activity', label: 'Sensores', cor: this.estilo.cor.purple_vivid },
-            { index: 1, icon: 'command', label: 'Regador', cor: this.estilo.cor.blue },
+            { index: 0, icon: 'activity', label: translate('sensores'), cor: this.estilo.cor.purple_vivid },
+            { index: 1, icon: 'command', label: translate('regador'), cor: this.estilo.cor.blue },
         ]
         this.tipo_previsao_tempo = [
-            { index: 0, icon: 'clock', label: '12 horas', cor: this.estilo.cor.greenish_medium },
-            { index: 1, icon: 'calendar', label: '5 dias', cor: this.estilo.cor.purple },
+            { index: 0, icon: 'clock', label: '12 ' + translate('horas'), cor: this.estilo.cor.greenish_medium },
+            { index: 1, icon: 'calendar', label: '5 ' + translate('dias'), cor: this.estilo.cor.purple },
         ]
         this.topico_sensores = 'plante_sensores.5d699b7e0762797037d35801'
         this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
@@ -162,11 +163,11 @@ export default class Dash extends Component {
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
 
         const cards = [
-            { id: 0, action: false, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: 'temperatura', alerta: this.state.alertas.t },
-            { id: 1, action: false, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: 'umidade do solo', alerta: this.state.alertas.uS },
-            { id: 2, action: false, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: 'luminosidade', alerta: this.state.alertas.l },
-            { id: 3, action: false, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: 'umidade do ar', alerta: this.state.alertas.u },
-            { id: 4, action: false, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: 'chuva', alerta: this.state.alertas.c },
+            { id: 0, action: false, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: translate('temperatura'), alerta: this.state.alertas.t },
+            { id: 1, action: false, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: translate('umidade_do_solo'), alerta: this.state.alertas.uS },
+            { id: 2, action: false, cor1: this.estilo.cor.orange_medium, cor2: this.estilo.cor.yellow_light, icon_name: 'wb-sunny', icon_type: 'MaterialIcons', value: this.state.sensores.l, value_sufix: ' %', sub_value: translate('luminosidade'), alerta: this.state.alertas.l },
+            { id: 3, action: false, cor1: this.estilo.cor.greenish_solid, cor2: this.estilo.cor.greenish, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.u, value_sufix: ' %', sub_value: translate('umidade_do_ar'), alerta: this.state.alertas.u },
+            { id: 4, action: false, cor1: this.estilo.cor.blue_solid, cor2: this.estilo.cor.blue_light, icon_name: 'weather-pouring', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.c, value_sufix: ' %', sub_value: translate('chuva'), alerta: this.state.alertas.c },
         ]
 
         return (
@@ -184,7 +185,7 @@ export default class Dash extends Component {
                                     backgroundColor: '', width: '100%', borderRadius: 20,
                                     elevation: 0, justifyContent: 'center'
                                 }}>
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >Conectar ao  </Text>
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 18, paddingRight: 0, paddingLeft: 0 }}>{translate('conectar_ao')}  </Text>
                                 <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 20, paddingRight: 0, paddingLeft: 0 }} >Plante Box  </Text>
                                 <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
                             </Button>
@@ -196,7 +197,7 @@ export default class Dash extends Component {
                     <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 20 }}>
                         <Form style={{ width: '70%', flexDirection: 'row' }}>
                             <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
-                            >Plantação</Text>
+                            >{translate('plantacao')}</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
@@ -260,7 +261,7 @@ export default class Dash extends Component {
 
                     <Row>
                         <Form style={{ width: '70%' }}>
-                            <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}>Previsão do tempo</Text>
+                            <Text style={{ marginLeft: 25, marginTop: 20, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}>{translate('previsao_do_tempo')}</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
@@ -296,22 +297,6 @@ export default class Dash extends Component {
                                 </Button>
                             ))}
                         </Form>
-                        {/* <Form style={{ width: '30%' }}>
-                            <LinearGradient colors={[this.estilo.cor.gray_solid, this.estilo.cor.gray_medium]}
-                                useAngle={true} angle={this.state.tipo_previsao_tempo_atual == 0 ? 45 : 270} angleCenter={{ x: 0.5, y: 0.5 }}
-                                style={{
-                                    borderRadius: 20, alignSelf: 'flex-end', elevation: 5,
-                                    borderTopRightRadius: 0, borderBottomRightRadius: 0
-                                }}>
-                                <Button transparent rounded style={{
-                                    borderRadius: 20, alignSelf: 'flex-end',
-                                    borderTopRightRadius: 0, borderBottomRightRadius: 0
-                                }}
-                                    onPress={async () => { this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : this.state.tipo_previsao_tempo_atual == 1 ? Actions.week() : null }}>
-                                    <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.white, marginLeft: 15, marginRight: 25, }} />
-                                </Button>
-                            </LinearGradient>
-                        </Form> */}
                     </Form>
 
                     {this.state.weather_today && this.state.weather_today.temperatura ?
@@ -325,7 +310,7 @@ export default class Dash extends Component {
                                     <Text uppercase={false} style={{
                                         color: this.estilo.cor.white,
                                         fontSize: 17, paddingLeft: 30, paddingRight: 30
-                                    }}>Temperatura</Text>
+                                    }}>{translate('temperatura')}</Text>
                                 </Button>
                                 <Image
                                     resizeMode='contain'
@@ -349,7 +334,7 @@ export default class Dash extends Component {
                                     <Text uppercase={false} style={{
                                         color: this.estilo.cor.white,
                                         fontSize: 17, paddingLeft: 30, paddingRight: 30
-                                    }}>Temperatura</Text>
+                                    }}>{translate('temperatura')}</Text>
                                 </Button>
                                 <Image
                                     resizeMode='contain'

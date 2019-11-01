@@ -6,6 +6,7 @@ import estilo from '../../assets/Estilo'
 import http from '../../services/Http'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import loginService from '../../services/Login'
+import { translate } from '../../i18n/locales'
 
 export default class PlantacaoView extends Component {
     constructor(props) {
@@ -139,7 +140,7 @@ export default class PlantacaoView extends Component {
                                 {this.state.button_principal_disabled ? <Spinner size='small' color={this.state.principal.plantacao == this.state.item._id ? this.estilo.cor_platacao[this.state.item.cor] : this.estilo.cor.white + '77'} /> : null}
                                 <Text uppercase={false} style={{
                                     color: this.state.principal.plantacao == this.state.item._id ? this.estilo.cor_platacao[this.state.item.cor] : this.estilo.cor.white + '77', fontSize: 18
-                                }}>Principal</Text>
+                                }}>{translate('principal')}</Text>
                             </Button>
                         </Row>
 
