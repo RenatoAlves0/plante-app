@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Row, Toast, Form } from 'native-base'
-import { StatusBar, ScrollView, Animated, Easing, Dimensions } from 'react-native'
+import { StatusBar, ScrollView, Animated, Easing, Dimensions, Image } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -212,7 +212,7 @@ export default class Dash extends Component {
                                 onPress={() => { this.setState({ sensor_atuador_atual: item.index, sensor_atuador_cor: item.cor, label: item.label }) }}>
                                 <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
                                 <Text uppercase={false} style={{
-                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 20, marginLeft: -12
                                 }}>  {item.label}</Text>
                             </Button>
                         ))}
@@ -276,15 +276,27 @@ export default class Dash extends Component {
                         <Form style={{ width: '70%', flexDirection: 'row' }}>
                             {this.tipo_previsao_tempo.map((item) => (
                                 <Button key={item.icon} transparent rounded style={{ elevation: 0, marginHorizontal: 5 }}
-                                    onPress={() => { this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label }) }}>
-                                    <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                                    onPress={async () => {
+                                        this.state.tipo_previsao_tempo_atual == 0 && 0 == item.index ? Actions.today() :
+                                            this.state.tipo_previsao_tempo_atual == 1 && 1 == item.index ? Actions.week() :
+                                                this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label })
+                                    }}>
+                                    {this.state.tipo_previsao_tempo_atual == item.index ?
+                                        <Button rounded small disabled style={{
+                                            borderRadius: 20, alignSelf: 'flex-end',
+                                            backgroundColor: this.estilo.cor.gray_solid, marginBottom: 1
+                                        }}>
+                                            <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.white, marginLeft: 5, marginRight: 5, }} />
+                                        </Button>
+                                        : <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                                    }
                                     <Text uppercase={false} style={{
-                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, marginLeft: -10
+                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 20, marginLeft: -12
                                     }}>  {item.label}</Text>
                                 </Button>
                             ))}
                         </Form>
-                        <Form style={{ width: '30%' }}>
+                        {/* <Form style={{ width: '30%' }}>
                             <LinearGradient colors={[this.estilo.cor.gray_solid, this.estilo.cor.gray_medium]}
                                 useAngle={true} angle={this.state.tipo_previsao_tempo_atual == 0 ? 45 : 270} angleCenter={{ x: 0.5, y: 0.5 }}
                                 style={{
@@ -299,7 +311,7 @@ export default class Dash extends Component {
                                     <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.white, marginLeft: 15, marginRight: 25, }} />
                                 </Button>
                             </LinearGradient>
-                        </Form>
+                        </Form> */}
                     </Form>
 
                     {this.state.weather_today && this.state.weather_today.temperatura ?
@@ -315,6 +327,11 @@ export default class Dash extends Component {
                                         fontSize: 17, paddingLeft: 30, paddingRight: 30
                                     }}>Temperatura</Text>
                                 </Button>
+                                <Image
+                                    resizeMode='contain'
+                                    style={{ width: 120, height: 40, alignSelf: 'center', marginTop: 15 }}
+                                    source={require('../../assets/images/accuWeather/AccuWeather75.png')}
+                                />
                             </Form>
                         </Form> : null}
 
@@ -334,6 +351,11 @@ export default class Dash extends Component {
                                         fontSize: 17, paddingLeft: 30, paddingRight: 30
                                     }}>Temperatura</Text>
                                 </Button>
+                                <Image
+                                    resizeMode='contain'
+                                    style={{ width: 120, height: 40, alignSelf: 'center', marginTop: 15 }}
+                                    source={require('../../assets/images/accuWeather/AccuWeather75.png')}
+                                />
                             </Form>
                         </Form> : null}
                 </Content>

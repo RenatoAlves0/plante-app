@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions, ScrollView } from 'react-native'
+import { StatusBar, Dimensions, ScrollView, Image } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { Text, Form, Container, View, Button, Header, Body, Row } from 'native-base'
 import estilo from '../../assets/Estilo'
@@ -47,14 +47,14 @@ export default class Today extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
-                    <Button rounded transparent onPress={() => Actions.pop()}>
+                    <Button rounded transparent onPress={() => Actions.dash()}>
                         <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Previsão 12 horas</Text>
                     </Body>
-                    <Button disabled rounded transparent onPress={() => Actions.pop()}>
-                        <FeatherIcon name='chevron-left' style={{ color: 'transparent', fontSize: 22, marginHorizontal: 5 }} />
+                    <Button rounded transparent onPress={() => Actions.week()}>
+                        <FeatherIcon name='calendar' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
@@ -156,9 +156,13 @@ export default class Today extends Component {
                         </Form>
                     </Form>
 
-                    <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                        <Form style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 5, paddingLeft: 10 }}>
-                            {this.weather.map((item) => (
+                    {/* <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}> */}
+                    <Form style={{
+                        flexDirection: 'row', justifyContent: 'center', paddingVertical: 5
+                        //, paddingLeft: 10
+                    }}>
+                        {
+                            this.weather.map((item) => (
                                 <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
                                     onPress={() => {
                                         this.setState({
@@ -170,11 +174,17 @@ export default class Today extends Component {
                                     this.state.weather_atual == item.key ?
                                         { color: this.estilo.cor.white } : null]} />
                                 </Button>
-                            ))}
-                        </Form>
-                    </ScrollView>
+                            ))
+                        }
+                    </Form>
+                    {/* </ScrollView> */}
+                    <Image
+                        resizeMode='contain'
+                        style={{ width: 120, height: 40, alignSelf: 'center', marginBottom: 10 }}
+                        source={require('../../assets/images/accuWeather/AccuWeather75.png')}
+                    />
                 </Form>
-            </Container >
+            </Container>
         )
     }
 }
