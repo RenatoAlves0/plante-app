@@ -6,6 +6,7 @@ import estilo from '../../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import Chart from '../../components/ChartToday'
 import weatherToday from '../../services/WeatherToday'
+import { translate } from '../../i18n/locales'
 
 export default class Today extends Component {
     constructor(props) {
@@ -23,18 +24,18 @@ export default class Today extends Component {
         }
 
         this.weather = [
-            { key: 'temperatura', icon: 'thermometer', variavel_ambiental: 'Temperatura', cor: this.estilo.cor.purple },
-            { key: 'umidade', icon: 'droplet', variavel_ambiental: 'Umidade', cor: this.estilo.cor.blue_light },
-            { key: 'chuva', icon: 'cloud-drizzle', variavel_ambiental: 'Chuva', cor: this.estilo.cor.blue },
-            { key: 'vento', icon: 'wind', variavel_ambiental: 'Vento', cor: this.estilo.cor.greenish_medium },
-            { key: 'radiacao', icon: 'sun', variavel_ambiental: 'Radiação', cor: this.estilo.cor.orange },
+            { key: 'temperatura', icon: 'thermometer', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
+            { key: 'umidade', icon: 'droplet', variavel_ambiental: translate('umidade'), cor: this.estilo.cor.blue_light },
+            { key: 'chuva', icon: 'cloud-drizzle', variavel_ambiental: translate('chuva'), cor: this.estilo.cor.blue },
+            { key: 'vento', icon: 'wind', variavel_ambiental: translate('vento'), cor: this.estilo.cor.greenish_medium },
+            { key: 'radiacao', icon: 'sun', variavel_ambiental: translate('radiacao'), cor: this.estilo.cor.orange },
         ]
 
         this.weather_temperatura = [
-            { key: 'temperatura', label: 'Temperatura' },
-            { key: 'ponto_orvalho', label: 'Ponto de orvalho' },
-            { key: 'sensacao_termica', label: 'Sensação térmica' },
-            { key: 'bulbo_umido', label: 'Bulbo úmido' },
+            { key: 'temperatura', label: translate('temperatura') },
+            { key: 'ponto_orvalho', label: translate('ponto_de_orvalho') },
+            { key: 'sensacao_termica', label: translate('sensacao_termica') },
+            { key: 'bulbo_umido', label: translate('bulbo_umido') },
         ]
     }
 
@@ -51,7 +52,7 @@ export default class Today extends Component {
                         <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>Previsão 12 horas</Text>
+                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>12 {translate('horas')}</Text>
                     </Body>
                     <Button rounded transparent onPress={() => Actions.week()}>
                         <FeatherIcon name='calendar' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />

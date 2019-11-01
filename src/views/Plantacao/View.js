@@ -154,16 +154,16 @@ export default class PlantacaoView extends Component {
                     }}>
                         <Row style={{ marginBottom: 10, flexWrap: 'wrap' }}>
                             <FeatherIcon name='thermometer' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
-                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >{'  Clima ' + this.props.item.cultura.clima.tipo}</Text>
+                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >{'  ' + translate('clima') + ' ' + this.props.item.cultura.clima.tipo}</Text>
                         </Row>
                         <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
-                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Temperatura  </Text>
+                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{translate('temperatura')}  </Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                 {this.props.item.cultura.clima.temperaturaMinima + ' | ' + this.props.item.cultura.clima.temperaturaMaxima + ' ºC'}
                             </Text>
                         </Row>
                         <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
-                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Umidade do ar  </Text>
+                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{translate('umidade_do_ar')}  </Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                 {this.props.item.cultura.clima.umidadeMinima + ' | ' + this.props.item.cultura.clima.umidadeMaxima + ' %'}
                             </Text>
@@ -178,16 +178,16 @@ export default class PlantacaoView extends Component {
                     }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='grain' type='MaterialIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
-                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Solo</Text>
+                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('solo')}</Text>
                         </Row>
                         <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
-                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Acidez  </Text>
+                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{translate('acidez')}  </Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                 {this.props.item.cultura.solo.phMinimo + ' | ' + this.props.item.cultura.solo.phMaximo + ' ph'}
                             </Text>
                         </Row>
                         <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
-                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>Umidade  </Text>
+                            <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{translate('umidade')}  </Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }} >
                                 {this.props.item.cultura.solo.umidadeMinima + ' | ' + this.props.item.cultura.solo.umidadeMaxima + ' %'}
                             </Text>
@@ -211,11 +211,11 @@ export default class PlantacaoView extends Component {
                         {this.props.item.cultura.luz.intensidade == 'Sombra' || !this.props.item.cultura.luz.horasPorDia ?
                             <Row style={{ marginBottom: 10, alignItems: 'flex-end' }}>
                                 <FeatherIcon name='cloud' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
-                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Sombra</Text>
+                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('sombra')}</Text>
                             </Row>
                             : <Row style={{ marginBottom: 10, alignItems: 'flex-end' }}>
                                 <FeatherIcon name='sun' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
-                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Luz </Text>
+                                <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('luminosidade')} </Text>
                                 <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>
                                     {this.props.item.cultura.luz.intensidade}
                                 </Text>
@@ -223,7 +223,7 @@ export default class PlantacaoView extends Component {
                         {this.props.item.cultura.luz.intensidade == 'Sombra' || !this.props.item.cultura.luz.horasPorDia ? null :
                             <Row style={{ alignItems: 'flex-end', flexWrap: 'wrap' }}>
                                 <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>{this.props.item.cultura.luz.horasPorDia}</Text>
-                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{this.props.item.cultura.luz.horasPorDia > 1 ? '  horas' : '  hora'} {'por dia'}</Text>
+                                <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>{this.props.item.cultura.luz.horasPorDia > 1 ? '  ' + translate('horas') : '  ' + translate('hora')} {translate('por_dia')}</Text>
                             </Row>}
                     </Form>
 
@@ -235,7 +235,7 @@ export default class PlantacaoView extends Component {
                     }}>
                         <Row style={{ marginBottom: 10 }}>
                             <Icon name='chemistry' type='SimpleLineIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
-                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  Nutrientes</Text>
+                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('nutrientes')}</Text>
                         </Row>
                         <Row style={{ flexWrap: 'wrap' }}>
                             <Text style={{ fontSize: 16, color: this.estilo.cor.gray_solid }}>
