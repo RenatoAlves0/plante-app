@@ -11,12 +11,15 @@ import weatherToday from '../../services/WeatherToday'
 import weatherWeek from '../../services/WeatherWeek'
 import ChartToday from '../../components/ChartToday'
 import ChartWeek from '../../components/ChartWeek'
+import http from '../../services/Http'
+import loginService from '../../services/Login'
 import { translate } from '../../i18n/locales'
 
 export default class Dash extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
+        this.http = new http()
         this.state = {
             weather_today: {},
             weather_week: {},
@@ -31,6 +34,7 @@ export default class Dash extends Component {
             sensores: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             alertas: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             loaded: false,
+            principal: undefined
         }
         this.sensor_atuador = [
             { index: 0, icon: 'activity', label: translate('sensores'), cor: this.estilo.cor.purple_vivid },
@@ -84,6 +88,7 @@ export default class Dash extends Component {
     }
 
     async load() {
+        await this.get_user_and_plantacao_principal()
         await this.setState({ weather_today: await weatherToday.get() })
         await this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
@@ -107,6 +112,17 @@ export default class Dash extends Component {
         })
         await this.conectar()
         this.setState({ loaded: true })
+    }
+
+    async get_user_and_plantacao_principal() {
+        await loginService.get().then(async (data) => {
+            await this.http.plantacoesPrincipaisByUsuario(data.usuario).then(async (data) => {
+                await data == '' ? {} :
+                    await this.http.getId('plantacaos', data[0].plantacao, 0).then(async (data) => {
+                        await this.setState({ principal: data })
+                    })
+            })
+        })
     }
 
     regar_change = () => {
@@ -197,7 +213,7 @@ export default class Dash extends Component {
                     <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 20 }}>
                         <Form style={{ width: '70%', flexDirection: 'row' }}>
                             <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
-                            >{translate('plantacao')}</Text>
+                            >{this.state.principal ? this.state.principal.nome : translate('minha_plantacao')}</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
@@ -245,13 +261,13 @@ export default class Dash extends Component {
                             <Card item={this.state.regar ?
                                 {
                                     action: true, cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
-                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Desligar',
-                                    sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: translate('desligar'),
+                                    sub_value_prefix: translate('umidade_do_solo') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
                                 }
                                 : {
                                     action: true, cor1: this.estilo.cor.gray_solid, cor2: this.estilo.cor.gray_white, method: this.regar_change,
-                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: 'Ligar',
-                                    sub_value_prefix: 'umidade ', sub_value: this.state.sensores.u, sub_value_sufix: ' %'
+                                    icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: translate('ligar'),
+                                    sub_value_prefix: translate('umidade_do_solo') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
                                 }} />
                             <Form style={{ width: Dimensions.get('screen').width - 200 }} />
                         </Row>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, Button, Icon, Form } from 'native-base'
 import estilo from '../assets/Estilo'
 import LinearGradient from 'react-native-linear-gradient'
+import { translate } from '../i18n/locales'
 
 export default class Card extends Component {
     constructor(props) {
@@ -33,13 +34,13 @@ export default class Card extends Component {
                         {this.props.item.sub_value ? <Text uppercase={false} style={{ color: this.estilo.cor.white + '77', fontSize: 15 }} >{this.props.item.sub_value_prefix}{this.props.item.sub_value}{this.props.item.sub_value_sufix}</Text> : null}
                     </Button>
                     : <Form style={this.estilo.buttom_item_dash}>
-                        <Form style={[this.state.alerta ? {
+                        {this.state.alerta ? <Form style={{
                             position: 'absolute', width: 160, height: 190, justifyContent: 'center', alignItems: 'center',
                             backgroundColor: this.estilo.cor.white, top: 5, right: 5, borderRadius: 16
-                        } : this.estilo.hide]}>
-                            <Text style={{ fontSize: 23, textAlign: 'center', color: this.props.item.cor1 }}>{this.props.item.alerta}</Text>
-                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>do ideal</Text>
-                        </Form>
+                        }}>
+                            <Text style={{ fontSize: 23, textAlign: 'center', color: this.props.item.cor1 }}>{this.props.item.alerta.split('/')[0]}{this.props.item.alerta.split('/')[1] == '+' ? '\n' + translate('acima') : '\n' + translate('abaixo')}</Text>
+                            <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>{translate('do_ideal')}</Text>
+                        </Form> : null}
                         {this.props.item.alerta ? <Button style={{
                             position: 'absolute', top: 10, right: 10, height: 25,
                             backgroundColor: this.state.alerta ? this.props.item.cor2 : this.estilo.cor.red_vivid, width: 25,

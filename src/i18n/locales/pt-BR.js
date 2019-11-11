@@ -1,6 +1,6 @@
 export default {
     conectar_ao: 'Conectar ao',
-    plantacao: 'Plantação',
+    minha_plantacao: 'Minha plantação',
     plantacoes: 'Plantações',
     sensores: 'Sensores',
     regador: 'Regador',
@@ -30,7 +30,7 @@ export default {
     sol: 'Sol',
     lua: 'Lua',
     dia: 'Dia',
-    noite:'Noite',
+    noite: 'Noite',
     sombra: 'Sombra',
     nascer_do_sol: 'Nascer do sol',
     por_do_sol: 'Por do sol',
@@ -41,4 +41,10 @@ export default {
     aolo: 'Solo',
     acidez: 'Acidez',
     nutrientes: 'Nutrientes',
+    acima: 'acima',
+    abaixo: 'abaixo',
+    do_ideal: 'do ideal',
+    ligar: 'Ligar',
+    desligar: 'Desligar'
+
 }

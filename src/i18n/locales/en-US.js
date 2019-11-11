@@ -1,6 +1,6 @@
 export default {
     conectar_ao: 'Connect to',
-    plantacao: 'Plantation',
+    minha_plantacao: 'My plantation',
     plantacoes: 'Plantations',
     sensores: 'Sensors',
     regador: 'Watering can',
@@ -41,4 +41,9 @@ export default {
     solo: 'Soil',
     acidez: 'Acidity',
     nutrientes: 'Nutrients',
+    acima: 'above',
+    abaixo: 'below',
+    do_ideal: 'ideal',
+    ligar: 'On',
+    desligar: 'Off'
 }

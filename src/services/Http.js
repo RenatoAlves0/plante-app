@@ -42,6 +42,13 @@ export default class Http {
             .catch(() => { return [] })
     }
 
+    async getId(entidade, _id, i) {
+        return await axios
+            .get(baseUrl[i] + entidade + '/' + _id)
+            .then((data) => { return data.data })
+            .catch((erro) => { console.error(erro) })
+    }
+
     async post(entidade, dados, i) {
         return await axios
             .post(baseUrl[i] + entidade, dados)
