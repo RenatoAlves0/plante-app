@@ -42,7 +42,7 @@ export default class Week extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
-                    <Button rounded transparent onPress={() => Actions.dash()}>
+                    <Button rounded transparent onPress={() => Actions.pop()}>
                         <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>

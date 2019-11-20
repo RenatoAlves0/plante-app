@@ -88,7 +88,7 @@ export default class Dash extends Component {
     }
 
     async load() {
-        await this.get_user_and_plantacao_principal()
+        this.get_user_and_plantacao_principal()
         await this.setState({ weather_today: await weatherToday.get() })
         await this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
@@ -211,11 +211,17 @@ export default class Dash extends Component {
                     {/* Plantação */}
 
                     <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 20 }}>
-                        <Form style={{ width: '70%', flexDirection: 'row' }}>
+                        <Form style={{ width: 50 }}>
+                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginLeft: 25 }}
+                                onPress={() => { Actions.plantacaoList() }}>
+                                <FeatherIcon name='menu' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                            </Button>
+                        </Form>
+                        <Form style={{ width: Dimensions.get('screen').width - 100, flexDirection: 'row' }}>
                             <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
                             >{this.state.principal ? this.state.principal.nome : translate('minha_plantacao')}</Text>
                         </Form>
-                        <Form style={{ width: '30%' }}>
+                        <Form style={{ width: 50 }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
                                 onPress={() => { Actions.plantacaoList() }}>
                                 <FeatherIcon name='grid' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
@@ -300,10 +306,10 @@ export default class Dash extends Component {
                                     }}>
                                     {this.state.tipo_previsao_tempo_atual == item.index ?
                                         <Button rounded small disabled style={{
-                                            borderRadius: 20, alignSelf: 'flex-end',
-                                            backgroundColor: this.estilo.cor.gray_solid, marginBottom: 1
+                                            borderRadius: 20, alignSelf: 'flex-end', elevation: 7,
+                                            backgroundColor: this.estilo.cor.white, marginBottom: 1
                                         }}>
-                                            <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.white, marginLeft: 5, marginRight: 5, }} />
+                                            <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.gray_solid, marginLeft: 5, marginRight: 5, }} />
                                         </Button>
                                         : <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
                                     }

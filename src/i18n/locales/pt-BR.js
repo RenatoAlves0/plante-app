@@ -1,6 +1,7 @@
 export default {
     conectar_ao: 'Conectar ao',
     minha_plantacao: 'Minha plantação',
+    plantacao: 'Plantação',
     plantacoes: 'Plantações',
     sensores: 'Sensores',
     regador: 'Regador',

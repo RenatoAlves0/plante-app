@@ -67,7 +67,7 @@ export default class PlantacaoList extends Component {
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
                     <Left>
-                        <Button rounded transparent onPress={() => Actions.pop()}>
+                        <Button rounded transparent onPress={() => Actions.dash()}>
                             <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                     </Left>
