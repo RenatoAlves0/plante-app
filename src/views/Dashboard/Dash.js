@@ -25,7 +25,6 @@ export default class Dash extends Component {
             weather_week: {},
             weather_updated: true,
             conectado: true,
-            sensor_atuador_cor: this.estilo.cor.purple_vivid,
             sensor_atuador_atual: 0,
             tipo_previsao_tempo_cor: this.estilo.cor.purple,
             tipo_previsao_tempo_atual: 0,
@@ -37,12 +36,12 @@ export default class Dash extends Component {
             principal: undefined
         }
         this.sensor_atuador = [
-            { index: 0, icon: 'activity', label: translate('sensores'), cor: this.estilo.cor.purple_vivid },
-            { index: 1, icon: 'command', label: translate('regador'), cor: this.estilo.cor.blue },
+            { index: 0, label: translate('sensores') },
+            { index: 1, label: translate('regador') },
         ]
         this.tipo_previsao_tempo = [
-            { index: 0, icon: 'clock', label: '12 ' + translate('horas'), cor: this.estilo.cor.greenish_medium },
-            { index: 1, icon: 'calendar', label: '5 ' + translate('dias'), cor: this.estilo.cor.purple },
+            { index: 0, label: translate('diaria') },
+            { index: 1, label: translate('semanal') },
         ]
         this.topico_sensores = 'plante_sensores.5d699b7e0762797037d35801'
         this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
@@ -177,7 +176,6 @@ export default class Dash extends Component {
 
     render() {
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
-
         const cards = [
             { id: 0, action: false, cor1: this.estilo.cor.purple, cor2: this.estilo.cor.purple_vivid, icon_name: 'thermometer', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.t, value_sufix: ' ºC', sub_value: translate('temperatura'), alerta: this.state.alertas.t },
             { id: 1, action: false, cor1: this.estilo.cor.brown, cor2: this.estilo.cor.brwon_light, icon_name: 'water', icon_type: 'MaterialCommunityIcons', value: this.state.sensores.uS, value_sufix: ' %', sub_value: translate('umidade_do_solo'), alerta: this.state.alertas.uS },
@@ -210,35 +208,34 @@ export default class Dash extends Component {
 
                     {/* Plantação */}
 
-                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 20 }}>
-                        <Form style={{ width: 50 }}>
-                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginLeft: 25 }}
+                    <Form style={{ flexDirection: 'row', marginTop: 20 }}>
+                        <Form style={{ width: '70%', flexDirection: 'row' }}>
+                            <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
+                            >{this.state.principal ? this.state.principal.nome : translate('minha_plantacao')}</Text>
+                        </Form>
+                        <Form style={{ width: '30%' }}>
+                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
                                 onPress={() => { Actions.plantacaoList() }}>
                                 <FeatherIcon name='menu' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                             </Button>
                         </Form>
-                        <Form style={{ width: Dimensions.get('screen').width - 100, flexDirection: 'row' }}>
-                            <Text style={{ marginLeft: 25, fontSize: 28, fontWeight: 'bold', color: this.estilo.cor.gray_solid }}
-                            >{this.state.principal ? this.state.principal.nome : translate('minha_plantacao')}</Text>
-                        </Form>
-                        <Form style={{ width: 50 }}>
-                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={() => { Actions.plantacaoList() }}>
-                                <FeatherIcon name='grid' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
-                            </Button>
-                        </Form>
                     </Form>
 
-                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
+                    <Form style={{ flexDirection: 'row', paddingLeft: 25 }}>
                         {this.sensor_atuador.map((item) => (
-                            <Button key={item.icon} rounded style={{ backgroundColor: '', elevation: 0, marginHorizontal: 5 }}
-                                onPress={() => { this.setState({ sensor_atuador_atual: item.index, sensor_atuador_cor: item.cor, label: item.label }) }}>
-                                <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
+                            <Button key={item.icon} transparent style={{ elevation: 0 }}
+                                onPress={() => { this.setState({ sensor_atuador_atual: item.index, label: item.label }) }}>
                                 <Text uppercase={false} style={{
-                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 20, marginLeft: -12
-                                }}>  {item.label}</Text>
+                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                }}>{item.label}     </Text>
                             </Button>
                         ))}
+                        <Button style={{ backgroundColor: '', elevation: 0 }}
+                            onPress={() => Actions.plantacaoList()}>
+                            <Text uppercase={false} style={{
+                                color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                            }}>{translate('plantacoes')}</Text>
+                        </Button>
                     </Form>
                     <ScrollView style={[this.state.sensor_atuador_atual == 0 ? {} : this.estilo.hide]}
                         horizontal
@@ -295,29 +292,25 @@ export default class Dash extends Component {
                         </Form>
                     </Row>
 
-                    <Form style={{ flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: 'transparent', marginTop: 10, paddingLeft: 20 }}>
-                        <Form style={{ width: '70%', flexDirection: 'row' }}>
+                    <Form style={{ flexDirection: 'row', paddingLeft: 25 }}>
+                        <Form style={{ flexDirection: 'row' }}>
                             {this.tipo_previsao_tempo.map((item) => (
-                                <Button key={item.icon} transparent rounded style={{ elevation: 0, marginHorizontal: 5 }}
-                                    onPress={async () => {
-                                        this.state.tipo_previsao_tempo_atual == 0 && 0 == item.index ? Actions.today() :
-                                            this.state.tipo_previsao_tempo_atual == 1 && 1 == item.index ? Actions.week() :
-                                                this.setState({ tipo_previsao_tempo_atual: item.index, tipo_previsao_tempo_cor: item.cor, label: item.label })
+                                <Button key={item.icon} transparent style={{ elevation: 0 }}
+                                    onPress={() => {
+                                        this.setState({ tipo_previsao_tempo_atual: item.index, label: item.label })
                                     }}>
-                                    {this.state.tipo_previsao_tempo_atual == item.index ?
-                                        <Button rounded small disabled style={{
-                                            borderRadius: 20, alignSelf: 'flex-end', elevation: 7,
-                                            backgroundColor: this.estilo.cor.white, marginBottom: 1
-                                        }}>
-                                            <FeatherIcon name='chevron-right' style={{ fontSize: 22, color: this.estilo.cor.gray_solid, marginLeft: 5, marginRight: 5, }} />
-                                        </Button>
-                                        : <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium }} />
-                                    }
                                     <Text uppercase={false} style={{
-                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 20, marginLeft: -12
-                                    }}>  {item.label}</Text>
+                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                    }}>{item.label}     </Text>
                                 </Button>
                             ))}
+
+                            <Button style={{ backgroundColor: '', elevation: 0 }}
+                                onPress={() => this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : Actions.week()}>
+                                <Text uppercase={false} style={{
+                                    color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                }}>Gráficos</Text>
+                            </Button>
                         </Form>
                     </Form>
 

@@ -1,4 +1,6 @@
 export default {
+    diaria: 'Diária',
+    semanal: 'Semanal',
     conectar_ao: 'Conectar ao',
     minha_plantacao: 'Minha plantação',
     plantacao: 'Plantação',
@@ -39,7 +41,7 @@ export default {
     por_da_lua: 'Por da lua',
     duracao: 'Duração',
     clima: 'Clima',
-    aolo: 'Solo',
+    solo: 'Solo',
     acidez: 'Acidez',
     nutrientes: 'Nutrientes',
     acima: 'acima',

@@ -1,4 +1,6 @@
 export default {
+    diaria: 'Daily',
+    semanal: 'Weekly',
     conectar_ao: 'Connect to',
     minha_plantacao: 'My plantation',
     plantacao: 'Plantation',
