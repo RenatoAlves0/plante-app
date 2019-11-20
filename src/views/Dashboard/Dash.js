@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, Button, Row, Toast, Form } from 'native-base'
-import { StatusBar, ScrollView, Animated, Easing, Dimensions, Image } from 'react-native'
+import { StatusBar, ScrollView, Animated, Easing, Dimensions, Image, Modal } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
 import { Client, Message } from 'react-native-paho-mqtt'
@@ -14,6 +14,7 @@ import ChartWeek from '../../components/ChartWeek'
 import http from '../../services/Http'
 import loginService from '../../services/Login'
 import { translate } from '../../i18n/locales'
+import Menu from '../../components/Menu'
 
 export default class Dash extends Component {
     constructor(props) {
@@ -33,7 +34,8 @@ export default class Dash extends Component {
             sensores: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             alertas: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             loaded: false,
-            principal: undefined
+            principal: undefined,
+            modal: false
         }
         this.sensor_atuador = [
             { index: 0, label: translate('sensores') },
@@ -174,6 +176,10 @@ export default class Dash extends Component {
         await this.setState({ weather_updated: true })
     }
 
+    modal = (on_off) => {
+        this.setState({ modal: on_off })
+    }
+
     render() {
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         const cards = [
@@ -187,6 +193,7 @@ export default class Dash extends Component {
         return (
             <Container>
                 {/* Botão de reconexão com o Plante Box */}
+                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
                 <Content>
                     {this.state.conectado ? null :
                         <LinearGradient colors={[this.estilo.cor.purple_vivid, this.estilo.cor.greenish]}
@@ -204,7 +211,16 @@ export default class Dash extends Component {
                                 <FeatherIcon style={{ color: this.estilo.cor.white, fontSize: 30 }} name='radio' />
                             </Button>
                         </LinearGradient>}
-                    <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
+
+                    {/* Modal Menu */}
+
+                    <Modal
+                        transparent
+                        animationType='fade'
+                        visible={this.state.modal}
+                        onRequestClose={() => this.modal(false)}>
+                        <Menu modal={this.modal} />
+                    </Modal>
 
                     {/* Plantação */}
 
@@ -214,8 +230,8 @@ export default class Dash extends Component {
                             >{this.state.principal ? this.state.principal.nome : translate('minha_plantacao')}</Text>
                         </Form>
                         <Form style={{ width: '30%' }}>
-                            <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={() => { Actions.plantacaoList() }}>
+                            <Button transparent disabled={!this.state.weather_updated} style={{ elevation: 0, marginRight: 25, alignSelf: 'flex-end' }}
+                                onPress={() => this.modal(true)}>
                                 <FeatherIcon name='menu' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                             </Button>
                         </Form>
@@ -237,6 +253,7 @@ export default class Dash extends Component {
                             }}>{translate('plantacoes')}</Text>
                         </Button>
                     </Form>
+
                     <ScrollView style={[this.state.sensor_atuador_atual == 0 ? {} : this.estilo.hide]}
                         horizontal
                         pagingEnabled

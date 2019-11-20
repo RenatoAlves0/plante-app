@@ -28,17 +28,21 @@ export default class Login extends Component {
     }
 
     componentWillMount() {
-        this.logar()
+        this.preencher_login()
     }
 
-    async logar() {
+    async preencher_login() {
+
         let login = undefined
         login = await loginService.get()
         if (login && login._id) {
-            Actions.dash()
-            return
+            await this.setState({ login: { login: login.login, senha: login.senha } })
         }
+    }
 
+    async logar() {
+
+        let login = undefined
         if (this.state.login && this.state.login.login && this.state.login.senha) {
             login = await this.http.logar(this.state.login)
             if (login && login._id && login.usuario) {
