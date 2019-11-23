@@ -40,7 +40,7 @@ export default class PlantacaoList extends Component {
 
     async login() {
         await loginService.get().then(async (data) => {
-            await this.setState({ usuario: data.usuario })
+            this.setState({ usuario: data.usuario })
         })
     }
 
@@ -51,9 +51,9 @@ export default class PlantacaoList extends Component {
                 await this.http.get('plantas/' + plantacao.cultura, 1).then(async (_data) => {
                     obj = plantacao
                     obj.cultura = _data
-                    await aux.push(obj)
+                    aux.push(obj)
                 })
-                await this.setState({ plantacoes: aux })
+                this.setState({ plantacoes: aux })
             })
         })
     }
@@ -85,23 +85,23 @@ export default class PlantacaoList extends Component {
                 <Content>
                     {this.state.plantacoes.map((item) => (
                         <Form key={item._id} style={{
-                            backgroundColor: this.estilo.cor_platacao[item.cor],
-                            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-                            alignSelf: 'center', elevation: 10, minHeight: 150
+                            width: Dimensions.get('screen').width, marginTop: 20,
+                            alignSelf: 'center', minHeight: 140
                         }}>
-                            {this.state.principal.plantacao == item._id ? <Button style={{
-                                position: 'absolute', top: 10, right: 10, height: 25,
-                                backgroundColor: this.estilo.cor.white, width: 25,
-                                borderRadius: 20, elevation: 7
-                            }}><Text /></Button> : null}
-                            <Button transparent style={{ minHeight: 150, borderRadius: 20 }}
+                            <Button transparent style={{ minHeight: 140 }}
                                 onPress={() => Actions.plantacaoView({ item: item })}>
-                                <View onPress style={{ width: '90%', margin: 20 }}>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.nome}</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, paddingRight: 0, paddingLeft: 0 }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
-                                    <Form style={{ borderBottomWidth: 1, borderBottomColor: this.estilo.cor.white + '99', marginVertical: 10 }} />
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.cultura.nome}</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 15, paddingRight: 0, paddingLeft: 0, alignSelf: 'flex-end' }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                {this.state.principal.plantacao == item._id ? <Button style={{
+                                    position: 'absolute', top: 5, right: 30, height: 25,
+                                    backgroundColor: this.estilo.cor_platacao[item.cor],
+                                    borderRadius: 20, elevation: 5
+                                }}><Text uppercase={false}>{translate('principal')}</Text></Button> : null}
+                                <View style={{ marginHorizontal: 30, width: Dimensions.get('screen').width - 60 }}>
+                                    <Text uppercase={false} style={{ fontWeight: 'bold', color: this.estilo.cor_platacao[item.cor], fontSize: 18 }} >{item.nome}</Text>
+                                    <Text uppercase={false} style={{ fontWeight: 'bold', color: this.estilo.cor_platacao[item.cor] + '99', fontSize: 18 }} >{item.localizacao + ', ' + item.cidade.nome}</Text>
+                                    <Form style={{ backgroundColor: this.estilo.cor_platacao[item.cor], marginVertical: 10, padding: 10, borderRadius: 10, elevation: 10 }} >
+                                        <Text uppercase={false} style={{ fontWeight: 'bold', color: this.estilo.cor.white, fontSize: 18, alignSelf: 'flex-end' }} >{item.cultura.nome}</Text>
+                                        <Text uppercase={false} style={{ fontWeight: 'bold', color: this.estilo.cor.white + '99', fontSize: 15, alignSelf: 'flex-end' }} >{item.cultura.especie.nome + ' - ' + item.cultura.genero.nome + ' - ' + item.cultura.familia.nome}</Text>
+                                    </Form>
                                 </View>
                             </Button>
                         </Form>))}

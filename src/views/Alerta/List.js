@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StatusBar, Dimensions, Animated, Easing, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { Text, Form, Container, View, Button, Header, Body, Row, Content } from 'native-base'
+import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import alertasService from '../../services/Alertas'
@@ -22,8 +23,13 @@ export default class AlertaList extends Component {
         }
     }
 
-    async componentWillMount() {
+    componentWillMount() {
+        this.load()
+    }
+
+    async load() {
         this.setState({ alertas: await alertasService.get() })
+        this.setState({ loaded: true })
     }
 
     spinValue = new Animated.Value(0)
@@ -47,10 +53,10 @@ export default class AlertaList extends Component {
     }
 
     async updateAlertas() {
-        await this.setState({ alertas_updated: false })
+        this.setState({ alertas_updated: false })
         await alertasService.update()
-        await this.setState({ alertas: await alertasService.get() })
-        await this.setState({ alertas_updated: true })
+        this.setState({ alertas: await alertasService.get() })
+        this.setState({ alertas_updated: true })
     }
 
     render() {
@@ -76,25 +82,22 @@ export default class AlertaList extends Component {
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-
+                {this.state.loaded ? null : <Loader />}
                 <Content>
                     {alertas.map(item => (
                         <Form key={item.variavel_ambiental}>
                             {item.dados.valor ?
-                                <Form style={{
-                                    backgroundColor: item.cor, width: Dimensions.get('screen').width * .9,
-                                    borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 10, minHeight: 150, paddingVertical: 20
-                                }}>
-                                    <Text style={{ color: this.estilo.cor.white, fontSize: 18, marginLeft: 20 }} uppercase={false}>
+                                <Form style={{ width: Dimensions.get('screen').width, marginTop: 20, alignSelf: 'center' }}>
+                                    <Text style={{ color: item.cor, fontSize: 18, marginLeft: 30, fontWeight: 'bold' }} uppercase={false}>
                                         {item.variavel_ambiental}</Text>
-                                    <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, marginLeft: 20 }}>
+                                    <Text uppercase={false} style={{ color: item.cor + '99', fontSize: 18, marginLeft: 30, fontWeight: 'bold' }}>
                                         {'Ideal entre ' + item.dados.minIdeal + ' e ' +
                                             item.dados.maxIdeal + item.tipo_variavel}</Text>
 
-                                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                                         <Form style={{ width: 10 }} />
                                         {item.dados.valor.map((itemDados, indexDados) => (
-                                            <Form key={indexDados} style={{ borderRadius: 15, padding: 20, marginLeft: 10, marginTop: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
+                                            <Form key={indexDados} style={{ elevation: 10, borderRadius: 15, padding: 20, margin: 10, marginVertical: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
                                                 {itemDados > 0 ? <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
                                                     {item.dados.maxIdeal + itemDados + item.tipo_variavel}
                                                 </Text>

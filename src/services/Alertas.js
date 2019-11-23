@@ -4,17 +4,14 @@ import loginService from '../services/Login'
 let http = new Http()
 
 
-let alertas_aux = {}
+let alertas_aux = {
+    temperatura: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+    umidade_solo: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+    umidade_ar: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
+}
 
 class Alertas {
     async update() {
-
-        alertas_aux = {
-            temperatura: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-            umidade_solo: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-            umidade_ar: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
-        }
-
         let usuarioId = await loginService.get()
         usuarioId = usuarioId.usuario
 
@@ -31,17 +28,21 @@ class Alertas {
             })
 
         await http.alertasByUsuarioAndPlantacao('alertaTemperaturas', usuarioId, plantacaoId)
-            .then(data => {
-                data.forEach(item => {
+            .then(async data => {
+                await data.forEach(item => {
                     alertas_aux.temperatura.data.push(item.data)
                     alertas_aux.temperatura.valor.push(item.valor)
                 })
+                console.log('alertas_aux.temperatura.data')
+                console.log(alertas_aux.temperatura.data)
+                console.log(usuarioId)
+                console.log(plantacaoId)
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidades', usuarioId, plantacaoId)
-            .then(data => {
-                data.forEach(item => {
+            .then(async data => {
+                await data.forEach(item => {
                     alertas_aux.umidade_ar.data.push(item.data)
                     alertas_aux.umidade_ar.valor.push(item.valor)
                 })
@@ -49,8 +50,8 @@ class Alertas {
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidadeSolos', usuarioId, plantacaoId)
-            .then(data => {
-                data.forEach(item => {
+            .then(async data => {
+                await data.forEach(item => {
                     alertas_aux.umidade_solo.data.push(item.data)
                     alertas_aux.umidade_solo.valor.push(item.valor)
                 })
