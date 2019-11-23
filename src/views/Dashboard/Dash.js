@@ -238,20 +238,31 @@ export default class Dash extends Component {
                     </Form>
 
                     <Form style={{ flexDirection: 'row', paddingLeft: 25 }}>
-                        {this.sensor_atuador.map((item) => (
-                            <Button key={item.icon} transparent style={{ elevation: 0 }}
-                                onPress={() => { this.setState({ sensor_atuador_atual: item.index, label: item.label }) }}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+
+                            {this.sensor_atuador.map((item) => (
+                                <Button key={item.index} transparent style={{ elevation: 0 }}
+                                    onPress={() => { this.setState({ sensor_atuador_atual: item.index, label: item.label }) }}>
+                                    <Text uppercase={false} style={{
+                                        color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                    }}>{item.label}     </Text>
+                                </Button>
+                            ))}
+                            <Button style={{ backgroundColor: '', elevation: 0 }}
+                                onPress={() => Actions.plantacaoList()}>
                                 <Text uppercase={false} style={{
-                                    color: this.state.sensor_atuador_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
-                                }}>{item.label}     </Text>
+                                    color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                }}>{translate('plantacoes')}     </Text>
                             </Button>
-                        ))}
-                        <Button style={{ backgroundColor: '', elevation: 0 }}
-                            onPress={() => Actions.plantacaoList()}>
-                            <Text uppercase={false} style={{
-                                color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
-                            }}>{translate('plantacoes')}</Text>
-                        </Button>
+
+                            <Button style={{ backgroundColor: '', elevation: 0 }}
+                                onPress={() => Actions.alertaList()}>
+                                <Text uppercase={false} style={{
+                                    color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                }}>Alertas</Text>
+                            </Button>
+
+                        </ScrollView>
                     </Form>
 
                     <ScrollView style={[this.state.sensor_atuador_atual == 0 ? {} : this.estilo.hide]}
@@ -282,12 +293,12 @@ export default class Dash extends Component {
                                 {
                                     action: true, cor1: this.estilo.cor.blue, cor2: this.estilo.cor.greenish_light, method: this.regar_change,
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: translate('desligar'),
-                                    sub_value_prefix: translate('umidade_do_solo') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
+                                    sub_value_prefix: translate('umidade') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
                                 }
                                 : {
                                     action: true, cor1: this.estilo.cor.gray_solid, cor2: this.estilo.cor.gray_white, method: this.regar_change,
                                     icon_name: 'water-pump', icon_type: 'MaterialCommunityIcons', value: translate('ligar'),
-                                    sub_value_prefix: translate('umidade_do_solo') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
+                                    sub_value_prefix: translate('umidade') + ' ', sub_value: this.state.sensores.uS, sub_value_sufix: ' %'
                                 }} />
                             <Form style={{ width: Dimensions.get('screen').width - 200 }} />
                         </Row>
@@ -301,7 +312,7 @@ export default class Dash extends Component {
                         </Form>
                         <Form style={{ width: '30%' }}>
                             <Button transparent rounded disabled={!this.state.weather_updated} style={{ elevation: 0, marginTop: 20, marginRight: 25, alignSelf: 'flex-end' }}
-                                onPress={async () => this.updateWeather()}>
+                                onPress={() => this.updateWeather()}>
                                 <Animated.View style={this.state.weather_updated ? null : { transform: [{ rotate }] }}>
                                     <FeatherIcon name='refresh-cw' style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                                 </Animated.View>
@@ -310,25 +321,24 @@ export default class Dash extends Component {
                     </Row>
 
                     <Form style={{ flexDirection: 'row', paddingLeft: 25 }}>
-                        <Form style={{ flexDirection: 'row' }}>
-                            {this.tipo_previsao_tempo.map((item) => (
-                                <Button key={item.icon} transparent style={{ elevation: 0 }}
-                                    onPress={() => {
-                                        this.setState({ tipo_previsao_tempo_atual: item.index, label: item.label })
-                                    }}>
-                                    <Text uppercase={false} style={{
-                                        color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
-                                    }}>{item.label}     </Text>
-                                </Button>
-                            ))}
 
-                            <Button style={{ backgroundColor: '', elevation: 0 }}
-                                onPress={() => this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : Actions.week()}>
+                        {this.tipo_previsao_tempo.map((item) => (
+                            <Button key={item.index} transparent style={{ elevation: 0 }}
+                                onPress={() => {
+                                    this.setState({ tipo_previsao_tempo_atual: item.index, label: item.label })
+                                }}>
                                 <Text uppercase={false} style={{
-                                    color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
-                                }}>Gráficos</Text>
+                                    color: this.state.tipo_previsao_tempo_atual == item.index ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                                }}>{item.label}     </Text>
                             </Button>
-                        </Form>
+                        ))}
+
+                        <Button style={{ backgroundColor: '', elevation: 0 }}
+                            onPress={() => this.state.tipo_previsao_tempo_atual == 0 ? Actions.today() : Actions.week()}>
+                            <Text uppercase={false} style={{
+                                color: this.estilo.cor.gray_medium, fontSize: 18, paddingLeft: 0, paddingRight: 0
+                            }}>Gráficos</Text>
+                        </Button>
                     </Form>
 
                     {this.state.weather_today && this.state.weather_today.temperatura ?
@@ -376,7 +386,7 @@ export default class Dash extends Component {
                             </Form>
                         </Form> : null}
                 </Content>
-            </Container>
+            </Container >
         )
     }
 }

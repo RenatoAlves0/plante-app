@@ -48,14 +48,14 @@ export default class Today extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
-                    <Button rounded transparent onPress={() => Actions.pop()}>
+                    <Button rounded transparent onPress={() => Actions.popTo('dash')}>
                         <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>12 {translate('horas')}</Text>
+                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('previsao') + ' ' + translate('diaria')}</Text>
                     </Body>
                     <Button rounded transparent onPress={() => Actions.week()}>
-                        <FeatherIcon name='calendar' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        <FeatherIcon name='repeat' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />

@@ -7,9 +7,28 @@ const baseUrl = [
 ]
 
 export default class Http {
+    async culturaByPlantacao(plantacaoId) {
+        return await axios
+            .get(baseUrl[0] + 'plantacaos/' + plantacaoId)
+            .then(async dataP => {
+                return await axios
+                    .get(baseUrl[1] + 'plantas/' + dataP.data.cultura)
+                    .then(async data => { return data.data })
+                    .catch(() => { return {} })
+            })
+            .catch(() => { return {} })
+    }
+
     async logar(dados) {
         return await axios
             .get(baseUrl[0] + 'logins/logar', { params: { login: dados.login, senha: dados.senha } })
+            .then((data) => { return data.data })
+            .catch(() => { return {} })
+    }
+
+    async alertasByUsuarioAndPlantacao(entidade, usuarioId, plantacaoId) {
+        return await axios
+            .get(baseUrl[0] + entidade + '/usuario_plantacao/' + usuarioId + '/' + plantacaoId)
             .then((data) => { return data.data })
             .catch(() => { return {} })
     }

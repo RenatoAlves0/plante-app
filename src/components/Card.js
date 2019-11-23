@@ -38,7 +38,8 @@ export default class Card extends Component {
                             position: 'absolute', width: 160, height: 190, justifyContent: 'center', alignItems: 'center',
                             backgroundColor: this.estilo.cor.white, top: 5, right: 5, borderRadius: 16
                         }}>
-                            <Text style={{ fontSize: 23, textAlign: 'center', color: this.props.item.cor1 }}>{this.props.item.alerta.split('/')[0]}{this.props.item.alerta.split('/')[1] == '+' ? '\n' + translate('acima') : '\n' + translate('abaixo')}</Text>
+                            <Text style={{ fontSize: 23, textAlign: 'center', color: this.props.item.cor1 }}>{this.props.item.alerta[0] == '-' ? this.props.item.alerta.replace('-', '') + '\n' + translate('abaixo') :
+                                this.props.item.alerta + '\n' + translate('acima')}</Text>
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid }}>{translate('do_ideal')}</Text>
                         </Form> : null}
                         {this.props.item.alerta ? <Button style={{

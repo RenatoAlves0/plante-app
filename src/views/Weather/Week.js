@@ -42,14 +42,14 @@ export default class Week extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
-                    <Button rounded transparent onPress={() => Actions.pop()}>
+                    <Button rounded transparent onPress={() => Actions.popTo('dash')}>
                         <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>5 {translate('dias')}</Text>
+                        <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('previsao') + ' ' + translate('semanal')}</Text>
                     </Body>
                     <Button rounded transparent onPress={() => Actions.today()}>
-                        <FeatherIcon name='clock' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        <FeatherIcon name='repeat' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />

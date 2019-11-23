@@ -1,4 +1,5 @@
 export default {
+    alertas: 'Alerts',
     diaria: 'Daily',
     semanal: 'Weekly',
     conectar_ao: 'Connect to',
@@ -8,6 +9,7 @@ export default {
     sensores: 'Sensors',
     regador: 'Watering can',
     previsao_do_tempo: 'Weather forecast',
+    previsao: 'Forecast',
     horas: 'hours',
     hora: 'hour',
     por_dia: 'per day',
