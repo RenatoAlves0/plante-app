@@ -20,12 +20,6 @@ export default class AlertaList extends Component {
                 umidade_ar: {}
             },
         }
-
-        this.alertas = [
-            { tipo_variavel: ' ºC', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
-            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
-            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
-        ]
     }
 
     async componentWillMount() {
@@ -60,6 +54,11 @@ export default class AlertaList extends Component {
     }
 
     render() {
+        const alertas = [
+            { dados: this.state.alertas.temperatura, tipo_variavel: ' ºC', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
+            { dados: this.state.alertas.umidade_solo, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
+            { dados: this.state.alertas.umidade_ar, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
+        ]
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         return (
             <Container>
@@ -79,15 +78,15 @@ export default class AlertaList extends Component {
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
 
                 <Content>
-                    {/* {this.alertas.map((item, index) => {
+                    {alertas.map(item => (
                         <Form key={item.variavel_ambiental}>
                             {item.dados.valor ?
                                 <Form style={{
-                                    backgroundColor: this.alertas[index].cor, width: Dimensions.get('screen').width * .9,
+                                    backgroundColor: item.cor, width: Dimensions.get('screen').width * .9,
                                     borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 10, minHeight: 150, paddingVertical: 20
                                 }}>
                                     <Text style={{ color: this.estilo.cor.white, fontSize: 18, marginLeft: 20 }} uppercase={false}>
-                                        {this.alertas[index].variavel_ambiental}</Text>
+                                        {item.variavel_ambiental}</Text>
                                     <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, marginLeft: 20 }}>
                                         {'Ideal entre ' + item.dados.minIdeal + ' e ' +
                                             item.dados.maxIdeal + item.tipo_variavel}</Text>
@@ -96,20 +95,21 @@ export default class AlertaList extends Component {
                                         <Form style={{ width: 10 }} />
                                         {item.dados.valor.map((itemDados, indexDados) => (
                                             <Form key={indexDados} style={{ borderRadius: 15, padding: 20, marginLeft: 10, marginTop: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
-
-                                                {itemDados > 0 ? <Text style={{ color: this.alertas[indexDados].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
+                                                {itemDados > 0 ? <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
                                                     {item.dados.maxIdeal + itemDados + item.tipo_variavel}
                                                 </Text>
                                                     :
-                                                    <Text style={{ color: this.alertas[indexDados].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
+                                                    <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
                                                         {(item.dados.minIdeal + itemDados).toFixed(2) + item.tipo_variavel} </Text>}
 
                                                 {itemDados > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {itemDados}<FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 22, marginHorizontal: 5 }} />
+                                                    <FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
+                                                    {itemDados + item.tipo_variavel}
                                                 </Text>
                                                     :
-                                                    <Text style={{ color: this.estilo.cor.green, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                        {itemDados * -1}<FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green, fontSize: 22, marginHorizontal: 5 }} />
+                                                    <Text style={{ color: this.estilo.cor.green_solid, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
+                                                        <FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green_solid, fontSize: 20 }} />
+                                                        {itemDados * -1 + item.tipo_variavel}
                                                     </Text>}
 
                                                 <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
@@ -120,133 +120,8 @@ export default class AlertaList extends Component {
                                     </ScrollView>
                                 </Form> : null}
                         </Form>
-                    })} */}
-
-                    {/* Temperatura */}
-                    <Form>
-                        {this.state.alertas.temperatura.valor ?
-                            <Form style={{
-                                backgroundColor: this.alertas[0].cor, width: Dimensions.get('screen').width * .9,
-                                borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 10, minHeight: 150, paddingVertical: 20
-                            }}>
-                                <Text style={{ color: this.estilo.cor.white, fontSize: 18, marginLeft: 20 }} uppercase={false}>
-                                    {this.alertas[0].variavel_ambiental}</Text>
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, marginLeft: 20 }}>
-                                    {'Ideal entre ' + this.state.alertas.temperatura.minIdeal + ' e ' +
-                                        this.state.alertas.temperatura.maxIdeal + ' ºC'}</Text>
-
-                                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                    <Form style={{ width: 10 }} />
-                                    {this.state.alertas.temperatura.valor.map((item, index) => (
-                                        <Form key={index} style={{ borderRadius: 15, padding: 20, marginLeft: 10, marginTop: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
-
-                                            {item > 0 ? <Text style={{ color: this.alertas[0].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {this.state.alertas.temperatura.maxIdeal + item + ' ºC'}
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.alertas[0].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {(this.state.alertas.temperatura.minIdeal + item).toFixed(2) + ' ºC'} </Text>}
-
-                                            {item > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {item}<FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 22, marginHorizontal: 5 }} />
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.estilo.cor.green, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {item * -1}<FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green, fontSize: 22, marginHorizontal: 5 }} />
-                                                </Text>}
-
-                                            <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                {this.state.alertas.temperatura.data[index].split('T')[1].substring(0, 5) + 'h'}
-                                            </Text>
-                                        </Form>))}
-                                    <Form style={{ width: 20 }} />
-                                </ScrollView>
-                            </Form> : null}
-                    </Form>
-
-                    {/* Umidade do Solo */}
-                    <Form>
-                        {this.state.alertas.umidade_solo.valor ?
-                            <Form style={{
-                                backgroundColor: this.alertas[1].cor, width: Dimensions.get('screen').width * .9,
-                                borderRadius: 20, marginTop: 20, alignSelf: 'center', elevation: 10, minHeight: 150, paddingVertical: 20
-                            }}>
-                                <Text style={{ color: this.estilo.cor.white, fontSize: 18, marginLeft: 20 }} uppercase={false}>
-                                    {this.alertas[1].variavel_ambiental}</Text>
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, marginLeft: 20 }}>
-                                    {'Ideal entre ' + this.state.alertas.umidade_solo.minIdeal + ' e ' +
-                                        this.state.alertas.umidade_solo.maxIdeal + ' %'}</Text>
-
-                                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                    <Form style={{ width: 10 }} />
-                                    {this.state.alertas.umidade_solo.valor.map((item, index) => (
-                                        <Form key={index} style={{ borderRadius: 15, padding: 20, marginLeft: 10, marginTop: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
-
-                                            {item > 0 ? <Text style={{ color: this.alertas[1].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {this.state.alertas.umidade_solo.maxIdeal + item + ' %'}
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.alertas[1].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {(this.state.alertas.umidade_solo.minIdeal + item).toFixed(2) + ' %'} </Text>}
-
-                                            {item > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {item}<FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 22, marginHorizontal: 5 }} />
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.estilo.cor.green, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {item * -1}<FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green, fontSize: 22, marginHorizontal: 5 }} />
-                                                </Text>}
-
-                                            <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                {this.state.alertas.umidade_solo.data[index].split('T')[1].substring(0, 5) + 'h'}
-                                            </Text>
-                                        </Form>))}
-                                    <Form style={{ width: 20 }} />
-                                </ScrollView>
-                            </Form> : null}
-                    </Form>
-
-                    {/* Umidade do Ar */}
-                    <Form>
-                        {this.state.alertas.umidade_ar.valor ?
-                            <Form style={{
-                                backgroundColor: this.alertas[2].cor, width: Dimensions.get('screen').width * .9,
-                                borderRadius: 20, marginVertical: 20, alignSelf: 'center', elevation: 10, minHeight: 150, paddingVertical: 20
-                            }}>
-                                <Text style={{ color: this.estilo.cor.white, fontSize: 18, marginLeft: 20 }} uppercase={false}>
-                                    {this.alertas[2].variavel_ambiental}</Text>
-                                <Text uppercase={false} style={{ color: this.estilo.cor.white + '99', fontSize: 18, marginLeft: 20 }}>
-                                    {'Ideal entre ' + this.state.alertas.umidade_ar.minIdeal + ' e ' +
-                                        this.state.alertas.umidade_ar.maxIdeal + ' %'}</Text>
-
-                                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                                    <Form style={{ width: 10 }} />
-                                    {this.state.alertas.umidade_ar.valor.map((item, index) => (
-                                        <Form key={index} style={{ borderRadius: 15, padding: 20, marginLeft: 10, marginTop: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
-
-                                            {item > 0 ? <Text style={{ color: this.alertas[2].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {this.state.alertas.umidade_ar.maxIdeal + item + ' %'}
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.alertas[2].cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {(this.state.alertas.umidade_ar.minIdeal + item).toFixed(2) + ' %'} </Text>}
-
-                                            {item > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                {item}<FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 22, marginHorizontal: 5 }} />
-                                            </Text>
-                                                :
-                                                <Text style={{ color: this.estilo.cor.green, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {item * -1}<FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green, fontSize: 22, marginHorizontal: 5 }} />
-                                                </Text>}
-
-                                            <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                {this.state.alertas.umidade_ar.data[index].split('T')[1].substring(0, 5) + 'h'}
-                                            </Text>
-                                        </Form>))}
-                                    <Form style={{ width: 20 }} />
-                                </ScrollView>
-                            </Form> : null}
-                    </Form>
+                    ))}
+                    <Form style={{ height: 20 }} />
                 </Content>
             </Container>
         )
