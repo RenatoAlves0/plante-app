@@ -64,34 +64,19 @@ export default class Dash extends Component {
         })
     }
 
-    spinValue = new Animated.Value(0)
-
-    componentDidMount() {
-        this.spin()
-    }
-
-    spin = () => {
-        this.spinValue.setValue(0)
-        Animated.timing(
-            this.spinValue,
-            {
-                toValue: 1,
-                duration: 1000,
-                easing: Easing.linear,
-                useNativeDriver: true
-            }
-        ).start(() => this.spin())
-
-    }
-
     componentWillMount() {
         this.load()
     }
 
+    componentDidMount() {
+        this.spin()
+        // this.updateWeather()
+    }
+
     async load() {
         this.get_user_and_plantacao_principal()
-        await this.setState({ weather_today: await weatherToday.get() })
-        await this.setState({ weather_week: await weatherWeek.get() })
+        this.setState({ weather_today: await weatherToday.get() })
+        this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
             console.log(responseObject)
             if (responseObject.errorCode !== 0) {
@@ -167,13 +152,31 @@ export default class Dash extends Component {
             })
     }
 
+    spinValue = new Animated.Value(0)
+
+    spin = () => {
+        this.spinValue.setValue(0)
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: 1,
+                duration: 1000,
+                easing: Easing.linear,
+                useNativeDriver: true
+            }
+        ).start(() => this.spin())
+
+    }
+
     async updateWeather() {
-        await this.setState({ weather_updated: false })
-        await weatherToday.update()
-        await this.setState({ weather_today: await weatherToday.get() })
-        await weatherWeek.update()
-        await this.setState({ weather_week: await weatherWeek.get() })
-        await this.setState({ weather_updated: true })
+        this.setState({ weather_updated: false })
+        await weatherToday.update().then(async () =>
+            this.setState({ weather_today: await weatherToday.get() })
+        )
+        await weatherWeek.update().then(async () =>
+            this.setState({ weather_week: await weatherWeek.get() })
+        )
+        this.setState({ weather_updated: true })
     }
 
     modal = (on_off) => {

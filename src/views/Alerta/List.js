@@ -27,16 +27,16 @@ export default class AlertaList extends Component {
         this.load()
     }
 
+    componentDidMount() {
+        this.spin()
+        // this.updateAlertas()
+    }
+
     async load() {
-        this.setState({ alertas: await alertasService.get() })
         this.setState({ loaded: true })
     }
 
     spinValue = new Animated.Value(0)
-
-    componentDidMount() {
-        this.spin()
-    }
 
     spin = () => {
         this.spinValue.setValue(0)
@@ -54,8 +54,9 @@ export default class AlertaList extends Component {
 
     async updateAlertas() {
         this.setState({ alertas_updated: false })
-        await alertasService.update()
-        this.setState({ alertas: await alertasService.get() })
+        await alertasService.update().then(async () =>
+            this.setState({ alertas: await alertasService.get() })
+        )
         this.setState({ alertas_updated: true })
     }
 
