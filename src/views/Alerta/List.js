@@ -33,6 +33,7 @@ export default class AlertaList extends Component {
     }
 
     async load() {
+        this.setState({ alertas: await alertasService.get() })
         this.setState({ loaded: true })
     }
 
@@ -66,6 +67,7 @@ export default class AlertaList extends Component {
             { dados: this.state.alertas.umidade_solo, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
             { dados: this.state.alertas.umidade_ar, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
         ]
+        const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         return (
             <Container>
@@ -111,8 +113,8 @@ export default class AlertaList extends Component {
                                                     {itemDados + item.tipo_variavel}
                                                 </Text>
                                                     :
-                                                    <Text style={{ color: this.estilo.cor.green_solid, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                        <FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.green_solid, fontSize: 20 }} />
+                                                    <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
+                                                        <FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
                                                         {itemDados * -1 + item.tipo_variavel}
                                                     </Text>}
 
@@ -120,7 +122,13 @@ export default class AlertaList extends Component {
                                                     {item.dados.data[indexDados].split('T')[1].substring(0, 5) + 'h'}
                                                 </Text>
                                             </Form>))}
-                                        <Form style={{ width: 20 }} />
+                                        <Form style={{ width: 10 }} />
+                                    </ScrollView>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: -10 }}>
+                                        {dias.map(dia => (
+                                            <Button transparent>
+                                                <Text style={{ color: this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18 }} uppercase={false}>{dia}</Text></Button>
+                                        ))}
                                     </ScrollView>
                                 </Form> : null}
                         </Form>
