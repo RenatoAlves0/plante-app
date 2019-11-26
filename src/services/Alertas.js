@@ -5,9 +5,9 @@ let http = new Http()
 
 
 let alertas_aux = {
-    temperatura: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-    umidade_solo: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-    umidade_ar: { data: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
+    temperatura: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+    umidade_solo: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+    umidade_ar: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
 }
 
 class Alertas {
@@ -30,20 +30,18 @@ class Alertas {
         await http.alertasByUsuarioAndPlantacao('alertaTemperaturas', usuarioId, plantacaoId)
             .then(async data => {
                 await data.forEach(item => {
-                    alertas_aux.temperatura.data.push(item.data)
+                    alertas_aux.temperatura.dia.push(this.getDayOfWeek(item.data))
+                    alertas_aux.temperatura.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.temperatura.valor.push(item.valor)
                 })
-                console.log('alertas_aux.temperatura.data')
-                console.log(alertas_aux.temperatura.data)
-                console.log(usuarioId)
-                console.log(plantacaoId)
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidades', usuarioId, plantacaoId)
             .then(async data => {
                 await data.forEach(item => {
-                    alertas_aux.umidade_ar.data.push(item.data)
+                    alertas_aux.umidade_ar.dia.push(this.getDayOfWeek(item.data))
+                    alertas_aux.umidade_ar.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_ar.valor.push(item.valor)
                 })
             })
@@ -52,7 +50,8 @@ class Alertas {
         await http.alertasByUsuarioAndPlantacao('alertaUmidadeSolos', usuarioId, plantacaoId)
             .then(async data => {
                 await data.forEach(item => {
-                    alertas_aux.umidade_solo.data.push(item.data)
+                    alertas_aux.umidade_solo.dia.push(this.getDayOfWeek(item.data))
+                    alertas_aux.umidade_solo.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_solo.valor.push(item.valor)
                 })
             })
@@ -103,14 +102,14 @@ class Alertas {
             })
     }
 
-    // getDayOfWeek(date) {
-    //     var dayOfWeek = new Date(date).getDay()
-    //     return this.getStringDayOfWeek(dayOfWeek)
-    // }
+    getDayOfWeek(date) {
+        var dayOfWeek = new Date(date).getDay()
+        return this.getStringDayOfWeek(dayOfWeek)
+    }
 
-    // getStringDayOfWeek(day) {
-    //     return isNaN(day) ? null : ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][day]
-    // }
+    getStringDayOfWeek(day) {
+        return isNaN(day) ? null : ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day]
+    }
 }
 
 const alertas = new Alertas()

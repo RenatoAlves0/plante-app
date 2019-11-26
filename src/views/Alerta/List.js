@@ -15,6 +15,7 @@ export default class AlertaList extends Component {
         this.state = {
             alertas_updated: true,
             loaded: false,
+            dia: 'Dom',
             alertas: {
                 temperatura: {},
                 umidade_solo: {},
@@ -67,7 +68,7 @@ export default class AlertaList extends Component {
             { dados: this.state.alertas.umidade_solo, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
             { dados: this.state.alertas.umidade_ar, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
         ]
-        const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom']
+        const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         return (
             <Container>
@@ -86,7 +87,7 @@ export default class AlertaList extends Component {
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 {this.state.loaded ? null : <Loader />}
-                <Content>
+                <Content style={{ marginBottom: 50 }}>
                     {alertas.map(item => (
                         <Form key={item.variavel_ambiental}>
                             {item.dados.valor ?
@@ -100,7 +101,11 @@ export default class AlertaList extends Component {
                                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                                         <Form style={{ width: 10 }} />
                                         {item.dados.valor.map((itemDados, indexDados) => (
-                                            <Form key={indexDados} style={{ elevation: 10, borderRadius: 15, padding: 20, margin: 10, marginVertical: 20, alignItems: 'center', backgroundColor: this.estilo.cor.white }}>
+                                            <Form key={indexDados} style={item.dados.dia[indexDados] == this.state.dia ?
+                                                {
+                                                    elevation: 10, borderRadius: 15, padding: 20, margin: 10, marginVertical: 20,
+                                                    alignItems: 'center', backgroundColor: this.estilo.cor.white
+                                                } : this.estilo.hide}>
                                                 {itemDados > 0 ? <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
                                                     {item.dados.maxIdeal + itemDados + item.tipo_variavel}
                                                 </Text>
@@ -119,22 +124,23 @@ export default class AlertaList extends Component {
                                                     </Text>}
 
                                                 <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                    {item.dados.data[indexDados].split('T')[1].substring(0, 5) + 'h'}
+                                                    {item.dados.hora[indexDados]}
                                                 </Text>
                                             </Form>))}
                                         <Form style={{ width: 10 }} />
                                     </ScrollView>
-                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: 20, marginTop: -10 }}>
-                                        {dias.map(dia => (
-                                            <Button transparent>
-                                                <Text style={{ color: this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18 }} uppercase={false}>{dia}</Text></Button>
-                                        ))}
-                                    </ScrollView>
                                 </Form> : null}
                         </Form>
                     ))}
-                    <Form style={{ height: 20 }} />
                 </Content>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ position: 'absolute', bottom: 0, height: 50 }}>
+                    <Form style={{ width: 10 }} />
+                    {dias.map(dia => (
+                        <Button transparent onPress={() => this.setState({ dia: dia })}>
+                            <Text style={{ color: dia == this.state.dia ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18 }} uppercase={false}>{dia}</Text></Button>
+                    ))}
+                    <Form style={{ width: 10 }} />
+                </ScrollView>
             </Container>
         )
     }
