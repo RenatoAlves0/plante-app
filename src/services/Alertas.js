@@ -2,8 +2,6 @@ import rnfs from 'react-native-fs'
 import Http from '../services/Http'
 import loginService from '../services/Login'
 let http = new Http()
-
-
 let alertas_aux = {}
 
 class Alertas {
@@ -12,12 +10,13 @@ class Alertas {
         array = array.filter((el, i, arr) => arr.indexOf(el) == i)
         array.sort((a, b) => new Date(b) - new Date(a))
         let auxArray = []
-        array.forEach((data, index) => index > 4 ? auxArray.push(data) : null)
+        array.forEach((data, index) => index > 4 ? auxArray.push(data) : alertas_aux.dias.find(item => item == data) ? null : alertas_aux.dias.push(data))
         if (auxArray[0]) http.deletarAlertaPorData(auxArray, entidade)
     }
 
     async update() {
         alertas_aux = {
+            dias: [],
             temperatura: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
             umidade_solo: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
             umidade_ar: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
@@ -40,42 +39,38 @@ class Alertas {
 
         await http.alertasByUsuarioAndPlantacao('alertaTemperaturas', usuarioId, plantacaoId)
             .then(async data => {
-                let dias = []
                 await data.forEach(item => {
-                    alertas_aux.temperatura.dia.push(this.getDayOfWeek(item.data))
-                    dias.push(item.data.split('T')[0])
+                    alertas_aux.temperatura.dia.push(item.data.split('T')[0])
                     alertas_aux.temperatura.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.temperatura.valor.push(item.valor)
                 })
-                this.deletarAlertasAntigos(dias, 'alertaTemperaturas')
+                this.deletarAlertasAntigos(alertas_aux.temperatura.dia, 'alertaTemperaturas')
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidades', usuarioId, plantacaoId)
             .then(async data => {
-                let dias = []
                 await data.forEach(item => {
-                    alertas_aux.umidade_ar.dia.push(this.getDayOfWeek(item.data))
-                    dias.push(item.data.split('T')[0])
+                    alertas_aux.umidade_ar.dia.push(item.data.split('T')[0])
                     alertas_aux.umidade_ar.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_ar.valor.push(item.valor)
                 })
-                this.deletarAlertasAntigos(dias, 'alertaUmidades')
+                this.deletarAlertasAntigos(alertas_aux.umidade_ar.dia, 'alertaUmidades')
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidadeSolos', usuarioId, plantacaoId)
             .then(async data => {
-                let dias = []
                 await data.forEach(item => {
-                    alertas_aux.umidade_solo.dia.push(this.getDayOfWeek(item.data))
-                    dias.push(item.data.split('T')[0])
+                    alertas_aux.umidade_solo.dia.push(item.data.split('T')[0])
                     alertas_aux.umidade_solo.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_solo.valor.push(item.valor)
                 })
-                this.deletarAlertasAntigos(dias, 'alertaUmidadeSolos')
+                this.deletarAlertasAntigos(alertas_aux.umidade_solo.dia, 'alertaUmidadeSolos')
             })
             .catch(erro => console.error(erro))
+
+        alertas_aux.dias.sort((a, b) => new Date(a) - new Date(b))
 
         await this.gravarArquivo(
             rnfs.DocumentDirectoryPath + '/alertas.json',
@@ -121,15 +116,6 @@ class Alertas {
                 console.log('Falha ao gravar Alertas no armazenamento interno!')
                 console.log(err.message)
             })
-    }
-
-    getDayOfWeek(date) {
-        var dayOfWeek = new Date(date).getDay()
-        return this.getStringDayOfWeek(dayOfWeek)
-    }
-
-    getStringDayOfWeek(day) {
-        return isNaN(day) ? null : ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day]
     }
 }
 

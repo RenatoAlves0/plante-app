@@ -17,9 +17,10 @@ export default class AlertaList extends Component {
             loaded: false,
             dia: 'Dom',
             alertas: {
-                temperatura: {},
-                umidade_solo: {},
-                umidade_ar: {}
+                dias: undefined,
+                temperatura: undefined,
+                umidade_solo: undefined,
+                umidade_ar: undefined
             },
         }
     }
@@ -62,13 +63,32 @@ export default class AlertaList extends Component {
         this.setState({ alertas_updated: true })
     }
 
+    getDayNumber(date) {
+        var dayNumber = new Date(date).getUTCDate()
+            + '/' + new Date(date).getMonth()
+        return dayNumber
+    }
+
+    getDayOfWeek(date) {
+        var dayOfWeek = new Date(date).getDay()
+        return this.getStringDayOfWeek(dayOfWeek)
+    }
+
+    getStringDayOfWeek(day) {
+        return isNaN(day) ? null : ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day]
+    }
+
     render() {
         const alertas = [
-            { dados: this.state.alertas.temperatura, tipo_variavel: ' ºC', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
-            { dados: this.state.alertas.umidade_solo, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
-            { dados: this.state.alertas.umidade_ar, tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
+            { tipo_variavel: ' ºC', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
+            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
+            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
         ]
-        const dias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+        const dados = [
+            this.state.alertas && this.state.alertas.temperatura ? this.state.alertas.temperatura : {},
+            this.state.alertas && this.state.alertas.umidade_solo ? this.state.alertas.umidade_solo : {},
+            this.state.alertas && this.state.alertas.umidade_ar ? this.state.alertas.umidade_ar : {},
+        ]
         const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         return (
             <Container>
@@ -87,31 +107,31 @@ export default class AlertaList extends Component {
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
                 {this.state.loaded ? null : <Loader />}
-                <Content style={{ marginBottom: 50 }}>
-                    {alertas.map(item => (
+                <Content style={{ marginBottom: 60 }}>
+                    {alertas ? alertas.map((item, index) => (
                         <Form key={item.variavel_ambiental}>
-                            {item.dados && item.dados.valor ?
+                            {dados[index] && dados[index].valor ?
                                 <Form style={{ width: Dimensions.get('screen').width, marginTop: 20, alignSelf: 'center' }}>
                                     <Text style={{ color: item.cor, fontSize: 18, marginLeft: 30, fontWeight: 'bold' }} uppercase={false}>
                                         {item.variavel_ambiental}</Text>
                                     <Text uppercase={false} style={{ color: item.cor + '99', fontSize: 18, marginLeft: 30, fontWeight: 'bold' }}>
-                                        {'Ideal entre ' + item.dados.minIdeal + ' e ' +
-                                            item.dados.maxIdeal + item.tipo_variavel}</Text>
+                                        {'Ideal entre ' + dados[index].minIdeal + ' e ' +
+                                            dados[index].maxIdeal + item.tipo_variavel}</Text>
 
                                     <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                                         <Form style={{ width: 10 }} />
-                                        {item.dados.valor.map((itemDados, indexDados) => (
-                                            <Form key={indexDados} style={item.dados.dia[indexDados] == this.state.dia ?
+                                        {dados[index].valor.map((itemDados, indexDados) => (
+                                            <Form key={indexDados} style={dados[index].dia[indexDados] == this.state.dia ?
                                                 {
                                                     elevation: 10, borderRadius: 15, padding: 20, margin: 10, marginVertical: 20,
                                                     alignItems: 'center', backgroundColor: this.estilo.cor.white
                                                 } : this.estilo.hide}>
                                                 {itemDados > 0 ? <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {item.dados.maxIdeal + itemDados + item.tipo_variavel}
+                                                    {dados[index].maxIdeal + itemDados + item.tipo_variavel}
                                                 </Text>
                                                     :
                                                     <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                        {(item.dados.minIdeal + itemDados).toFixed(2) + item.tipo_variavel} </Text>}
+                                                        {(dados[index].minIdeal + itemDados).toFixed(2) + item.tipo_variavel} </Text>}
 
                                                 {itemDados > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
                                                     <FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
@@ -124,21 +144,23 @@ export default class AlertaList extends Component {
                                                     </Text>}
 
                                                 <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                    {item.dados.hora[indexDados]}
+                                                    {dados[index].hora[indexDados]}
                                                 </Text>
                                             </Form>))}
                                         <Form style={{ width: 10 }} />
                                     </ScrollView>
                                 </Form> : null}
                         </Form>
-                    ))}
+                    )) : null}
                 </Content>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ position: 'absolute', bottom: 0, height: 50 }}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ position: 'absolute', bottom: 0, height: 60 }}>
                     <Form style={{ width: 10 }} />
-                    {dias.map((dia, index) => (
-                        <Button key={index} transparent onPress={() => this.setState({ dia: dia })}>
-                            <Text style={{ color: dia == this.state.dia ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18 }} uppercase={false}>{dia}</Text></Button>
-                    ))}
+                    {this.state.alertas && this.state.alertas.dias && this.state.alertas.dias[0] ?
+                        this.state.alertas.dias.map((dia, index) => (
+                            <Button key={index} transparent onPress={() => this.setState({ dia: dia })}>
+                                <Text style={{ color: dia == this.state.dia ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18, textAlign: 'center' }} uppercase={false}
+                                >{this.getDayOfWeek(dia) + '\n' + this.getDayNumber(dia)}</Text></Button>
+                        )) : null}
                     <Form style={{ width: 10 }} />
                 </ScrollView>
             </Container>
