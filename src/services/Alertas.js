@@ -4,14 +4,25 @@ import loginService from '../services/Login'
 let http = new Http()
 
 
-let alertas_aux = {
-    temperatura: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-    umidade_solo: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
-    umidade_ar: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
-}
+let alertas_aux = {}
 
 class Alertas {
+
+    async deletarAlertasAntigos(array, entidade) {
+        array = array.filter((el, i, arr) => arr.indexOf(el) == i)
+        array.sort((a, b) => new Date(b) - new Date(a))
+        let auxArray = []
+        array.forEach((data, index) => index > 4 ? auxArray.push(data) : null)
+        if (auxArray[0]) http.deletarAlertaPorData(auxArray, entidade)
+    }
+
     async update() {
+        alertas_aux = {
+            temperatura: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+            umidade_solo: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined },
+            umidade_ar: { hora: [], dia: [], valor: [], maxIdeal: undefined, minIdeal: undefined }
+        }
+
         let usuarioId = await loginService.get()
         usuarioId = usuarioId.usuario
 
@@ -29,31 +40,40 @@ class Alertas {
 
         await http.alertasByUsuarioAndPlantacao('alertaTemperaturas', usuarioId, plantacaoId)
             .then(async data => {
+                let dias = []
                 await data.forEach(item => {
                     alertas_aux.temperatura.dia.push(this.getDayOfWeek(item.data))
+                    dias.push(item.data.split('T')[0])
                     alertas_aux.temperatura.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.temperatura.valor.push(item.valor)
                 })
+                this.deletarAlertasAntigos(dias, 'alertaTemperaturas')
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidades', usuarioId, plantacaoId)
             .then(async data => {
+                let dias = []
                 await data.forEach(item => {
                     alertas_aux.umidade_ar.dia.push(this.getDayOfWeek(item.data))
+                    dias.push(item.data.split('T')[0])
                     alertas_aux.umidade_ar.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_ar.valor.push(item.valor)
                 })
+                this.deletarAlertasAntigos(dias, 'alertaUmidades')
             })
             .catch(erro => console.error(erro))
 
         await http.alertasByUsuarioAndPlantacao('alertaUmidadeSolos', usuarioId, plantacaoId)
             .then(async data => {
+                let dias = []
                 await data.forEach(item => {
                     alertas_aux.umidade_solo.dia.push(this.getDayOfWeek(item.data))
+                    dias.push(item.data.split('T')[0])
                     alertas_aux.umidade_solo.hora.push(item.data.split('T')[1].substring(0, 5) + 'h')
                     alertas_aux.umidade_solo.valor.push(item.valor)
                 })
+                this.deletarAlertasAntigos(dias, 'alertaUmidadeSolos')
             })
             .catch(erro => console.error(erro))
 
@@ -83,6 +103,7 @@ class Alertas {
                 return 'no file'
             })
             .then(async (contents) => {
+                console.log(JSON.parse(contents))
                 return await JSON.parse(contents)
             })
             .catch((err) => {

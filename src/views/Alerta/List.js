@@ -90,7 +90,7 @@ export default class AlertaList extends Component {
                 <Content style={{ marginBottom: 50 }}>
                     {alertas.map(item => (
                         <Form key={item.variavel_ambiental}>
-                            {item.dados.valor ?
+                            {item.dados && item.dados.valor ?
                                 <Form style={{ width: Dimensions.get('screen').width, marginTop: 20, alignSelf: 'center' }}>
                                     <Text style={{ color: item.cor, fontSize: 18, marginLeft: 30, fontWeight: 'bold' }} uppercase={false}>
                                         {item.variavel_ambiental}</Text>
@@ -135,8 +135,8 @@ export default class AlertaList extends Component {
                 </Content>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ position: 'absolute', bottom: 0, height: 50 }}>
                     <Form style={{ width: 10 }} />
-                    {dias.map(dia => (
-                        <Button transparent onPress={() => this.setState({ dia: dia })}>
+                    {dias.map((dia, index) => (
+                        <Button key={index} transparent onPress={() => this.setState({ dia: dia })}>
                             <Text style={{ color: dia == this.state.dia ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18 }} uppercase={false}>{dia}</Text></Button>
                     ))}
                     <Form style={{ width: 10 }} />

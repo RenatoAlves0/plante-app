@@ -7,6 +7,13 @@ const baseUrl = [
 ]
 
 export default class Http {
+    async deletarAlertaPorData(data, entidade) {
+        return await axios
+            .delete(baseUrl[0] + entidade + '/deletar_por_data/' + JSON.stringify(data))
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+    }
+
     async culturaByPlantacao(plantacaoId) {
         return await axios
             .get(baseUrl[0] + 'plantacaos/' + plantacaoId)
