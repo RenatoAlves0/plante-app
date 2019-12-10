@@ -15,7 +15,7 @@ export default class AlertaList extends Component {
         this.state = {
             alertas_updated: true,
             loaded: false,
-            dia: 'Dom',
+            dia: undefined,
             alertas: {
                 dias: undefined,
                 temperatura: undefined,

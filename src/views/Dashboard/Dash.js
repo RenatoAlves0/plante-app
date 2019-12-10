@@ -121,7 +121,7 @@ export default class Dash extends Component {
     }
 
     async conectar() {
-        await this.client.connect({ keepAliveInterval: 120, timeout: 360000 })
+        await this.client.connect({ keepAliveInterval: 240, timeout: 720000 })
             .then(async () => {
                 await this.client.subscribe(this.topico_sensores)
                 await this.client.subscribe(this.topico_alertas)
