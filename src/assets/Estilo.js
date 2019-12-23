@@ -86,7 +86,7 @@ export default class Estilos {
         }
 
         this.swiperow = {
-            paddingTop: 0, paddingBottom: 0, paddingRight: 0, paddingLeft: 0,
+            paddingTop: 0, paddingBottom: 0, paddingRight: 0, paddingLeft: 0, marginLeft: -1,
             borderBottomWidth: 0, alignItems: 'center', width: Dimensions.get('window').width,
             alignContent: 'center', alignSelf: 'center', backgroundColor: this.cor.red
         }
