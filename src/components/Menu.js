@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Text, Button, Form, Content } from 'native-base'
+import { Container, Text, Button, Form, Content, Row } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import { StatusBar } from 'react-native'
 import estilo from '../assets/Estilo'
@@ -45,14 +45,16 @@ export default class Menu extends Component {
                     {this.state.actions.map((item, index) => (
                         <Button key={index} transparent style={{ elevation: 0, marginLeft: 25 }}
                             onPress={() => { item.method(), this.props.modal(false) }}>
-                            <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
-                            <Text uppercase={false} style={{
-                                color: this.estilo.cor.gray_solid, fontSize: 18, paddingLeft: 0, paddingRight: 0
-                            }}>     {item.label}</Text>
+                            <Row style={{ marginTop: 0 }}>
+                                <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
+                                <Text uppercase={false} style={{
+                                    color: this.estilo.cor.gray_solid, fontSize: 18, paddingLeft: 20, paddingRight: 0
+                                }}>{item.label}</Text>
+                            </Row>
                         </Button>
                     ))}
                 </Content>
-            </Container>
+            </Container >
         )
     }
 }
