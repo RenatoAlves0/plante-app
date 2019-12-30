@@ -7,6 +7,42 @@ const baseUrl = [
 ]
 
 export default class Http {
+    async anosAlertas(dados, entidade) {
+        return await axios
+            .get(baseUrl[0] + entidade + '/anos/' + dados.usuarioId + '/' + dados.plantacaoId)
+            .then(data => {
+                return data.data
+            })
+            .catch(() => { return {} })
+    }
+
+    async mesesAlertas(dados, entidade) {
+        return await axios
+            .get(baseUrl[0] + entidade + '/meses/' + dados.usuarioId + '/' + dados.plantacaoId + '/' + dados.ano)
+            .then(data => {
+                return data.data
+            })
+            .catch(() => { return {} })
+    }
+
+    async diasAlertas(dados, entidade) {
+        return await axios
+            .get(baseUrl[0] + entidade + '/dias/' + dados.usuarioId + '/' + dados.plantacaoId + '/' + dados.ano + '/' + dados.mes)
+            .then(data => {
+                return data.data
+            })
+            .catch(() => { return {} })
+    }
+
+    async alertasPorDia(dados, entidade) {
+        return await axios
+            .get(baseUrl[0] + entidade + '/porDia/' + dados.usuarioId + '/' + dados.plantacaoId + '/' + dados.dia)
+            .then(data => {
+                return data.data
+            })
+            .catch(() => { return {} })
+    }
+
     async deletarAlertaPorData(data, entidade) {
         return await axios
             .delete(baseUrl[0] + entidade + '/deletar_por_data/' + JSON.stringify(data))

@@ -1,28 +1,46 @@
 import React, { Component } from 'react'
 import { StatusBar, Dimensions, Animated, Easing, ScrollView } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import { Text, Form, Container, View, Button, Header, Body, Row, Content } from 'native-base'
+import { Text, Form, Container, View, Button, Header, Body, Row, Content, Label, Picker, Icon, Item } from 'native-base'
 import Loader from '../../components/Loader'
 import estilo from '../../assets/Estilo'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import alertasService from '../../services/Alertas'
+import loginService from '../../services/Login'
+import http from '../../services/Http'
 import { translate } from '../../i18n/locales'
+import Chart from '../../components/ChartAlertas'
 
 export default class AlertaList extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
+        this.http = new http()
         this.state = {
+            plantacao_principal: undefined,
+            ano: undefined,
+            anos: undefined,
+            mes: undefined,
+            meses: undefined,
+            dia: undefined,
+            dias: undefined,
+            entidade: 0,
             alertas_updated: true,
             loaded: false,
-            dia: undefined,
+            ideal: undefined,
             alertas: {
-                dias: undefined,
-                temperatura: undefined,
-                umidade_solo: undefined,
-                umidade_ar: undefined
+                temperatura: { data: [], valor: [] },
+                umidade_solo: { data: [], valor: [] },
+                umidade_ar: { data: [], valor: [] },
+                luminosidade: { data: [], valor: [] },
             },
         }
+        this.entidades = [
+            { label: 'Temperatura', value: 'alertaTemperaturas', icon: 'thermometer' },
+            { label: 'Umidade do Solo', value: 'alertaUmidadeSolos', icon: 'droplet' },
+            { label: 'Umidade do Ar', value: 'alertaUmidades', icon: 'droplet' },
+            { label: 'Luminosidade', value: 'alertaLuminosidades', icon: 'sun' }
+        ]
     }
 
     componentWillMount() {
@@ -35,8 +53,57 @@ export default class AlertaList extends Component {
     }
 
     async load() {
-        this.setState({ alertas: await alertasService.get() })
+        let aux = await loginService.get()
+        this.setState({ plantacao_principal: await this.http.plantacoesPrincipaisByUsuario(aux.usuario) })
+        this.setState({ ideal: await alertasService.caracteristicasIdeais(this.state.plantacao_principal[0].plantacao) })
+        console.log('this.state.ideal')
+        console.log(this.state.ideal)
+        await this.anos()
+        // this.setState({ alertas: await alertasService.get() })
         this.setState({ loaded: true })
+    }
+
+    anos = async () => {
+        let anos = await this.http.anosAlertas(dados = {
+            usuarioId: this.state.plantacao_principal[0].usuario,
+            plantacaoId: this.state.plantacao_principal[0].plantacao
+        },
+            entidade = this.entidades[this.state.entidade].value)
+        this.setState({ anos: await anos })
+        await this.meses(this.state.anos[0])
+    }
+
+    meses = async (value) => {
+        this.setState({ ano: await value })
+        let meses = await this.http.mesesAlertas(dados = {
+            usuarioId: this.state.plantacao_principal[0].usuario,
+            plantacaoId: this.state.plantacao_principal[0].plantacao,
+            ano: value
+        }, entidade = this.entidades[this.state.entidade].value)
+        this.setState({ meses: await meses })
+        await this.dias(this.state.meses[0])
+    }
+
+    dias = async (value) => {
+        this.setState({ mes: await value })
+        let dias = await this.http.diasAlertas(dados = {
+            usuarioId: this.state.plantacao_principal[0].usuario,
+            plantacaoId: this.state.plantacao_principal[0].plantacao,
+            ano: this.state.ano,
+            mes: value
+        }, entidade = this.entidades[this.state.entidade].value)
+        this.setState({ dias: await dias })
+        this.setState({ dia: await this.state.dias[0] })
+        await this.alertas(this.state.dia)
+    }
+
+    alertas = async (dia) => {
+        this.setState({ dia: await dia })
+        let alerta = await alertasService.get(this.state.plantacao_principal[0].usuario,
+            this.state.plantacao_principal[0].plantacao, dia,
+            this.entidades[this.state.entidade].value)
+
+        if (this.state.entidade == 0) this.setState({ alertas: { ...this.state.alertas, temperatura: alerta } })
     }
 
     spinValue = new Animated.Value(0)
@@ -55,17 +122,17 @@ export default class AlertaList extends Component {
 
     }
 
-    async updateAlertas() {
-        this.setState({ alertas_updated: false })
-        await alertasService.update().then(async () =>
-            this.setState({ alertas: await alertasService.get() })
-        )
-        this.setState({ alertas_updated: true })
-    }
+    // async updateAlertas() {
+    //     this.setState({ alertas_updated: false })
+    //     await alertasService.update().then(async () =>
+    //         this.setState({ alertas: await alertasService.get() })
+    //     )
+    //     this.setState({ alertas_updated: true })
+    // }
 
     getDayNumber(date) {
         var dayNumber = new Date(date).getUTCDate()
-            + '/' + new Date(date).getMonth()
+            + '/' + new Date(date).getMonth() + 1
         return dayNumber
     }
 
@@ -99,15 +166,79 @@ export default class AlertaList extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('alertas')}</Text>
                     </Body>
-                    <Button disabled={!this.state.alertas_updated} rounded transparent onPress={() => this.updateAlertas()}>
+                    {/* <Button disabled={!this.state.alertas_updated} rounded transparent onPress={() => this.updateAlertas()}>
                         <Animated.View style={this.state.alertas_updated ? null : { transform: [{ rotate }] }}>
                             <FeatherIcon name='refresh-cw' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                         </Animated.View>
-                    </Button>
+                    </Button> */}
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                {this.state.loaded ? null : <Loader />}
-                <Content style={{ marginBottom: 60 }}>
+                {!this.state.loaded ? <Loader /> :
+                    <Content style={this.estilo.contentmodal}>
+                        {this.state.anos ? <Form style={this.estilo.form}>
+                            <Label>Ano</Label>
+                            <Row>
+                                <Row style={this.estilo.subrow}>
+                                    <Picker
+                                        mode='dialog'
+                                        iosIcon={<Icon name='arrow-down' />}
+                                        selectedValue={this.state.ano}
+                                        onValueChange={value => this.meses(value)}>
+                                        {this.state.anos.map((item) => { return <Item key={item} label={item} value={item} /> })}
+                                    </Picker>
+                                </Row>
+                            </Row>
+                        </Form> : null}
+
+                        {this.state.anos && this.state.meses ? <Form style={this.estilo.form}>
+                            <Label>Mês</Label>
+                            <Row>
+                                <Row style={this.estilo.subrow}>
+                                    <Picker
+                                        mode='dialog'
+                                        iosIcon={<Icon name='arrow-down' />}
+                                        selectedValue={this.state.mes}
+                                        onValueChange={value => this.dias(value)}>
+                                        {this.state.meses.map((item) => { return <Item key={item} label={item} value={item} /> })}
+                                    </Picker>
+                                </Row>
+                            </Row>
+                        </Form> : null}
+
+                        {this.state.anos && this.state.meses && this.state.dias ? <Form style={this.estilo.form}>
+                            <Label>Dia</Label>
+                            <Row>
+                                <Row style={this.estilo.subrow}>
+                                    <Picker
+                                        mode='dialog'
+                                        iosIcon={<Icon name='arrow-down' />}
+                                        selectedValue={this.state.dia}
+                                        onValueChange={value => this.alertas(value)}>
+                                        {this.state.dias.map(item => { return <Item key={item} label={item.split(' ')[2]} value={item} /> })}
+                                    </Picker>
+                                </Row>
+                            </Row>
+                        </Form> : null}
+                    </Content>}
+
+                <Form style={this.state.entidade == 0 ? null : this.estilo.hide}>
+                    {this.state.alertas.temperatura.data[0] ?
+                        <Chart data={this.state.alertas.temperatura.data}
+                            valor={this.state.alertas.temperatura.valor}
+                            color={this.estilo.cor.purple} ideal={this.state.ideal.temperatura} /> : null}
+                </Form>
+
+                <Form style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 5 }}>
+                    {this.entidades.map((item, index) => (
+                        <Button large transparent key={item.value} rounded style={{ paddingHorizontal: 20 }}
+                            onPress={() => { this.setState({ entidade: index }) }}>
+                            <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
+                            this.state.entidade == index ? { color: this.estilo.cor.gray_solid } : null]} />
+                        </Button>
+                    ))}
+                </Form>
+
+                {/* <Content style={{ marginBottom: 60 }}>
                     {alertas ? alertas.map((item, index) => (
                         <Form key={item.variavel_ambiental}>
                             {dados[index] && dados[index].valor ?
@@ -162,7 +293,7 @@ export default class AlertaList extends Component {
                                 >{this.getDayOfWeek(dia) + '\n' + this.getDayNumber(dia)}</Text></Button>
                         )) : null}
                     <Form style={{ width: 10 }} />
-                </ScrollView>
+                </ScrollView> */}
             </Container>
         )
     }

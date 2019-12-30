@@ -36,7 +36,7 @@ export default class Login extends Component {
         let login = undefined
         login = await loginService.get()
         if (login && login._id) {
-            await this.setState({ login: { login: login.login, senha: login.senha } })
+            this.setState({ login: { login: login.login, senha: login.senha } })
         }
     }
 

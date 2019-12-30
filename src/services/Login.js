@@ -18,9 +18,9 @@ class LoginService {
         return await rnfs.readDir(rnfs.DocumentDirectoryPath)
             .then(async (result) => {
                 console.log('Resultado de leitura obtido', result)
-                await result.forEach(async element => {
+                result.forEach(async element => {
                     if (element.name == 'login.json') {
-                        index_file = await result.indexOf(element)
+                        index_file = result.indexOf(element)
                     }
                 })
                 if (index_file < 0) {
