@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StatusBar, Dimensions, Animated, Easing, ScrollView } from 'react-native'
+import { StatusBar, Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import { Text, Form, Container, View, Button, Header, Body, Row, Content, Label, Picker, Icon, Item } from 'native-base'
 import Loader from '../../components/Loader'
@@ -62,7 +62,6 @@ export default class AlertaList extends Component {
 
     anos = async () => {
         this.setState({ loaded: false })
-        // this.setState({ buscar: true })
         let anos = await this.http.anosAlertas(dados = {
             usuarioId: this.state.plantacao_principal[0].usuario,
             plantacaoId: this.state.plantacao_principal[0].plantacao
@@ -99,6 +98,7 @@ export default class AlertaList extends Component {
     }
 
     alertas = async (dia) => {
+        this.setState({ loaded: false })
         this.setState({ dia: await dia })
         let alerta = await alertasService.get(this.state.plantacao_principal[0].usuario,
             this.state.plantacao_principal[0].plantacao, dia,
@@ -110,6 +110,13 @@ export default class AlertaList extends Component {
         this.setState({ loaded: true })
         this.setState({ buscar: false })
     }
+
+    // buscar = () => {
+    //     if (this.state.entidade == 0) this.setState({ alertas: { ...this.state.alertas, temperatura: { ...this.state.alertas.temperatura, data: [], valor: [] } } })
+    //     else if (this.state.entidade == 1) this.setState({ alertas: { ...this.state.alertas, umidade_solo: { ...this.state.alertas.umidade_solo, data: [], valor: [] } } })
+    //     else if (this.state.entidade == 2) this.setState({ alertas: { ...this.state.alertas, umidade_ar: { ...this.state.alertas.umidade_ar, data: [], valor: [] } } })
+    //     else if (this.state.entidade == 3) this.setState({ alertas: { ...this.state.alertas, luminosidade: { ...this.state.alertas.luminosidade, data: [], valor: [] } } })
+    // }
 
     getDayNumber(date) {
         var dayNumber = new Date(date).getUTCDate()
@@ -141,7 +148,7 @@ export default class AlertaList extends Component {
                             <FeatherIcon name='pie-chart' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                         :
-                        <Button rounded transparent onPress={() => this.setState({ buscar: !this.state.buscar })}>
+                        <Button rounded transparent onPress={() => this.setState({ buscar: true })}>
                             <FeatherIcon name='search' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
                         </Button>}
                 </Header>
@@ -211,25 +218,25 @@ export default class AlertaList extends Component {
                             </Text>
                             : <Loader />
                         }
-                        {this.state.loaded && this.state.entidade == 0 && this.state.alertas.temperatura.data[0] ?
+                        {!this.state.buscar && this.state.loaded && this.state.entidade == 0 && this.state.alertas.temperatura.data[0] ?
                             <Chart data={this.state.alertas.temperatura.data}
                                 valor={this.state.alertas.temperatura.valor} tipo={this.entidades[this.state.entidade].tipo}
                                 color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} />
                             : null}
 
-                        {this.state.loaded && this.state.entidade == 1 && this.state.alertas.umidade_solo.data[0] ?
+                        {!this.state.buscar && this.state.loaded && this.state.entidade == 1 && this.state.alertas.umidade_solo.data[0] ?
                             <Chart data={this.state.alertas.umidade_solo.data}
                                 valor={this.state.alertas.umidade_solo.valor} tipo={this.entidades[this.state.entidade].tipo}
                                 color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} />
                             : null}
 
-                        {this.state.loaded && this.state.entidade == 2 && this.state.alertas.umidade_ar.data[0] ?
+                        {!this.state.buscar && this.state.loaded && this.state.entidade == 2 && this.state.alertas.umidade_ar.data[0] ?
                             <Chart data={this.state.alertas.umidade_ar.data}
                                 valor={this.state.alertas.umidade_ar.valor} tipo={this.entidades[this.state.entidade].tipo}
                                 color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} />
                             : null}
 
-                        {this.state.loaded && this.state.entidade == 3 && this.state.alertas.luminosidade.data[0] ?
+                        {!this.state.buscar && this.state.loaded && this.state.entidade == 3 && this.state.alertas.luminosidade.data[0] ?
                             <Chart data={this.state.alertas.luminosidade.data}
                                 valor={this.state.alertas.luminosidade.valor} tipo={this.entidades[this.state.entidade].tipo}
                                 color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} />
