@@ -87,8 +87,9 @@ export default class ChartAlertas extends Component {
                 </Svg>
             ))
         }
+
         const Line = ({ line }) => (
-            <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={10} strokeDasharray={[0, 0]} />
+            <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={10} strokeDasharray={[2, 4]} />
         )
 
         const EixoX = ({ x, y, data }) => {
@@ -114,7 +115,6 @@ export default class ChartAlertas extends Component {
                     <AreaChart
                         style={{ height: max - min == 0 ? 20 : 300, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
                         data={this.props.valor}
-                        // svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
                         contentInset={{ left: -20, right: -20, top: 40 }}
                         yMin={min != 0 ? min - 1 : min}
