@@ -29,6 +29,8 @@ export default class ChartAlertas extends Component {
         await this.nomralizaData()
         await this.nomralizaValor()
         this.setState({ loaded: true })
+        console.log('this.props.valor')
+        console.log(this.props.valor)
     }
 
     async nomralizaValor() {
@@ -55,32 +57,38 @@ export default class ChartAlertas extends Component {
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.data ?
                         <Form style={{
-                            flexDirection: (this.props.data).length > 3 ? 'column' : 'row',
-                            marginTop: (this.props.data).length > 3 ? -45 : -35,
-                            alignItems: this.props.data == 'º' ? 'flex-start' : 'baseline',
-                            marginLeft: (this.props.data).length > 3 ? -20 : -25,
-                            width: 40 + (((this.props.data).length || 0) * 10), height: 25, justifyContent: 'center'
+                            flexDirection: 'column', marginTop: -50, alignItems: 'center', marginLeft: -40,
+                            width: 40 + (((this.props.tipo).length || 0) * 10), height: 25, justifyContent: 'center'
                         }}>
+
+                            <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
+                                { color: this.props.color, fontSize: 18, fontWeight: 'bold' }}
+                            >{this.props.ideal.max + value + this.props.tipo}</Text>
+
                             {value > 0 ?
                                 <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                    { color: this.props.color, fontSize: 18, fontWeight: 'bold', marginLeft: -12 }}>
-                                    <FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
+                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold' }}>
+                                    <FeatherIcon name='arrow-up'
+                                        style={index == 0 || index == this.props.valor.length - 1 ?
+                                            { color: 'transparent' } :
+                                            { color: this.estilo.cor.red, fontSize: 18 }} />
                                     {value}</Text>
                                 :
                                 <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                    { color: this.props.color, fontSize: 18, fontWeight: 'bold', marginLeft: -12 }}>
-                                    <FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
+                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold' }}>
+                                    <FeatherIcon name='arrow-down'
+                                        style={index == 0 || index == this.props.valor.length - 1 ?
+                                            { color: 'transparent' } :
+                                            { color: this.estilo.cor.red, fontSize: 18 }} />
                                     {value * -1}</Text>
                             }
-
-                            <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                { color: this.props.color, fontSize: 15 }}>{this.props.ideal.max + value}</Text>
-                        </Form> : null}
+                        </Form>
+                        : null}
                 </Svg>
             ))
         }
         const Line = ({ line }) => (
-            <Path y={-2} d={line} stroke={this.props.color + '77'} fill={'none'} strokeWidth={5} strokeDasharray={[0, 0]} />
+            <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={10} strokeDasharray={[0, 0]} />
         )
 
         const EixoX = ({ x, y, data }) => {
@@ -93,7 +101,7 @@ export default class ChartAlertas extends Component {
                         }}>
                             <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
                                 { color: this.estilo.cor.white, fontSize: 16, paddingBottom: 2, marginLeft: -10 }}
-                            >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h' || ''}</Text>
+                            >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
                         </Form> : null}
                 </Svg>
             ))
@@ -104,9 +112,9 @@ export default class ChartAlertas extends Component {
                 horizontal={true} style={{ height: 250 }}>
                 <View style={{ width: this.props.data.length * 70, justifyContent: 'flex-end', backgroundColor: this.estilo.cor.white }}>
                     <AreaChart
-                        style={{ height: (max - min == 0 ? 20 : 200) + 50, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
+                        style={{ height: max - min == 0 ? 20 : 300, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
                         data={this.props.valor}
-                        svg={{ fill: this.props.color }}
+                        // svg={{ fill: this.props.color }}
                         curve={shape.curveNatural}
                         contentInset={{ left: -20, right: -20, top: 40 }}
                         yMin={min != 0 ? min - 1 : min}

@@ -25,9 +25,9 @@ export default class AlertaList extends Component {
             dia: undefined,
             dias: undefined,
             entidade: 0,
-            alertas_updated: true,
             loaded: false,
             ideal: undefined,
+            buscar: true,
             alertas: {
                 temperatura: { data: [], valor: [] },
                 umidade_solo: { data: [], valor: [] },
@@ -36,10 +36,10 @@ export default class AlertaList extends Component {
             },
         }
         this.entidades = [
-            { label: 'Temperatura', value: 'alertaTemperaturas', icon: 'thermometer' },
-            { label: 'Umidade do Solo', value: 'alertaUmidadeSolos', icon: 'droplet' },
-            { label: 'Umidade do Ar', value: 'alertaUmidades', icon: 'droplet' },
-            { label: 'Luminosidade', value: 'alertaLuminosidades', icon: 'sun' }
+            { cor: this.estilo.cor.purple, tipo: ' ºC', label: 'Temperatura', value: 'alertaTemperaturas', icon: 'thermometer' },
+            { cor: this.estilo.cor.brown, tipo: ' %', label: 'Umidade do Solo', value: 'alertaUmidadeSolos', icon: 'droplet' },
+            { cor: this.estilo.cor.blue_light, tipo: ' %', label: 'Umidade do Ar', value: 'alertaUmidades', icon: 'droplet' },
+            { cor: this.estilo.cor.orange, tipo: ' %', label: 'Luminosidade', value: 'alertaLuminosidades', icon: 'sun' }
         ]
     }
 
@@ -47,23 +47,16 @@ export default class AlertaList extends Component {
         this.load()
     }
 
-    componentDidMount() {
-        this.spin()
-        // this.updateAlertas()
-    }
-
     async load() {
         let aux = await loginService.get()
         this.setState({ plantacao_principal: await this.http.plantacoesPrincipaisByUsuario(aux.usuario) })
         this.setState({ ideal: await alertasService.caracteristicasIdeais(this.state.plantacao_principal[0].plantacao) })
-        console.log('this.state.ideal')
-        console.log(this.state.ideal)
         await this.anos()
-        // this.setState({ alertas: await alertasService.get() })
         this.setState({ loaded: true })
     }
 
     anos = async () => {
+        this.setState({ buscar: true })
         let anos = await this.http.anosAlertas(dados = {
             usuarioId: this.state.plantacao_principal[0].usuario,
             plantacaoId: this.state.plantacao_principal[0].plantacao
@@ -102,33 +95,12 @@ export default class AlertaList extends Component {
         let alerta = await alertasService.get(this.state.plantacao_principal[0].usuario,
             this.state.plantacao_principal[0].plantacao, dia,
             this.entidades[this.state.entidade].value)
-
         if (this.state.entidade == 0) this.setState({ alertas: { ...this.state.alertas, temperatura: alerta } })
+        else if (this.state.entidade == 1) this.setState({ alertas: { ...this.state.alertas, umidade_solo: alerta } })
+        else if (this.state.entidade == 2) this.setState({ alertas: { ...this.state.alertas, umidade_ar: alerta } })
+        else if (this.state.entidade == 3) this.setState({ alertas: { ...this.state.alertas, luminosidade: alerta } })
+        this.setState({ buscar: false })
     }
-
-    spinValue = new Animated.Value(0)
-
-    spin = () => {
-        this.spinValue.setValue(0)
-        Animated.timing(
-            this.spinValue,
-            {
-                toValue: 1,
-                duration: 1000,
-                easing: Easing.linear,
-                useNativeDriver: true
-            }
-        ).start(() => this.spin())
-
-    }
-
-    // async updateAlertas() {
-    //     this.setState({ alertas_updated: false })
-    //     await alertasService.update().then(async () =>
-    //         this.setState({ alertas: await alertasService.get() })
-    //     )
-    //     this.setState({ alertas_updated: true })
-    // }
 
     getDayNumber(date) {
         var dayNumber = new Date(date).getUTCDate()
@@ -146,17 +118,6 @@ export default class AlertaList extends Component {
     }
 
     render() {
-        const alertas = [
-            { tipo_variavel: ' ºC', variavel_ambiental: translate('temperatura'), cor: this.estilo.cor.purple },
-            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_solo'), cor: this.estilo.cor.brown },
-            { tipo_variavel: ' %', variavel_ambiental: translate('umidade_do_ar'), cor: this.estilo.cor.blue_light },
-        ]
-        const dados = [
-            this.state.alertas && this.state.alertas.temperatura ? this.state.alertas.temperatura : {},
-            this.state.alertas && this.state.alertas.umidade_solo ? this.state.alertas.umidade_solo : {},
-            this.state.alertas && this.state.alertas.umidade_ar ? this.state.alertas.umidade_ar : {},
-        ]
-        const rotate = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] })
         return (
             <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.white, elevation: 0 }}>
@@ -166,14 +127,12 @@ export default class AlertaList extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('alertas')}</Text>
                     </Body>
-                    {/* <Button disabled={!this.state.alertas_updated} rounded transparent onPress={() => this.updateAlertas()}>
-                        <Animated.View style={this.state.alertas_updated ? null : { transform: [{ rotate }] }}>
-                            <FeatherIcon name='refresh-cw' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
-                        </Animated.View>
-                    </Button> */}
+                    <Button rounded transparent onPress={() => this.setState({ buscar: !this.state.buscar })}>
+                        <FeatherIcon name='search' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                    </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                {!this.state.loaded ? <Loader /> :
+                {this.state.buscar ?
                     <Content style={this.estilo.contentmodal}>
                         {this.state.anos ? <Form style={this.estilo.form}>
                             <Label>Ano</Label>
@@ -213,87 +172,75 @@ export default class AlertaList extends Component {
                                         mode='dialog'
                                         iosIcon={<Icon name='arrow-down' />}
                                         selectedValue={this.state.dia}
-                                        onValueChange={value => this.alertas(value)}>
+                                        onValueChange={value => { this.alertas(value), this.setState({ buscar: false }) }}>
                                         {this.state.dias.map(item => { return <Item key={item} label={item.split(' ')[2]} value={item} /> })}
                                     </Picker>
                                 </Row>
                             </Row>
                         </Form> : null}
-                    </Content>}
-
-                <Form style={this.state.entidade == 0 ? null : this.estilo.hide}>
-                    {this.state.alertas.temperatura.data[0] ?
-                        <Chart data={this.state.alertas.temperatura.data}
-                            valor={this.state.alertas.temperatura.valor}
-                            color={this.estilo.cor.purple} ideal={this.state.ideal.temperatura} /> : null}
-                </Form>
-
-                <Form style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 5 }}>
-                    {this.entidades.map((item, index) => (
-                        <Button large transparent key={item.value} rounded style={{ paddingHorizontal: 20 }}
-                            onPress={() => { this.setState({ entidade: index }) }}>
-                            <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray_medium },
-                            this.state.entidade == index ? { color: this.estilo.cor.gray_solid } : null]} />
-                        </Button>
-                    ))}
-                </Form>
-
-                {/* <Content style={{ marginBottom: 60 }}>
-                    {alertas ? alertas.map((item, index) => (
-                        <Form key={item.variavel_ambiental}>
-                            {dados[index] && dados[index].valor ?
-                                <Form style={{ width: Dimensions.get('screen').width, marginTop: 20, alignSelf: 'center' }}>
-                                    <Text style={{ color: item.cor, fontSize: 18, marginLeft: 30, fontWeight: 'bold' }} uppercase={false}>
-                                        {item.variavel_ambiental}</Text>
-                                    <Text uppercase={false} style={{ color: item.cor + '99', fontSize: 18, marginLeft: 30, fontWeight: 'bold' }}>
-                                        {'Ideal entre ' + dados[index].minIdeal + ' e ' +
-                                            dados[index].maxIdeal + item.tipo_variavel}</Text>
-
-                                    <ScrollView horizontal showsHorizontalScrollIndicator={true}>
-                                        <Form style={{ width: 10 }} />
-                                        {dados[index].valor.map((itemDados, indexDados) => (
-                                            <Form key={indexDados} style={dados[index].dia[indexDados] == this.state.dia ?
-                                                {
-                                                    elevation: 10, borderRadius: 15, padding: 20, margin: 10, marginVertical: 20,
-                                                    alignItems: 'center', backgroundColor: this.estilo.cor.white
-                                                } : this.estilo.hide}>
-                                                {itemDados > 0 ? <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    {dados[index].maxIdeal + itemDados + item.tipo_variavel}
-                                                </Text>
-                                                    :
-                                                    <Text style={{ color: item.cor, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                        {(dados[index].minIdeal + itemDados).toFixed(2) + item.tipo_variavel} </Text>}
-
-                                                {itemDados > 0 ? <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                    <FeatherIcon name='arrow-up' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
-                                                    {itemDados + item.tipo_variavel}
-                                                </Text>
-                                                    :
-                                                    <Text style={{ color: this.estilo.cor.red, fontSize: 20, fontWeight: 'bold' }} uppercase={false}>
-                                                        <FeatherIcon name='arrow-down' style={{ color: this.estilo.cor.red, fontSize: 20 }} />
-                                                        {itemDados * -1 + item.tipo_variavel}
-                                                    </Text>}
-
-                                                <Text style={{ color: this.estilo.cor.gray, fontSize: 18 }} uppercase={false}>
-                                                    {dados[index].hora[indexDados]}
-                                                </Text>
-                                            </Form>))}
-                                        <Form style={{ width: 10 }} />
-                                    </ScrollView>
-                                </Form> : null}
+                    </Content>
+                    :
+                    <View style={{
+                        flex: 1, width: Dimensions.get('screen').width,
+                        alignItems: 'center', justifyContent: 'flex-end'
+                    }}>
+                        <Form style={this.state.entidade == 0 ? null : this.estilo.hide}>
+                            {this.state.alertas.temperatura.data[0] ?
+                                <Chart data={this.state.alertas.temperatura.data}
+                                    valor={this.state.alertas.temperatura.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} /> : null}
                         </Form>
-                    )) : null}
-                </Content>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ position: 'absolute', bottom: 0, height: 60 }}>
-                    <Form style={{ width: 10 }} />
-                    {this.state.alertas && this.state.alertas.dias && this.state.alertas.dias[0] ?
-                        this.state.alertas.dias.map((dia, index) => (
-                            <Button key={index} transparent onPress={() => this.setState({ dia: dia })}>
-                                <Text style={{ color: dia == this.state.dia ? this.estilo.cor.gray_solid : this.estilo.cor.gray_medium, fontWeight: 'bold', fontSize: 18, textAlign: 'center' }} uppercase={false}
-                                >{this.getDayOfWeek(dia) + '\n' + this.getDayNumber(dia)}</Text></Button>
-                        )) : null}
-                    <Form style={{ width: 10 }} />
-                </ScrollView> */}
+
+                        <Form style={this.state.entidade == 1 ? null : this.estilo.hide}>
+                            {this.state.alertas.umidade_solo.data[0] ?
+                                <Chart data={this.state.alertas.umidade_solo.data}
+                                    valor={this.state.alertas.umidade_solo.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} /> : null}
+                        </Form>
+
+                        <Form style={this.state.entidade == 2 ? null : this.estilo.hide}>
+                            {this.state.alertas.umidade_ar.data[0] ?
+                                <Chart data={this.state.alertas.umidade_ar.data}
+                                    valor={this.state.alertas.umidade_ar.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} /> : null}
+                        </Form>
+
+                        <Form style={this.state.entidade == 3 ? null : this.estilo.hide}>
+                            {this.state.alertas.luminosidade.data[0] ?
+                                <Chart data={this.state.alertas.luminosidade.data}
+                                    valor={this.state.alertas.luminosidade.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} /> : null}
+                        </Form>
+                    </View>
+                }
+
+                <Form style={{
+                    justifyContent: 'center', paddingTop: 30,
+                    backgroundColor: this.entidades[this.state.entidade].cor
+                }}>
+                    <Button rounded style={{
+                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 20,
+                        paddingVertical: 10, alignSelf: 'center', elevation: 0
+                    }}>
+                        <Text uppercase={false} style={{
+                            fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
+                            paddingLeft: 30, paddingRight: 30
+                        }}
+                        >{this.entidades[this.state.entidade].label}</Text>
+                    </Button>
+                    <Form style={{
+                        flexDirection: 'row', justifyContent: 'center',
+                        marginTop: 30, paddingVertical: 10
+                    }}>
+                        {this.entidades.map((item, index) => (
+                            <Button large transparent key={item.value} rounded style={{ paddingHorizontal: 20 }}
+                                onPress={async () => { this.setState({ entidade: index }), await this.anos() }}>
+                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
+                                this.state.entidade == index ? { color: this.estilo.cor.white } : null]} />
+                            </Button>
+                        ))}
+                    </Form>
+                </Form>
             </Container>
         )
     }
