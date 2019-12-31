@@ -17,7 +17,7 @@ export default class ChartAlertas extends Component {
         }
     }
 
-    async componentWillReceiveProps() {
+    async componentDidMount() {
         await this.load()
     }
 
@@ -29,8 +29,6 @@ export default class ChartAlertas extends Component {
         await this.nomralizaData()
         await this.nomralizaValor()
         this.setState({ loaded: true })
-        console.log('this.props.valor')
-        console.log(this.props.valor)
     }
 
     async nomralizaValor() {
@@ -57,7 +55,7 @@ export default class ChartAlertas extends Component {
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.data ?
                         <Form style={{
-                            flexDirection: 'column', marginTop: -50, alignItems: 'center', marginLeft: -40,
+                            flexDirection: 'column', marginTop: -26, alignItems: 'center', marginLeft: -40,
                             width: 40 + (((this.props.tipo).length || 0) * 10), height: 25, justifyContent: 'center'
                         }}>
 
@@ -82,6 +80,9 @@ export default class ChartAlertas extends Component {
                                             { color: this.estilo.cor.red, fontSize: 18 }} />
                                     {value * -1}</Text>
                             }
+                            <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
+                                { color: this.estilo.cor.gray, fontSize: 16, marginTop: 30, fontWeight: 'bold' }}
+                            >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
                         </Form>
                         : null}
                 </Svg>
@@ -89,47 +90,51 @@ export default class ChartAlertas extends Component {
         }
 
         const Line = ({ line }) => (
-            <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={10} strokeDasharray={[2, 4]} />
+            <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={5} strokeDasharray={[5, 5]} />
         )
 
-        const EixoX = ({ x, y, data }) => {
-            return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(min)}>
-                    {this.props.data ?
-                        <Form style={{
-                            flexDirection: 'column', marginTop: -38, marginLeft: -20,
-                            width: 50, height: 25, justifyContent: 'center'
-                        }}>
-                            <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                { color: this.estilo.cor.white, fontSize: 16, paddingBottom: 2, marginLeft: -10 }}
-                            >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
-                        </Form> : null}
-                </Svg>
-            ))
-        }
+        // const EixoX = ({ x, y, data }) => {
+        //     return data.map((value, index) => (
+        //         <Svg key={index} translateX={x(index)} translateY={y(min)}>
+        //             {this.props.data ?
+        //                 <Form style={{
+        //                     flexDirection: 'column', marginTop: -38, marginLeft: -20,
+        //                     width: 50, height: 25, justifyContent: 'center'
+        //                 }}>
+        //                     <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
+        //                         { color: this.props.color, fontSize: 16, paddingBottom: 2, marginLeft: -10, fontWeight: 'bold' }}
+        //                     >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
+        //                 </Form> : null}
+        //         </Svg>
+        //     ))
+        // }
 
         return (
             <ScrollView showsHorizontalScrollIndicator={false}
                 horizontal={true} style={{ height: 250 }}>
                 <View style={{ width: this.props.data.length * 70, justifyContent: 'flex-end', backgroundColor: this.estilo.cor.white }}>
                     <AreaChart
-                        style={{ height: max - min == 0 ? 20 : 300, marginRight: -1, marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0 }}
+                        style={{
+                            height: max - min == 0 ? 100 : 300, marginRight: -1,
+                            marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0,
+                            paddingBottom: 10
+                        }}
                         data={this.props.valor}
                         curve={shape.curveNatural}
-                        contentInset={{ left: -20, right: -20, top: 40 }}
+                        contentInset={{ left: -20, right: -20, top: 0 }}
                         yMin={min != 0 ? min - 1 : min}
                         yMax={max - min >= 20 ? max + 10 : max + 1}
                     >
                         <Line />
                         <Decorator />
                     </AreaChart>
-                    <AreaChart
-                        style={{ height: 50, backgroundColor: this.props.color }}
+                    {/* <AreaChart
+                        style={{ height: 50 }}
                         data={this.props.valor}
                         contentInset={{ left: -20, right: -20 }}
                     >
                         <EixoX />
-                    </AreaChart>
+                    </AreaChart> */}
                 </View>
             </ScrollView>
         )

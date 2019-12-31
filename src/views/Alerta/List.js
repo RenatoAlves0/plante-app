@@ -26,7 +26,12 @@ export default class AlertaList extends Component {
             dias: undefined,
             entidade: 0,
             loaded: false,
-            ideal: undefined,
+            ideal: {
+                temperatura: { max: undefined, min: undefined },
+                umidade_solo: { max: undefined, min: undefined },
+                umidade_ar: { max: undefined, min: undefined },
+                luminosidade: { max: undefined, min: undefined },
+            },
             buscar: true,
             alertas: {
                 temperatura: { data: [], valor: [] },
@@ -132,6 +137,16 @@ export default class AlertaList extends Component {
                     </Button>
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
+                <Text uppercase={false} style={{
+                    fontSize: 18, color: this.estilo.cor.gray, marginTop: 20,
+                    paddingLeft: 30, paddingRight: 30, alignSelf: 'center', fontWeight: 'bold'
+                }}
+                >{'Ideal '}
+                    {this.state.entidade == 0 && this.state.ideal.temperatura.min ? 'entre ' + this.state.ideal.temperatura.min + ' e ' + this.state.ideal.temperatura.max + ' ºC' : ''}
+                    {this.state.entidade == 1 && this.state.ideal.umidade_solo.min ? 'entre ' + this.state.ideal.umidade_solo.min + ' e ' + this.state.ideal.umidade_solo.max + ' %' : ''}
+                    {this.state.entidade == 2 && this.state.ideal.umidade_ar.min ? 'entre ' + this.state.ideal.umidade_ar.min + ' e ' + this.state.ideal.umidade_ar.max + ' %' : ''}
+                    {this.state.entidade == 3 && this.state.ideal.luminosidade.min ? 'entre ' + this.state.ideal.luminosidade.min + ' e ' + this.state.ideal.luminosidade.max + ' %' : ''}
+                </Text>
                 {this.state.buscar ?
                     <Content style={this.estilo.contentmodal}>
                         {this.state.anos ? <Form style={this.estilo.form}>
@@ -184,59 +199,56 @@ export default class AlertaList extends Component {
                         flex: 1, width: Dimensions.get('screen').width,
                         alignItems: 'center', justifyContent: 'flex-end'
                     }}>
-                        <Form style={this.state.entidade == 0 ? null : this.estilo.hide}>
-                            {this.state.alertas.temperatura.data[0] ?
+                        {this.state.entidade == 0 && this.state.alertas.temperatura.data[0] ?
+                            <Form>
                                 <Chart data={this.state.alertas.temperatura.data}
                                     valor={this.state.alertas.temperatura.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} /> : null}
-                        </Form>
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} />
+                            </Form> : null}
 
-                        <Form style={this.state.entidade == 1 ? null : this.estilo.hide}>
-                            {this.state.alertas.umidade_solo.data[0] ?
+                        {this.state.entidade == 1 && this.state.alertas.umidade_solo.data[0] ?
+                            <Form>
                                 <Chart data={this.state.alertas.umidade_solo.data}
                                     valor={this.state.alertas.umidade_solo.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} /> : null}
-                        </Form>
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} />
+                            </Form> : null}
 
-                        <Form style={this.state.entidade == 2 ? null : this.estilo.hide}>
-                            {this.state.alertas.umidade_ar.data[0] ?
+                        {this.state.entidade == 2 && this.state.alertas.umidade_ar.data[0] ?
+                            <Form>
                                 <Chart data={this.state.alertas.umidade_ar.data}
                                     valor={this.state.alertas.umidade_ar.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} /> : null}
-                        </Form>
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} />
+                            </Form> : null}
 
-                        <Form style={this.state.entidade == 3 ? null : this.estilo.hide}>
-                            {this.state.alertas.luminosidade.data[0] ?
+                        {this.state.entidade == 3 && this.state.alertas.luminosidade.data[0] ?
+                            <Form>
                                 <Chart data={this.state.alertas.luminosidade.data}
                                     valor={this.state.alertas.luminosidade.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} /> : null}
-                        </Form>
+                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} />
+                            </Form> : null}
                     </View>
                 }
 
-                <Form style={{
-                    justifyContent: 'center', paddingTop: 30,
-                    backgroundColor: this.entidades[this.state.entidade].cor
-                }}>
+                <Form style={{ justifyContent: 'center', paddingTop: 30 }}>
                     <Button rounded style={{
-                        backgroundColor: this.estilo.cor.white + '11', borderRadius: 20,
+                        backgroundColor: this.entidades[this.state.entidade].cor, borderRadius: 20,
                         paddingVertical: 10, alignSelf: 'center', elevation: 0
                     }}>
                         <Text uppercase={false} style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
                             paddingLeft: 30, paddingRight: 30
                         }}
-                        >{this.entidades[this.state.entidade].label}</Text>
+                        >{this.entidades[this.state.entidade].label}{this.state.ano ? '  ' + new Date(this.state.dia).toLocaleDateString() : ''}</Text>
                     </Button>
                     <Form style={{
                         flexDirection: 'row', justifyContent: 'center',
-                        marginTop: 30, paddingVertical: 10
+                        marginTop: 10, paddingVertical: 10
                     }}>
                         {this.entidades.map((item, index) => (
                             <Button large transparent key={item.value} rounded style={{ paddingHorizontal: 20 }}
                                 onPress={async () => { this.setState({ entidade: index }), await this.anos() }}>
-                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
-                                this.state.entidade == index ? { color: this.estilo.cor.white } : null]} />
+                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.gray },
+                                this.state.entidade == index ? { color: this.entidades[this.state.entidade].cor } : null]} />
                             </Button>
                         ))}
                     </Form>
