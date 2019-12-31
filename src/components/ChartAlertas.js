@@ -21,13 +21,13 @@ export default class ChartAlertas extends Component {
         await this.load()
     }
 
-    componentWillUnmount() {
+    componentWillReceiveProps() {
         this.props = {}
     }
 
     async load() {
-        await this.nomralizaData()
         await this.nomralizaValor()
+        await this.nomralizaData()
         this.setState({ loaded: true })
     }
 
@@ -65,7 +65,7 @@ export default class ChartAlertas extends Component {
 
                             {value > 0 ?
                                 <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold' }}>
+                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold', textAlign: 'center', marginLeft: -5 }}>
                                     <FeatherIcon name='arrow-up'
                                         style={index == 0 || index == this.props.valor.length - 1 ?
                                             { color: 'transparent' } :
@@ -73,7 +73,7 @@ export default class ChartAlertas extends Component {
                                     {value}</Text>
                                 :
                                 <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold' }}>
+                                    { color: this.estilo.cor.red, fontSize: 15, fontWeight: 'bold', textAlign: 'center', marginLeft: -5 }}>
                                     <FeatherIcon name='arrow-down'
                                         style={index == 0 || index == this.props.valor.length - 1 ?
                                             { color: 'transparent' } :
@@ -81,7 +81,10 @@ export default class ChartAlertas extends Component {
                                     {value * -1}</Text>
                             }
                             <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-                                { color: this.estilo.cor.gray, fontSize: 16, marginTop: 30, fontWeight: 'bold' }}
+                                {
+                                    color: this.estilo.cor.white, fontSize: 16, marginTop: 30, fontWeight: 'bold', textAlign: 'center',
+                                    backgroundColor: this.estilo.cor.gray, padding: 2, borderRadius: 8, width: 65
+                                }}
                             >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
                         </Form>
                         : null}

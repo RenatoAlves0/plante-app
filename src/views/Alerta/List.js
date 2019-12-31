@@ -32,7 +32,7 @@ export default class AlertaList extends Component {
                 umidade_ar: { max: undefined, min: undefined },
                 luminosidade: { max: undefined, min: undefined },
             },
-            buscar: true,
+            buscar: false,
             alertas: {
                 temperatura: { data: [], valor: [] },
                 umidade_solo: { data: [], valor: [] },
@@ -61,7 +61,8 @@ export default class AlertaList extends Component {
     }
 
     anos = async () => {
-        this.setState({ buscar: true })
+        this.setState({ loaded: false })
+        // this.setState({ buscar: true })
         let anos = await this.http.anosAlertas(dados = {
             usuarioId: this.state.plantacao_principal[0].usuario,
             plantacaoId: this.state.plantacao_principal[0].plantacao
@@ -72,6 +73,7 @@ export default class AlertaList extends Component {
     }
 
     meses = async (value) => {
+        this.setState({ loaded: false })
         this.setState({ ano: await value })
         let meses = await this.http.mesesAlertas(dados = {
             usuarioId: this.state.plantacao_principal[0].usuario,
@@ -83,6 +85,7 @@ export default class AlertaList extends Component {
     }
 
     dias = async (value) => {
+        this.setState({ loaded: false })
         this.setState({ mes: await value })
         let dias = await this.http.diasAlertas(dados = {
             usuarioId: this.state.plantacao_principal[0].usuario,
@@ -104,6 +107,7 @@ export default class AlertaList extends Component {
         else if (this.state.entidade == 1) this.setState({ alertas: { ...this.state.alertas, umidade_solo: alerta } })
         else if (this.state.entidade == 2) this.setState({ alertas: { ...this.state.alertas, umidade_ar: alerta } })
         else if (this.state.entidade == 3) this.setState({ alertas: { ...this.state.alertas, luminosidade: alerta } })
+        this.setState({ loaded: true })
         this.setState({ buscar: false })
     }
 
@@ -132,21 +136,16 @@ export default class AlertaList extends Component {
                     <Body>
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('alertas')}</Text>
                     </Body>
-                    <Button rounded transparent onPress={() => this.setState({ buscar: !this.state.buscar })}>
-                        <FeatherIcon name='search' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
-                    </Button>
+                    {this.state.buscar ?
+                        <Button rounded transparent onPress={() => this.setState({ buscar: false })}>
+                            <FeatherIcon name='pie-chart' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        </Button>
+                        :
+                        <Button rounded transparent onPress={() => this.setState({ buscar: !this.state.buscar })}>
+                            <FeatherIcon name='search' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        </Button>}
                 </Header>
                 <StatusBar backgroundColor={this.estilo.cor.white} barStyle='dark-content' />
-                <Text uppercase={false} style={{
-                    fontSize: 18, color: this.estilo.cor.gray, marginTop: 20,
-                    paddingLeft: 30, paddingRight: 30, alignSelf: 'center', fontWeight: 'bold'
-                }}
-                >{'Ideal '}
-                    {this.state.entidade == 0 && this.state.ideal.temperatura.min ? 'entre ' + this.state.ideal.temperatura.min + ' e ' + this.state.ideal.temperatura.max + ' ºC' : ''}
-                    {this.state.entidade == 1 && this.state.ideal.umidade_solo.min ? 'entre ' + this.state.ideal.umidade_solo.min + ' e ' + this.state.ideal.umidade_solo.max + ' %' : ''}
-                    {this.state.entidade == 2 && this.state.ideal.umidade_ar.min ? 'entre ' + this.state.ideal.umidade_ar.min + ' e ' + this.state.ideal.umidade_ar.max + ' %' : ''}
-                    {this.state.entidade == 3 && this.state.ideal.luminosidade.min ? 'entre ' + this.state.ideal.luminosidade.min + ' e ' + this.state.ideal.luminosidade.max + ' %' : ''}
-                </Text>
                 {this.state.buscar ?
                     <Content style={this.estilo.contentmodal}>
                         {this.state.anos ? <Form style={this.estilo.form}>
@@ -195,37 +194,46 @@ export default class AlertaList extends Component {
                         </Form> : null}
                     </Content>
                     :
+
                     <View style={{
                         flex: 1, width: Dimensions.get('screen').width,
-                        alignItems: 'center', justifyContent: 'flex-end'
+                        alignItems: 'center', justifyContent: 'flex-end', paddingTop: 20
                     }}>
-                        {this.state.entidade == 0 && this.state.alertas.temperatura.data[0] ?
-                            <Form>
-                                <Chart data={this.state.alertas.temperatura.data}
-                                    valor={this.state.alertas.temperatura.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} />
-                            </Form> : null}
+                        {this.state.loaded ?
+                            <Text uppercase={false} style={{
+                                fontSize: 18, color: this.estilo.cor.gray, paddingLeft: 30,
+                                paddingRight: 30, alignSelf: 'center', fontWeight: 'bold'
+                            }}>{'Ideal '}
+                                {this.state.entidade == 0 && this.state.ideal.temperatura.min ? 'entre ' + this.state.ideal.temperatura.min + ' e ' + this.state.ideal.temperatura.max + ' ºC' : ''}
+                                {this.state.entidade == 1 && this.state.ideal.umidade_solo.min ? 'entre ' + this.state.ideal.umidade_solo.min + ' e ' + this.state.ideal.umidade_solo.max + ' %' : ''}
+                                {this.state.entidade == 2 && this.state.ideal.umidade_ar.min ? 'entre ' + this.state.ideal.umidade_ar.min + ' e ' + this.state.ideal.umidade_ar.max + ' %' : ''}
+                                {this.state.entidade == 3 && this.state.ideal.luminosidade.min ? 'entre ' + this.state.ideal.luminosidade.min + ' e ' + this.state.ideal.luminosidade.max + ' %' : ''}
+                            </Text>
+                            : <Loader />
+                        }
+                        {this.state.loaded && this.state.entidade == 0 && this.state.alertas.temperatura.data[0] ?
+                            <Chart data={this.state.alertas.temperatura.data}
+                                valor={this.state.alertas.temperatura.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.temperatura} />
+                            : null}
 
-                        {this.state.entidade == 1 && this.state.alertas.umidade_solo.data[0] ?
-                            <Form>
-                                <Chart data={this.state.alertas.umidade_solo.data}
-                                    valor={this.state.alertas.umidade_solo.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} />
-                            </Form> : null}
+                        {this.state.loaded && this.state.entidade == 1 && this.state.alertas.umidade_solo.data[0] ?
+                            <Chart data={this.state.alertas.umidade_solo.data}
+                                valor={this.state.alertas.umidade_solo.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_solo} />
+                            : null}
 
-                        {this.state.entidade == 2 && this.state.alertas.umidade_ar.data[0] ?
-                            <Form>
-                                <Chart data={this.state.alertas.umidade_ar.data}
-                                    valor={this.state.alertas.umidade_ar.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} />
-                            </Form> : null}
+                        {this.state.loaded && this.state.entidade == 2 && this.state.alertas.umidade_ar.data[0] ?
+                            <Chart data={this.state.alertas.umidade_ar.data}
+                                valor={this.state.alertas.umidade_ar.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.umidade_ar} />
+                            : null}
 
-                        {this.state.entidade == 3 && this.state.alertas.luminosidade.data[0] ?
-                            <Form>
-                                <Chart data={this.state.alertas.luminosidade.data}
-                                    valor={this.state.alertas.luminosidade.valor} tipo={this.entidades[this.state.entidade].tipo}
-                                    color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} />
-                            </Form> : null}
+                        {this.state.loaded && this.state.entidade == 3 && this.state.alertas.luminosidade.data[0] ?
+                            <Chart data={this.state.alertas.luminosidade.data}
+                                valor={this.state.alertas.luminosidade.valor} tipo={this.entidades[this.state.entidade].tipo}
+                                color={this.entidades[this.state.entidade].cor} ideal={this.state.ideal.luminosidade} />
+                            : null}
                     </View>
                 }
 
@@ -238,7 +246,7 @@ export default class AlertaList extends Component {
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
                             paddingLeft: 30, paddingRight: 30
                         }}
-                        >{this.entidades[this.state.entidade].label}{this.state.ano ? '  ' + new Date(this.state.dia).toLocaleDateString() : ''}</Text>
+                        >{this.entidades[this.state.entidade].label}{this.state.ano && !this.state.buscar ? '  ' + new Date(this.state.dia).toLocaleDateString() : ''}</Text>
                     </Button>
                     <Form style={{
                         flexDirection: 'row', justifyContent: 'center',
