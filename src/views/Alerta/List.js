@@ -68,7 +68,7 @@ export default class AlertaList extends Component {
         },
             entidade = this.entidades[this.state.entidade].value)
         this.setState({ anos: await anos })
-        await this.meses(this.state.anos[0])
+        if (!this.state.buscar) await this.meses(this.state.anos[this.state.anos.length - 1])
     }
 
     meses = async (value) => {
@@ -80,7 +80,7 @@ export default class AlertaList extends Component {
             ano: value
         }, entidade = this.entidades[this.state.entidade].value)
         this.setState({ meses: await meses })
-        await this.dias(this.state.meses[0])
+        if (!this.state.buscar) await this.dias(this.state.meses[this.state.meses.length - 1])
     }
 
     dias = async (value) => {
@@ -93,8 +93,7 @@ export default class AlertaList extends Component {
             mes: value
         }, entidade = this.entidades[this.state.entidade].value)
         this.setState({ dias: await dias })
-        this.setState({ dia: await this.state.dias[0] })
-        await this.alertas(this.state.dia)
+        if (!this.state.buscar) await this.alertas(this.state.dias[this.state.dias.length - 1])
     }
 
     alertas = async (dia) => {
@@ -108,25 +107,7 @@ export default class AlertaList extends Component {
         else if (this.state.entidade == 2) this.setState({ alertas: { ...this.state.alertas, umidade_ar: alerta } })
         else if (this.state.entidade == 3) this.setState({ alertas: { ...this.state.alertas, luminosidade: alerta } })
         this.setState({ loaded: true })
-        this.setState({ buscar: false })
-    }
-
-    // buscar = () => {
-    //     if (this.state.entidade == 0) this.setState({ alertas: { ...this.state.alertas, temperatura: { ...this.state.alertas.temperatura, data: [], valor: [] } } })
-    //     else if (this.state.entidade == 1) this.setState({ alertas: { ...this.state.alertas, umidade_solo: { ...this.state.alertas.umidade_solo, data: [], valor: [] } } })
-    //     else if (this.state.entidade == 2) this.setState({ alertas: { ...this.state.alertas, umidade_ar: { ...this.state.alertas.umidade_ar, data: [], valor: [] } } })
-    //     else if (this.state.entidade == 3) this.setState({ alertas: { ...this.state.alertas, luminosidade: { ...this.state.alertas.luminosidade, data: [], valor: [] } } })
-    // }
-
-    getDayNumber(date) {
-        var dayNumber = new Date(date).getUTCDate()
-            + '/' + new Date(date).getMonth() + 1
-        return dayNumber
-    }
-
-    getDayOfWeek(date) {
-        var dayOfWeek = new Date(date).getDay()
-        return this.getStringDayOfWeek(dayOfWeek)
+        if (dia != 0) this.setState({ buscar: false })
     }
 
     getStringDayOfWeek(day) {
@@ -144,8 +125,8 @@ export default class AlertaList extends Component {
                         <Text style={{ color: this.estilo.cor.gray_solid, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('alertas')}</Text>
                     </Body>
                     {this.state.buscar ?
-                        <Button rounded transparent onPress={() => this.setState({ buscar: false })}>
-                            <FeatherIcon name='pie-chart' style={{ color: this.estilo.cor.gray_solid, fontSize: 22, marginHorizontal: 5 }} />
+                        <Button rounded transparent disabled>
+                            <FeatherIcon name='x' style={{ color: 'transparent', fontSize: 22, marginHorizontal: 5 }} />
                         </Button>
                         :
                         <Button rounded transparent onPress={() => this.setState({ buscar: true })}>
@@ -179,6 +160,7 @@ export default class AlertaList extends Component {
                                         iosIcon={<Icon name='arrow-down' />}
                                         selectedValue={this.state.mes}
                                         onValueChange={value => this.dias(value)}>
+                                        <Item disabled={true} key={0} label={'...'} value={0} />
                                         {this.state.meses.map((item) => { return <Item key={item} label={item} value={item} /> })}
                                     </Picker>
                                 </Row>
@@ -193,7 +175,8 @@ export default class AlertaList extends Component {
                                         mode='dialog'
                                         iosIcon={<Icon name='arrow-down' />}
                                         selectedValue={this.state.dia}
-                                        onValueChange={value => { this.alertas(value), this.setState({ buscar: false }) }}>
+                                        onValueChange={value => this.alertas(value)}>
+                                        <Item disabled={true} key={0} label={'...'} value={0} />
                                         {this.state.dias.map(item => { return <Item key={item} label={item.split(' ')[2]} value={item} /> })}
                                     </Picker>
                                 </Row>
@@ -247,7 +230,7 @@ export default class AlertaList extends Component {
                 <Form style={{ justifyContent: 'center', paddingTop: 30 }}>
                     <Button rounded style={{
                         backgroundColor: this.entidades[this.state.entidade].cor, borderRadius: 20,
-                        paddingVertical: 10, alignSelf: 'center', elevation: 0
+                        paddingVertical: 10, alignSelf: 'center', elevation: 0, marginBottom: 20
                     }}>
                         <Text uppercase={false} style={{
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
@@ -255,9 +238,9 @@ export default class AlertaList extends Component {
                         }}
                         >{this.entidades[this.state.entidade].label}{this.state.ano && !this.state.buscar ? '  ' + new Date(this.state.dia).toLocaleDateString() : ''}</Text>
                     </Button>
-                    <Form style={{
+                    {this.state.buscar ? null : <Form style={{
                         flexDirection: 'row', justifyContent: 'center',
-                        marginTop: 10, paddingVertical: 10
+                        borderBottomColor: 10,
                     }}>
                         {this.entidades.map((item, index) => (
                             <Button large transparent key={item.value} rounded style={{ paddingHorizontal: 20 }}
@@ -266,7 +249,7 @@ export default class AlertaList extends Component {
                                 this.state.entidade == index ? { color: this.entidades[this.state.entidade].cor } : null]} />
                             </Button>
                         ))}
-                    </Form>
+                    </Form>}
                 </Form>
             </Container>
         )
