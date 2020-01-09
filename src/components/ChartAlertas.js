@@ -57,7 +57,9 @@ export default class ChartAlertas extends Component {
 
                             <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
                                 { color: this.props.color, fontSize: 18, fontWeight: 'bold' }}
-                            >{this.props.ideal.max + value + this.props.tipo}</Text>
+                            >{value > 0 ?
+                                (this.props.ideal.max + value).toFixed(1) + this.props.tipo
+                                : (this.props.ideal.min + value).toFixed(1) + this.props.tipo}</Text>
 
                             {value > 0 ?
                                 <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
@@ -114,9 +116,9 @@ export default class ChartAlertas extends Component {
                 <View style={{ width: this.props.data.length * 70, justifyContent: 'flex-end', backgroundColor: this.estilo.cor.white }}>
                     <AreaChart
                         style={{
-                            height: max - min == 0 ? 100 : 300, marginRight: -1,
-                            marginBottom: -1, marginTop: min == 0 && max == 0 ? 20 : 0,
-                            paddingBottom: 10
+                            height: '100%', paddingTop: 50, paddingBottom: 30,
+                            marginBottom: -1, marginRight: -1,
+                            marginTop: min == 0 && max == 0 ? 20 : 0
                         }}
                         data={this.props.valor}
                         curve={shape.curveNatural}

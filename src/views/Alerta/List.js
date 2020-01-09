@@ -227,7 +227,7 @@ export default class AlertaList extends Component {
                     </View>
                 }
 
-                <Form style={{ justifyContent: 'center', paddingTop: 30 }}>
+                <Form style={{ justifyContent: 'center' }}>
                     <Button rounded style={{
                         backgroundColor: this.entidades[this.state.entidade].cor, borderRadius: 20,
                         paddingVertical: 10, alignSelf: 'center', elevation: 0, marginBottom: 20
