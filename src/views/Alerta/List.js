@@ -236,7 +236,11 @@ export default class AlertaList extends Component {
                             fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold',
                             paddingLeft: 30, paddingRight: 30
                         }}
-                        >{this.entidades[this.state.entidade].label}{this.state.ano && !this.state.buscar ? '  ' + new Date(this.state.dia).toLocaleDateString() : ''}</Text>
+                        >{this.entidades[this.state.entidade].label}{this.state.ano && !this.state.buscar ?
+                            '  ' +
+                            new Date(this.state.dia).getDate() + '/' +
+                            (new Date(this.state.dia).getMonth() + 1) + '/' +
+                            new Date(this.state.dia).getFullYear() : ''}</Text>
                     </Button>
                     {this.state.buscar ? null : <Form style={{
                         flexDirection: 'row', justifyContent: 'center',
