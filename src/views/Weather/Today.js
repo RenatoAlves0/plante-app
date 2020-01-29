@@ -162,21 +162,19 @@ export default class Today extends Component {
                         flexDirection: 'row', justifyContent: 'center', paddingVertical: 5
                         //, paddingLeft: 10
                     }}>
-                        {
-                            this.weather.map((item) => (
-                                <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
-                                    onPress={() => {
-                                        this.setState({
-                                            weather_atual: item.key, weather_cor: item.cor,
-                                            variavel_ambiental: item.variavel_ambiental
-                                        })
-                                    }}>
-                                    <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
-                                    this.state.weather_atual == item.key ?
-                                        { color: this.estilo.cor.white } : null]} />
-                                </Button>
-                            ))
-                        }
+                        {this.weather.map((item) => (
+                            <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
+                                onPress={() => {
+                                    this.setState({
+                                        weather_atual: item.key, weather_cor: item.cor,
+                                        variavel_ambiental: item.variavel_ambiental
+                                    })
+                                }}>
+                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
+                                this.state.weather_atual == item.key ?
+                                    { color: this.estilo.cor.white } : null]} />
+                            </Button>
+                        ))}
                     </Form>
                     {/* </ScrollView> */}
                     <Image

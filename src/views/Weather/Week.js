@@ -180,7 +180,7 @@ export default class Week extends Component {
 
                         <Row style={{ backgroundColor: this.estilo.cor.orange, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{translate('nascer_do_sol')}</Text>
-                            <FeatherIcon name='sunrise' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
+                            <FeatherIcon name='sunrise' style={{ fontSize: 20, marginLeft: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.sol_nascer}
                             label_array_label_value={'h'}
@@ -189,7 +189,7 @@ export default class Week extends Component {
 
                         <Row style={{ backgroundColor: this.estilo.cor.orange_medium, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{translate('por_do_sol')}</Text>
-                            <FeatherIcon name='sunset' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
+                            <FeatherIcon name='sunset' style={{ fontSize: 20, marginLeft: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.sol_por}
                             label_array_label_value={'h'}
@@ -198,7 +198,7 @@ export default class Week extends Component {
 
                         <Row style={{ backgroundColor: this.estilo.cor.orange, justifyContent: 'center', height: 51, paddingTop: 15, marginBottom: -1 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{translate('duracao')}</Text>
-                            <FeatherIcon name='clock' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
+                            <FeatherIcon name='clock' style={{ fontSize: 20, marginLeft: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.sol_duracao}
                             label_array={this.state.weather_week.dia_semana}
@@ -211,7 +211,7 @@ export default class Week extends Component {
                     <Form style={this.state.weather_atual == 'lua' ? null : this.estilo.hide}>
                         <Row style={{ backgroundColor: this.estilo.cor.blue_solid, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{translate('nascer_da_lua')}</Text>
-                            <FeatherIcon name='arrow-up' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
+                            <FeatherIcon name='arrow-up' style={{ fontSize: 20, marginLeft: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.lua_nascer}
                             label_array_label_value={'h'}
@@ -220,7 +220,7 @@ export default class Week extends Component {
 
                         <Row style={{ backgroundColor: this.estilo.cor.blue_dark, justifyContent: 'center', height: 50, paddingTop: 15 }}>
                             <Text uppercase={false} style={{ fontSize: 17, color: this.estilo.cor.white, fontWeight: 'bold' }}>{translate('por_da_lua')}</Text>
-                            <FeatherIcon name='arrow-down' style={{ fontSize: 20, marginHorizontal: 15, color: this.estilo.cor.white }} />
+                            <FeatherIcon name='arrow-down' style={{ fontSize: 20, marginLeft: 15, color: this.estilo.cor.white }} />
                         </Row>
                         <Chart label_descricao_array={this.state.weather_week.lua_por}
                             label_array={this.state.weather_week.dia_semana}
@@ -249,15 +249,21 @@ export default class Week extends Component {
 
                         {/* Temperatura / Sensação Térmica */}
                         <Form style={this.state.weather_atual == 'temperatura' ?
-                            { flexDirection: 'row', flexWrap: 'wrap' } : this.estilo.hide} >
-                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20 }}
+                            { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', paddingBottom: 5 } : this.estilo.hide} >
+                            <Button rounded style={{
+                                backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0,
+                                marginVertical: 10, borderRadius: 20
+                            }}
                                 onPress={() => this.setState({ temperatura_tipo: 'temperatura' })}>
                                 <Text uppercase={false} style={{
                                     color: this.state.temperatura_tipo == 'temperatura' ? this.estilo.cor.white : this.estilo.cor.white + '77',
                                     fontSize: 17, paddingLeft: 30, paddingRight: 30
                                 }}>{translate('temperatura')}</Text>
                             </Button>
-                            <Button rounded style={{ backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0, borderRadius: 20 }}
+                            <Button rounded style={{
+                                backgroundColor: this.estilo.cor.white + '11', marginHorizontal: 10, elevation: 0,
+                                marginVertical: 10, borderRadius: 20
+                            }}
                                 onPress={() => this.setState({ temperatura_tipo: 'sensacao_termica' })}>
                                 <Text uppercase={false} style={{
                                     color: this.state.temperatura_tipo == 'sensacao_termica' ? this.estilo.cor.white : this.estilo.cor.white + '77',
@@ -267,23 +273,26 @@ export default class Week extends Component {
                         </Form>
                     </Form>
 
-                    <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-                        <Form style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 5, paddingLeft: 10 }}>
-                            {this.weather.map((item) => (
-                                <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
-                                    onPress={() => {
-                                        this.setState({
-                                            weather_atual: item.key, weather_cor: item.cor,
-                                            variavel_ambiental: item.variavel_ambiental
-                                        })
-                                    }}>
-                                    <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
-                                    this.state.weather_atual == item.key ?
-                                        { color: this.estilo.cor.white } : null]} />
-                                </Button>
-                            ))}
-                        </Form>
-                    </ScrollView>
+                    {/* <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}> */}
+                    <Form style={{
+                        flexDirection: 'row', justifyContent: 'center', paddingVertical: 5
+                        // , paddingLeft: 10 
+                    }}>
+                        {this.weather.map((item) => (
+                            <Button large transparent key={item.icon} rounded style={{ paddingHorizontal: 20 }}
+                                onPress={() => {
+                                    this.setState({
+                                        weather_atual: item.key, weather_cor: item.cor,
+                                        variavel_ambiental: item.variavel_ambiental
+                                    })
+                                }}>
+                                <FeatherIcon name={item.icon} style={[{ fontSize: 25, color: this.estilo.cor.white + '77' },
+                                this.state.weather_atual == item.key ?
+                                    { color: this.estilo.cor.white } : null]} />
+                            </Button>
+                        ))}
+                    </Form>
+                    {/* </ScrollView> */}
                     <Image
                         resizeMode='contain'
                         style={{ width: 120, height: 40, alignSelf: 'center', marginBottom: 10 }}
