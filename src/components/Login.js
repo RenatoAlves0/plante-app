@@ -25,6 +25,12 @@ export default class Login extends Component {
                 marginTop: -80
             }
         }
+        this.acoes = [
+            { nome: 'Logar', cor1: this.estilo.cor.green, cor2: this.estilo.cor.green_solid, metodo: this.logar },
+            { nome: 'Criar conta', cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_solid, metodo: Actions.criarConta },
+            { nome: 'Cliente', cor1: this.estilo.cor.greenish, cor2: this.estilo.cor.greenish_solid, metodo: Actions.dash },
+            { nome: 'Administrador', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark, metodo: Actions.plantaList },
+        ]
     }
 
     componentWillMount() {
@@ -40,7 +46,7 @@ export default class Login extends Component {
         }
     }
 
-    async logar() {
+    logar = async () => {
 
         let login = undefined
         if (this.state.login && this.state.login.login && this.state.login.senha) {
@@ -84,7 +90,7 @@ export default class Login extends Component {
 
                     <Form
                         style={{
-                            marginLeft: '5%', marginRight: '5%', marginTop: '7%',
+                            marginLeft: '5%', marginRight: '5%', marginTop: '7%', marginBottom: 30,
                             borderColor: this.estilo.cor.gray, borderWidth: 2, borderRadius: 20
                         }}>
                         <Input value={this.state.login.senha}
@@ -92,47 +98,21 @@ export default class Login extends Component {
                             onChangeText={(value) => { this.setState({ login: { ...this.state.login, senha: value } }) }} />
                     </Form>
 
-                    <LinearGradient colors={[this.estilo.cor.green, this.estilo.cor.green_solid]}
-                        useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
-                        style={{
-                            width: '90%', alignSelf: 'center', borderRadius: 20, marginTop: 40, elevation: 3,
-                        }}>
-                        <Button onPress={() => this.logar()}
+                    {this.acoes.map((item, index) => (
+                        <LinearGradient key={index} colors={[item.cor1, item.cor2]}
+                            useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
                             style={{
-                                backgroundColor: 'transparent', width: '100%', borderRadius: 20,
-                                elevation: 0, justifyContent: 'center', height: 50
+                                width: '90%', alignSelf: 'center', borderRadius: 20, marginBottom: 20, elevation: 3,
                             }}>
-                            <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >Logar</Text>
-                        </Button>
-                    </LinearGradient>
-
-                    <LinearGradient colors={[this.estilo.cor.greenish, this.estilo.cor.greenish_solid]}
-                        useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
-                        style={{
-                            width: '90%', alignSelf: 'center', borderRadius: 20, marginTop: 20, elevation: 3,
-                        }}>
-                        <Button onPress={() => Actions.dash()}
-                            style={{
-                                backgroundColor: 'transparent', width: '100%', borderRadius: 20,
-                                elevation: 0, justifyContent: 'center', height: 50
-                            }}>
-                            <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >Cliente</Text>
-                        </Button>
-                    </LinearGradient>
-
-                    <LinearGradient colors={[this.estilo.cor.blue, this.estilo.cor.blue_dark]}
-                        useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
-                        style={{
-                            width: '90%', alignSelf: 'center', borderRadius: 20, marginVertical: 20, elevation: 3,
-                        }}>
-                        <Button onPress={() => Actions.plantaList()}
-                            style={{
-                                backgroundColor: 'transparent', width: '100%', borderRadius: 20,
-                                elevation: 0, justifyContent: 'center', height: 50
-                            }}>
-                            <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >Administrador</Text>
-                        </Button>
-                    </LinearGradient>
+                            <Button onPress={() => item.metodo()}
+                                style={{
+                                    backgroundColor: 'transparent', width: '100%', borderRadius: 20,
+                                    elevation: 0, justifyContent: 'center', height: 50
+                                }}>
+                                <Text uppercase={false} style={{ color: this.estilo.cor.white, fontSize: 18 }} >{item.nome}</Text>
+                            </Button>
+                        </LinearGradient>
+                    ))}
 
                 </Content>
             </Container>

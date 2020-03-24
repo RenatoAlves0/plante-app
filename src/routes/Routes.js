@@ -24,6 +24,7 @@ import plantacaoList from '../views/Plantacao/List'
 import plantacaoForm from '../views/Plantacao/Form'
 import plantacaoView from '../views/Plantacao/View'
 import alertaList from '../views/Alerta/List'
+import criarConta from '../views/CriarConta/Form'
 
 export default class Routes extends Component {
     constructor(props) {
@@ -60,6 +61,7 @@ export default class Routes extends Component {
                             <Scene key='plantacaoForm' component={plantacaoForm} hideNavBar />
                             <Scene key='plantacaoView' component={plantacaoView} hideNavBar />
                             <Scene key='alertaList' component={alertaList} hideNavBar />
+                            <Scene key='criarConta' component={criarConta} hideNavBar />
                         </Stack>
                     </Router>
                 </Root>

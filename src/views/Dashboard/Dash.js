@@ -49,7 +49,7 @@ export default class Dash extends Component {
         this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
         this.topico_alertas = 'plante_alertas.5d699b7e0762797037d35801'
         this.uri = 'ws://test.mosquitto.org:8080/ws'
-        this.client_id = 'plante_app.5d699b7e0762797037d35801'
+        this.client_id = 'plante_app.5d699b7e0762797037d35801' // cada usuário do app deverá ter um diferente
         this.myStorage = {
             setItem: (key, item) => {
                 myStorage[key] = item
