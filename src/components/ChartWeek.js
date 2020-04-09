@@ -9,7 +9,6 @@ import * as shape from 'd3-shape'
 export default class ChartWeek extends Component {
     constructor(props) {
         super(props)
-        this.props.max_value = 0
         this.estilo = new estilo()
         this.state = {
             loaded: false

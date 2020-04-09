@@ -9,7 +9,6 @@ import * as shape from 'd3-shape'
 export default class ChartToday extends Component {
     constructor(props) {
         super(props)
-        this.props.max_value = 0
         this.estilo = new estilo()
         this.state = {
             loaded: false
@@ -24,6 +23,7 @@ export default class ChartToday extends Component {
                 <Svg key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.label_data ?
                         <Form style={{
+                            backgroundColor: 'red',
                             flexDirection: (this.props.label_data).length > 3 ? 'column' : 'row',
                             marginTop: (this.props.label_data).length > 3 ? -45 : -35,
                             alignItems: this.props.label_data == 'º' ? 'flex-start' : 'baseline',

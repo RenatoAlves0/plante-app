@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { StatusBar } from 'react-native'
 import { Router, Scene, Stack } from 'react-native-router-flux'
-import { Container, Root } from 'native-base'
+import { StatusBar, Container, Root } from 'native-base'
 import estilo from '../assets/Estilo'
 import login from '../components/Login'
 import plantaList from '../views/Planta/List'
@@ -35,37 +34,34 @@ export default class Routes extends Component {
 
     render() {
         return (
-            <Container>
-                <StatusBar backgroundColor={this.estilo.cor.white} barStyle="dark-content" />
-                <Root>
-                    <Router>
-                        <Stack key='root'>
-                            <Scene key='login' component={login} initial hideNavBar />
-                            <Scene key='plantaList' component={plantaList} hideNavBar />
-                            <Scene key='plantaForm' component={plantaForm} hideNavBar />
-                            <Scene key='familiaForm' component={familiaForm} hideNavBar />
-                            <Scene key='generoForm' component={generoForm} hideNavBar />
-                            <Scene key='especieForm' component={especieForm} hideNavBar />
-                            <Scene key='climaList' component={climaList} hideNavBar />
-                            <Scene key='climaForm' component={climaForm} hideNavBar />
-                            <Scene key='soloList' component={soloList} hideNavBar />
-                            <Scene key='soloForm' component={soloForm} hideNavBar />
-                            <Scene key='luzList' component={luzList} hideNavBar />
-                            <Scene key='luzForm' component={luzForm} hideNavBar />
-                            <Scene key='nutrienteList' component={nutrienteList} hideNavBar />
-                            <Scene key='nutrienteForm' component={nutrienteForm} hideNavBar />
-                            <Scene key='dash' component={dash} hideNavBar />
-                            <Scene key='week' component={week} hideNavBar />
-                            <Scene key='today' component={today} hideNavBar />
-                            <Scene key='plantacaoList' component={plantacaoList} hideNavBar />
-                            <Scene key='plantacaoForm' component={plantacaoForm} hideNavBar />
-                            <Scene key='plantacaoView' component={plantacaoView} hideNavBar />
-                            <Scene key='alertaList' component={alertaList} hideNavBar />
-                            <Scene key='criarConta' component={criarConta} hideNavBar />
-                        </Stack>
-                    </Router>
-                </Root>
-            </Container>
+            <Root>
+                <Router>
+                    <Stack key='root'>
+                        <Scene key='login' component={login} initial hideNavBar />
+                        <Scene key='plantaList' component={plantaList} hideNavBar />
+                        <Scene key='plantaForm' component={plantaForm} hideNavBar />
+                        <Scene key='familiaForm' component={familiaForm} hideNavBar />
+                        <Scene key='generoForm' component={generoForm} hideNavBar />
+                        <Scene key='especieForm' component={especieForm} hideNavBar />
+                        <Scene key='climaList' component={climaList} hideNavBar />
+                        <Scene key='climaForm' component={climaForm} hideNavBar />
+                        <Scene key='soloList' component={soloList} hideNavBar />
+                        <Scene key='soloForm' component={soloForm} hideNavBar />
+                        <Scene key='luzList' component={luzList} hideNavBar />
+                        <Scene key='luzForm' component={luzForm} hideNavBar />
+                        <Scene key='nutrienteList' component={nutrienteList} hideNavBar />
+                        <Scene key='nutrienteForm' component={nutrienteForm} hideNavBar />
+                        <Scene key='dash' component={dash} hideNavBar />
+                        <Scene key='week' component={week} hideNavBar />
+                        <Scene key='today' component={today} hideNavBar />
+                        <Scene key='plantacaoList' component={plantacaoList} hideNavBar />
+                        <Scene key='plantacaoForm' component={plantacaoForm} hideNavBar />
+                        <Scene key='plantacaoView' component={plantacaoView} hideNavBar />
+                        <Scene key='alertaList' component={alertaList} hideNavBar />
+                        <Scene key='criarConta' component={criarConta} hideNavBar />
+                    </Stack>
+                </Router>
+            </Root>
         )
     }
 }
