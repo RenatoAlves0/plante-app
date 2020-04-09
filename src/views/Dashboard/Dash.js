@@ -159,10 +159,10 @@ export default class Dash extends Component {
         Animated.timing(
             this.spinValue,
             {
+                useNativeDriver: true,
                 toValue: 1,
                 duration: 1000,
                 easing: Easing.linear,
-                useNativeDriver: true
             }
         ).start(() => this.spin())
 

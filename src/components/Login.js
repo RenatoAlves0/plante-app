@@ -27,7 +27,7 @@ export default class Login extends Component {
         }
         this.acoes = [
             { nome: 'Logar', cor1: this.estilo.cor.green, cor2: this.estilo.cor.green_solid, metodo: this.logar },
-            { nome: 'Criar conta', cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_solid, metodo: Actions.criarConta },
+            { nome: 'Criar Conta', cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_solid, metodo: Actions.conta },
             { nome: 'Cliente', cor1: this.estilo.cor.greenish, cor2: this.estilo.cor.greenish_solid, metodo: Actions.dash },
             { nome: 'Administrador', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark, metodo: Actions.plantaList },
         ]
@@ -38,7 +38,6 @@ export default class Login extends Component {
     }
 
     async preencher_login() {
-
         let login = undefined
         login = await loginService.get()
         if (login && login._id) {
@@ -47,7 +46,6 @@ export default class Login extends Component {
     }
 
     logar = async () => {
-
         let login = undefined
         if (this.state.login && this.state.login.login && this.state.login.senha) {
             login = await this.http.logar(this.state.login)

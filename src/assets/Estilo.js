@@ -70,7 +70,7 @@ export default class Estilos {
         }
 
         this.form_vazio = {
-            marginBottom: 10
+            marginBottom: 20
         }
 
         this.subrow = {

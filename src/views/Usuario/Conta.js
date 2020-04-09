@@ -16,50 +16,24 @@ export default class PlantacaoForm extends Component {
         this.state = {
             item: {
                 nome: undefined,
-                cultura: { _id: undefined },
-                localizacao: undefined,
+                sobrenome: undefined,
+                login: undefined,
+                senha: undefined,
                 cidade: { _id: undefined },
-                usuario: undefined,
-                cor: 5,
             },
+            confirmacao_senha: undefined,
             estado: { _id: undefined },
-            login: undefined,
-            culturas: [],
             estados: [],
             cidades: [],
-            cor: false
         }
     }
 
-    componentWillMount() {
-        this.load()
-    }
-
-    componentWillReceiveProps() {
+    componentDidMount() {
         this.load()
     }
 
     async load() {
-        if (this.props.item) this.setState({ item: this.props.item })
-        await this.login()
-        await this.plantas()
         await this.estados()
-        this.setState({ cor: true })
-    }
-
-    async login() {
-        let login = undefined
-        login = await loginService.get()
-        if (login && login._id) {
-            this.setState({ login: login })
-            this.setState({ item: { ...this.state.item, usuario: this.state.login.usuario } })
-        }
-    }
-
-    async plantas() {
-        await this.http.get('plantas', 1).then((data) => {
-            this.setState({ culturas: data })
-        })
     }
 
     async estados() {
@@ -99,7 +73,7 @@ export default class PlantacaoForm extends Component {
     render() {
         return (
             <Container style={{}}>
-                <Header style={{ backgroundColor: this.estilo.cor_platacao[this.state.item.cor], elevation: 0 }}>
+                <Header style={{ backgroundColor: this.estilo.cor.greenish_medium, elevation: 0 }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
                             <FeatherIcon name='chevron-left' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
@@ -115,25 +89,9 @@ export default class PlantacaoForm extends Component {
                             </Button> : null}
                     </Left>
                 </Header>
-                <StatusBar backgroundColor={this.estilo.cor_platacao[this.state.item.cor]} barStyle="light-content" />
+                <StatusBar backgroundColor={this.estilo.cor.greenish_medium} barStyle="light-content" />
                 <Content>
-                    <Form style={{ flexDirection: 'row', backgroundColor: this.estilo.cor_platacao[this.state.item.cor], paddingBottom: 60 }}>
-                        {this.state.cor ?
-                            <ScrollView keyboardShouldPersistTaps={'handled'} showsHorizontalScrollIndicator={false} horizontal>
-                                <Form style={{ marginLeft: 10 }} />
-                                {this.estilo.cor_platacao.map((cor, index) => (
-                                    <Button rounded small key={index} style={{
-                                        backgroundColor: cor, marginVertical: 20,
-                                        marginHorizontal: 10, width: 30, elevation: 10
-                                    }} onPress={() => {
-                                        this.setState({ item: { ...this.state.item, cor: index } })
-                                    }}>
-                                        <Text></Text>
-                                    </Button>
-                                ))}
-                                <Form style={{ marginRight: 10 }} />
-                            </ScrollView>
-                            : null}
+                    <Form style={{ flexDirection: 'row', backgroundColor: this.estilo.cor.greenish_medium, paddingBottom: 60 }}>
                     </Form>
                     <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
                         <Label>{translate('nome')}</Label>
@@ -142,28 +100,13 @@ export default class PlantacaoForm extends Component {
                                 this.setState({ item: { ...this.state.item, nome: value } })
                             }} />
                     </Form>
-
                     <Form style={this.estilo.form_user}>
-                        <Label>{translate('cultura')}</Label>
-                        <Row style={this.estilo.subrow}>
-                            <Picker
-                                mode='dialog'
-                                iosIcon={<Icon name='arrow-down' />}
-                                selectedValue={this.state.item.cultura._id}
-                                onValueChange={(value) => { this.setState({ item: { ...this.state.item, cultura: { ...this.state.item.cultura, _id: value } } }) }}>
-                                {this.state.culturas.map((item) => { return <Item key={item._id} label={item.nome + ' (' + item.especie.nome + ' - ' + item.genero.nome + ' - ' + item.familia.nome + ')'} value={item._id} /> })}
-                            </Picker>
-                        </Row>
-                    </Form>
-
-                    <Form style={this.estilo.form_user}>
-                        <Label>{translate('localizacao')}</Label>
-                        <Input keyboardType='default' value={this.state.item.localizacao}
+                        <Label>{translate('sobrenome')}</Label>
+                        <Input keyboardType='default' value={this.state.item.sobrenome}
                             onChangeText={(value) => {
-                                this.setState({ item: { ...this.state.item, localizacao: value + '' } })
+                                this.setState({ item: { ...this.state.item, sobrenome: value } })
                             }} />
                     </Form>
-
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('estado')}</Label>
                         <Row style={this.estilo.subrow}>
@@ -196,10 +139,30 @@ export default class PlantacaoForm extends Component {
                             </Row>
                             : null}
                     </Form>
+                    <Form style={this.estilo.form_user}>
+                        <Label>Login</Label>
+                        <Input keyboardType='default' value={this.state.item.login}
+                            onChangeText={(value) => {
+                                this.setState({ item: { ...this.state.item, login: value } })
+                            }} />
+                    </Form>
+                    <Form style={this.estilo.form_user}>
+                        <Label>{translate('senha')}</Label>
+                        <Input keyboardType='default' value={this.state.item.senha}
+                            onChangeText={(value) => {
+                                this.setState({ item: { ...this.state.item, senha: value } })
+                            }} />
+                    </Form>
+                    <Form style={this.estilo.form_user}>
+                        <Label>{translate('confirmacao_senha')}</Label>
+                        <Input keyboardType='default' value={this.state.confirmacao_senha}
+                            onChangeText={(value) => {
+                                this.setState({ confirmacao_senha: value })
+                            }} />
+                    </Form>
                     <Form style={this.estilo.form_vazio} />
                 </Content>
             </Container>
         )
     }
 }
-
