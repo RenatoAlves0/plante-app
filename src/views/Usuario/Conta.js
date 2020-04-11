@@ -105,7 +105,7 @@ export default class PlantacaoForm extends Component {
 
     render() {
         return (
-            <Container style={{}}>
+            <Container>
                 <Header style={{ backgroundColor: this.estilo.cor.greenish_medium, elevation: 0 }}>
                     <Left>
                         <Button rounded transparent onPress={() => Actions.pop()}>
@@ -128,14 +128,14 @@ export default class PlantacaoForm extends Component {
                     </Form>
                     <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
                         <Label>{translate('nome')}</Label>
-                        <Input keyboardType='default' autoFocus={true} value={this.state.usuario.nome}
+                        <Input autoFocus={true} value={this.state.usuario.nome}
                             onChangeText={(value) => {
                                 this.setState({ usuario: { ...this.state.usuario, nome: value } })
                             }} />
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('sobrenome')}</Label>
-                        <Input keyboardType='default' value={this.state.usuario.sobrenome}
+                        <Input value={this.state.usuario.sobrenome}
                             onChangeText={(value) => {
                                 this.setState({ usuario: { ...this.state.usuario, sobrenome: value } })
                             }} />
@@ -174,14 +174,14 @@ export default class PlantacaoForm extends Component {
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>Login</Label>
-                        <Input keyboardType='default' value={this.state.login.login}
+                        <Input value={this.state.login.login}
                             onChangeText={(value) => {
                                 this.setState({ login: { ...this.state.login, login: value } })
                             }} />
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('senha')}</Label>
-                        <Input keyboardType='default' value={this.state.login.senha}
+                        <Input secureTextEntry={true} value={this.state.login.senha}
                             onChangeText={(value) => {
                                 this.setState({ login: { ...this.state.login, senha: value } })
                             }} />
@@ -190,7 +190,7 @@ export default class PlantacaoForm extends Component {
                         { borderColor: this.estilo.cor.green } :
                         { borderColor: this.estilo.cor.red_vivid }]}>
                         <Label>{translate('confirmacao_senha')}</Label>
-                        <Input keyboardType='default' value={this.state.confirmacao_senha}
+                        <Input secureTextEntry={true} value={this.state.confirmacao_senha}
                             onChangeText={(value) => {
                                 this.setState({ confirmacao_senha: value })
                             }} />

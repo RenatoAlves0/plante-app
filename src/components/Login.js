@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { StatusBar, Image, Dimensions } from 'react-native'
-import { Container, Text, Button, View, Content, Input, Form } from 'native-base'
+import { Container, Text, Button, View, Content, Input, Form, Label } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 import http from '../services/Http'
 import LinearGradient from 'react-native-linear-gradient'
 import loginService from '../services/Login'
+import { translate } from '../i18n/locales'
 
 export default class Login extends Component {
 
@@ -27,8 +28,7 @@ export default class Login extends Component {
         }
         this.acoes = [
             { nome: 'Logar', cor1: this.estilo.cor.green, cor2: this.estilo.cor.green_solid, metodo: this.logar },
-            { nome: 'Criar Conta', cor1: this.estilo.cor.gray, cor2: this.estilo.cor.gray_solid, metodo: Actions.conta },
-            { nome: 'Cliente', cor1: this.estilo.cor.greenish, cor2: this.estilo.cor.greenish_solid, metodo: Actions.dash },
+            { nome: 'Criar Conta', cor1: this.estilo.cor.greenish, cor2: this.estilo.cor.greenish_solid, metodo: Actions.conta },
             { nome: 'Administrador', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark, metodo: Actions.plantaList },
         ]
     }
@@ -76,23 +76,15 @@ export default class Login extends Component {
                         }}>Plante</Text>
                     </View>
 
-                    <Form
-                        style={{
-                            marginLeft: '5%', marginRight: '5%', marginTop: '20%',
-                            borderColor: this.estilo.cor.gray, borderWidth: 2, borderRadius: 20
-                        }}>
+                    <Form style={this.estilo.form_user}>
+                        <Label>Login</Label>
                         <Input autoFocus={true} value={this.state.login.login}
-                            placeholder='Login' style={{ textAlign: 'center' }}
                             onChangeText={(value) => { this.setState({ login: { ...this.state.login, login: value } }) }} />
                     </Form>
 
-                    <Form
-                        style={{
-                            marginLeft: '5%', marginRight: '5%', marginTop: '7%', marginBottom: 30,
-                            borderColor: this.estilo.cor.gray, borderWidth: 2, borderRadius: 20
-                        }}>
-                        <Input value={this.state.login.senha}
-                            textContentType='password' placeholder='Senha' style={{ textAlign: 'center' }}
+                    <Form style={[this.estilo.form_user, { marginBottom: 20 }]}>
+                        <Label>{translate('senha')}</Label>
+                        <Input secureTextEntry={true} autoFocus={true} value={this.state.login.senha}
                             onChangeText={(value) => { this.setState({ login: { ...this.state.login, senha: value } }) }} />
                     </Form>
 

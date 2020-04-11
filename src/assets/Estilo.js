@@ -65,8 +65,8 @@ export default class Estilos {
 
         this.form_user = {
             backgroundColor: this.cor.white,
-            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
-            alignSelf: 'center', elevation: 60, padding: 15, flexWrap: 'wrap'
+            width: '90%', borderRadius: 20, marginTop: 20,
+            alignSelf: 'center', elevation: 60, padding: 15
         }
 
         this.form_vazio = {
