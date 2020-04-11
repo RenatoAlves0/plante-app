@@ -11,7 +11,8 @@ export default class Menu extends Component {
         this.estilo = new estilo()
         this.state = {
             actions: [
-                { label: 'Sair', icon: 'log-out', method: this.sair }
+                { label: 'Perfil', icon: 'user', method: this.sair },
+                { label: 'Sair', icon: 'log-out', method: this.sair },
             ]
         }
     }
@@ -20,7 +21,7 @@ export default class Menu extends Component {
         Actions.login()
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 
@@ -41,16 +42,19 @@ export default class Menu extends Component {
                         </Button>
                     </Form>
                 </Form>
-                <Content>
+                <Content style={{ paddingTop: 10 }}>
                     {this.state.actions.map((item, index) => (
-                        <Button key={index} transparent style={{ elevation: 0, marginLeft: 25 }}
+                        <Button key={index} rounded style={{
+                            marginVertical: 15, marginHorizontal: 30,
+                            backgroundColor: this.estilo.cor.white, justifyContent: 'center'
+                        }}
                             onPress={() => { item.method(), this.props.modal(false) }}>
-                            <Row style={{ marginTop: 0 }}>
+                            <Form style={{ flexDirection: 'row' }}>
                                 <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />
                                 <Text uppercase={false} style={{
                                     color: this.estilo.cor.gray_solid, fontSize: 18, paddingLeft: 20, paddingRight: 0
                                 }}>{item.label}</Text>
-                            </Row>
+                            </Form>
                         </Button>
                     ))}
                 </Content>

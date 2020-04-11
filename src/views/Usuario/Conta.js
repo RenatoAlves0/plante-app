@@ -14,12 +14,15 @@ export default class PlantacaoForm extends Component {
         this.estilo = new estilo()
         this.http = new http()
         this.state = {
-            item: {
+            usuario: {
                 nome: undefined,
                 sobrenome: undefined,
+                cidade: { _id: undefined }
+            },
+            login: {
                 login: undefined,
                 senha: undefined,
-                cidade: { _id: undefined },
+                usuario: { _id: undefined }
             },
             confirmacao_senha: undefined,
             estado: { _id: undefined },
@@ -40,8 +43,8 @@ export default class PlantacaoForm extends Component {
         await this.http.get('estados', 0).then(async (data) => {
             await this.setState({ estados: data })
         })
-        if (this.props.item && this.props.item.cidade) {
-            await this.http.get('estados/' + this.props.item.cidade.estado, 0).then(async (data) => {
+        if (this.props.usuario && this.props.usuario.cidade) {
+            await this.http.get('estados/' + this.props.usuario.cidade.estado, 0).then(async (data) => {
                 await this.setState({ estado: data })
             })
         }
@@ -51,23 +54,53 @@ export default class PlantacaoForm extends Component {
         if (this.state.estado && this.state.estado._id)
             await this.http.cidadesByEstado(this.state.estado._id).then(async (data) => {
                 await this.setState({ cidades: data.cidades })
-                if (this.props.item && this.props.item.cidade) {
+                if (this.props.usuario && this.props.usuario.cidade) {
                     await this.cidades().then(() =>
-                        this.setState({ item: { ...this.state.item, cidade: { ...this.props.item.cidade, _id: this.props.item.cidade._id } } })
+                        this.setState({ usuario: { ...this.state.usuario, cidade: { ...this.props.usuario.cidade, _id: this.props.usuario.cidade._id } } })
                     )
-                    this.props.item.cidade = undefined
+                    this.props.usuario.cidade = undefined
                 } else
-                    this.state.cidades[0] && this.state.cidades[0]._id ? this.setState({ item: { ...this.state.item, cidade: this.state.cidades[0]._id } }) : null
+                    this.state.cidades[0] && this.state.cidades[0]._id ? this.setState({ usuario: { ...this.state.usuario, cidade: this.state.cidades[0]._id } }) : null
             })
     }
 
     async save() {
-        this.state.item._id ?
-            await this.http.put('plantacaos', this.state.item._id, this.state.item, 0)
-                .then((data) => { return data }) :
-            await this.http.post('plantacaos', this.state.item, 0)
-                .then((data) => { return data })
-        Actions.plantacaoList()
+        await this.http.post('usuarios', this.state.usuario, 0)
+            .then(async usuario => {
+                if (usuario._id) {
+                    await this.setState({
+                        login: {
+                            ...this.state.login,
+                            usuario: { ...this.state.login.usuario, _id: usuario._id }
+                        }
+                    })
+                    await this.http.post('logins', this.state.login, 0)
+                        .then(() => {
+                            this.logar()
+                        })
+                }
+            })
+    }
+
+    logar = async () => {
+        let login = undefined
+        if (this.state.login && this.state.login.login && this.state.login.senha) {
+            login = await this.http.logar(this.state.login)
+            if (login && login._id && login.usuario) {
+                loginService.update(login)
+                Actions.dash()
+            }
+        }
+    }
+
+    senha_valida() {
+        return this.state.login.senha && this.state.confirmacao_senha &&
+            this.state.login.senha == this.state.confirmacao_senha
+    }
+
+    validacao() {
+        return this.state.usuario.nome && this.state.usuario.sobrenome
+            && this.state.usuario.cidade._id && this.state.login.login && this.senha_valida()
     }
 
     render() {
@@ -83,7 +116,7 @@ export default class PlantacaoForm extends Component {
                         <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('plantacao')}</Text>
                     </Body>
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
-                        {this.state.item.nome && this.state.item.localizacao ?
+                        {this.validacao() ?
                             <Button rounded transparent onPress={() => this.save()}>
                                 <FeatherIcon name='check' style={{ color: this.estilo.cor.white, fontSize: 22, marginHorizontal: 5 }} />
                             </Button> : null}
@@ -95,16 +128,16 @@ export default class PlantacaoForm extends Component {
                     </Form>
                     <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
                         <Label>{translate('nome')}</Label>
-                        <Input keyboardType='default' autoFocus={true} value={this.state.item.nome}
+                        <Input keyboardType='default' autoFocus={true} value={this.state.usuario.nome}
                             onChangeText={(value) => {
-                                this.setState({ item: { ...this.state.item, nome: value } })
+                                this.setState({ usuario: { ...this.state.usuario, nome: value } })
                             }} />
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('sobrenome')}</Label>
-                        <Input keyboardType='default' value={this.state.item.sobrenome}
+                        <Input keyboardType='default' value={this.state.usuario.sobrenome}
                             onChangeText={(value) => {
-                                this.setState({ item: { ...this.state.item, sobrenome: value } })
+                                this.setState({ usuario: { ...this.state.usuario, sobrenome: value } })
                             }} />
                     </Form>
                     <Form style={this.estilo.form_user}>
@@ -118,7 +151,7 @@ export default class PlantacaoForm extends Component {
                                     await this.setState({ estado: { ...this.state.estado, _id: value } })
                                     await this.cidades()
                                 }}>
-                                {this.state.estados.map((item) => { return <Item key={item._id} label={item.nome + ' (' + item.sigla + ')'} value={item._id} /> })}
+                                {this.state.estados.map((usuario) => { return <Item key={usuario._id} label={usuario.nome + ' (' + usuario.sigla + ')'} value={usuario._id} /> })}
                             </Picker>
                         </Row>
                     </Form>
@@ -130,30 +163,32 @@ export default class PlantacaoForm extends Component {
                                 <Picker
                                     mode='dialog'
                                     iosIcon={<Icon name='arrow-down' />}
-                                    selectedValue={this.state.item.cidade._id}
+                                    selectedValue={this.state.usuario.cidade._id}
                                     onValueChange={(value) => {
-                                        this.setState({ item: { ...this.state.item, cidade: { ...this.state.item.cidade, _id: value } } })
+                                        this.setState({ usuario: { ...this.state.usuario, cidade: { ...this.state.usuario.cidade, _id: value } } })
                                     }}>
-                                    {this.state.cidades.map((item) => { return <Item key={item._id} label={item.nome} value={item._id} /> })}
+                                    {this.state.cidades.map((usuario) => { return <Item key={usuario._id} label={usuario.nome} value={usuario._id} /> })}
                                 </Picker>
                             </Row>
                             : null}
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>Login</Label>
-                        <Input keyboardType='default' value={this.state.item.login}
+                        <Input keyboardType='default' value={this.state.login.login}
                             onChangeText={(value) => {
-                                this.setState({ item: { ...this.state.item, login: value } })
+                                this.setState({ login: { ...this.state.login, login: value } })
                             }} />
                     </Form>
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('senha')}</Label>
-                        <Input keyboardType='default' value={this.state.item.senha}
+                        <Input keyboardType='default' value={this.state.login.senha}
                             onChangeText={(value) => {
-                                this.setState({ item: { ...this.state.item, senha: value } })
+                                this.setState({ login: { ...this.state.login, senha: value } })
                             }} />
                     </Form>
-                    <Form style={this.estilo.form_user}>
+                    <Form style={[this.estilo.form_user, { borderWidth: 3 }, this.senha_valida() ?
+                        { borderColor: this.estilo.cor.green } :
+                        { borderColor: this.estilo.cor.red_vivid }]}>
                         <Label>{translate('confirmacao_senha')}</Label>
                         <Input keyboardType='default' value={this.state.confirmacao_senha}
                             onChangeText={(value) => {
