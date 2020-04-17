@@ -35,7 +35,8 @@ export default class Dash extends Component {
             alertas: { t: undefined, u: undefined, uS: undefined, l: undefined, c: undefined },
             loaded: false,
             principal: undefined,
-            modal: false
+            modal: false,
+            mqtt_chave_usuario: ''
         }
         this.sensor_atuador = [
             { index: 0, label: translate('sensores') },
@@ -45,11 +46,11 @@ export default class Dash extends Component {
             { index: 0, label: translate('diaria') },
             { index: 1, label: translate('semanal') },
         ]
-        this.topico_sensores = 'plante_sensores.5d699b7e0762797037d35801'
-        this.topico_regador = 'plante_regador.5d699b7e0762797037d35801'
-        this.topico_alertas = 'plante_alertas.5d699b7e0762797037d35801'
+        this.topico_sensores = 'plante_sensores.'
+        this.topico_regador = 'plante_regador.'
+        this.topico_alertas = 'plante_alertas.'
         this.uri = 'ws://test.mosquitto.org:8080/ws'
-        this.client_id = 'plante_app.5d699b7e0762797037d35801' // cada usuário do app deverá ter um diferente
+        this.client_id = 'plante_app.' // cada usuário do app deverá ter um diferente
         this.myStorage = {
             setItem: (key, item) => {
                 myStorage[key] = item
@@ -60,12 +61,13 @@ export default class Dash extends Component {
             },
         }
         this.client = new Client({
-            uri: this.uri, clientId: this.client_id, storage: this.myStorage
+            uri: this.uri, clientId: this.client_id + Math.random().toString(36), storage: this.myStorage
         })
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.load()
+        console.log(this.client)
     }
 
     componentDidMount() {
@@ -74,11 +76,10 @@ export default class Dash extends Component {
     }
 
     async load() {
-        this.get_user_and_plantacao_principal()
+        await this.get_user_and_plantacao_principal()
         this.setState({ weather_today: await weatherToday.get() })
         this.setState({ weather_week: await weatherWeek.get() })
         this.client.on('connectionLost', (responseObject) => {
-            console.log(responseObject)
             if (responseObject.errorCode !== 0) {
                 this.setState({ conectado: false })
                 Toast.show({
@@ -86,14 +87,14 @@ export default class Dash extends Component {
                     type: 'danger',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'top'
+                    position: 'bottom'
                 })
             }
         })
         this.client.on('messageReceived', (message) => {
-            if (message._destinationName == this.topico_sensores)
+            if (message._destinationName == this.topico_sensores + this.state.mqtt_chave_usuario)
                 this.setState({ sensores: JSON.parse(message.payloadString) })
-            if (message._destinationName == this.topico_alertas)
+            if (message._destinationName == this.topico_alertas + this.state.mqtt_chave_usuario)
                 this.setState({ alertas: JSON.parse(message.payloadString) })
         })
         await this.conectar()
@@ -102,6 +103,7 @@ export default class Dash extends Component {
 
     async get_user_and_plantacao_principal() {
         await loginService.get().then(async (data) => {
+            await this.setState({ mqtt_chave_usuario: data.usuario })
             await this.http.plantacoesPrincipaisByUsuario(data.usuario).then(async (data) => {
                 await data == '' ? {} :
                     await this.http.getId('plantacaos', data[0].plantacao, 0).then(async (data) => {
@@ -115,7 +117,7 @@ export default class Dash extends Component {
         this.setState({ regar: !this.state.regar })
         if (this.state.conectado) {
             let message = this.state.regar ? new Message('0') : new Message('1')
-            message.destinationName = this.topico_regador
+            message.destinationName = this.topico_regador + this.state.mqtt_chave_usuario
             this.client.send(message)
         }
     }
@@ -123,22 +125,18 @@ export default class Dash extends Component {
     async conectar() {
         await this.client.connect({ keepAliveInterval: 240, timeout: 720000 })
             .then(async () => {
-                await this.client.subscribe(this.topico_sensores)
-                await this.client.subscribe(this.topico_alertas)
+                await this.client.subscribe(this.topico_sensores + this.state.mqtt_chave_usuario)
+                await this.client.subscribe(this.topico_alertas + this.state.mqtt_chave_usuario)
                 this.setState({ conectado: true })
                 Toast.show({
                     text: 'Conectado ao Plante Box!',
                     type: 'success',
                     duration: 3000,
                     textStyle: { textAlign: 'center' },
-                    position: 'top'
+                    position: 'bottom'
                 })
             })
             .catch((responseObject) => {
-                console.log('...')
-                console.log(responseObject)
-                console.log(this.uri)
-
                 if (responseObject.errorCode !== 0) {
                     this.setState({ conectado: false })
                     Toast.show({
@@ -146,7 +144,7 @@ export default class Dash extends Component {
                         type: 'danger',
                         duration: 3000,
                         textStyle: { textAlign: 'center' },
-                        position: 'top'
+                        position: 'bottom'
                     })
                 }
             })

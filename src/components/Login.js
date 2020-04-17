@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StatusBar, Image, Dimensions } from 'react-native'
-import { Container, Text, Button, View, Content, Input, Form, Label } from 'native-base'
+import { Container, Text, Button, View, Content, Input, Form, Label, Toast } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../assets/Estilo'
 import http from '../services/Http'
@@ -50,9 +50,23 @@ export default class Login extends Component {
         if (this.state.login && this.state.login.login && this.state.login.senha) {
             login = await this.http.logar(this.state.login)
             if (login && login._id && login.usuario) {
+                Toast.show({
+                    text: 'Logado com Sucesso!',
+                    type: 'success',
+                    duration: 3000,
+                    textStyle: { textAlign: 'center' },
+                    position: 'bottom'
+                })
                 loginService.update(login)
                 Actions.dash()
             }
+            else Toast.show({
+                text: 'Credenciais Incorretas!',
+                type: 'danger',
+                duration: 3000,
+                textStyle: { textAlign: 'center' },
+                position: 'bottom'
+            })
         }
     }
 
