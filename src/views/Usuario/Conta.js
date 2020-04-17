@@ -8,7 +8,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import loginService from '../../services/Login'
 import { translate } from '../../i18n/locales'
 
-export default class PlantacaoForm extends Component {
+export default class ContaForm extends Component {
     constructor(props) {
         super(props)
         this.estilo = new estilo()
@@ -113,7 +113,7 @@ export default class PlantacaoForm extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('plantacao')}</Text>
+                        <Text style={{ color: this.estilo.cor.white, fontSize: 20, fontWeight: 'bold', alignSelf: 'center' }}>{translate('conta')}</Text>
                     </Body>
                     <Left style={{ alignItems: 'flex-end', paddingRight: 2 }}>
                         {this.validacao() ?

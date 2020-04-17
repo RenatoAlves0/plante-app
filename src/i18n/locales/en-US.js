@@ -3,6 +3,7 @@ export default {
     diaria: 'Daily',
     semanal: 'Weekly',
     conectar_ao: 'Connect to',
+    conta: 'Account',
     minha_plantacao: 'My Plantation',
     plantacao: 'Plantation',
     plantacoes: 'Plantations',
