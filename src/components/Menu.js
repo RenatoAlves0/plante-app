@@ -44,10 +44,7 @@ export default class Menu extends Component {
                 </Form>
                 <Content style={{ paddingTop: 10 }}>
                     {this.state.actions.map((item, index) => (
-                        <Button key={index} rounded style={{
-                            marginVertical: 15, marginHorizontal: 30,
-                            backgroundColor: this.estilo.cor.white, justifyContent: 'center'
-                        }}
+                        <Button key={index} rounded style={this.estilo.button}
                             onPress={() => { item.method(), this.props.modal(false) }}>
                             <Form style={{ flexDirection: 'row' }}>
                                 <FeatherIcon name={item.icon} style={{ fontSize: 22, color: this.estilo.cor.gray_solid }} />

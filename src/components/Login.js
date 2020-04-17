@@ -29,7 +29,7 @@ export default class Login extends Component {
         this.acoes = [
             { nome: 'Logar', cor1: this.estilo.cor.green, cor2: this.estilo.cor.green_solid, metodo: this.logar },
             { nome: 'Criar Conta', cor1: this.estilo.cor.greenish, cor2: this.estilo.cor.greenish_solid, metodo: Actions.conta },
-            { nome: 'Administrador', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark, metodo: Actions.plantaList },
+            // { nome: 'Administrador', cor1: this.estilo.cor.blue, cor2: this.estilo.cor.blue_dark, metodo: Actions.plantaList },
         ]
     }
 
@@ -91,9 +91,7 @@ export default class Login extends Component {
                     {this.acoes.map((item, index) => (
                         <LinearGradient key={index} colors={[item.cor1, item.cor2]}
                             useAngle={true} angle={90} angleCenter={{ x: 0.3, y: 0.5 }}
-                            style={{
-                                width: '90%', alignSelf: 'center', borderRadius: 20, marginBottom: 20, elevation: 3,
-                            }}>
+                            style={this.estilo.button}>
                             <Button onPress={() => item.metodo()}
                                 style={{
                                     backgroundColor: 'transparent', width: '100%', borderRadius: 20,

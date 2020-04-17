@@ -48,12 +48,12 @@ export default class Estilos {
             this.cor.blue_light,
             this.cor.purple,
             this.cor.purple_vivid,
-        ],
+        ]
 
-            this.title = {
-                color: 'white',
-                fontSize: 20
-            }
+        this.title = {
+            color: 'white',
+            fontSize: 20
+        }
 
         this.form = {
             padding: 10,
@@ -65,7 +65,7 @@ export default class Estilos {
 
         this.form_user = {
             backgroundColor: this.cor.white,
-            width: '90%', borderRadius: 20, marginTop: 20,
+            width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
             alignSelf: 'center', elevation: 60, padding: 15
         }
 
@@ -139,6 +139,12 @@ export default class Estilos {
 
         this.hide = {
             height: 0, width: 0, opacity: 0
+        }
+
+        this.button = {
+            width: Dimensions.get('screen').width * .9, alignSelf: 'center',
+            borderRadius: 20, justifyContent: 'center', marginVertical: 10,
+            elevation: 3, backgroundColor: this.cor.white
         }
     }
 }
