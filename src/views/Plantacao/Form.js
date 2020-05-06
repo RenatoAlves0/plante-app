@@ -137,7 +137,7 @@ export default class PlantacaoForm extends Component {
                     </Form>
                     <Form style={[this.estilo.form_user, { marginTop: -45 }]}>
                         <Label>{translate('nome')}</Label>
-                        <Input keyboardType='default' autoFocus={true} value={this.state.item.nome}
+                        <Input autoFocus={true} value={this.state.item.nome}
                             onChangeText={(value) => {
                                 this.setState({ item: { ...this.state.item, nome: value } })
                             }} />
@@ -158,7 +158,7 @@ export default class PlantacaoForm extends Component {
 
                     <Form style={this.estilo.form_user}>
                         <Label>{translate('localizacao')}</Label>
-                        <Input keyboardType='default' value={this.state.item.localizacao}
+                        <Input value={this.state.item.localizacao}
                             onChangeText={(value) => {
                                 this.setState({ item: { ...this.state.item, localizacao: value + '' } })
                             }} />
