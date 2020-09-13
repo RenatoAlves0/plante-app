@@ -144,7 +144,7 @@ export default class Estilos {
         this.button = {
             width: Dimensions.get('screen').width * .9, alignSelf: 'center',
             borderRadius: 20, justifyContent: 'center', marginVertical: 10,
-            elevation: 3, backgroundColor: this.cor.white
+            elevation: 3, backgroundColor: this.cor.gray_white
         }
     }
 }
