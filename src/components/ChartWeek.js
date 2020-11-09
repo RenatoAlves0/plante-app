@@ -20,7 +20,7 @@ export default class ChartWeek extends Component {
         const max = this.props.data_array ? Math.max(... this.props.data_array) : 0
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(value)}>
+                <Svg height='0' width='0' key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.label_data ?
                         <Form style={{
                             flexDirection: (this.props.label_data).length > 3 ? 'column' : 'row',

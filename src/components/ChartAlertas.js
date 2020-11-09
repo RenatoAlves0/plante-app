@@ -48,7 +48,7 @@ export default class ChartAlertas extends Component {
         const max = this.props.valor ? Math.max(... this.props.valor) : 0
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(value)}>
+                <Svg height='0' width='0' key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.data ?
                         <Form style={{
                             flexDirection: 'column', marginTop: -26, alignItems: 'center', marginLeft: -40,

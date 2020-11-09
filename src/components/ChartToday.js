@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions, ScrollView } from 'react-native'
-import { Form, Text, View } from 'native-base'
+import { Form, View, Text } from 'native-base'
 import estilo from '../assets/Estilo'
 import { AreaChart, XAxis } from 'react-native-svg-charts'
 import { Path, Svg } from 'react-native-svg'
@@ -20,10 +20,9 @@ export default class ChartToday extends Component {
         const max = this.props.data_array ? Math.max(... this.props.data_array) : 0
         const Decorator = ({ x, y, data }) => {
             return data.map((value, index) => (
-                <Svg key={index} translateX={x(index)} translateY={y(value)}>
+                <Svg height='0' width='0' key={index} translateX={x(index)} translateY={y(value)}>
                     {this.props.label_data ?
                         <Form style={{
-                            backgroundColor: 'red',
                             flexDirection: (this.props.label_data).length > 3 ? 'column' : 'row',
                             marginTop: (this.props.label_data).length > 3 ? -45 : -35,
                             alignItems: this.props.label_data == 'º' ? 'flex-start' : 'baseline',
