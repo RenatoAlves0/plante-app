@@ -23,7 +23,7 @@ export default class ListNutriente extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

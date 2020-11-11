@@ -28,7 +28,7 @@ export default class PlantacaoView extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

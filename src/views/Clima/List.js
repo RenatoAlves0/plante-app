@@ -23,7 +23,7 @@ export default class ListClima extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

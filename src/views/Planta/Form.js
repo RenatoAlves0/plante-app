@@ -50,7 +50,7 @@ export default class FormPlanta extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

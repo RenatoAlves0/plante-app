@@ -23,7 +23,7 @@ export default class BottomMenu extends Component {
     ]
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

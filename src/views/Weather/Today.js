@@ -39,7 +39,7 @@ export default class Today extends Component {
         ]
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         await this.setState({ weather_today: await weatherToday.get() })
         this.render()
     }

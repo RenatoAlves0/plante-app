@@ -31,7 +31,7 @@ export default class PlantacaoForm extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

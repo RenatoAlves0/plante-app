@@ -23,7 +23,7 @@ export default class ListLuz extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

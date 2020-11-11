@@ -44,7 +44,7 @@ export default class FormNutriente extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

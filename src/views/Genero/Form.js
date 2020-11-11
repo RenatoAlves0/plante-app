@@ -18,7 +18,7 @@ export default class FormGenero extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

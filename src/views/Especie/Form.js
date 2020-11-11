@@ -18,7 +18,7 @@ export default class FormEspecie extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

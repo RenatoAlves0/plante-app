@@ -26,7 +26,7 @@ export default class ListPlanta extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

@@ -13,11 +13,11 @@ export default class Card extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 
-    componentWillReceiveProps() {
+    componentDidUpdate() {
         this.load()
     }
 

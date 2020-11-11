@@ -18,7 +18,7 @@ export default class FormFamilia extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

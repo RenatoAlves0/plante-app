@@ -33,7 +33,7 @@ export default class Week extends Component {
         ]
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         await this.setState({ weather_week: await weatherWeek.get() })
         this.render()
     }

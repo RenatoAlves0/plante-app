@@ -21,7 +21,7 @@ export default class PlantacaoList extends Component {
             principal: undefined
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

@@ -42,6 +42,7 @@ export default class Login extends Component {
         login = await loginService.get()
         if (login && login._id) {
             this.setState({ login: { login: login.login, senha: login.senha } })
+            this.logar()
         }
     }
 
@@ -98,7 +99,7 @@ export default class Login extends Component {
 
                     <Form style={[this.estilo.form_user, { marginBottom: 20 }]}>
                         <Label>{translate('senha')}</Label>
-                        <Input secureTextEntry={true} autoFocus={true} value={this.state.login.senha}
+                        <Input secureTextEntry={true} value={this.state.login.senha}
                             onChangeText={(value) => { this.setState({ login: { ...this.state.login, senha: value } }) }} />
                     </Form>
 

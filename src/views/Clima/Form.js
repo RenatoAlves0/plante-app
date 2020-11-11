@@ -40,7 +40,7 @@ export default class FormClima extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

@@ -10,7 +10,7 @@ export default class Delete extends Component {
         this.state = {}
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

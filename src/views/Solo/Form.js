@@ -40,7 +40,7 @@ export default class FormSolo extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

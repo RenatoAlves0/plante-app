@@ -65,12 +65,13 @@ export default class Dash extends Component {
         })
     }
 
-    UNSAFE_componentWillMount() {
-        this.load()
-        console.log(this.client)
-    }
+    // componentDidMount() {
+    // this.load()
+    // console.log(this.client)
+    // }
 
     componentDidMount() {
+        this.load()
         this.spin()
         // this.updateWeather()
     }

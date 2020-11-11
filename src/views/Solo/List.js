@@ -23,7 +23,7 @@ export default class ListSolo extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load()
   }
 

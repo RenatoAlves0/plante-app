@@ -48,7 +48,7 @@ export default class AlertaList extends Component {
         ]
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

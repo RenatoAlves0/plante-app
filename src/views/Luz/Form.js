@@ -26,7 +26,7 @@ export default class FormLuz extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 

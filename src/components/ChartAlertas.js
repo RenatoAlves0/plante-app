@@ -17,7 +17,7 @@ export default class ChartAlertas extends Component {
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         await this.load()
     }
 

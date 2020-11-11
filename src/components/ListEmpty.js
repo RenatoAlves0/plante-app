@@ -18,7 +18,7 @@ export default class ListEmpty extends Component {
         ]
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.load()
     }
 
