@@ -42,7 +42,8 @@ export default class Login extends Component {
         login = await loginService.get()
         if (login && login._id) {
             this.setState({ login: { login: login.login, senha: login.senha } })
-            this.logar()
+            if (this.props && this.props.nao_logar) { }
+            else this.logar()
         }
     }
 

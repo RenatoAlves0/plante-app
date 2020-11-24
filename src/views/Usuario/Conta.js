@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StatusBar, ScrollView } from 'react-native'
+import { StatusBar } from 'react-native'
 import { Container, Text, Button, Content, Row, Header, Body, Label, Picker, Icon, Item, Input, Form, Left } from 'native-base'
 import { Actions } from 'react-native-router-flux'
 import estilo from '../../assets/Estilo'
@@ -28,6 +28,7 @@ export default class ContaForm extends Component {
             estado: { _id: undefined },
             estados: [],
             cidades: [],
+            editando: false
         }
     }
 
@@ -37,17 +38,23 @@ export default class ContaForm extends Component {
 
     async load() {
         await this.estados()
+        if (this.props.editar) {
+            this.setState({ editando: true })
+            let login = await loginService.get()
+            await this.setState({ login: login })
+            let usuario = await this.http.getId('usuarios', login.usuario, 0)
+            let estado = await this.http.getId('estados', usuario.cidade.estado, 0)
+            await this.setState({ estado: estado })
+            await this.cidades()
+            await this.setState({ usuario: usuario })
+            await this.setState({ editando: false })
+        }
     }
 
     async estados() {
         await this.http.get('estados', 0).then(async (data) => {
             await this.setState({ estados: data })
         })
-        if (this.props.usuario && this.props.usuario.cidade) {
-            await this.http.get('estados/' + this.props.usuario.cidade.estado, 0).then(async (data) => {
-                await this.setState({ estado: data })
-            })
-        }
     }
 
     async cidades() {
@@ -65,21 +72,29 @@ export default class ContaForm extends Component {
     }
 
     async save() {
-        await this.http.post('usuarios', this.state.usuario, 0)
-            .then(async usuario => {
-                if (usuario._id) {
-                    await this.setState({
-                        login: {
-                            ...this.state.login,
-                            usuario: { ...this.state.login.usuario, _id: usuario._id }
-                        }
-                    })
-                    await this.http.post('logins', this.state.login, 0)
-                        .then(() => {
-                            this.logar()
+        if (this.props.editar) {
+            await this.http.put('usuarios', this.state.usuario._id, this.state.usuario, 0)
+            await this.http.put('logins', this.state.login._id, this.state.login, 0)
+                .then(() => {
+                    this.logar()
+                })
+        }
+        else
+            await this.http.post('usuarios', this.state.usuario, 0)
+                .then(async usuario => {
+                    if (usuario._id) {
+                        await this.setState({
+                            login: {
+                                ...this.state.login,
+                                usuario: { ...this.state.login.usuario, _id: usuario._id }
+                            }
                         })
-                }
-            })
+                        await this.http.post('logins', this.state.login, 0)
+                            .then(() => {
+                                this.logar()
+                            })
+                    }
+                })
     }
 
     logar = async () => {
@@ -87,7 +102,7 @@ export default class ContaForm extends Component {
         if (this.state.login && this.state.login.login && this.state.login.senha) {
             login = await this.http.logar(this.state.login)
             if (login && login._id && login.usuario) {
-                loginService.update(login)
+                await loginService.update(login)
                 Actions.dash()
             }
         }
@@ -149,7 +164,7 @@ export default class ContaForm extends Component {
                                 selectedValue={this.state.estado._id}
                                 onValueChange={async (value) => {
                                     await this.setState({ estado: { ...this.state.estado, _id: value } })
-                                    await this.cidades()
+                                    if (!this.state.editando) await this.cidades()
                                 }}>
                                 {this.state.estados.map((usuario) => { return <Item key={usuario._id} label={usuario.nome + ' (' + usuario.sigla + ')'} value={usuario._id} /> })}
                             </Picker>

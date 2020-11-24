@@ -11,14 +11,18 @@ export default class Menu extends Component {
         this.estilo = new estilo()
         this.state = {
             actions: [
-                { label: 'Perfil', icon: 'user', method: this.sair },
+                { label: 'Conta', icon: 'user', method: this.conta },
                 { label: 'Sair', icon: 'log-out', method: this.sair },
             ]
         }
     }
 
     sair = () => {
-        Actions.login()
+        Actions.login({ nao_logar: true })
+    }
+
+    conta = () => {
+        Actions.conta({ editar: true })
     }
 
     componentDidMount() {

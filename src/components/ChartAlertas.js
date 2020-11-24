@@ -94,22 +94,6 @@ export default class ChartAlertas extends Component {
             <Path y={-2} d={line} stroke={this.props.color} fill={'none'} strokeWidth={5} strokeDasharray={[5, 5]} />
         )
 
-        // const EixoX = ({ x, y, data }) => {
-        //     return data.map((value, index) => (
-        //         <Svg key={index} translateX={x(index)} translateY={y(min)}>
-        //             {this.props.data ?
-        //                 <Form style={{
-        //                     flexDirection: 'column', marginTop: -38, marginLeft: -20,
-        //                     width: 50, height: 25, justifyContent: 'center'
-        //                 }}>
-        //                     <Text style={index == 0 || index == this.props.valor.length - 1 ? { color: 'transparent' } :
-        //                         { color: this.props.color, fontSize: 16, paddingBottom: 2, marginLeft: -10, fontWeight: 'bold' }}
-        //                     >{new Date(this.props.data[index]).toLocaleTimeString().substring(0, 5) + ' h'}</Text>
-        //                 </Form> : null}
-        //         </Svg>
-        //     ))
-        // }
-
         return (
             <ScrollView showsHorizontalScrollIndicator={false}
                 horizontal={true} style={{ height: 250 }}>
@@ -129,13 +113,6 @@ export default class ChartAlertas extends Component {
                         <Line />
                         <Decorator />
                     </AreaChart>
-                    {/* <AreaChart
-                        style={{ height: 50 }}
-                        data={this.props.valor}
-                        contentInset={{ left: -20, right: -20 }}
-                    >
-                        <EixoX />
-                    </AreaChart> */}
                 </View>
             </ScrollView>
         )
