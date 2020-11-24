@@ -176,7 +176,7 @@ export default class PlantacaoView extends Component {
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginTop: 20,
                         alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
-                        <Row style={{ marginBottom: 10 }}>
+                        <Row style={{ marginBottom: 10, flexWrap: 'wrap' }}>
                             <Icon name='grain' type='MaterialIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('solo')}</Text>
                         </Row>
@@ -233,7 +233,7 @@ export default class PlantacaoView extends Component {
                         width: Dimensions.get('screen').width * .9, borderRadius: 20, marginVertical: 20,
                         alignSelf: 'center', elevation: 60, padding: 20, flexWrap: 'wrap'
                     }}>
-                        <Row style={{ marginBottom: 10 }}>
+                        <Row style={{ marginBottom: 10, flexWrap: 'wrap' }}>
                             <Icon name='chemistry' type='SimpleLineIcons' style={{ color: this.estilo.cor.gray_solid, fontSize: 24, marginLeft: -5 }} />
                             <Text style={{ fontSize: 18, color: this.estilo.cor.gray_solid, fontWeight: 'bold' }}>  {translate('nutrientes')}</Text>
                         </Row>
